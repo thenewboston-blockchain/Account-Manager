@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import {app, BrowserWindow} from 'electron';
 const electronSquirrelStartup = require('electron-squirrel-startup');
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -11,8 +11,8 @@ if (electronSquirrelStartup) {
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    height: 600,
-    width: 800,
+    height: 500,
+    width: 500,
   });
 
   // and load the index.html of the app.
