@@ -1,0 +1,25 @@
+.Sample {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+
+  &__form {
+    width: 75%;
+  }
+
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 25px;
+  }
+
+  .form-submit {
+    display: flex;
+    justify-content: center;
+
+    button {
+      width: 50%;
+    }
+  }
+}
