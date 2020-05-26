@@ -11,8 +11,13 @@ if (electronSquirrelStartup) {
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    height: 500,
+    frame: false,
+    height: 480,
     width: 500,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    resizable: process.env.NODE_ENV !== 'production',
   });
 
   // and load the index.html of the app.
