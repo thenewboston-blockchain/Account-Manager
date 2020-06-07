@@ -1,0 +1,10 @@
+.CreateIcon {
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  transition: filter 0.3s;
+
+  &:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+  }
+}

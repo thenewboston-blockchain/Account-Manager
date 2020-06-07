@@ -1,0 +1,10 @@
+.UnfoldLessIcon {
+  color: var(--color-gray-4);
+  font-size: 1.3rem;
+  transition: color 0.3s;
+
+  &:hover {
+    color: var(--color-primary);
+    cursor: pointer;
+  }
+}
