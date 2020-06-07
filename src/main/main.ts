@@ -1,4 +1,5 @@
 import {app, BrowserWindow} from 'electron';
+import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from 'electron-devtools-installer';
 const electronSquirrelStartup = require('electron-squirrel-startup');
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -23,6 +24,13 @@ const createWindow = () => {
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 };
+
+// Install React and Redux DevTools
+app.whenReady().then(() => {
+  installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
+    .then((name) => console.log(`Added Extension: ${name}`))
+    .catch((error) => console.log('An error occurred: ', error));
+});
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
