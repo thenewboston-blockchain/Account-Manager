@@ -1,27 +1,16 @@
-import React, {useMemo} from 'react';
+import React from 'react';
+import clsx from 'clsx';
 
 import Button, {ButtonProps as MuiButtonProps} from '@material-ui/core/Button';
-import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
-import lightBlue from '@material-ui/core/colors/lightBlue';
+
+import './Button.scss';
 
 type ButtonProps = MuiButtonProps;
 
-export default function ({children, ...props}: ButtonProps) {
-  const theme = useMemo(
-    () =>
-      createMuiTheme({
-        palette: {
-          primary: lightBlue,
-          type: 'dark',
-        },
-      }),
-    [],
-  );
+export default function ({children, className, ...props}: ButtonProps) {
   return (
-    <ThemeProvider theme={theme}>
-      <Button variant="contained" color="primary" {...props}>
-        {children}
-      </Button>
-    </ThemeProvider>
+    <Button className={clsx('Button', className)} variant="contained" color="primary" {...props}>
+      {children}
+    </Button>
   );
 }

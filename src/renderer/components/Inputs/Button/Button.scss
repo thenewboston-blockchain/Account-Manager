@@ -1,0 +1,13 @@
+.Button {
+  color: var(--color-gray-1);
+  background: var(--color-primary);
+  height: 34px;
+  border-radius: 200px;
+  text-transform: none;
+  transition: filter 0.3s;
+
+  &:hover {
+    background: var(--color-primary);
+    filter: brightness(90%);
+  }
+}
