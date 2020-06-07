@@ -5,7 +5,7 @@ import {Provider} from 'react-redux';
 // Styles
 import 'typeface-roboto';
 import 'normalize.css';
-import '@renderer/styles/colors.scss';
+import '@renderer/styles/variables.scss';
 
 import App from '@renderer/containers/App';
 import store from '@renderer/store';

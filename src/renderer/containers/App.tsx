@@ -1,10 +1,6 @@
 import React from 'react';
-import { hot } from 'react-hot-loader/root';
+import {hot} from 'react-hot-loader/root';
 
-import Sample from "@renderer/containers/Sample";
+import Layout from '@renderer/containers/Layout';
 
-export default hot(
-  (): JSX.Element => (
-    <Sample />
-  ),
-);
+export default hot((): JSX.Element => <Layout />);

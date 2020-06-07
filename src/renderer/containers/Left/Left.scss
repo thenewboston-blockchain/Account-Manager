@@ -1,0 +1,37 @@
+.Left {
+  height: 100%;
+
+  &__points {
+    font-size: var(--font-size-medium);
+    margin: 16px 12px;
+
+    span {
+      color: var(--color-accent);
+    }
+  }
+
+  &__network-overview {
+    margin: 18px 12px;
+
+    .network-overview__title {
+      color: var(--color-gray-4);
+      margin-bottom: 10px;
+    }
+
+    .network-overview__overview {
+      span {
+        display: block;
+        margin: 2px 0;
+      }
+    }
+  }
+
+  &__links {
+    margin: 18px 12px;
+
+    a {
+      display: block;
+      margin: 4px 0;
+    }
+  }
+}
