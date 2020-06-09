@@ -3,15 +3,15 @@
 }
 
 body {
-  background: var(--color-gray-2);
-  color: var(--color-white);
+  background: var(--color-gray-6);
+  color: var(--color-gray-1);
   font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   font-size: var(--font-size-regular);
   margin: auto;
 }
 
 a {
-  color: var(--color-primary);
+  color: var(--color-accent-1);
   text-decoration: none;
 
   &:hover {

@@ -1,21 +1,49 @@
 .Left {
+  background: var(--color-white);
   height: 100%;
 
-  &__points {
-    font-size: var(--font-size-medium);
-    margin: 16px 12px;
+  .section-header {
+    color: var(--color-gray-3);
+    font-weight: bold;
+  }
 
-    span {
-      color: var(--color-accent);
+  &__company-logo {
+    align-items: center;
+    border-bottom: 1px solid var(--color-gray-4);
+    display: flex;
+    padding: 12px;
+
+    .company-logo__logo {
+      margin-right: 12px;
+      height: 30px;
+      width: 30px;
+    }
+
+    .company-logo__text {
+      font-size: var(--font-size-medium);
+    }
+  }
+
+  &__points {
+    border-bottom: 1px solid var(--color-gray-4);
+    padding: 12px;
+
+    .points__title {
+      margin-bottom: 6px;
+    }
+
+    .points__amount {
+      color: var(--color-accent-2);
+      font-size: var(--font-size-medium);
     }
   }
 
   &__network-overview {
-    margin: 18px 12px;
+    border-bottom: 1px solid var(--color-gray-4);
+    padding: 12px;
 
     .network-overview__title {
-      color: var(--color-gray-4);
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
 
     .network-overview__overview {
@@ -26,12 +54,15 @@
     }
   }
 
+  .Card {
+    border-bottom: 1px solid var(--color-gray-4);
+  }
+
   &__links {
     margin: 18px 12px;
 
-    a {
-      display: block;
-      margin: 4px 0;
+    .LinkWithIcon {
+      margin-bottom: 12px;
     }
   }
 }

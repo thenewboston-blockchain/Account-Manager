@@ -1,8 +1,9 @@
 import React, {FC} from 'react';
 
-import './Card.scss';
 import CreateIcon from '@renderer/components/Icons/CreateIcon';
 import UnfoldLessIcon from '@renderer/components/Icons/UnfoldLessIcon';
+
+import './Card.scss';
 
 interface CardItem {
   name: string;

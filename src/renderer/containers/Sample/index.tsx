@@ -38,7 +38,7 @@ const Sample = function () {
   return (
     <div className="Sample">
       <div className="Sample__header">
-        <img className="header__logo" src={require('@renderer/assets/logo.jpg')} alt="logo" />
+        <img className="header__logo" src={require('@renderer/assets/logo.png')} alt="logo" />
         The<span>New</span>Boston
       </div>
       <div className="Sample__body">
