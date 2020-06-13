@@ -2,12 +2,12 @@ import React from 'react';
 import {hot} from 'react-hot-loader/root';
 import {HashRouter as Router} from 'react-router-dom';
 
-import AdminLayout from '@renderer/containers/AdminLayout';
+import Layout from '@renderer/containers/Layout';
 
 const App = () => {
   return (
     <Router>
-      <AdminLayout />
+      <Layout />
     </Router>
   );
 };

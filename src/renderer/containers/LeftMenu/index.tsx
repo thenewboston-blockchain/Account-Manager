@@ -24,7 +24,7 @@ const LeftMenu = () => {
   const {banks, friends, points, validators, wallets} = useSelector(LeftComponentSelector);
 
   const renderSampleMenuItems = () => {
-    return [...Array(100)].map((_, i) => <LinkWithIcon icon={<SettingsIcon />} text={`${i}`} />);
+    return [...Array(64)].map((_, i) => <LinkWithIcon icon={<SettingsIcon />} text={`${i}`} />);
   };
 
   return (
