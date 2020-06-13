@@ -11,7 +11,7 @@ const TopNav = () => {
         <img alt="thenewboston logo" className="logo" src={require('@renderer/assets/logo.png')} />
         <span>thenewboston</span>
       </NavLink>
-      <NavLink to="/api">API</NavLink>
+      <NavLink to="/">Home</NavLink>
     </div>
   );
 };

@@ -1,19 +1,32 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC} from 'react';
+import {Route, Switch} from 'react-router-dom';
+
+import AdminLeftMenu from '@renderer/containers/AdminLeftMenu';
+import Bank from '@renderer/containers/Bank';
+import TopNav from '@renderer/containers/TopNav';
 
 import './AdminLayout.scss';
 
-interface ComponentProps {
-  left: ReactNode;
-  right: ReactNode;
-  top: ReactNode;
-}
-
-export const AdminLayout: FC<ComponentProps> = ({left, right, top}) => {
+export const AdminLayout: FC = (p) => {
+  console.log(p);
   return (
     <div className="AdminLayout">
-      <div className="top">{top}</div>
-      <div className="left">{left}</div>
-      <div className="right">{right}</div>
+      <div className="top">
+        <TopNav />
+      </div>
+      <div className="left">
+        <AdminLeftMenu />
+      </div>
+      <div className="right">
+        <Switch>
+          <Route exact path="/">
+            <h1>home</h1>
+          </Route>
+          <Route path="/bank">
+            <Bank />
+          </Route>
+        </Switch>
+      </div>
     </div>
   );
 };

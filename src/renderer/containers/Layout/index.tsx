@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Left from '@renderer/containers/Left';
-import Right from '@renderer/containers/Right';
+import Right from '@renderer/containers/Bank';
 
 import './Layout.scss';
 
