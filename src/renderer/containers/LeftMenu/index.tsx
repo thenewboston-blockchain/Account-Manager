@@ -23,6 +23,10 @@ const LeftComponentSelector = ({banks, friends, points, validators, wallets}: Ro
 const LeftMenu = () => {
   const {banks, friends, points, validators, wallets} = useSelector(LeftComponentSelector);
 
+  const renderSampleMenuItems = () => {
+    return [...Array(100)].map((_, i) => <LinkWithIcon icon={<SettingsIcon />} text={`${i}`} />);
+  };
+
   return (
     <div className="LeftMenu">
       <div className="LeftMenu__points">
@@ -47,6 +51,7 @@ const LeftMenu = () => {
         <LinkWithIcon icon={<DescriptionIcon />} text="API Documentation" />
         <LinkWithIcon icon={<PlayCircleFilledIcon />} text="Tutorial & Guides" />
         <LinkWithIcon icon={<SettingsIcon />} text="Settings" />
+        {renderSampleMenuItems()}
       </div>
     </div>
   );

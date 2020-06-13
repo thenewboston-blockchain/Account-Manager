@@ -1,7 +1,0 @@
-$menu-height: 30px;
-
-.Layout {
-  display: grid;
-  grid-template-columns: 255px auto;
-  height: calc(100vh - #{$menu-height});
-}

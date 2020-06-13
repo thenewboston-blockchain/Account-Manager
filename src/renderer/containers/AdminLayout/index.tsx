@@ -7,8 +7,11 @@ import TopNav from '@renderer/containers/TopNav';
 
 import './AdminLayout.scss';
 
-export const AdminLayout: FC = (p) => {
-  console.log(p);
+export const AdminLayout: FC = () => {
+  const renderSampleContent = () => {
+    return [...Array(100)].map((_, i) => <h1>{i}</h1>);
+  };
+
   return (
     <div className="AdminLayout">
       <div className="top">
@@ -20,7 +23,7 @@ export const AdminLayout: FC = (p) => {
       <div className="right">
         <Switch>
           <Route exact path="/">
-            <h1>home</h1>
+            {renderSampleContent()}
           </Route>
           <Route path="/bank">
             <Bank />
