@@ -8,7 +8,7 @@ import PlayCircleFilledIcon from '@renderer/components/Icons/PlayCircleFilledIco
 import SettingsIcon from '@renderer/components/Icons/SettingsIcon';
 import {RootState} from '@renderer/types/store';
 
-import './Left.scss';
+import '../LeftMenu/Left.scss';
 
 const LeftComponentSelector = ({banks, friends, points, validators, wallets}: RootState) => ({
   banks,

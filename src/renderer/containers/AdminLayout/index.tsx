@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Route, Switch} from 'react-router-dom';
 
-import AdminLeftMenu from '@renderer/containers/AdminLeftMenu';
+import AdminLeftMenu from '@renderer/containers/LeftMenu';
 import Bank from '@renderer/containers/Bank';
 import TopNav from '@renderer/containers/TopNav';
 
