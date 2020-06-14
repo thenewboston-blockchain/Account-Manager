@@ -10,6 +10,7 @@ interface Bank {
   default_transaction_fee: string;
   registration_fee: string;
   trust: string;
+  name?: string;
 }
 
 const banks = createSlice({
