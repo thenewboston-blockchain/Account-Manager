@@ -5,9 +5,10 @@ import './LeftSubmenu.scss';
 interface ComponentProps {
   menuItems: ReactNode[];
   title: string;
+  tool?: ReactNode;
 }
 
-const LeftSubmenu: FC<ComponentProps> = ({menuItems, title}) => {
+const LeftSubmenu: FC<ComponentProps> = ({menuItems, title, tool}) => {
   const [open, setOpen] = useState<boolean>(true);
 
   const toggleExpanded = (): void => {
@@ -23,9 +24,7 @@ const LeftSubmenu: FC<ComponentProps> = ({menuItems, title}) => {
           </span>
           <span className="submenu-title">{title}</span>
         </div>
-        <div className="right-items">
-          <span className="material-icons">add</span>
-        </div>
+        {tool && <div className="right-items">{tool}</div>}
       </div>
       {open && menuItems}
     </div>

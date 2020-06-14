@@ -71,7 +71,11 @@ const LeftMenu = () => {
         ]}
         title="Network"
       />
-      <LeftSubmenu menuItems={getManagedBanks()} title="Managed Banks" />
+      <LeftSubmenu
+        menuItems={getManagedBanks()}
+        title="Managed Banks"
+        tool={<span className="material-icons">add</span>}
+      />
       <LeftSubmenu menuItems={getManagedValidators()} title="Managed Validators" />
       <LeftSubmenu menuItems={getAccounts()} title="Accounts" />
       <LeftSubmenu menuItems={getFriends()} title="Friends" />
