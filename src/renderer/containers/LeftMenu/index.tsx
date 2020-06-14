@@ -29,7 +29,7 @@ const LeftMenu = () => {
         <div className="points__title section-header">Points</div>
         <div className="points__amount">{points.toLocaleString()}</div>
       </div>
-      <LeftSubmenu title="Nice" />
+      <LeftSubmenu menuItems={[{name: 'Banks (99)'}, {name: 'Validators (231)'}]} title="Network" />
       <div className="LeftMenu__network-overview">
         <div className="network-overview__title section-header">Network</div>
         <div className="network-overview__overview">

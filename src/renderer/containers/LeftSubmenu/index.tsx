@@ -2,11 +2,16 @@ import React, {FC, useState} from 'react';
 
 import './LeftSubmenu.scss';
 
+interface MenuItem {
+  name: string;
+}
+
 interface ComponentProps {
+  menuItems: MenuItem[];
   title: string;
 }
 
-const LeftSubmenu: FC<ComponentProps> = ({title}) => {
+const LeftSubmenu: FC<ComponentProps> = ({menuItems, title}) => {
   const [open, setExpanded] = useState<boolean>(true);
 
   const toggleExpanded = (): void => {
@@ -26,10 +31,11 @@ const LeftSubmenu: FC<ComponentProps> = ({title}) => {
           <span className="material-icons">add</span>
         </div>
       </div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
-      <div>1</div>
+      {menuItems.map(({name}) => (
+        <a className="MenuItem" href="#">
+          {name}
+        </a>
+      ))}
     </div>
   );
 };

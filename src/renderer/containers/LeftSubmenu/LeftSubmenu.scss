@@ -1,12 +1,11 @@
 .LeftSubmenu {
-  padding: 12px 6px;
+  padding: 12px 12px 12px 6px;
 
   &__header {
     align-items: center;
     display: flex;
     height: 32px;
     justify-content: space-between;
-    margin-bottom: 6px;
 
     .left-items,
     .right-items {
@@ -30,7 +29,7 @@
 
     .left-items {
       .material-icons {
-        padding-right: 4px;
+        padding: 4px;
         transform: rotate(0);
 
         &.closed,
@@ -47,5 +46,10 @@
         }
       }
     }
+  }
+
+  .MenuItem {
+    display: block;
+    padding: 0 0 0 28px; /* 28px is the width of the menu toggle */
   }
 }
