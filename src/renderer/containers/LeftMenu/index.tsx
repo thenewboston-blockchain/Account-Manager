@@ -16,7 +16,7 @@ const LeftComponentSelector = ({accounts, banks, friends, points, validators}: R
 });
 
 const LeftMenu = () => {
-  const {banks, friends, points, validators, accounts} = useSelector(LeftComponentSelector);
+  const {accounts, banks, friends, points, validators} = useSelector(LeftComponentSelector);
 
   const renderAccounts = () => {
     return accounts.map(({account_number}) => (
