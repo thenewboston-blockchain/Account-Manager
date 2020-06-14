@@ -2,6 +2,7 @@ import React from 'react';
 
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';
+import PageTable from '@renderer/containers/PageTable';
 import PageTabs from '@renderer/components/PageTabs';
 import Pagination from '@renderer/components/Pagination';
 
@@ -14,10 +15,6 @@ const Bank = () => {
       <button className="button-default">Register as Member</button>
     </>
   );
-
-  const renderSampleContent = () => {
-    return [...Array(100)].map((_, i) => <h1 key={i}>{i}</h1>);
-  };
 
   const renderTop = () => {
     return (
@@ -34,7 +31,7 @@ const Bank = () => {
 
   return (
     <div className="Bank">
-      <PageLayout top={renderTop()} middle={renderSampleContent()} bottom={<Pagination />} />
+      <PageLayout top={renderTop()} middle={<PageTable />} bottom={<Pagination />} />
     </div>
   );
 };
