@@ -31,11 +31,12 @@ const LeftSubmenu: FC<ComponentProps> = ({menuItems, title}) => {
           <span className="material-icons">add</span>
         </div>
       </div>
-      {menuItems.map(({name}) => (
-        <a className="MenuItem" href="#">
-          {name}
-        </a>
-      ))}
+      {open &&
+        menuItems.map(({name}) => (
+          <a className="MenuItem" href="#">
+            {name}
+          </a>
+        ))}
     </div>
   );
 };

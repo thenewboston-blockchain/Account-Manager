@@ -31,7 +31,6 @@ const LeftMenu = () => {
       </div>
       <LeftSubmenu menuItems={[{name: 'Banks (99)'}, {name: 'Validators (231)'}]} title="Network" />
       <div className="LeftMenu__network-overview">
-        <div className="network-overview__title section-header">Network</div>
         <div className="network-overview__overview">
           <NavLink to="/bank">Bank</NavLink>
           <span>Validators ({validators.length})</span>

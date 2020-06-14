@@ -4,7 +4,6 @@
   &__header {
     align-items: center;
     display: flex;
-    height: 32px;
     justify-content: space-between;
 
     .left-items,
@@ -13,6 +12,7 @@
       display: flex;
 
       .material-icons {
+        color: var(--color-gray-2);
         font-size: 20px;
 
         &:hover {
@@ -21,6 +21,9 @@
       }
 
       .submenu-title {
+        color: var(--color-gray-3);
+        font-weight: bold;
+
         &:hover {
           cursor: default;
         }
@@ -44,6 +47,12 @@
         &.open {
           transform: rotate(90deg);
         }
+      }
+    }
+
+    .right-items {
+      .material-icons {
+        font-weight: 700;
       }
     }
   }
