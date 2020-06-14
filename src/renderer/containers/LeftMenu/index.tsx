@@ -19,16 +19,16 @@ const LeftMenu = () => {
   const {banks, friends, points, validators, wallets} = useSelector(LeftComponentSelector);
 
   const getAccounts = () => {
-    return wallets.map(({name, id}) => (
-      <NavLink className="MenuItem" to="/">
+    return wallets.map(({id, name}) => (
+      <NavLink className="MenuItem" key={id} to="/">
         {name} ({id})
       </NavLink>
     ));
   };
 
   const getFriends = () => {
-    return friends.map(({name}) => (
-      <NavLink className="MenuItem" to="/">
+    return friends.map(({id, name}) => (
+      <NavLink className="MenuItem" key={id} to="/">
         {name}
       </NavLink>
     ));
@@ -36,7 +36,7 @@ const LeftMenu = () => {
 
   const getManagedBanks = () => {
     return banks.map(({name, ipAddress}) => (
-      <NavLink className="MenuItem" to="/">
+      <NavLink className="MenuItem" key={ipAddress} to="/">
         {name} ({ipAddress})
       </NavLink>
     ));
