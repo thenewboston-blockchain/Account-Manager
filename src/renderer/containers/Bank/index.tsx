@@ -2,6 +2,7 @@ import React from 'react';
 
 import PageHeader from '@renderer/components/PageHeader';
 import PageTabs from '@renderer/components/PageTabs';
+import Pagination from '@renderer/components/Pagination';
 
 import './Bank.scss';
 
@@ -21,6 +22,7 @@ const Bank = () => {
         trustScore={98.34}
       />
       <PageTabs />
+      <Pagination />
     </div>
   );
 };
