@@ -3,11 +3,6 @@ import {useSelector} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
 import Card from '@renderer/components/Card';
-import DescriptionIcon from '@renderer/components/Icons/DescriptionIcon';
-import LinkWithIcon from '@renderer/components/LinkWithIcon';
-import PlayCircleFilledIcon from '@renderer/components/Icons/PlayCircleFilledIcon';
-import SettingsIcon from '@renderer/components/Icons/SettingsIcon';
-
 import {RootState} from '@renderer/types/store';
 
 import './LeftMenu.scss';
@@ -24,7 +19,7 @@ const LeftMenu = () => {
   const {banks, friends, points, validators, wallets} = useSelector(LeftComponentSelector);
 
   const renderSampleMenuItems = () => {
-    return [...Array(64)].map((_, i) => <LinkWithIcon icon={<SettingsIcon />} text={`${i}`} />);
+    return [...Array(8)].map((_, i) => <h1 key={i}>{i}</h1>);
   };
 
   return (
@@ -47,12 +42,7 @@ const LeftMenu = () => {
       />
       <Card items={wallets.map(({name, id}) => ({name, description: id}))} title="Wallets" />
       <Card items={friends.map(({name, id}) => ({name, description: id}))} title="Friends" />
-      <div className="LeftMenu__links">
-        <LinkWithIcon icon={<DescriptionIcon />} text="API Documentation" />
-        <LinkWithIcon icon={<PlayCircleFilledIcon />} text="Tutorial & Guides" />
-        <LinkWithIcon icon={<SettingsIcon />} text="Settings" />
-        {renderSampleMenuItems()}
-      </div>
+      <div className="LeftMenu__links">{renderSampleMenuItems()}</div>
     </div>
   );
 };

@@ -1,8 +1,5 @@
 import React, {FC} from 'react';
 
-import CreateIcon from '@renderer/components/Icons/CreateIcon';
-import UnfoldLessIcon from '@renderer/components/Icons/UnfoldLessIcon';
-
 import './Card.scss';
 
 interface CardItem {
@@ -20,8 +17,6 @@ const Card: FC<CardProps> = ({items, title}) => {
     <div className="Card">
       <div className="Card__header">
         <span className="header__title">{title}</span>
-        <CreateIcon />
-        <UnfoldLessIcon />
       </div>
       {items.map(({name, description}) => (
         <a className="Card__link" href="#">
