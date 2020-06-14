@@ -1,13 +1,51 @@
 .LeftSubmenu {
-  padding: 12px;
+  padding: 12px 6px;
 
   &__header {
     align-items: center;
     display: flex;
-    margin-bottom: 12px;
+    height: 32px;
+    justify-content: space-between;
+    margin-bottom: 6px;
 
-    .CreateIcon {
-      margin-right: 6px;
+    .left-items,
+    .right-items {
+      align-items: center;
+      display: flex;
+
+      .material-icons {
+        font-size: 20px;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .submenu-title {
+        &:hover {
+          cursor: default;
+        }
+      }
+    }
+
+    .left-items {
+      .material-icons {
+        padding-right: 4px;
+        transform: rotate(0);
+
+        &.closed,
+        &.open {
+          transition: transform 0.06s linear;
+        }
+
+        &.closed {
+          transform: rotate(0);
+        }
+
+        &.open {
+          transform: rotate(90deg);
+        }
+      }
     }
   }
 }
