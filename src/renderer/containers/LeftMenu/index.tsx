@@ -50,14 +50,10 @@ const LeftMenu = () => {
     ));
   };
 
-  const renderSampleMenuItems = () => {
-    return [...Array(8)].map((_, i) => <h1 key={i}>{i}</h1>);
-  };
-
   return (
     <div className="LeftMenu">
       <div className="LeftMenu__points">
-        <div className="points__title section-header">Points</div>
+        <div className="submenu-title">Points</div>
         <div className="points__amount">{points.toLocaleString()}</div>
       </div>
       <LeftSubmenu
@@ -83,7 +79,6 @@ const LeftMenu = () => {
       />
       <LeftSubmenu menuItems={getAccounts()} title="Accounts" tool={<span className="material-icons">add</span>} />
       <LeftSubmenu menuItems={getFriends()} title="Friends" tool={<span className="material-icons">add</span>} />
-      <div className="LeftMenu__links">{renderSampleMenuItems()}</div>
     </div>
   );
 };
