@@ -4,6 +4,7 @@
   padding: 12px;
 
   .left-section {
+    align-items: center;
     display: flex;
 
     .header-title {
@@ -11,5 +12,14 @@
       font-size: 24px;
       margin-right: 6px;
     }
+
+    .TrustBadge {
+      margin-right: 6px;
+    }
+  }
+
+  .right-section {
+    align-items: center;
+    display: flex;
   }
 }

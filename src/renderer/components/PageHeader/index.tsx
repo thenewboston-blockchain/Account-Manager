@@ -5,21 +5,21 @@ import TrustBadge from '@renderer/components/TrustBadge';
 import './PageHeader.scss';
 
 interface ComponentProps {
+  leftTools?: ReactNode;
   rightContent?: ReactNode;
   title: string;
   trustScore?: number;
 }
 
-const PageHeader: FC<ComponentProps> = ({title, trustScore}) => {
+const PageHeader: FC<ComponentProps> = ({leftTools, rightContent, title, trustScore}) => {
   return (
     <div className="PageHeader">
       <div className="left-section">
         <h1 className="header-title">{title}</h1>
         {trustScore && <TrustBadge score={trustScore} />}
+        {leftTools && leftTools}
       </div>
-      <div className="right-section">
-        <h1>nice</h1>
-      </div>
+      {rightContent && <div className="right-section">{rightContent}</div>}
     </div>
   );
 };
