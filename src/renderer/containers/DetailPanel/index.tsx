@@ -27,7 +27,7 @@ const DetailPanel: FC<ComponentProps> = ({items, tableHead, title}) => {
     <div className="DetailPanel">
       <h1 className="panel-title">{title}</h1>
       <table className="panel-table">
-        {tableHead && tableHead}
+        {tableHead || null}
         <tbody>{renderSampleRows()}</tbody>
       </table>
     </div>

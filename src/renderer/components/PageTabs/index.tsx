@@ -26,16 +26,16 @@ const tabs = [
 ];
 
 const PageTabs = () => {
-  const renderTabs = () => {
-    return tabs.map(({active, name}) => (
-      <div className={`tab ${active ? 'active' : ''}`}>
-        <div className="tab-name">{name}</div>
-        <div className="tab-indicator">&nbsp;</div>
-      </div>
-    ));
-  };
-
-  return <div className="PageTabs">{renderTabs()}</div>;
+  return (
+    <div className="PageTabs">
+      {tabs.map(({active, name}) => (
+        <div className={`tab ${active ? 'active' : ''}`} key={name}>
+          <div className="tab-name">{name}</div>
+          <div className="tab-indicator">&nbsp;</div>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default PageTabs;
