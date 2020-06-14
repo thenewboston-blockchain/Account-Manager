@@ -4,6 +4,7 @@ import DetailPanel from '@renderer/containers/DetailPanel';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
+import TrustBadge from '@renderer/components/TrustBadge';
 
 import './Validator.scss';
 
@@ -64,9 +65,9 @@ const Validator = () => {
     return (
       <>
         <PageHeader
+          leftTools={<TrustBadge score={98.34} />}
           rightContent={renderRightPageHeaderButtons()}
           title="My Validator (223.125.111.178)"
-          trustScore={98.34}
         />
         <PageTabs />
       </>
