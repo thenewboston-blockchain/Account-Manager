@@ -1,4 +1,5 @@
 .LeftSubmenu {
+  border-bottom: 1px solid var(--color-gray-4);
   padding: 12px 12px 12px 6px;
 
   &__header {
@@ -22,7 +23,8 @@
 
       .submenu-title {
         color: var(--color-gray-3);
-        font-weight: bold;
+        font-weight: 500;
+        padding-top: 2px;
 
         &:hover {
           cursor: default;
@@ -59,6 +61,7 @@
 
   .MenuItem {
     display: block;
+    line-height: 24px;
     padding: 0 0 0 28px; /* 28px is the width of the menu toggle */
   }
 }

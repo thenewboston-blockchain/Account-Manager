@@ -1,21 +1,17 @@
-import React, {FC, useState} from 'react';
+import React, {FC, ReactNode, useState} from 'react';
 
 import './LeftSubmenu.scss';
 
-interface MenuItem {
-  name: string;
-}
-
 interface ComponentProps {
-  menuItems: MenuItem[];
+  menuItems: ReactNode[];
   title: string;
 }
 
 const LeftSubmenu: FC<ComponentProps> = ({menuItems, title}) => {
-  const [open, setExpanded] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(true);
 
   const toggleExpanded = (): void => {
-    setExpanded(!open);
+    setOpen(!open);
   };
 
   return (
@@ -31,12 +27,7 @@ const LeftSubmenu: FC<ComponentProps> = ({menuItems, title}) => {
           <span className="material-icons">add</span>
         </div>
       </div>
-      {open &&
-        menuItems.map(({name}) => (
-          <a className="MenuItem" href="#">
-            {name}
-          </a>
-        ))}
+      {open && menuItems}
     </div>
   );
 };
