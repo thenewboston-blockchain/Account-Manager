@@ -4,6 +4,7 @@ import {Route, Switch} from 'react-router-dom';
 import LeftMenu from '@renderer/containers/LeftMenu';
 import Bank from '@renderer/containers/Bank';
 import TopNav from '@renderer/containers/TopNav';
+import Validator from '@renderer/containers/Validator';
 
 import './Layout.scss';
 
@@ -28,6 +29,9 @@ export const Layout: FC = () => {
           </Route>
           <Route path="/bank">
             <Bank />
+          </Route>
+          <Route path="/validator">
+            <Validator />
           </Route>
         </Switch>
       </div>

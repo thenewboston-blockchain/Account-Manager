@@ -5,7 +5,7 @@ import './PageLayout.scss';
 interface ComponentProps {
   top: ReactNode;
   middle: ReactNode;
-  bottom: ReactNode;
+  bottom?: ReactNode;
 }
 
 const PageLayout: FC<ComponentProps> = ({bottom, middle, top}) => {
@@ -13,7 +13,7 @@ const PageLayout: FC<ComponentProps> = ({bottom, middle, top}) => {
     <div className="PageLayout">
       <div className="PageLayout-header">{top}</div>
       <div className="PageLayout-content">{middle}</div>
-      <div className="PageLayout-footer">{bottom}</div>
+      {bottom && <div className="PageLayout-footer">{bottom}</div>}
     </div>
   );
 };
