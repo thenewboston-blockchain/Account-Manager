@@ -19,9 +19,9 @@ const LeftMenu = () => {
   const {banks, friends, points, validators, wallets} = useSelector(LeftComponentSelector);
 
   const getAccounts = () => {
-    return wallets.map(({name}) => (
+    return wallets.map(({name, id}) => (
       <NavLink className="MenuItem" to="/">
-        {name}
+        {name} ({id})
       </NavLink>
     ));
   };
