@@ -7,21 +7,21 @@ import {RootState} from '@renderer/types/store';
 
 import './LeftMenu.scss';
 
-const LeftComponentSelector = ({banks, friends, points, validators, wallets}: RootState) => ({
+const LeftComponentSelector = ({accounts, banks, friends, points, validators}: RootState) => ({
+  accounts,
   banks,
   friends,
   points,
   validators,
-  wallets,
 });
 
 const LeftMenu = () => {
-  const {banks, friends, points, validators, wallets} = useSelector(LeftComponentSelector);
+  const {banks, friends, points, validators, accounts} = useSelector(LeftComponentSelector);
 
   const renderAccounts = () => {
-    return wallets.map(({id, name}) => (
-      <NavLink className="MenuItem" key={id} to="/">
-        {name} ({id})
+    return accounts.map(({account_number}) => (
+      <NavLink className="MenuItem" key={account_number} to="/">
+        {account_number}
       </NavLink>
     ));
   };
