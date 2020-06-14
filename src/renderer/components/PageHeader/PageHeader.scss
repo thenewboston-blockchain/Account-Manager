@@ -21,5 +21,9 @@
   .right-section {
     align-items: center;
     display: flex;
+
+    button {
+      margin-left: 12px;
+    }
   }
 }

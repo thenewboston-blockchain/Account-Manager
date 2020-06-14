@@ -9,6 +9,10 @@ const TopNav = () => {
         <img alt="thenewboston logo" className="logo" src={require('@renderer/assets/logo.png')} />
         <span>thenewboston</span>
       </div>
+      <div className="navigation-icons">
+        <span className="material-icons">arrow_back</span>
+        <span className="material-icons">arrow_forward</span>
+      </div>
     </div>
   );
 };

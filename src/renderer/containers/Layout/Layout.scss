@@ -1,6 +1,6 @@
 .Layout {
   display: grid;
-  grid-template-columns: 240px auto;
+  grid-template-columns: var(--left-menu-width) auto;
   grid-template-rows: fit-content(100px) auto;
   height: 100vh;
 
