@@ -1,6 +1,7 @@
 import React from 'react';
 
 import PageHeader from '@renderer/components/PageHeader';
+import PageTabs from '@renderer/components/PageTabs';
 
 import './Bank.scss';
 
@@ -19,6 +20,7 @@ const Bank = () => {
         title="Digital Ocean Bank (223.125.111.178)"
         trustScore={98.34}
       />
+      <PageTabs />
     </div>
   );
 };
