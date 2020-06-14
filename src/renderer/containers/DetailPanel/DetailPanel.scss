@@ -1,4 +1,24 @@
 .DetailPanel {
-  .panel-heading {
+  td,
+  th {
+    border-bottom: 1px solid var(--color-gray-4);
+    text-align: left;
+    padding: 4px 0;
+  }
+
+  td:nth-child(1),
+  th {
+    color: var(--color-gray-3);
+    font-weight: 500;
+  }
+
+  td {
+    min-width: 150px;
+  }
+
+  .panel-title {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 8px;
   }
 }

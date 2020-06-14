@@ -2,32 +2,18 @@ import React, {FC, ReactNode} from 'react';
 
 import './DetailPanel.scss';
 
-const sampleData = [
-  {
-    attribute: 'Node Type',
-    value: 'Validator',
-  },
-  {
-    attribute: 'Network ID',
-    value: 'Gn53dfs4a2z',
-  },
-  {
-    attribute: 'Protocol',
-    value: 'http',
-  },
-];
-
 interface Item {
   attribute: string;
   value: string;
 }
 
 interface ComponentProps {
-  heading: string;
   items: Item[];
+  tableHead?: ReactNode;
+  title: string;
 }
 
-const DetailPanel: FC<ComponentProps> = ({heading, items}) => {
+const DetailPanel: FC<ComponentProps> = ({items, tableHead, title}) => {
   const renderSampleRows = () => {
     return items.map(({attribute, value}, i) => (
       <tr key={i}>
@@ -39,8 +25,9 @@ const DetailPanel: FC<ComponentProps> = ({heading, items}) => {
 
   return (
     <div className="DetailPanel">
-      <h1 className="panel-heading">{heading}</h1>
+      <h1 className="panel-title">{title}</h1>
       <table className="panel-table">
+        {tableHead && tableHead}
         <tbody>{renderSampleRows()}</tbody>
       </table>
     </div>

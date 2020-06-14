@@ -12,7 +12,6 @@ const Validator = () => {
     return (
       <div className="detail-panels">
         <DetailPanel
-          heading="Validator Information"
           items={[
             {
               attribute: 'Node Type',
@@ -27,9 +26,9 @@ const Validator = () => {
               value: 'http',
             },
           ]}
+          title="Validator Information"
         />
         <DetailPanel
-          heading="Trust Levels"
           items={[
             {
               attribute: '90',
@@ -40,6 +39,15 @@ const Validator = () => {
               value: '1.22',
             },
           ]}
+          tableHead={
+            <thead>
+              <tr>
+                <th>Bank Trust Level</th>
+                <th>Tx Fee (Points)</th>
+              </tr>
+            </thead>
+          }
+          title="Trust Levels"
         />
       </div>
     );
