@@ -7,26 +7,26 @@ import {RootState} from '@renderer/types/store';
 
 import './LeftMenu.scss';
 
-const LeftComponentSelector = ({banks, friends, points, validators, wallets}: RootState) => ({
+const LeftComponentSelector = ({accounts, banks, friends, points, validators}: RootState) => ({
+  accounts,
   banks,
   friends,
   points,
   validators,
-  wallets,
 });
 
 const LeftMenu = () => {
-  const {banks, friends, points, validators, wallets} = useSelector(LeftComponentSelector);
+  const {accounts, banks, friends, points, validators} = useSelector(LeftComponentSelector);
 
-  const getAccounts = () => {
-    return wallets.map(({id, name}) => (
-      <NavLink className="MenuItem" key={id} to="/">
-        {name} ({id})
+  const renderAccounts = () => {
+    return accounts.map(({account_number}) => (
+      <NavLink className="MenuItem" key={account_number} to="/">
+        {account_number}
       </NavLink>
     ));
   };
 
-  const getFriends = () => {
+  const renderFriends = () => {
     return friends.map(({id, name}) => (
       <NavLink className="MenuItem" key={id} to="/">
         {name}
@@ -34,18 +34,18 @@ const LeftMenu = () => {
     ));
   };
 
-  const getManagedBanks = () => {
-    return banks.map(({name, ipAddress}) => (
-      <NavLink className="MenuItem" key={ipAddress} to="/">
-        {name} ({ipAddress})
+  const renderManagedBanks = () => {
+    return banks.map(({ip_address}) => (
+      <NavLink className="MenuItem" key={ip_address} to="/">
+        {ip_address}
       </NavLink>
     ));
   };
 
-  const getManagedValidators = () => {
-    return validators.map(({name, ipAddress}) => (
-      <NavLink className="MenuItem" to="/">
-        {name} ({ipAddress})
+  const renderManagedValidators = () => {
+    return validators.map(({ip_address}) => (
+      <NavLink className="MenuItem" key={ip_address} to="/">
+        {ip_address}
       </NavLink>
     ));
   };
@@ -68,17 +68,17 @@ const LeftMenu = () => {
         title="Network"
       />
       <LeftSubmenu
-        menuItems={getManagedBanks()}
+        menuItems={renderManagedBanks()}
         title="Managed Banks"
         tool={<span className="material-icons">add</span>}
       />
       <LeftSubmenu
-        menuItems={getManagedValidators()}
+        menuItems={renderManagedValidators()}
         title="Managed Validators"
         tool={<span className="material-icons">add</span>}
       />
-      <LeftSubmenu menuItems={getAccounts()} title="Accounts" tool={<span className="material-icons">add</span>} />
-      <LeftSubmenu menuItems={getFriends()} title="Friends" tool={<span className="material-icons">add</span>} />
+      <LeftSubmenu menuItems={renderAccounts()} title="Accounts" tool={<span className="material-icons">add</span>} />
+      <LeftSubmenu menuItems={renderFriends()} title="Friends" tool={<span className="material-icons">add</span>} />
     </div>
   );
 };
