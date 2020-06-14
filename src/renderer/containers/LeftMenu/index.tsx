@@ -76,9 +76,13 @@ const LeftMenu = () => {
         title="Managed Banks"
         tool={<span className="material-icons">add</span>}
       />
-      <LeftSubmenu menuItems={getManagedValidators()} title="Managed Validators" />
-      <LeftSubmenu menuItems={getAccounts()} title="Accounts" />
-      <LeftSubmenu menuItems={getFriends()} title="Friends" />
+      <LeftSubmenu
+        menuItems={getManagedValidators()}
+        title="Managed Validators"
+        tool={<span className="material-icons">add</span>}
+      />
+      <LeftSubmenu menuItems={getAccounts()} title="Accounts" tool={<span className="material-icons">add</span>} />
+      <LeftSubmenu menuItems={getFriends()} title="Friends" tool={<span className="material-icons">add</span>} />
       <div className="LeftMenu__links">{renderSampleMenuItems()}</div>
     </div>
   );
