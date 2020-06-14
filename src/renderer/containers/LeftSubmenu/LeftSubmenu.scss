@@ -1,0 +1,61 @@
+.LeftSubmenu {
+  border-bottom: 1px solid var(--color-gray-4);
+  padding: 12px 12px 12px 6px;
+
+  &__header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    .left-items,
+    .right-items {
+      align-items: center;
+      display: flex;
+
+      .material-icons {
+        color: var(--color-gray-2);
+        font-size: 20px;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .submenu-title {
+        padding-top: 2px;
+      }
+    }
+
+    .left-items {
+      .material-icons {
+        padding: 4px;
+        transform: rotate(0);
+
+        &.closed,
+        &.open {
+          transition: transform 0.06s linear;
+        }
+
+        &.closed {
+          transform: rotate(0);
+        }
+
+        &.open {
+          transform: rotate(90deg);
+        }
+      }
+    }
+
+    .right-items {
+      .material-icons {
+        font-weight: 700;
+      }
+    }
+  }
+
+  .MenuItem {
+    display: block;
+    line-height: 24px;
+    padding: 0 0 0 28px; /* 28px is the width of the menu toggle */
+  }
+}

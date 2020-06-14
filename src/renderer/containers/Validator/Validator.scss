@@ -1,0 +1,13 @@
+.Validator {
+  .detail-panels {
+    display: flex;
+
+    .DetailPanel {
+      margin: 18px 0 0 24px;
+
+      &:first-of-type {
+        margin-left: 12px;
+      }
+    }
+  }
+}

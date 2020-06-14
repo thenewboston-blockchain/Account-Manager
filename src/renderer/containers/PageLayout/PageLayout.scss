@@ -1,0 +1,22 @@
+.PageLayout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &-content {
+    flex: 1;
+    overflow: auto;
+  }
+
+  &-header {
+    .PageTabs {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  &-footer {
+    .Pagination {
+      box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.08);
+    }
+  }
+}
