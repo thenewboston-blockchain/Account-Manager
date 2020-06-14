@@ -1,0 +1,15 @@
+.PageHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+
+  .left-section {
+    display: flex;
+
+    .header-title {
+      font-weight: normal;
+      font-size: 24px;
+      margin-right: 6px;
+    }
+  }
+}
