@@ -3,36 +3,13 @@
   background: white;
   display: flex;
 
-  a,
-  a:visited {
-    border-right: 1px solid #e6e6e6;
-    color: var(--color-text);
-    padding: 12px 14px;
-    text-decoration: none;
-
-    &:hover {
-      background-color: #f4f4f4;
-    }
-
-    &:nth-child(2) {
-      border-left: 1px solid #e6e6e6;
-    }
-
-    &.active {
-      background-color: #f4f4f4;
-    }
-  }
-
   .thenewboston {
     align-items: center;
     border-right: none;
     display: flex;
-    font-weight: 300;
-    padding: 0 8px;
-
-    &.active {
-      background-color: transparent;
-    }
+    font-size: 20px;
+    font-weight: 500;
+    padding: 12px 14px;
 
     img.logo {
       height: 24px;
