@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
 import Card from '@renderer/components/Card';
+import LeftSubmenu from '@renderer/containers/LeftSubmenu';
 import {RootState} from '@renderer/types/store';
 
 import './LeftMenu.scss';
@@ -28,6 +29,7 @@ const LeftMenu = () => {
         <div className="points__title section-header">Points</div>
         <div className="points__amount">{points.toLocaleString()}</div>
       </div>
+      <LeftSubmenu title="Nice" />
       <div className="LeftMenu__network-overview">
         <div className="network-overview__title section-header">Network</div>
         <div className="network-overview__overview">

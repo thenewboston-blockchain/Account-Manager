@@ -1,0 +1,13 @@
+.LeftSubmenu {
+  padding: 12px;
+
+  &__header {
+    align-items: center;
+    display: flex;
+    margin-bottom: 12px;
+
+    .CreateIcon {
+      margin-right: 6px;
+    }
+  }
+}
