@@ -1,4 +1,5 @@
 import {app, BrowserWindow} from 'electron';
+import contextMenu from 'electron-context-menu';
 import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from 'electron-devtools-installer';
 
 const electronSquirrelStartup = require('electron-squirrel-startup');
@@ -9,6 +10,8 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 if (electronSquirrelStartup) {
   app.quit();
 }
+
+contextMenu();
 
 const createWindow = () => {
   const mainWindow = new BrowserWindow({

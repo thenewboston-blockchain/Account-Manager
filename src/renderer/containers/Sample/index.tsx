@@ -2,7 +2,7 @@ import React from 'react';
 import {Form, Formik} from 'formik';
 import * as Yup from 'yup';
 
-import Button from '@renderer/components/Inputs/Button';
+import Button from '@renderer/components/Button';
 import FormikTextField from '@renderer/components/FormikFields/FormikTextField';
 import FormikSelect from '@renderer/components/FormikFields/FormikSelect';
 import {SelectMenuItem} from '@renderer/types/inputs';

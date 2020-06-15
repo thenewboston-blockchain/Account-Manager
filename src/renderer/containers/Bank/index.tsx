@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Button from '@renderer/components/Button';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';
 import PageTable from '@renderer/containers/PageTable';
@@ -12,8 +13,8 @@ import './Bank.scss';
 const Bank = () => {
   const renderRightPageHeaderButtons = () => (
     <>
-      <button className="button-outline-default">Add to Managed Banks</button>
-      <button className="button-default">Register as Member</button>
+      <Button variant="outlined">Add to Managed Banks</Button>
+      <Button>Register as Member</Button>
     </>
   );
 
