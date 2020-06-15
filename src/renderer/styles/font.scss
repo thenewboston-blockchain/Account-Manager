@@ -3,3 +3,10 @@
   --font-size-regular: 14px;
   --font-size-small: 12px;
 }
+
+@font-face {
+  font-family: 'JetBrainsMono';
+  src: url('./fonts/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2') format('woff2'),
+    url('./fonts/JetBrainsMono/web/woff/JetBrainsMono-Regular.woff') format('woff'),
+    url('./fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf') format('truetype');
+}
