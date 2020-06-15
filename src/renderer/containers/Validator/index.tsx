@@ -7,6 +7,7 @@ import PageTabs from '@renderer/components/PageTabs';
 import TrustBadge from '@renderer/components/TrustBadge';
 
 import './Validator.scss';
+import Button from '@renderer/components/Button';
 
 const Validator = () => {
   const renderDetailPanels = () => {
@@ -56,8 +57,8 @@ const Validator = () => {
 
   const renderRightPageHeaderButtons = () => (
     <>
-      <button className="button-outline-default">Add to Managed Validators</button>
-      <button className="button-default">Register Bank</button>
+      <Button variant="outlined">Add to Managed Validators</Button>
+      <Button>Register Bank</Button>
     </>
   );
 
