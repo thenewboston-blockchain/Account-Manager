@@ -10,18 +10,11 @@ interface ComponentProps {
   variant?: 'contained' | 'outlined';
 }
 
-const Button: FC<ComponentProps> = ({
-  children,
-  color = 'primary',
-  className,
-  disabled,
-  variant = 'contained',
-  ...props
-}) => {
+const Button: FC<ComponentProps> = ({children, color = 'primary', className, disabled, variant = 'contained'}) => {
   return (
     <button
       className={clsx('Button', {[`Button--${color}`]: !!color, [`Button--${variant}`]: !!variant}, className)}
-      {...props}
+      disabled={disabled}
     >
       {children}
     </button>
