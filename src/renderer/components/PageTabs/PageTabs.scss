@@ -12,10 +12,12 @@
       background: transparent;
       border-radius: 3px 3px 0 0;
       height: 3px;
+      transition: all 0.3s;
     }
 
     &-name {
       font-weight: 500;
+      transition: all 0.3s;
     }
 
     &:hover,
