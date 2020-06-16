@@ -1,13 +1,21 @@
 import React from 'react';
 import {hot} from 'react-hot-loader/root';
-import {HashRouter as Router} from 'react-router-dom';
+import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 
+import Connect from '@renderer/containers/Connect';
 import Layout from '@renderer/containers/Layout';
 
 const App = () => {
   return (
     <Router>
-      <Layout />
+      <Switch>
+        <Route exact path="/">
+          <Connect />
+        </Route>
+        <Route>
+          <Layout />
+        </Route>
+      </Switch>
     </Router>
   );
 };

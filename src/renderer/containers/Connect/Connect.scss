@@ -1,0 +1,33 @@
+.Connect {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+
+  &__header {
+    display: flex;
+    align-items: center;
+
+    .header__logo {
+      width: 30px;
+      height: 30px;
+      margin-right: 12px;
+    }
+  }
+
+  &__subheader {
+    margin: 30px 0 18px;
+  }
+
+  &__form {
+    .FormikTextField__input,
+    .FormikSelect__input {
+      width: 300px;
+    }
+  }
+
+  &__field {
+    margin: 12px 0;
+  }
+}

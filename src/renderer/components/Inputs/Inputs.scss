@@ -1,0 +1,13 @@
+@mixin base-input-styling {
+  border-radius: 3px;
+  border: 1px solid var(--color-gray-3);
+  height: 30px;
+  outline: none;
+  padding: 0 6px;
+  transition: all 0.3s;
+
+  &:active,
+  &:focus {
+    border-color: var(--color-accent-1);
+  }
+}

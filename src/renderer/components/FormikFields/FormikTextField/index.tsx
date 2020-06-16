@@ -1,15 +1,37 @@
-import React from 'react';
+import React, {FC} from 'react';
+import clsx from 'clsx';
 import {ErrorMessage, Field} from 'formik';
 
-import TextField from '@renderer/components/Inputs/TextField';
-import {BaseTextFieldProps} from '@material-ui/core/TextField';
+import {TextField, TextFieldProps} from '@renderer/components/Inputs';
+import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
+import {FormikInputBaseProps} from '@renderer/types/inputs';
 
-interface FormikTextFieldProps extends BaseTextFieldProps {
-  name: string;
-}
+import './FormikTextField.scss';
 
-const FormikTextField = function ({name, ...props}: FormikTextFieldProps) {
-  return <Field as={TextField} fullWidth helperText={<ErrorMessage name={name} />} name={name} {...props} />;
+type ComponentProps = FormikInputBaseProps<TextFieldProps>;
+
+const FormikTextField: FC<ComponentProps> = ({className, label, name, placeholder, required, type}) => {
+  return (
+    <div className={clsx('FormikTextField', className)}>
+      {label ? (
+        <label className="FormikTextField__label" htmlFor={name}>
+          {label}
+          {required ? <RequiredAsterisk /> : null}
+        </label>
+      ) : null}
+      <Field
+        as={TextField}
+        className="FormikTextField__input"
+        name={name}
+        placeholder={placeholder}
+        required={required}
+        type={type}
+      />
+      <span className="FormikTextField__error">
+        <ErrorMessage name={name} />
+      </span>
+    </div>
+  );
 };
 
 export default FormikTextField;

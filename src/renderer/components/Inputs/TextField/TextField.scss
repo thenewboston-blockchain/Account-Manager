@@ -1,0 +1,5 @@
+@import '../Inputs';
+
+.TextField {
+  @include base-input-styling;
+}

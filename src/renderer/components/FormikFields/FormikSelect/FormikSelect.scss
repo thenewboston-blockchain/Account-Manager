@@ -1,0 +1,5 @@
+@import '../FormikFields';
+
+.FormikSelect {
+  @include base-formik-field-styling;
+}

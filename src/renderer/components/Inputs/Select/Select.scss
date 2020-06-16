@@ -1,0 +1,14 @@
+@import '../Inputs';
+
+.Select {
+  @include base-input-styling;
+
+  option {
+    outline: none;
+    height: 30px;
+
+    &:first-child {
+      margin-top: 12px;
+    }
+  }
+}

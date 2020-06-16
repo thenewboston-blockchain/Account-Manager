@@ -1,0 +1,5 @@
+@import '../FormikFields';
+
+.FormikTextField {
+  @include base-formik-field-styling;
+}
