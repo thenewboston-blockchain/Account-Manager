@@ -1,6 +1,6 @@
 .PageTable {
   font-family: var(--font-family-mono);
-  padding: 4px 0 4px 12px;
+  padding: 4px 0 0 12px;
   width: 100%;
 
   td,
@@ -13,13 +13,5 @@
     color: var(--color-gray-3);
     font-weight: 500;
     text-align: left;
-  }
-
-  tr {
-    &:last-child {
-      td {
-        border-bottom: none;
-      }
-    }
   }
 }
