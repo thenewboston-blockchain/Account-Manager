@@ -20,7 +20,7 @@ const LeftMenu = () => {
 
   const renderAccounts = () => {
     return accounts.map(({account_number}) => (
-      <NavLink className="MenuItem" key={account_number} to="/">
+      <NavLink className="MenuItem" key={account_number} to="/account">
         {account_number}
       </NavLink>
     ));
