@@ -63,7 +63,18 @@ const Account = () => {
   const renderTop = () => (
     <>
       <PageHeader rightContent={renderRightPageHeaderButtons()} title="Donations (43hawrjkef243d)" />
-      <PageTabs />
+      <PageTabs
+        items={[
+          {
+            name: 'Overview',
+            active: true,
+          },
+          {
+            name: 'Transactions',
+            active: false,
+          },
+        ]}
+      />
     </>
   );
 
