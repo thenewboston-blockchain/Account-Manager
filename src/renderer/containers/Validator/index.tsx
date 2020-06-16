@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Button from '@renderer/components/Button';
 import DetailPanel from '@renderer/containers/DetailPanel';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';
@@ -7,7 +8,6 @@ import PageTabs from '@renderer/components/PageTabs';
 import TrustBadge from '@renderer/components/TrustBadge';
 
 import './Validator.scss';
-import Button from '@renderer/components/Button';
 
 const Validator = () => {
   const renderDetailPanels = () => {
@@ -77,7 +77,7 @@ const Validator = () => {
 
   return (
     <div className="Validator">
-      <PageLayout top={renderTop()} middle={renderDetailPanels()} />
+      <PageLayout content={renderDetailPanels()} top={renderTop()} />
     </div>
   );
 };

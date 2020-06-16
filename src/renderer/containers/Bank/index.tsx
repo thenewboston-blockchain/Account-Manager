@@ -11,6 +11,13 @@ import TrustBadge from '@renderer/components/TrustBadge';
 import './Bank.scss';
 
 const Bank = () => {
+  const renderContent = () => (
+    <>
+      <PageTable />
+      <Pagination />
+    </>
+  );
+
   const renderRightPageHeaderButtons = () => (
     <>
       <Button variant="outlined">Add to Managed Banks</Button>
@@ -18,22 +25,20 @@ const Bank = () => {
     </>
   );
 
-  const renderTop = () => {
-    return (
-      <>
-        <PageHeader
-          leftTools={<TrustBadge score={98.34} />}
-          rightContent={renderRightPageHeaderButtons()}
-          title="Digital Ocean Bank (223.125.111.178)"
-        />
-        <PageTabs />
-      </>
-    );
-  };
+  const renderTop = () => (
+    <>
+      <PageHeader
+        leftTools={<TrustBadge score={98.34} />}
+        rightContent={renderRightPageHeaderButtons()}
+        title="Digital Ocean Bank (223.125.111.178)"
+      />
+      <PageTabs />
+    </>
+  );
 
   return (
     <div className="Bank">
-      <PageLayout top={renderTop()} middle={<PageTable />} bottom={<Pagination />} />
+      <PageLayout content={renderContent()} top={renderTop()} />
     </div>
   );
 };
