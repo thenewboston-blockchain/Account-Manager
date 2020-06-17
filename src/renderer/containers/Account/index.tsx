@@ -29,9 +29,7 @@ const Account = () => {
             },
             {
               attribute: 'QR Code',
-              value: (
-                <QR margin={0} text="0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb" width={140} />
-              ),
+              value: <QR text="0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb" />,
             },
           ]}
           title="Account Info"
