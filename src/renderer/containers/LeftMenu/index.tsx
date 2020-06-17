@@ -59,7 +59,7 @@ const LeftMenu = () => {
       <LeftSubmenu
         menuItems={[
           <NavLink className="MenuItem" to="/bank">
-            Bank ({banks.length})
+            Banks ({banks.length})
           </NavLink>,
           <NavLink className="MenuItem" to="/validator">
             Validators ({validators.length})

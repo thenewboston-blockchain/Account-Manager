@@ -12,42 +12,22 @@
       align-items: center;
       display: flex;
 
-      .material-icons {
-        color: var(--color-gray-2);
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
-
       .submenu-title {
-        padding-top: 2px;
+        padding: 2px 0 0 4px;
       }
     }
 
     .left-items {
-      .material-icons {
-        font-size: 16px;
-        padding: 4px;
-        transform: rotate(0);
-
-        &.closed,
-        &.open {
-          transition: transform 0.06s linear;
-        }
-
-        &.closed {
-          transform: rotate(0);
-        }
-
-        &.open {
-          transform: rotate(90deg);
+      .ArrowToggle {
+        .material-icons {
+          padding: 4px;
         }
       }
     }
 
     .right-items {
       .material-icons {
+        color: var(--color-gray-2);
         font-size: 18px;
         font-weight: 700;
       }
@@ -57,6 +37,9 @@
   .MenuItem {
     display: block;
     line-height: 24px;
+    overflow: hidden;
     padding: 0 0 0 28px; /* 28px is the width of the menu toggle */
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
