@@ -3,14 +3,14 @@ import React, {FC} from 'react';
 import './ArrowToggle.scss';
 
 interface ComponentProps {
+  expanded: boolean;
   onClick: any; // TODO: Update after Justin's branch gets merged
-  open: boolean;
 }
 
-const ArrowToggle: FC<ComponentProps> = ({onClick, open}) => {
+const ArrowToggle: FC<ComponentProps> = ({expanded, onClick}) => {
   return (
     <div className="ArrowToggle">
-      <span className={`material-icons ${open ? 'open' : 'closed'}`} onClick={onClick}>
+      <span className={`material-icons ${expanded ? 'expanded' : 'collapsed'}`} onClick={onClick}>
         play_arrow
       </span>
     </div>

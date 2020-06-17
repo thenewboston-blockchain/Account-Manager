@@ -6,16 +6,16 @@
     padding: 4px;
     transform: rotate(0);
 
-    &.closed,
-    &.open {
+    &.collapsed,
+    &.expanded {
       transition: transform 0.06s linear;
     }
 
-    &.closed {
+    &.collapsed {
       transform: rotate(0);
     }
 
-    &.open {
+    &.expanded {
       transform: rotate(90deg);
     }
   }

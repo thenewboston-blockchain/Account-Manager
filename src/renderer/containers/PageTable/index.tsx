@@ -1,5 +1,7 @@
 import React from 'react';
 
+import ExpandableTableRow from '@renderer/containers/ExpandableTableRow';
+
 import './PageTable.scss';
 
 const sampleData = [
@@ -620,7 +622,7 @@ const PageTable = () => {
         trust,
         network_trust_avg,
       }) => (
-        <tr key={id}>
+        <ExpandableTableRow key={id}>
           <td>{network_id}</td>
           <td>{account_number}</td>
           <td>{protocol}</td>
@@ -630,7 +632,7 @@ const PageTable = () => {
           <td>{default_tx_fee}</td>
           <td>{trust}</td>
           <td>{network_trust_avg}</td>
-        </tr>
+        </ExpandableTableRow>
       ),
     );
   };
@@ -639,6 +641,7 @@ const PageTable = () => {
     <table className="PageTable">
       <thead>
         <tr>
+          <th />
           <th>Network ID</th>
           <th>Account Number</th>
           <th>Protocol</th>
