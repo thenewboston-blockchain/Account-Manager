@@ -18,7 +18,12 @@ const Account = () => {
 
   const generateQR = async () => {
     try {
-      const url = await QRCode.toDataURL('0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb');
+      const url = await QRCode.toDataURL('0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb', {
+        color: {
+          dark: '#000000',
+          light: '#0000',
+        },
+      });
       setQr(<img src={url} alt="" />);
     } catch (err) {
       return null;
