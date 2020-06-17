@@ -23,6 +23,8 @@ const Account = () => {
           dark: '#000000',
           light: '#0000',
         },
+        margin: 0,
+        width: 140,
       });
       setQr(<img src={url} alt="" />);
     } catch (err) {
