@@ -32,7 +32,30 @@ const Bank = () => {
         rightContent={renderRightPageHeaderButtons()}
         title="Digital Ocean Bank (223.125.111.178)"
       />
-      <PageTabs />
+      <PageTabs
+        items={[
+          {
+            name: 'Overview',
+            active: true,
+          },
+          {
+            name: 'Members',
+            active: false,
+          },
+          {
+            name: 'Transactions',
+            active: false,
+          },
+          {
+            name: 'Banks',
+            active: false,
+          },
+          {
+            name: 'Validators',
+            active: false,
+          },
+        ]}
+      />
     </>
   );
 
