@@ -8,7 +8,7 @@ const sampleData = [
   {
     id: 1,
     network_id: 'BkQj2sgGO5T',
-    account_number: 'G9Be8Ictsr',
+    account_number: 'G9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8Ictsr',
     protocol: 'http',
     ip_address: '88.16.83.115',
     port: 80,
