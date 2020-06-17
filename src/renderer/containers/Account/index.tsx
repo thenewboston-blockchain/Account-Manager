@@ -1,37 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import QRCode from 'qrcode';
+import React from 'react';
 
 import Button from '@renderer/components/Button';
 import DetailPanel from '@renderer/containers/DetailPanel';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
+import QR from '@renderer/components/QR';
 
 import './Account.scss';
 
 const Account = () => {
-  const [qr, setQr] = useState<any>();
-
-  useEffect(() => {
-    generateQR();
-  }, []);
-
-  const generateQR = async () => {
-    try {
-      const url = await QRCode.toDataURL('0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb', {
-        color: {
-          dark: '#000000',
-          light: '#0000',
-        },
-        margin: 0,
-        width: 140,
-      });
-      setQr(<img src={url} alt="" />);
-    } catch (err) {
-      return null;
-    }
-  };
-
   const renderDetailPanels = () => {
     return (
       <div className="detail-panels">
@@ -51,7 +29,9 @@ const Account = () => {
             },
             {
               attribute: 'QR Code',
-              value: qr,
+              value: (
+                <QR margin={0} text="0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb" width={140} />
+              ),
             },
           ]}
           title="Account Info"
