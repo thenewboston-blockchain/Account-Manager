@@ -24,7 +24,7 @@ const QR: FC<ComponentProps> = ({margin, text, width}) => {
         margin,
         width,
       });
-      setQr(<img src={url} alt="" />);
+      setQr(<img alt="QR Code" src={url} />);
     } catch (err) {
       return null;
     }
