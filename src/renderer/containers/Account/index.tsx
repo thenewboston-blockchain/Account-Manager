@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import QRCode from 'qrcode';
 
 import Button from '@renderer/components/Button';
 import DetailPanel from '@renderer/containers/DetailPanel';
@@ -9,6 +10,21 @@ import PageTabs from '@renderer/components/PageTabs';
 import './Account.scss';
 
 const Account = () => {
+  const [qr, setQr] = useState<any>();
+
+  useEffect(() => {
+    generateQR();
+  }, []);
+
+  const generateQR = async () => {
+    try {
+      const url = await QRCode.toDataURL('0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb');
+      setQr(<img src={url} alt="" />);
+    } catch (err) {
+      return null;
+    }
+  };
+
   const renderDetailPanels = () => {
     return (
       <div className="detail-panels">
@@ -28,7 +44,7 @@ const Account = () => {
             },
             {
               attribute: 'QR Code',
-              value: <h1>QR CODE HERE</h1>,
+              value: qr,
             },
           ]}
           title="Account Info"
