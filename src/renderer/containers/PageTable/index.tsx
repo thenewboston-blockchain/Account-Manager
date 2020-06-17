@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ExpandableTableRow from '@renderer/containers/ExpandableTableRow';
+import ExpandableTableRow from '@renderer/components/ExpandableTableRow';
 
 import './PageTable.scss';
 
