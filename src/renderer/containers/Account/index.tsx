@@ -28,7 +28,7 @@ const Account = () => {
             },
             {
               attribute: 'QR Code',
-              value: '[QR CODE HERE]',
+              value: <h1>QR CODE HERE</h1>,
             },
           ]}
           title="Account Info"

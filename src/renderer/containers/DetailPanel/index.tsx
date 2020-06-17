@@ -4,7 +4,7 @@ import './DetailPanel.scss';
 
 interface Item {
   attribute: string;
-  value: string;
+  value: ReactNode | string;
 }
 
 interface ComponentProps {
