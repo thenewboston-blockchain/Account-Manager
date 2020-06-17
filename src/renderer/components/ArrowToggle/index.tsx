@@ -1,4 +1,5 @@
 import React, {FC} from 'react';
+import clsx from 'clsx';
 
 import './ArrowToggle.scss';
 
@@ -10,7 +11,7 @@ interface ComponentProps {
 const ArrowToggle: FC<ComponentProps> = ({expanded, onClick}) => {
   return (
     <div className="ArrowToggle">
-      <span className={`material-icons ${expanded ? 'expanded' : 'collapsed'}`} onClick={onClick}>
+      <span className={clsx('material-icons', {expanded: expanded})} onClick={onClick}>
         play_arrow
       </span>
     </div>
