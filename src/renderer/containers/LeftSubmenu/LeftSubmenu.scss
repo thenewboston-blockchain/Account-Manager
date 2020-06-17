@@ -12,42 +12,14 @@
       align-items: center;
       display: flex;
 
-      .material-icons {
-        color: var(--color-gray-2);
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
-
       .submenu-title {
         padding-top: 2px;
       }
     }
 
-    .left-items {
-      .material-icons {
-        font-size: 16px;
-        padding: 4px;
-        transform: rotate(0);
-
-        &.closed,
-        &.open {
-          transition: transform 0.06s linear;
-        }
-
-        &.closed {
-          transform: rotate(0);
-        }
-
-        &.open {
-          transform: rotate(90deg);
-        }
-      }
-    }
-
     .right-items {
       .material-icons {
+        color: var(--color-gray-2);
         font-size: 18px;
         font-weight: 700;
       }

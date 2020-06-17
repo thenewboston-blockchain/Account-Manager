@@ -1,0 +1,22 @@
+.ArrowToggle {
+  .material-icons {
+    color: var(--color-gray-2);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    transform: rotate(0);
+
+    &.closed,
+    &.open {
+      transition: transform 0.06s linear;
+    }
+
+    &.closed {
+      transform: rotate(0);
+    }
+
+    &.open {
+      transform: rotate(90deg);
+    }
+  }
+}
