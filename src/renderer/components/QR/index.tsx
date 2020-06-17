@@ -8,7 +8,7 @@ interface ComponentProps {
 }
 
 const QR: FC<ComponentProps> = ({margin, text, width}) => {
-  const [qr, setQr] = useState<any>();
+  const [qr, setQR] = useState<any>();
 
   useEffect(() => {
     generateQR();
@@ -24,7 +24,7 @@ const QR: FC<ComponentProps> = ({margin, text, width}) => {
         margin,
         width,
       });
-      setQr(<img alt="QR Code" src={url} />);
+      setQR(<img alt="QR Code" src={url} />);
     } catch (err) {
       return null;
     }
