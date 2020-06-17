@@ -11,7 +11,7 @@ interface ComponentProps {
 const ArrowToggle: FC<ComponentProps> = ({expanded, onClick}) => {
   return (
     <div className="ArrowToggle">
-      <span className={clsx('material-icons', {expanded: expanded})} onClick={onClick}>
+      <span className={clsx('material-icons', {expanded})} onClick={onClick}>
         play_arrow
       </span>
     </div>
