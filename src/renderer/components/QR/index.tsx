@@ -1,14 +1,14 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, ReactNode, useEffect, useState} from 'react';
 import QRCode from 'qrcode';
 
 interface ComponentProps {
-  margin: number;
+  margin?: number;
   text: string;
-  width: number;
+  width?: number;
 }
 
-const QR: FC<ComponentProps> = ({margin, text, width}) => {
-  const [qr, setQR] = useState<any>();
+const QR: FC<ComponentProps> = ({margin = 0, text, width = 140}) => {
+  const [qr, setQR] = useState<ReactNode | null>(null);
 
   useEffect(() => {
     generateQR();
@@ -26,11 +26,11 @@ const QR: FC<ComponentProps> = ({margin, text, width}) => {
       });
       setQR(<img alt="QR Code" src={url} />);
     } catch (err) {
-      return null;
+      return;
     }
   };
 
-  return qr || null;
+  return <>{qr}</>;
 };
 
 export default QR;
