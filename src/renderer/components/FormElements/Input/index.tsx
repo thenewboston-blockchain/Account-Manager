@@ -17,7 +17,7 @@ export interface InputProps {
 const Input: FC<InputProps> = ({className, error, name, onBlur, onChange, placeholder, type = 'text', value}) => {
   return (
     <input
-      className={clsx('Input', {error}, className)}
+      className={clsx('Input BaseField', {error}, className)}
       name={name}
       onBlur={onBlur}
       onChange={onChange}

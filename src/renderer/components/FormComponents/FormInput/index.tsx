@@ -13,7 +13,7 @@ const FormInput: FC<ComponentProps> = ({className, label, name, placeholder, req
   const error = !!errors[name] && !!touched[name];
 
   return (
-    <div className={clsx('FormFieldComponent FormInput', className)}>
+    <div className={clsx('FormInput FormFieldComponent', className)}>
       {label ? (
         <label htmlFor={name}>
           {label}
