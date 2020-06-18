@@ -5,6 +5,7 @@ import DetailPanel from '@renderer/containers/DetailPanel';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
+import QR from '@renderer/components/QR';
 
 import './Account.scss';
 
@@ -28,7 +29,7 @@ const Account = () => {
             },
             {
               attribute: 'QR Code',
-              value: '[QR CODE HERE]',
+              value: <QR text="0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb" />,
             },
           ]}
           title="Account Info"
