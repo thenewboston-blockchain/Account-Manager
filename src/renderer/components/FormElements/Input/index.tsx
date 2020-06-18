@@ -1,6 +1,8 @@
 import React, {ChangeEvent, FC, FocusEvent} from 'react';
 import clsx from 'clsx';
 
+import './Input.scss';
+
 export interface InputProps {
   className?: string;
   error?: boolean;
@@ -15,7 +17,7 @@ export interface InputProps {
 const Input: FC<InputProps> = ({className, error, name, onBlur, onChange, placeholder, type = 'text', value}) => {
   return (
     <input
-      className={clsx('Input BaseField', {error}, className)}
+      className={clsx('Input', {error}, className)}
       name={name}
       onBlur={onBlur}
       onChange={onChange}
