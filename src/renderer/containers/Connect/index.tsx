@@ -58,7 +58,7 @@ const Connect: FC = () => {
             <Form className="Connect__form">
               <FormSelect
                 className="Connect__field"
-                // isSearchable={false} TODO: trying messing with this BUCKY
+                isSearchable={false}
                 label="Protocol"
                 options={protocolOptions}
                 name="protocol"
