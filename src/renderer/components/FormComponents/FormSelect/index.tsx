@@ -24,7 +24,7 @@ const FormSelect: FC<ComponentProps> = ({className, isSearchable, label, name, r
   };
 
   return (
-    <div className={clsx('FormField FormSelect', className)}>
+    <div className={clsx('FormFieldComponent FormSelect', className)}>
       {label ? (
         <label htmlFor={name}>
           {label}
@@ -32,6 +32,7 @@ const FormSelect: FC<ComponentProps> = ({className, isSearchable, label, name, r
         </label>
       ) : null}
       <Select
+        className="FormField"
         isSearchable={isSearchable}
         options={options}
         onBlur={handleBlur}
