@@ -4,8 +4,8 @@ import {Form, Formik} from 'formik';
 import * as Yup from 'yup';
 
 import {Button} from '@renderer/components/FormElements';
-import {FormButton, FormSelect, FormInput} from '@renderer/components/FormComponents';
-import TnbLogo from '@renderer/components/TnbLogo';
+import {FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
+import Logo from '@renderer/components/Logo';
 import {SelectOption} from '@renderer/types/inputs';
 
 import './Connect.scss';
@@ -48,7 +48,7 @@ const Connect: FC = () => {
   return (
     <div className="Connect">
       <div className="Connect__header">
-        <TnbLogo size={30} />
+        <Logo size={30} />
         <h2>thenewboston</h2>
       </div>
       <div className="Connect__subheader">Enter the address of any node on the network to connect.</div>
