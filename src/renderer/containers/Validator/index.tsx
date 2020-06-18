@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from '@renderer/components/Button';
+import Button from '@renderer/components/FormElements/Button';
 import DetailPanel from '@renderer/containers/DetailPanel';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';

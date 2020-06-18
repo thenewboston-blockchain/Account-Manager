@@ -1,20 +1,18 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
 
-import {GenericFunction} from '@renderer/types/generics';
-
 import './Button.scss';
 
-interface ComponentProps {
+export interface ButtonProps {
   className?: string;
   color?: 'primary' | 'secondary' | 'tertiary';
   disabled?: boolean;
-  onClick?: GenericFunction;
+  onClick?(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
   type?: 'button' | 'reset' | 'submit';
   variant?: 'contained' | 'outlined';
 }
 
-const Button: FC<ComponentProps> = ({
+const Button: FC<ButtonProps> = ({
   children,
   color = 'primary',
   className,

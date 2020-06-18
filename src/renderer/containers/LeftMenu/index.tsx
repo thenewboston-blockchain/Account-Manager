@@ -58,10 +58,10 @@ const LeftMenu = () => {
       </div>
       <LeftSubmenu
         menuItems={[
-          <NavLink className="MenuItem" to="/bank">
+          <NavLink className="MenuItem" key="Banks" to="/bank">
             Banks ({banks.length})
           </NavLink>,
-          <NavLink className="MenuItem" to="/validator">
+          <NavLink className="MenuItem" key="Validators" to="/validator">
             Validators ({validators.length})
           </NavLink>,
         ]}

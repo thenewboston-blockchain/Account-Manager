@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from '@renderer/components/Button';
+import {Button} from '@renderer/components/FormElements';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';
 import PageTable from '@renderer/containers/PageTable';

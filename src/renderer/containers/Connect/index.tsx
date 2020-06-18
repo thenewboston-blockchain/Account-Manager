@@ -3,8 +3,8 @@ import {useHistory} from 'react-router-dom';
 import {Form, Formik} from 'formik';
 import * as Yup from 'yup';
 
-import Button from '@renderer/components/Button';
-import {FormSelect, FormInputField} from '@renderer/components/FormComponents';
+import {Button} from '@renderer/components/FormElements';
+import {FormButton, FormSelect, FormInputField} from '@renderer/components/FormComponents';
 import TnbLogo from '@renderer/components/TnbLogo';
 import {SelectOption} from '@renderer/types/inputs';
 
@@ -53,8 +53,7 @@ const Connect: FC = () => {
       </div>
       <div className="Connect__subheader">Enter the address of any node on the network to connect.</div>
       <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={ValidationSchema}>
-        {({dirty, isValid}) => {
-          const submitIsDisabled = !dirty || !isValid;
+        {() => {
           return (
             <Form className="Connect__form">
               <FormSelect
@@ -67,9 +66,7 @@ const Connect: FC = () => {
               />
               <FormInputField className="Connect__field" label="IP Address" name="ipAddress" required />
               <FormInputField className="Connect__field" label="Port" name="port" type="number" />
-              <Button className="Connect__submit" disabled={submitIsDisabled} type="submit">
-                Connect
-              </Button>
+              <FormButton>Connect</FormButton>
               <Button className="Connect__go" onClick={goToMain}>
                 Go
               </Button>

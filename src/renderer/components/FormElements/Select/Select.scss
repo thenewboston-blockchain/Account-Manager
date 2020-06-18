@@ -30,10 +30,12 @@
   .Select__single-value {
     color: var(--color-gray-1);
     margin: 0;
-    top: 56%;
   }
 
   .Select__input {
+    height: 100%;
+    margin-top: 6px;
+
     input {
       color: var(--color-gray-1);
       transition: none;
