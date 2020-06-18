@@ -8,7 +8,7 @@ import {FormComponentBaseProps, SelectOption} from '@renderer/types/inputs';
 
 type ComponentProps = FormComponentBaseProps<SelectProps>;
 
-const FormSelect: FC<ComponentProps> = ({className, label, name, required, options, placeholder}) => {
+const FormSelect: FC<ComponentProps> = ({className, isSearchable, label, name, required, options, placeholder}) => {
   const {setFieldTouched, setFieldValue, values} = useFormikContext<{[name: string]: string}>();
   const selectedOption = useMemo(() => {
     const value = values[name];
@@ -32,6 +32,7 @@ const FormSelect: FC<ComponentProps> = ({className, label, name, required, optio
         </label>
       ) : null}
       <Select
+        isSearchable={isSearchable}
         options={options}
         onBlur={handleBlur}
         onChange={handleChange}

@@ -36,6 +36,10 @@ const ValidationSchema = Yup.object().shape({
 const Connect: FC = () => {
   const history = useHistory();
 
+  const goToMain = () => {
+    history.push('/bank');
+  };
+
   const handleSubmit = (values: FormValues) => {
     console.log(values);
     history.push('/bank');
@@ -55,6 +59,7 @@ const Connect: FC = () => {
             <Form className="Connect__form">
               <FormSelect
                 className="Connect__field"
+                // isSearchable={false} TODO: trying messing with this BUCKY
                 label="Protocol"
                 options={protocolOptions}
                 name="protocol"
@@ -64,6 +69,9 @@ const Connect: FC = () => {
               <FormInputField className="Connect__field" label="Port" name="port" type="number" />
               <Button className="Connect__submit" disabled={submitIsDisabled} type="submit">
                 Connect
+              </Button>
+              <Button className="Connect__go" onClick={goToMain}>
+                Go
               </Button>
             </Form>
           );
