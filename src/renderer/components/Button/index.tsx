@@ -7,7 +7,7 @@ import './Button.scss';
 
 interface ComponentProps {
   className?: string;
-  color?: 'primary' | 'accent1' | 'accent2';
+  color?: 'primary' | 'secondary' | 'tertiary';
   disabled?: boolean;
   onClick?: GenericFunction;
   type?: 'button' | 'reset' | 'submit';
@@ -25,7 +25,7 @@ const Button: FC<ComponentProps> = ({
 }) => {
   return (
     <button
-      className={clsx('Button', `Button--${variant}`, `Button--${color}`, className)}
+      className={clsx('Button', `Button--${variant}`, `Button--${color}`, {'Button--disabled': disabled}, className)}
       disabled={disabled}
       onClick={onClick}
       type={type}

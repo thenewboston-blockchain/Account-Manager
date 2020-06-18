@@ -48,7 +48,8 @@ const Connect: FC = () => {
       </div>
       <div className="Connect__subheader">Enter the address of any node on the network to connect.</div>
       <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={ValidationSchema}>
-        {({dirty, errors, isValid, values}) => {
+        {({dirty, isValid}) => {
+          const submitIsDisabled = !dirty || !isValid;
           return (
             <Form className="Connect__form">
               <FormSelect
@@ -60,7 +61,7 @@ const Connect: FC = () => {
               />
               <FormTextField className="Connect__field" label="IP Address" name="ipAddress" required />
               <FormTextField className="Connect__field" label="Port" name="port" type="number" />
-              <Button className="Connect__submit" type="submit">
+              <Button className="Connect__submit" disabled={submitIsDisabled} type="submit">
                 Connect
               </Button>
             </Form>
