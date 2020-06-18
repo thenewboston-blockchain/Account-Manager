@@ -9,6 +9,7 @@ import './Select.scss';
 
 export interface SelectProps {
   className?: string;
+  error?: boolean;
   isSearchable?: boolean;
   name?: string;
   onBlur?: FocusEventHandler;
@@ -20,6 +21,7 @@ export interface SelectProps {
 
 const Select: FC<SelectProps> = ({
   className,
+  error,
   isSearchable = true,
   options,
   name,
@@ -30,7 +32,7 @@ const Select: FC<SelectProps> = ({
 }) => {
   return (
     <ReactSelect
-      className={clsx('Select', className)}
+      className={clsx('Select', {error}, className)}
       classNamePrefix="Select"
       isSearchable={isSearchable}
       name={name}
