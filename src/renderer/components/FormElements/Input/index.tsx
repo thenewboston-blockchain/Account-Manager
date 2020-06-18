@@ -1,9 +1,9 @@
 import React, {ChangeEvent, FC, FocusEvent} from 'react';
 import clsx from 'clsx';
 
-import './InputField.scss';
+import './Input.scss';
 
-export interface InputFieldProps {
+export interface InputProps {
   className?: string;
   error?: boolean;
   name?: string;
@@ -14,19 +14,10 @@ export interface InputFieldProps {
   value: string;
 }
 
-const InputField: FC<InputFieldProps> = ({
-  className,
-  error,
-  name,
-  onBlur,
-  onChange,
-  placeholder,
-  type = 'text',
-  value,
-}) => {
+const Input: FC<InputProps> = ({className, error, name, onBlur, onChange, placeholder, type = 'text', value}) => {
   return (
     <input
-      className={clsx('InputField', {error}, className)}
+      className={clsx('Input', {error}, className)}
       name={name}
       onBlur={onBlur}
       onChange={onChange}
@@ -37,4 +28,4 @@ const InputField: FC<InputFieldProps> = ({
   );
 };
 
-export default InputField;
+export default Input;

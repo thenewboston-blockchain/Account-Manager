@@ -4,7 +4,7 @@ import {Form, Formik} from 'formik';
 import * as Yup from 'yup';
 
 import {Button} from '@renderer/components/FormElements';
-import {FormButton, FormSelect, FormInputField} from '@renderer/components/FormComponents';
+import {FormButton, FormSelect, FormInput} from '@renderer/components/FormComponents';
 import TnbLogo from '@renderer/components/TnbLogo';
 import {SelectOption} from '@renderer/types/inputs';
 
@@ -64,8 +64,8 @@ const Connect: FC = () => {
                 name="protocol"
                 required
               />
-              <FormInputField className="Connect__field" label="IP Address" name="ipAddress" required />
-              <FormInputField className="Connect__field" label="Port" name="port" type="number" />
+              <FormInput className="Connect__field" label="IP Address" name="ipAddress" required />
+              <FormInput className="Connect__field" label="Port" name="port" type="number" />
               <FormButton>Connect</FormButton>
               <Button className="Connect__go" onClick={goToMain}>
                 Go

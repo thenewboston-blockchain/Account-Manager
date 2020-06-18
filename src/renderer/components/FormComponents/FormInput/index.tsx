@@ -2,18 +2,18 @@ import React, {FC} from 'react';
 import clsx from 'clsx';
 import {ErrorMessage, Field, useFormikContext} from 'formik';
 
-import {InputField, InputFieldProps} from '@renderer/components/FormElements';
+import {Input, InputProps} from '@renderer/components/FormElements';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import {FormComponentBaseProps} from '@renderer/types/inputs';
 
-type ComponentProps = FormComponentBaseProps<InputFieldProps>;
+type ComponentProps = FormComponentBaseProps<InputProps>;
 
-const FormInputField: FC<ComponentProps> = ({className, label, name, placeholder, required, type}) => {
+const FormInput: FC<ComponentProps> = ({className, label, name, placeholder, required, type}) => {
   const {errors, touched} = useFormikContext<{[name: string]: string}>();
   const error = !!errors[name] && !!touched[name];
 
   return (
-    <div className={clsx('FormFieldComponent FormInputField', className)}>
+    <div className={clsx('FormFieldComponent FormInput', className)}>
       {label ? (
         <label htmlFor={name}>
           {label}
@@ -21,7 +21,7 @@ const FormInputField: FC<ComponentProps> = ({className, label, name, placeholder
         </label>
       ) : null}
       <Field
-        as={InputField}
+        as={Input}
         className="FormField"
         error={error}
         name={name}
@@ -36,4 +36,4 @@ const FormInputField: FC<ComponentProps> = ({className, label, name, placeholder
   );
 };
 
-export default FormInputField;
+export default FormInput;
