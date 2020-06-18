@@ -4,10 +4,10 @@ import {Form, Formik} from 'formik';
 import * as Yup from 'yup';
 
 import Button from '@renderer/components/Button';
-import {FormikSelect, FormikTextField} from '@renderer/components/FormikFields';
+import {FormSelect, FormTextField} from '@renderer/components/FormikFields';
 
 import './Connect.scss';
-import {SelectMenuItem} from '@renderer/types/inputs';
+import {SelectOption} from '@renderer/types/inputs';
 
 const initialValues = {
   protocol: 'http',
@@ -17,7 +17,7 @@ const initialValues = {
 
 type FormValues = typeof initialValues;
 
-const protocolOptions: SelectMenuItem[] = [
+const protocolOptions: SelectOption[] = [
   {label: 'http', value: 'http'},
   {label: 'https', value: 'https'},
 ];
@@ -48,19 +48,21 @@ const Connect: FC = () => {
       </div>
       <div className="Connect__subheader">Enter the address of any node on the network to connect.</div>
       <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={ValidationSchema}>
-        {({dirty, errors, isValid}) => {
+        {({dirty, errors, isValid, values}) => {
           return (
             <Form className="Connect__form">
-              <FormikSelect
+              <FormSelect
                 className="Connect__field"
                 label="Protocol"
-                menuItems={protocolOptions}
+                options={protocolOptions}
                 name="protocol"
                 required
               />
-              <FormikTextField className="Connect__field" label="IP Address" name="ipAddress" required />
-              <FormikTextField className="Connect__field" label="Port" name="port" type="number" />
-              <Button type="submit">Connect</Button>
+              <FormTextField className="Connect__field" label="IP Address" name="ipAddress" required />
+              <FormTextField className="Connect__field" label="Port" name="port" type="number" />
+              <Button className="Connect__submit" type="submit">
+                Connect
+              </Button>
             </Form>
           );
         }}

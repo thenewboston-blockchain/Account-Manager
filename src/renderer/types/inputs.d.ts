@@ -4,7 +4,7 @@ export type FormikInputBaseProps<T> = Omit<T, 'name' | 'onBlur' | 'onChange' | '
   required?: boolean;
 };
 
-export interface SelectMenuItem {
+export interface SelectOption {
   label: string;
   value: string;
 }

@@ -16,18 +16,18 @@
     }
   }
 
+  &__form {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   &__subheader {
     margin: 30px 0 18px;
   }
 
-  &__form {
-    .FormikTextField__input,
-    .FormikSelect__input {
-      width: 300px;
-    }
-  }
-
   &__field {
-    margin: 12px 0;
+    margin: 6px 0;
   }
 }

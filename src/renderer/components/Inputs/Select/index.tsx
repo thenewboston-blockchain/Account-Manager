@@ -1,38 +1,34 @@
-import React, {ChangeEvent, FC, FocusEvent} from 'react';
+import React, {FC} from 'react';
+import ReactSelect, {ActionMeta, FocusEventHandler} from 'react-select';
+import {ValueType} from 'react-select/src/types';
 import clsx from 'clsx';
 
-import {SelectMenuItem} from '@renderer/types/inputs';
+import {SelectOption} from '@renderer/types/inputs';
 
 import './Select.scss';
 
 export interface SelectProps {
   className?: string;
-  menuItems: SelectMenuItem[];
+  options: SelectOption[];
   name?: string;
-  onBlur?(e: FocusEvent<HTMLSelectElement>): void;
-  onChange?(e: ChangeEvent<HTMLSelectElement>): void;
+  onBlur?: FocusEventHandler;
+  onChange?(value: ValueType<SelectOption>, actionMeta?: ActionMeta<SelectOption>): void;
   placeholder?: string;
-  required?: boolean;
-  value: string;
+  value: SelectOption | null;
 }
 
-const Select: FC<SelectProps> = ({className, menuItems, name, onBlur, onChange, placeholder, required, value}) => {
+const Select: FC<SelectProps> = ({className, options, name, onBlur, onChange, placeholder, value}) => {
   return (
-    <select
+    <ReactSelect
       className={clsx('Select', className)}
+      classNamePrefix="Select"
       name={name}
       onBlur={onBlur}
       onChange={onChange}
+      options={options}
       placeholder={placeholder}
-      required={required}
       value={value}
-    >
-      {menuItems.map(({label, value}) => (
-        <option className="Select__option" key={value} value={value}>
-          {label}
-        </option>
-      ))}
-    </select>
+    />
   );
 };
 

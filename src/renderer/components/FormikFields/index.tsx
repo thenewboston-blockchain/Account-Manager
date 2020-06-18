@@ -1,4 +1,4 @@
-import FormikSelect from './FormikSelect';
-import FormikTextField from './FormikTextField';
+import FormSelect from './FormSelect';
+import FormTextField from './FormTextField';
 
-export {FormikSelect, FormikTextField};
+export {FormSelect, FormTextField};

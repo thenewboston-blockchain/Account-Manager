@@ -1,22 +1,15 @@
 form {
   label {
     color: var(--color-gray-3);
-    display: block;
     font-weight: bold;
-    margin-bottom: 3px;
   }
 
   span.error {
     color: var(--color-danger);
-    display: block;
-    font-size: var(--font-size-small);
-    margin-top: 6px;
-    height: 14px;
   }
 }
 
-input,
-select {
+input {
   border-radius: 3px;
   border: 1px solid var(--color-gray-3);
   height: 30px;
@@ -27,5 +20,34 @@ select {
   &:active,
   &:focus {
     border-color: var(--color-accent-1);
+  }
+
+  &.error {
+    border-color: var(--color-danger);
+  }
+}
+
+// get rid of arrows/spinners for numeric inputs
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.FormField {
+  label {
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  input {
+    width: 300px;
+  }
+
+  span.error {
+    display: block;
+    font-size: var(--font-size-small);
+    margin-top: 6px;
+    height: 14px;
   }
 }

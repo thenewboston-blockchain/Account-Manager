@@ -3,9 +3,9 @@ import {Form, Formik} from 'formik';
 import * as Yup from 'yup';
 
 import Button from '@renderer/components/Button';
-import FormikTextField from '@renderer/components/FormikFields/FormikTextField';
-import FormikSelect from '@renderer/components/FormikFields/FormikSelect';
-import {SelectMenuItem} from '@renderer/types/inputs';
+import FormTextField from '@renderer/components/FormikFields/FormTextField';
+import FormSelect from '@renderer/components/FormikFields/FormSelect';
+import {SelectOption} from '@renderer/types/inputs';
 
 import './Sample.scss';
 
@@ -15,7 +15,7 @@ const initialValues = {
   port: '80',
 };
 
-const protocolOptions: SelectMenuItem[] = [
+const protocolOptions: SelectOption[] = [
   {label: 'http', value: 'http'},
   {label: 'https', value: 'https'},
 ];
@@ -47,7 +47,7 @@ const Sample = function () {
           {({dirty, errors, isValid}) => (
             <Form className="Sample__form">
               <div className="form-row">
-                <FormikSelect
+                <FormSelect
                   error={!!errors.protocol}
                   initialLabelWidth={64}
                   label="Protocol"
@@ -57,10 +57,10 @@ const Sample = function () {
                 />
               </div>
               <div className="form-row">
-                <FormikTextField name="ipAddress" label="IP Address" error={!!errors.ipAddress} required />
+                <FormTextField name="ipAddress" label="IP Address" error={!!errors.ipAddress} required />
               </div>
               <div className="form-row">
-                <FormikTextField name="port" label="Port" error={!!errors.port} type="number" />
+                <FormTextField name="port" label="Port" error={!!errors.port} type="number" />
               </div>
               <div className="form-submit">
                 <Button disabled={!dirty || !isValid} type="submit">
