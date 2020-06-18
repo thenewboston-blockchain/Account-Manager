@@ -13,14 +13,22 @@ const FormInputField: FC<ComponentProps> = ({className, label, name, placeholder
   const error = !!errors[name] && !!touched[name];
 
   return (
-    <div className={clsx('FormField FormInputField', className)}>
+    <div className={clsx('FormFieldComponent FormInputField', className)}>
       {label ? (
         <label htmlFor={name}>
           {label}
           {required ? <RequiredAsterisk /> : null}
         </label>
       ) : null}
-      <Field as={InputField} error={error} name={name} placeholder={placeholder} required={required} type={type} />
+      <Field
+        as={InputField}
+        className="FormField"
+        error={error}
+        name={name}
+        placeholder={placeholder}
+        required={required}
+        type={type}
+      />
       <span className="error">
         <ErrorMessage name={name} />
       </span>

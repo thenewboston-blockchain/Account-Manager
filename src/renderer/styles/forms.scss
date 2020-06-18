@@ -9,24 +9,6 @@ form {
   }
 }
 
-input {
-  border-radius: 3px;
-  border: 1px solid var(--color-gray-3);
-  height: 30px;
-  outline: none;
-  padding: 0 6px;
-  transition: all 0.3s;
-
-  &:active,
-  &:focus {
-    border-color: var(--color-secondary);
-  }
-
-  &.error {
-    border-color: var(--color-danger);
-  }
-}
-
 // get rid of arrows/spinners for numeric inputs
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -34,13 +16,13 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-.FormField {
+.FormFieldComponent {
   label {
     display: block;
     margin-bottom: 3px;
   }
 
-  input {
+  .FormField {
     width: 300px;
   }
 
