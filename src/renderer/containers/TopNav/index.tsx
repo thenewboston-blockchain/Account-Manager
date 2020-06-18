@@ -1,12 +1,14 @@
 import React from 'react';
 
+import TnbLogo from '@renderer/components/TnbLogo';
+
 import './TopNav.scss';
 
 const TopNav = () => {
   return (
     <div className="TopNav">
       <div className="thenewboston">
-        <img alt="thenewboston logo" className="logo" src={require('@renderer/assets/logo.png')} />
+        <TnbLogo />
         <h2>thenewboston</h2>
       </div>
       <div className="navigation-icons">

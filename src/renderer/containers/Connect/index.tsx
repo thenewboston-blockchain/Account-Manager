@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 
 import Button from '@renderer/components/Button';
 import {FormSelect, FormInputField} from '@renderer/components/FormComponents';
+import TnbLogo from '@renderer/components/TnbLogo';
 import {SelectOption} from '@renderer/types/inputs';
 
 import './Connect.scss';
@@ -43,7 +44,7 @@ const Connect: FC = () => {
   return (
     <div className="Connect">
       <div className="Connect__header">
-        <img className="header__logo" src={require('@renderer/assets/logo.png')} alt="logo" />
+        <TnbLogo size={30} />
         <h2>thenewboston</h2>
       </div>
       <div className="Connect__subheader">Enter the address of any node on the network to connect.</div>
