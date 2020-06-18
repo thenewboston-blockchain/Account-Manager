@@ -6,13 +6,13 @@
   justify-content: center;
 
   &__header {
-    display: flex;
     align-items: center;
+    display: flex;
 
     .header__logo {
-      width: 30px;
       height: 30px;
       margin-right: 12px;
+      width: 30px;
     }
   }
 

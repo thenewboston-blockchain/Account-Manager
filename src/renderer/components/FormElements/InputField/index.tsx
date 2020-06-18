@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FC, FocusEvent} from 'react';
 import clsx from 'clsx';
 
-export interface TextFieldProps {
+export interface InputFieldProps {
   className?: string;
   error?: boolean;
   name?: string;
@@ -12,7 +12,7 @@ export interface TextFieldProps {
   value: string;
 }
 
-const TextField: FC<TextFieldProps> = ({
+const InputField: FC<InputFieldProps> = ({
   className,
   error,
   name,
@@ -24,7 +24,7 @@ const TextField: FC<TextFieldProps> = ({
 }) => {
   return (
     <input
-      className={clsx('TextField', {error}, className)}
+      className={clsx('InputField', {error}, className)}
       name={name}
       onBlur={onBlur}
       onChange={onChange}
@@ -35,4 +35,4 @@ const TextField: FC<TextFieldProps> = ({
   );
 };
 
-export default TextField;
+export default InputField;

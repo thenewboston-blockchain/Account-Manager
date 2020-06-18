@@ -2,25 +2,25 @@ import React, {FC} from 'react';
 import clsx from 'clsx';
 import {ErrorMessage, Field, useFormikContext} from 'formik';
 
-import {TextField, TextFieldProps} from '@renderer/components/Inputs';
+import {InputField, InputFieldProps} from '@renderer/components/FormElements';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
-import {FormikInputBaseProps} from '@renderer/types/inputs';
+import {FormComponentBaseProps} from '@renderer/types/inputs';
 
-type ComponentProps = FormikInputBaseProps<TextFieldProps>;
+type ComponentProps = FormComponentBaseProps<InputFieldProps>;
 
-const FormTextField: FC<ComponentProps> = ({className, label, name, placeholder, required, type}) => {
+const FormInputField: FC<ComponentProps> = ({className, label, name, placeholder, required, type}) => {
   const {errors, touched} = useFormikContext<{[name: string]: string}>();
   const error = !!errors[name] && !!touched[name];
 
   return (
-    <div className={clsx('FormField FormTextField', className)}>
+    <div className={clsx('FormField FormInputField', className)}>
       {label ? (
         <label htmlFor={name}>
           {label}
           {required ? <RequiredAsterisk /> : null}
         </label>
       ) : null}
-      <Field as={TextField} error={error} name={name} placeholder={placeholder} required={required} type={type} />
+      <Field as={InputField} error={error} name={name} placeholder={placeholder} required={required} type={type} />
       <span className="error">
         <ErrorMessage name={name} />
       </span>
@@ -28,4 +28,4 @@ const FormTextField: FC<ComponentProps> = ({className, label, name, placeholder,
   );
 };
 
-export default FormTextField;
+export default FormInputField;

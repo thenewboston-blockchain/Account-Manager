@@ -4,7 +4,7 @@ import {Form, Formik} from 'formik';
 import * as Yup from 'yup';
 
 import Button from '@renderer/components/Button';
-import {FormSelect, FormTextField} from '@renderer/components/FormikFields';
+import {FormSelect, FormInputField} from '@renderer/components/FormComponents';
 import {SelectOption} from '@renderer/types/inputs';
 
 import './Connect.scss';
@@ -59,8 +59,8 @@ const Connect: FC = () => {
                 name="protocol"
                 required
               />
-              <FormTextField className="Connect__field" label="IP Address" name="ipAddress" required />
-              <FormTextField className="Connect__field" label="Port" name="port" type="number" />
+              <FormInputField className="Connect__field" label="IP Address" name="ipAddress" required />
+              <FormInputField className="Connect__field" label="Port" name="port" type="number" />
               <Button className="Connect__submit" disabled={submitIsDisabled} type="submit">
                 Connect
               </Button>

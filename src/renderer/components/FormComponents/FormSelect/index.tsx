@@ -2,11 +2,11 @@ import React, {FC, useMemo} from 'react';
 import clsx from 'clsx';
 import {ErrorMessage, useFormikContext} from 'formik';
 
-import {Select, SelectProps} from '@renderer/components/Inputs';
+import {Select, SelectProps} from '@renderer/components/FormElements';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
-import {FormikInputBaseProps, SelectOption} from '@renderer/types/inputs';
+import {FormComponentBaseProps, SelectOption} from '@renderer/types/inputs';
 
-type ComponentProps = FormikInputBaseProps<SelectProps>;
+type ComponentProps = FormComponentBaseProps<SelectProps>;
 
 const FormSelect: FC<ComponentProps> = ({className, label, name, required, options, placeholder}) => {
   const {setFieldTouched, setFieldValue, values} = useFormikContext<{[name: string]: string}>();
