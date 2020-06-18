@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TnbLogo from '@renderer/components/TnbLogo';
+import Logo from '@renderer/components/Logo';
 
 import './TopNav.scss';
 
@@ -8,7 +8,7 @@ const TopNav = () => {
   return (
     <div className="TopNav">
       <div className="thenewboston">
-        <TnbLogo />
+        <Logo />
         <h2>thenewboston</h2>
       </div>
       <div className="navigation-icons">
