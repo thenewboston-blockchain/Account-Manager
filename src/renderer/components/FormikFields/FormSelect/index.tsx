@@ -6,8 +6,6 @@ import {Select, SelectProps} from '@renderer/components/Inputs';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import {FormikInputBaseProps, SelectOption} from '@renderer/types/inputs';
 
-// import './FormSelect.scss';
-
 type ComponentProps = FormikInputBaseProps<SelectProps>;
 
 const FormSelect: FC<ComponentProps> = ({className, label, name, required, options, placeholder}) => {

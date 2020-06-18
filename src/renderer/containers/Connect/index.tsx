@@ -5,9 +5,9 @@ import * as Yup from 'yup';
 
 import Button from '@renderer/components/Button';
 import {FormSelect, FormTextField} from '@renderer/components/FormikFields';
+import {SelectOption} from '@renderer/types/inputs';
 
 import './Connect.scss';
-import {SelectOption} from '@renderer/types/inputs';
 
 const initialValues = {
   protocol: 'http',
