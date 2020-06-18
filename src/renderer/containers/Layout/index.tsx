@@ -10,10 +10,6 @@ import Validator from '@renderer/containers/Validator';
 import './Layout.scss';
 
 export const Layout: FC = () => {
-  const renderSampleContent = () => {
-    return [...Array(100)].map((_, i) => <h1 key={i}>{i}</h1>);
-  };
-
   return (
     <div className="Layout">
       <div className="top">
@@ -24,10 +20,6 @@ export const Layout: FC = () => {
       </div>
       <div className="right">
         <Switch>
-          <Route exact path="/">
-            <span className="material-icons">face</span>
-            <div style={{padding: 24}}>{renderSampleContent()}</div>
-          </Route>
           <Route path="/account">
             <Account />
           </Route>

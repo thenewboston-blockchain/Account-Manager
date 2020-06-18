@@ -82,6 +82,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
+    "@types/react-select": "^3.0.13",
     "@types/yup": "^0.29.2",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
     "@typescript-eslint/parser": "^2.18.0",
@@ -124,6 +125,7 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
+    "react-select": "^3.1.0",
     "typeface-roboto": "0.0.75",
     "yup": "^0.29.1"
   },

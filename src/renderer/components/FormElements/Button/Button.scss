@@ -1,0 +1,93 @@
+.Button {
+  border-radius: 3px;
+  border-width: 1px;
+  border-style: solid;
+  cursor: pointer;
+  outline: none;
+  padding: 9px 12px;
+  transition: all 0.3s;
+
+  &.Button--disabled {
+    cursor: not-allowed;
+  }
+
+  &--contained {
+    color: var(--color-white);
+
+    &.Button--primary {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+
+      &:hover {
+        background: var(--color-primary-dark);
+        border-color: var(--color-primary-dark);
+      }
+
+      &.Button--disabled,
+      &.Button--disabled:hover {
+        background: var(--color-primary-disabled);
+        border-color: var(--color-primary-disabled);
+      }
+    }
+
+    &.Button--secondary {
+      background: var(--color-secondary);
+      border-color: var(--color-secondary);
+
+      &:hover {
+        background: var(--color-secondary);
+        border-color: var(--color-secondary);
+      }
+    }
+
+    &.Button--tertiary {
+      background: var(--color-tertiary);
+      border-color: var(--color-tertiary);
+
+      &:hover {
+        background: var(--color-tertiary);
+        border-color: var(--color-tertiary);
+      }
+    }
+  }
+
+  &--outlined {
+    background: transparent;
+
+    &.Button--primary {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+
+      &:hover {
+        background: var(--color-primary-outline-bg);
+      }
+
+      &.Button--disabled,
+      &.Button--disabled:hover {
+        background: var(--color-primary-disabled-fill);
+        border-color: var(--color-primary-disabled-text);
+        color: var(--color-primary-disabled-text);
+      }
+    }
+
+    &.Button--secondary {
+      border-color: var(--color-secondary);
+      color: var(--color-secondary);
+
+      &:hover {
+        border-color: var(--color-secondary);
+        color: var(--color-secondary);
+      }
+    }
+
+    &.Button--tertiary {
+      border-color: var(--color-tertiary);
+      color: var(--color-tertiary);
+
+      &:hover {
+        border-color: var(--color-tertiary);
+        color: var(--color-tertiary);
+      }
+    }
+  }
+}
