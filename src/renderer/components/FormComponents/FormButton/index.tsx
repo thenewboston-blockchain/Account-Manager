@@ -1,8 +1,8 @@
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 import {useFormikContext} from 'formik';
 import {Button, ButtonProps} from '@renderer/components/FormElements';
 
-interface ComponentProps extends Omit<ButtonProps, 'onClick'> {
+interface ComponentProps extends ButtonProps {
   submitting?: boolean;
 }
 
@@ -11,13 +11,23 @@ const FormButton: FC<ComponentProps> = ({
   children,
   color,
   disabled = false,
+  onClick,
   submitting = false,
-  type = 'submit',
+  type = 'button',
   variant,
 }) => {
   const {dirty, handleReset, handleSubmit, isValid} = useFormikContext();
 
-  const buttonIsDisabled = disabled || !dirty || submitting || (type === 'submit' ? !isValid : false);
+  const buttonIsDisabled = useMemo(() => {
+    switch (type) {
+      case 'submit':
+        return disabled || !dirty || !isValid || submitting;
+      case 'reset':
+        return disabled || !dirty || submitting;
+      default:
+        return disabled || submitting;
+    }
+  }, [disabled, dirty, isValid, submitting]);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     e?.preventDefault();
@@ -26,6 +36,8 @@ const FormButton: FC<ComponentProps> = ({
     if (type === 'submit') handleSubmit();
 
     if (type === 'reset') handleReset();
+
+    if (type === 'button') onClick?.(e);
   };
 
   return (
