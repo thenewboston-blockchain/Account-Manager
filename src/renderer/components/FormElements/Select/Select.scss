@@ -1,6 +1,22 @@
 .Select {
   height: 30px;
 
+  &.error {
+    .Select__control {
+      &,
+      &:active,
+      &:hover,
+      &--is-focused {
+        border-color: var(--color-danger);
+      }
+    }
+    .Select__indicator {
+      &:hover {
+        color: var(--color-danger);
+      }
+    }
+  }
+
   .Select__control {
     border-radius: 3px;
     border: 1px solid var(--color-gray-3);
