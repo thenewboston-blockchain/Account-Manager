@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
 
-import {Button} from '@renderer/components/FormElements';
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
 import {SelectOption} from '@renderer/types/inputs';
@@ -67,10 +66,10 @@ const Connect: FC = () => {
         />
         <FormInput className="Connect__field" label="IP Address" name="ipAddress" required />
         <FormInput className="Connect__field" label="Port" name="port" type="number" />
-        <FormButton>Connect</FormButton>
-        <Button className="Connect__go" onClick={goToMain}>
+        <FormButton type="submit">Connect</FormButton>
+        <FormButton className="Connect__go" onClick={goToMain}>
           Go
-        </Button>
+        </FormButton>
       </Form>
     </div>
   );
