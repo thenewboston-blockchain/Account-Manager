@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, memo} from 'react';
 import clsx from 'clsx';
 
 interface ComponentProps {
@@ -19,4 +19,4 @@ const TnbLogo: FC<ComponentProps> = ({className, size = 24}) => {
   );
 };
 
-export default TnbLogo;
+export default memo(TnbLogo);
