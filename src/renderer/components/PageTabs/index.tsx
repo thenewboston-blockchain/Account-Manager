@@ -1,34 +1,20 @@
-import React from 'react';
+import React, {FC} from 'react';
 
 import './PageTabs.scss';
 
-const tabs = [
-  {
-    name: 'Overview',
-    active: true,
-  },
-  {
-    name: 'Members',
-    active: false,
-  },
-  {
-    name: 'Transactions',
-    active: false,
-  },
-  {
-    name: 'Banks',
-    active: false,
-  },
-  {
-    name: 'Validators',
-    active: false,
-  },
-];
+interface Item {
+  active: boolean;
+  name: string;
+}
 
-const PageTabs = () => {
+interface ComponentProps {
+  items: Item[];
+}
+
+const PageTabs: FC<ComponentProps> = ({items}) => {
   return (
     <div className="PageTabs">
-      {tabs.map(({active, name}) => (
+      {items.map(({active, name}) => (
         <div className={`tab ${active ? 'active' : ''}`} key={name}>
           <div className="tab-name">{name}</div>
           <div className="tab-indicator">&nbsp;</div>

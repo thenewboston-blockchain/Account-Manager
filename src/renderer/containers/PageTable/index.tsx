@@ -1,12 +1,14 @@
 import React from 'react';
 
+import ExpandableTableRow from '@renderer/components/ExpandableTableRow';
+
 import './PageTable.scss';
 
 const sampleData = [
   {
     id: 1,
     network_id: 'BkQj2sgGO5T',
-    account_number: 'G9Be8Ictsr',
+    account_number: 'G9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8Ictsr',
     protocol: 'http',
     ip_address: '88.16.83.115',
     port: 80,
@@ -620,7 +622,7 @@ const PageTable = () => {
         trust,
         network_trust_avg,
       }) => (
-        <tr key={id}>
+        <ExpandableTableRow key={id}>
           <td>{network_id}</td>
           <td>{account_number}</td>
           <td>{protocol}</td>
@@ -630,7 +632,7 @@ const PageTable = () => {
           <td>{default_tx_fee}</td>
           <td>{trust}</td>
           <td>{network_trust_avg}</td>
-        </tr>
+        </ExpandableTableRow>
       ),
     );
   };
@@ -639,6 +641,7 @@ const PageTable = () => {
     <table className="PageTable">
       <thead>
         <tr>
+          <th />
           <th>Network ID</th>
           <th>Account Number</th>
           <th>Protocol</th>

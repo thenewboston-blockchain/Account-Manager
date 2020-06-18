@@ -1,8 +1,9 @@
 import React, {FC} from 'react';
 import {Route, Switch} from 'react-router-dom';
 
-import LeftMenu from '@renderer/containers/LeftMenu';
+import Account from '@renderer/containers/Account';
 import Bank from '@renderer/containers/Bank';
+import LeftMenu from '@renderer/containers/LeftMenu';
 import TopNav from '@renderer/containers/TopNav';
 import Validator from '@renderer/containers/Validator';
 
@@ -19,6 +20,9 @@ export const Layout: FC = () => {
       </div>
       <div className="right">
         <Switch>
+          <Route path="/account">
+            <Account />
+          </Route>
           <Route path="/bank">
             <Bank />
           </Route>

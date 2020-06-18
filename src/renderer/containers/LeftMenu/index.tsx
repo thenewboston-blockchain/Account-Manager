@@ -20,7 +20,7 @@ const LeftMenu = () => {
 
   const renderAccounts = () => {
     return accounts.map(({account_number}) => (
-      <NavLink className="MenuItem" key={account_number} to="/">
+      <NavLink className="MenuItem" key={account_number} to="/account">
         {account_number}
       </NavLink>
     ));
@@ -59,7 +59,7 @@ const LeftMenu = () => {
       <LeftSubmenu
         menuItems={[
           <NavLink className="MenuItem" to="/bank">
-            Bank ({banks.length})
+            Banks ({banks.length})
           </NavLink>,
           <NavLink className="MenuItem" to="/validator">
             Validators ({validators.length})
