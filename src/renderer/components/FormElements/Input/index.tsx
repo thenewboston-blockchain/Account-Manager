@@ -1,8 +1,6 @@
 import React, {ChangeEvent, FC, FocusEvent} from 'react';
 import clsx from 'clsx';
 
-import './Input.scss';
-
 export interface InputProps {
   className?: string;
   error?: boolean;
