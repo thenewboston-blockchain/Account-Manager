@@ -1,6 +1,7 @@
-import React, {FC, ReactNode, useState} from 'react';
+import React, {FC, ReactNode} from 'react';
 
 import ArrowToggle from '@renderer/components/ArrowToggle';
+import useBooleanState from '@renderer/hooks/useBooleanState';
 
 import './LeftSubmenu.scss';
 
@@ -11,11 +12,7 @@ interface ComponentProps {
 }
 
 const LeftSubmenu: FC<ComponentProps> = ({menuItems, title, tool}) => {
-  const [expanded, setExpanded] = useState<boolean>(true);
-
-  const toggleExpanded = (): void => {
-    setExpanded(!expanded);
-  };
+  const [expanded, toggleExpanded] = useBooleanState(true);
 
   return (
     <div className="LeftSubmenu">
