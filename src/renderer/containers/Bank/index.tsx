@@ -1,6 +1,8 @@
 import React from 'react';
+import noop from 'lodash/noop';
 
 import {Button} from '@renderer/components/FormElements';
+import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';
 import PageTable from '@renderer/containers/PageTable';
@@ -11,12 +13,38 @@ import TrustBadge from '@renderer/components/TrustBadge';
 import './Bank.scss';
 
 const Bank = () => {
+  const dropdownMenuOptions: DropdownMenuOption[] = [
+    {
+      label: 'Edit',
+      onClick: () => {
+        console.log('YO');
+      },
+    },
+    {
+      label: 'Delete Account',
+      onClick: noop,
+    },
+    {
+      label: 'Unregister Bank',
+      onClick: noop,
+    },
+  ];
+
   const renderContent = () => (
     <>
       <PageTable />
       <Pagination />
     </>
   );
+
+  const renderLeftTools = () => {
+    return (
+      <>
+        <TrustBadge score={98.34} />
+        <DropdownMenuButton options={dropdownMenuOptions} />
+      </>
+    );
+  };
 
   const renderRightPageHeaderButtons = () => (
     <>
@@ -28,7 +56,7 @@ const Bank = () => {
   const renderTop = () => (
     <>
       <PageHeader
-        leftTools={<TrustBadge score={98.34} />}
+        leftTools={renderLeftTools()}
         rightContent={renderRightPageHeaderButtons()}
         title="Digital Ocean Bank (223.125.111.178)"
       />

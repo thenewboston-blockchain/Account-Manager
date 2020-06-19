@@ -1,19 +1,19 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
 
+import Icon from '@renderer/components/Icon';
+
 import './ArrowToggle.scss';
 
 interface ComponentProps {
   expanded: boolean;
-  onClick: any; // TODO: Update after Justin's branch gets merged
+  onClick(e: React.MouseEvent<HTMLSpanElement, MouseEvent>): void;
 }
 
 const ArrowToggle: FC<ComponentProps> = ({expanded, onClick}) => {
   return (
     <div className="ArrowToggle">
-      <span className={clsx('material-icons', {expanded})} onClick={onClick}>
-        play_arrow
-      </span>
+      <Icon className={clsx({expanded})} icon="play_arrow" onClick={onClick} />
     </div>
   );
 };

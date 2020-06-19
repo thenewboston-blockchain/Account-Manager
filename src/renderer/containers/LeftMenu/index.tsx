@@ -2,6 +2,7 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
+import Icon from '@renderer/components/Icon';
 import LeftSubmenu from '@renderer/containers/LeftSubmenu';
 import {RootState} from '@renderer/types/store';
 
@@ -67,18 +68,10 @@ const LeftMenu = () => {
         ]}
         title="Network"
       />
-      <LeftSubmenu
-        menuItems={renderManagedBanks()}
-        title="Managed Banks"
-        tool={<span className="material-icons">add</span>}
-      />
-      <LeftSubmenu
-        menuItems={renderManagedValidators()}
-        title="Managed Validators"
-        tool={<span className="material-icons">add</span>}
-      />
-      <LeftSubmenu menuItems={renderAccounts()} title="Accounts" tool={<span className="material-icons">add</span>} />
-      <LeftSubmenu menuItems={renderFriends()} title="Friends" tool={<span className="material-icons">add</span>} />
+      <LeftSubmenu menuItems={renderManagedBanks()} title="Managed Banks" tool={<Icon icon="add" />} />
+      <LeftSubmenu menuItems={renderManagedValidators()} title="Managed Validators" tool={<Icon icon="add" />} />
+      <LeftSubmenu menuItems={renderAccounts()} title="Accounts" tool={<Icon icon="add" />} />
+      <LeftSubmenu menuItems={renderFriends()} title="Friends" tool={<Icon icon="add" />} />
     </div>
   );
 };
