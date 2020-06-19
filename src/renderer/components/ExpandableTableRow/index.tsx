@@ -1,7 +1,8 @@
-import React, {FC, ReactNode, useState} from 'react';
+import React, {FC, ReactNode} from 'react';
 import clsx from 'clsx';
 
 import ArrowToggle from '@renderer/components/ArrowToggle';
+import useBooleanState from '@renderer/hooks/useBooleanState';
 
 import './ExpandableTableRow.scss';
 
@@ -10,11 +11,7 @@ interface ComponentProps {
 }
 
 const ExpandableTableRow: FC<ComponentProps> = ({children}) => {
-  const [expanded, setExpanded] = useState<boolean>(false);
-
-  const toggleExpanded = (): void => {
-    setExpanded(!expanded);
-  };
+  const [expanded, toggleExpanded] = useBooleanState(false);
 
   return (
     <tr className={clsx('ExpandableTableRow', {expanded: expanded})}>
