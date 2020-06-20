@@ -11,11 +11,14 @@
   background: var(--color-white);
   border-radius: 3px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  left: 50%;
   position: fixed;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 324px;
+
+  &.default {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 324px;
+  }
 
   &__overlay {
     animation: addOverlay 0.3s forwards;

@@ -63,7 +63,7 @@ const EditBankModal: FC<ComponentProps> = ({close}) => {
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitting={submitting}
-      style={{left: '100px', top: '30px', transform: 'none', width: 500}}
+      style={{left: '100px', top: '30px', width: 500}}
     >
       <p>
         Here is a bs form. Most of the modal's logic can be contained in a component like this, instead of polluting the

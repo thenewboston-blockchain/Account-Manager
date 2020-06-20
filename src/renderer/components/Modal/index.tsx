@@ -42,7 +42,7 @@ const Modal: FC<ModalProps> = ({
   header,
   initialValues = {},
   onSubmit,
-  style = {},
+  style,
   submitButton,
   submitting = false,
 }) => {
@@ -131,7 +131,7 @@ const Modal: FC<ModalProps> = ({
   return createPortal(
     <>
       <div className={clsx('Modal__overlay', {submitting})} onClick={submitting ? noop : close} />
-      <div className={clsx('Modal', className)} style={style}>
+      <div className={clsx('Modal', {default: !style}, className)} style={style}>
         <div className="Modal__header">
           {typeof header === 'string' ? <h2>{header}</h2> : header}
           <Icon className={clsx('Icon__close', {submitting})} disabled={submitting} icon="close" onClick={close} />
