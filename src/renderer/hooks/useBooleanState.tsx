@@ -4,11 +4,11 @@ const useBooleanState = (initialValue: boolean): [boolean, () => void, () => voi
   const [state, setState] = useState(initialValue);
 
   const setFalse = (): void => {
-    if (state) setState(false);
+    setState(false);
   };
 
   const setTrue = (): void => {
-    if (!state) setState(true);
+    setState(true);
   };
 
   const toggleState = (): void => {

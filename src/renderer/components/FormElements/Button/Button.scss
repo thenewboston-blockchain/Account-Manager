@@ -90,4 +90,23 @@
       }
     }
   }
+
+  &--link {
+    background: transparent;
+    border-color: transparent;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &.Button--primary {
+      color: var(--color-primary);
+
+      &.Button--disabled,
+      &.Button--disabled:hover {
+        color: var(--color-primary-disabled-text);
+        text-decoration: none;
+      }
+    }
+  }
 }

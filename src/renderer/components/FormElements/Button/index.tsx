@@ -9,7 +9,7 @@ export interface ButtonProps {
   disabled?: boolean;
   onClick?(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
   type?: 'button' | 'reset' | 'submit';
-  variant?: 'contained' | 'outlined';
+  variant?: 'contained' | 'link' | 'outlined';
 }
 
 const Button: FC<ButtonProps> = ({

@@ -3,7 +3,7 @@ import ReactSelect, {ActionMeta, FocusEventHandler} from 'react-select';
 import {ValueType} from 'react-select/src/types';
 import clsx from 'clsx';
 
-import {SelectOption} from '@renderer/types/inputs';
+import {SelectOption} from '@renderer/types/forms';
 
 import './Select.scss';
 

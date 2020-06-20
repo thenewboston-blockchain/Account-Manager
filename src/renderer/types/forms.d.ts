@@ -4,6 +4,10 @@ export type FormComponentBaseProps<T> = Omit<T, 'name' | 'onBlur' | 'onChange' |
   required?: boolean;
 };
 
+export interface GenericFormValues {
+  [fieldName: string]: boolean | string;
+}
+
 export interface SelectOption {
   label: string;
   value: string;

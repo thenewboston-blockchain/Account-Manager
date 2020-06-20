@@ -4,7 +4,7 @@ import {ErrorMessage, useFormikContext} from 'formik';
 
 import {Select, SelectProps} from '@renderer/components/FormElements';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
-import {FormComponentBaseProps, SelectOption} from '@renderer/types/inputs';
+import {FormComponentBaseProps, SelectOption} from '@renderer/types/forms';
 
 type ComponentProps = FormComponentBaseProps<SelectProps>;
 

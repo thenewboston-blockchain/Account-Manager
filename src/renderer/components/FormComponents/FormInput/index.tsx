@@ -4,7 +4,7 @@ import {ErrorMessage, Field, useFormikContext} from 'formik';
 
 import {Input, InputProps} from '@renderer/components/FormElements';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
-import {FormComponentBaseProps} from '@renderer/types/inputs';
+import {FormComponentBaseProps} from '@renderer/types/forms';
 
 type ComponentProps = FormComponentBaseProps<InputProps>;
 
