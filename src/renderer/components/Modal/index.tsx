@@ -16,51 +16,35 @@ export interface ModalButtonProps extends FormButtonProps {
   content: ReactNode;
 }
 
-// Usage Guide
-// --
-// use `header` or `title` prop to render the header
-// use 'footer' or ( 'submitButtonContent' | 'cancelButtonContent' ) prop to render the footer
-// --
 interface ModalProps {
   cancelButton?: ModalButtonProps;
   className?: string;
+  close(): void;
+  displayCancelButton?: boolean;
+  displaySubmitButton?: boolean;
   footer?: ReactNode;
   header?: ReactNode;
-  hideCancelButton?: boolean;
-  hideSubmitButton?: boolean;
   initialValues?: GenericFormValues;
   onSubmit: GenericFunction;
-  open: boolean;
-  close(): void;
   style?: CSSProperties;
-  submitting?: boolean;
   submitButton?: ModalButtonProps;
-  title?: string;
+  submitting?: boolean;
 }
-
-const defaultModalStyle: CSSProperties = {
-  left: '50%',
-  top: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 324,
-};
 
 const Modal: FC<ModalProps> = ({
   cancelButton,
   children,
   className,
   close,
+  displayCancelButton = true,
+  displaySubmitButton = true,
   footer,
   header,
-  hideCancelButton = false,
-  hideSubmitButton = false,
   initialValues = {},
   onSubmit,
-  open,
-  style = defaultModalStyle,
-  submitting = false,
+  style = {},
   submitButton,
-  title,
+  submitting = false,
 }) => {
   const ignoreDirty = useMemo<boolean>(() => Object.keys(initialValues).length === 0, [initialValues]);
   const cancelProps = useMemo<ModalButtonProps>(
@@ -94,7 +78,7 @@ const Modal: FC<ModalProps> = ({
   const renderDefaultFooter = (): ReactNode => {
     return (
       <>
-        {!hideCancelButton && (
+        {displayCancelButton && (
           <FormButton
             className={clsx('Modal__default-cancel', cancelProps.className)}
             color={cancelProps.color}
@@ -108,7 +92,7 @@ const Modal: FC<ModalProps> = ({
             {cancelProps.content}
           </FormButton>
         )}
-        {!hideSubmitButton && (
+        {displaySubmitButton && (
           <FormButton
             className={clsx('Modal__default-submit', submitProps.className)}
             color={submitProps.color}
@@ -126,24 +110,22 @@ const Modal: FC<ModalProps> = ({
     );
   };
 
-  return open
-    ? createPortal(
-        <>
-          <div className={clsx('Modal__overlay', {submitting})} onClick={submitting ? noop : close} />
-          <div className={clsx('Modal', className)} style={style}>
-            <div className="Modal__header">
-              {header || <h2>{title}</h2>}
-              <Icon className={clsx('Icon__close', {submitting})} disabled={submitting} icon="close" onClick={close} />
-            </div>
-            <Form initialValues={initialValues} onSubmit={onSubmit}>
-              <div className="Modal__content">{children}</div>
-              <div className="Modal__footer">{footer || renderDefaultFooter()}</div>
-            </Form>
-          </div>
-        </>,
-        document.getElementById('modal-root')!,
-      )
-    : null;
+  return createPortal(
+    <>
+      <div className={clsx('Modal__overlay', {submitting})} onClick={submitting ? noop : close} />
+      <div className={clsx('Modal', className)} style={style}>
+        <div className="Modal__header">
+          {typeof header === 'string' ? <h2>{header}</h2> : header}
+          <Icon className={clsx('Icon__close', {submitting})} disabled={submitting} icon="close" onClick={close} />
+        </div>
+        <Form initialValues={initialValues} onSubmit={onSubmit}>
+          <div className="Modal__content">{children}</div>
+          <div className="Modal__footer">{footer || renderDefaultFooter()}</div>
+        </Form>
+      </div>
+    </>,
+    document.getElementById('modal-root')!,
+  );
 };
 
 export default Modal;

@@ -9,14 +9,13 @@ import './EditBankModal.scss';
 
 interface ComponentProps {
   close(): void;
-  open: boolean;
 }
 
 const initialValues = {name: '', type: ''};
 
 type Values = typeof initialValues;
 
-const EditBankModal: FC<ComponentProps> = ({close, open}) => {
+const EditBankModal: FC<ComponentProps> = ({close}) => {
   const [submitting, , setSubmittingTrue, setSubmittingFalse] = useBooleanState(false);
 
   const handleSubmit = (values: Values) => {
@@ -63,9 +62,8 @@ const EditBankModal: FC<ComponentProps> = ({close, open}) => {
       header={renderHeader()}
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      open={open}
       submitting={submitting}
-      style={{left: '100px', top: '30px', width: 500}}
+      style={{left: '100px', top: '30px', transform: 'none', width: 500}}
     >
       <p>
         Here is a bs form. Most of the modal's logic can be contained in a component like this, instead of polluting the

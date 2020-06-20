@@ -8,10 +8,14 @@
 }
 
 .Modal {
+  background: var(--color-white);
   border-radius: 3px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  background: var(--color-white);
+  left: 50%;
   position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 324px;
 
   &__overlay {
     animation: addOverlay 0.3s forwards;
@@ -62,11 +66,11 @@
   }
 
   &__footer {
-    height: 60px;
-    padding: 0 12px;
-    display: flex;
-    justify-content: flex-end;
     align-items: center;
+    display: flex;
+    height: 60px;
+    justify-content: flex-end;
+    padding: 0 12px;
   }
 
   &__default-submit {

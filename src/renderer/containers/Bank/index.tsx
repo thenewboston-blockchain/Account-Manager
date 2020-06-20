@@ -56,6 +56,30 @@ const Bank = () => {
     </>
   );
 
+  const renderDeleteModal = () => (
+    <Modal
+      cancelButton={{content: 'No'}}
+      className="Bank__DeleteModal"
+      close={toggleDeleteModal}
+      header={
+        <>
+          <Icon className="Icon__warning" icon="warning" />
+          <h2 className="Modal__title">Delete Account</h2>
+        </>
+      }
+      onSubmit={handleDeleteAccountFromModal}
+      submitButton={{content: 'Yes'}}
+      submitting={submittingDeleteModal}
+    >
+      <>
+        <span className="delete-warning-span">Warning: </span> If you delete your account, you will lose all the points
+        in your account as well as your signing key. Are you sure you want to delete your account?
+      </>
+    </Modal>
+  );
+
+  const renderEditBankModal = () => <EditBankModal close={toggleEditModal} />;
+
   const renderLeftTools = () => {
     return (
       <>
@@ -106,39 +130,19 @@ const Bank = () => {
     </>
   );
 
+  const renderUnregisterBankModal = () => (
+    <Modal close={toggleUnregisterBankModal} header="Unregister Bank" onSubmit={toggleUnregisterBankModal}>
+      Here is the modal used very minimally. It is using most of modal's defaults, and it's not using any custom header
+      or footer
+    </Modal>
+  );
+
   return (
     <div className="Bank">
       <PageLayout content={renderContent()} top={renderTop()} />
-      <Modal
-        cancelButton={{content: 'No'}}
-        className="Bank__DeleteModal"
-        close={toggleDeleteModal}
-        header={
-          <>
-            <Icon className="Icon__warning" icon="warning" />
-            <h2 className="Modal__title">Delete Account</h2>
-          </>
-        }
-        onSubmit={handleDeleteAccountFromModal}
-        open={deleteModalIsOpen}
-        submitButton={{content: 'Yes'}}
-        submitting={submittingDeleteModal}
-      >
-        <>
-          <span className="delete-warning-span">Warning: </span> If you delete your account, you will lose all the
-          points in your account as well as your signing key. Are you sure you want to delete your account?
-        </>
-      </Modal>
-      <Modal
-        onSubmit={toggleUnregisterBankModal}
-        open={unregisterBankModalIsOpen}
-        close={toggleUnregisterBankModal}
-        title="Unregister Bank"
-      >
-        Here is the modal used very minimally. It is using most of modal's defaults, and it's not using any custom
-        header or footer
-      </Modal>
-      <EditBankModal close={toggleEditModal} open={editModalIsOpen} />
+      {deleteModalIsOpen && renderDeleteModal()}
+      {editModalIsOpen && renderEditBankModal()}
+      {unregisterBankModalIsOpen && renderUnregisterBankModal()}
     </div>
   );
 };
