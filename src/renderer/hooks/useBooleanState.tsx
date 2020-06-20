@@ -5,13 +5,10 @@ const useBooleanState = (initialValue: boolean): [boolean, () => void, () => voi
 
   const setFalse = (): void => {
     setState(false);
-    // console.log('STATE', state);
-    // if (state) setState(false);
   };
 
   const setTrue = (): void => {
     setState(true);
-    // if (!state) setState(true);
   };
 
   const toggleState = (): void => {

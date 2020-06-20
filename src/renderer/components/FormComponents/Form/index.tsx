@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
 import {Form as FormikForm, Formik} from 'formik';
-import {GenericFormOnSubmit, GenericFormValues} from '@renderer/types/forms';
+import {GenericFormValues} from '@renderer/types/forms';
 
 interface ComponentProps {
   className?: string;
   initialValues?: GenericFormValues;
-  onSubmit: GenericFormOnSubmit;
+  onSubmit(values: GenericFormValues): void | Promise<any>;
   validationSchema?: any;
 }
 
