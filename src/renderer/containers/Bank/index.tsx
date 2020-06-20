@@ -58,7 +58,7 @@ const Bank = () => {
 
   const renderDeleteModal = () => (
     <Modal
-      cancelButton={{content: 'No'}}
+      cancelButton="No"
       className="Bank__DeleteModal"
       close={toggleDeleteModal}
       header={
@@ -68,7 +68,7 @@ const Bank = () => {
         </>
       }
       onSubmit={handleDeleteAccountFromModal}
-      submitButton={{content: 'Yes'}}
+      submitButton="Yes"
       submitting={submittingDeleteModal}
     >
       <>

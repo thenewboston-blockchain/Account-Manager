@@ -17,7 +17,7 @@ export interface ModalButtonProps extends FormButtonProps {
 }
 
 interface ModalProps {
-  cancelButton?: ModalButtonProps;
+  cancelButton?: ModalButtonProps | string;
   className?: string;
   close(): void;
   displayCancelButton?: boolean;
@@ -27,7 +27,7 @@ interface ModalProps {
   initialValues?: GenericFormValues;
   onSubmit: GenericFunction;
   style?: CSSProperties;
-  submitButton?: ModalButtonProps;
+  submitButton?: ModalButtonProps | string;
   submitting?: boolean;
 }
 
@@ -47,8 +47,18 @@ const Modal: FC<ModalProps> = ({
   submitting = false,
 }) => {
   const ignoreDirty = useMemo<boolean>(() => Object.keys(initialValues).length === 0, [initialValues]);
-  const cancelProps = useMemo<ModalButtonProps>(
-    () => ({
+
+  const cancelProps = useMemo<ModalButtonProps>(() => {
+    if (typeof cancelButton === 'string') {
+      return {
+        content: cancelButton,
+        ignoreDirty,
+        onClick: close,
+        submitting,
+        variant: 'link',
+      };
+    }
+    return {
       className: cancelButton?.className ?? undefined,
       color: cancelButton?.color ?? undefined,
       content: cancelButton?.content ?? 'Cancel',
@@ -58,15 +68,23 @@ const Modal: FC<ModalProps> = ({
       submitting: cancelButton?.submitting ?? submitting,
       type: cancelButton?.type ?? undefined,
       variant: cancelButton?.variant ?? 'link',
-    }),
-    [cancelButton, close, ignoreDirty, submitting],
-  );
+    };
+  }, [cancelButton, close, ignoreDirty, submitting]);
+
   const submitProps = useMemo<ModalButtonProps>(() => {
+    if (typeof submitButton === 'string') {
+      return {
+        content: submitButton,
+        ignoreDirty,
+        submitting,
+        type: 'submit',
+      };
+    }
     return {
       className: submitButton?.className ?? undefined,
       color: submitButton?.color ?? undefined,
       content: submitButton?.content ?? 'Submit',
-      disabled: cancelButton?.disabled ?? undefined,
+      disabled: submitButton?.disabled ?? undefined,
       ignoreDirty: submitButton?.ignoreDirty ?? ignoreDirty,
       onClick: submitButton?.onClick ?? undefined,
       submitting: submitButton?.submitting ?? submitting,
