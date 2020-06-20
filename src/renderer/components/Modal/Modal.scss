@@ -20,6 +20,10 @@
     position: fixed;
     top: 0;
     width: 100vw;
+
+    &.submitting {
+      cursor: wait;
+    }
   }
 
   &__header {
@@ -37,8 +41,17 @@
       transform: translateY(-50%);
       transition: color 0.3s;
 
-      &:hover {
+      &:hover:not(.disabled) {
         color: var(--color-danger);
+      }
+
+      &.disabled {
+        color: var(--color-primary-disabled);
+        cursor: not-allowed;
+      }
+
+      &.submitting {
+        cursor: wait;
       }
     }
   }
@@ -56,7 +69,7 @@
     align-items: center;
   }
 
-  &__default-cancel {
-    margin-right: 12px;
+  &__default-submit {
+    margin-left: 12px;
   }
 }

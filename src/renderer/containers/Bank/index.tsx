@@ -1,8 +1,9 @@
 import React from 'react';
-import noop from 'lodash/noop';
 
 import {Button} from '@renderer/components/FormElements';
 import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import EditBankModal from '@renderer/containers/Bank/EditBankModal';
+import Icon from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';
@@ -14,19 +15,17 @@ import TrustBadge from '@renderer/components/TrustBadge';
 import useBooleanState from '@renderer/hooks/useBooleanState';
 
 import './Bank.scss';
-import Icon from '@renderer/components/Icon';
 
 const Bank = () => {
+  const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
-
-  console.log('DELETE MODAL', deleteModalIsOpen);
+  const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
+  const [unregisterBankModalIsOpen, toggleUnregisterBankModal] = useBooleanState(false);
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
       label: 'Edit',
-      onClick: () => {
-        console.log('YO');
-      },
+      onClick: toggleEditModal,
     },
     {
       label: 'Delete Account',
@@ -34,9 +33,21 @@ const Bank = () => {
     },
     {
       label: 'Unregister Bank',
-      onClick: noop,
+      onClick: toggleUnregisterBankModal,
     },
   ];
+
+  const handleDeleteAccountFromModal = async (): Promise<void> => {
+    try {
+      setSubmittingDeleteModalTrue();
+      setTimeout(() => {
+        setSubmittingDeleteModalFalse();
+        toggleDeleteModal();
+      }, 1000);
+    } catch (error) {
+      console.log('ERROR', error);
+    }
+  };
 
   const renderContent = () => (
     <>
@@ -99,7 +110,7 @@ const Bank = () => {
     <div className="Bank">
       <PageLayout content={renderContent()} top={renderTop()} />
       <Modal
-        cancelButtonContent="No"
+        cancelButton={{content: 'No'}}
         className="Bank__DeleteModal"
         close={toggleDeleteModal}
         header={
@@ -108,12 +119,26 @@ const Bank = () => {
             <h2 className="Modal__title">Delete Account</h2>
           </>
         }
+        onSubmit={handleDeleteAccountFromModal}
         open={deleteModalIsOpen}
-        onSubmit={() => console.log('HEY HO')}
-        submitButtonContent="Yes"
+        submitButton={{content: 'Yes'}}
+        submitting={submittingDeleteModal}
       >
-        <>YO</>
+        <>
+          <span className="delete-warning-span">Warning: </span> If you delete your account, you will lose all the
+          points in your account as well as your signing key. Are you sure you want to delete your account?
+        </>
       </Modal>
+      <Modal
+        onSubmit={toggleUnregisterBankModal}
+        open={unregisterBankModalIsOpen}
+        close={toggleUnregisterBankModal}
+        title="Unregister Bank"
+      >
+        Here is the modal used very minimally. It is using most of modal's defaults, and it's not using any custom
+        header or footer
+      </Modal>
+      <EditBankModal close={toggleEditModal} open={editModalIsOpen} />
     </div>
   );
 };

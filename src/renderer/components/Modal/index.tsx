@@ -1,12 +1,20 @@
-import React, {CSSProperties, FC, ReactNode} from 'react';
+import React, {CSSProperties, FC, ReactNode, useMemo} from 'react';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
+import noop from 'lodash/noop';
 
-import {Form, FormButton} from '@renderer/components/FormComponents';
+import {Form, FormButton, FormButtonProps} from '@renderer/components/FormComponents';
 import Icon from '@renderer/components/Icon';
-import {GenericFormOnSubmit, GenericFormValues} from '@renderer/types/forms';
+import Loader from '@renderer/components/FormElements/Loader';
+
+import {GenericFormValues} from '@renderer/types/forms';
+import {GenericFunction} from '@renderer/types/generic';
 
 import './Modal.scss';
+
+export interface ModalButtonProps extends FormButtonProps {
+  content: ReactNode;
+}
 
 // Usage Guide
 // --
@@ -14,20 +22,23 @@ import './Modal.scss';
 // use 'footer' or ( 'submitButtonContent' | 'cancelButtonContent' ) prop to render the footer
 // --
 interface ModalProps {
-  cancelButtonContent?: ReactNode;
+  cancelButton?: ModalButtonProps;
   className?: string;
   footer?: ReactNode;
   header?: ReactNode;
+  hideCancelButton?: boolean;
+  hideSubmitButton?: boolean;
   initialValues?: GenericFormValues;
-  onSubmit: GenericFormOnSubmit;
+  onSubmit: GenericFunction;
   open: boolean;
   close(): void;
   style?: CSSProperties;
-  submitButtonContent?: ReactNode;
+  submitting?: boolean;
+  submitButton?: ModalButtonProps;
   title?: string;
 }
 
-const defaultStyle: CSSProperties = {
+const defaultModalStyle: CSSProperties = {
   left: '50%',
   top: '50%',
   transform: 'translate(-50%, -50%)',
@@ -35,29 +46,82 @@ const defaultStyle: CSSProperties = {
 };
 
 const Modal: FC<ModalProps> = ({
-  cancelButtonContent = 'Cancel',
+  cancelButton,
   children,
   className,
   close,
   footer,
   header,
+  hideCancelButton = false,
+  hideSubmitButton = false,
   initialValues = {},
   onSubmit,
   open,
-  style = defaultStyle,
-  submitButtonContent = 'Submit',
+  style = defaultModalStyle,
+  submitting = false,
+  submitButton,
   title,
 }) => {
-  const renderDefaultFooter = () => {
-    const ignoreDirty = Object.keys(initialValues).length === 0;
+  const ignoreDirty = useMemo<boolean>(() => Object.keys(initialValues).length === 0, [initialValues]);
+  const cancelProps = useMemo<ModalButtonProps>(
+    () => ({
+      className: cancelButton?.className ?? undefined,
+      color: cancelButton?.color ?? undefined,
+      content: cancelButton?.content ?? 'Cancel',
+      disabled: cancelButton?.disabled ?? undefined,
+      ignoreDirty: cancelButton?.ignoreDirty ?? ignoreDirty,
+      onClick: cancelButton?.onClick ?? close,
+      submitting: cancelButton?.submitting ?? submitting,
+      type: cancelButton?.type ?? undefined,
+      variant: cancelButton?.variant ?? 'link',
+    }),
+    [cancelButton, close, ignoreDirty, submitting],
+  );
+  const submitProps = useMemo<ModalButtonProps>(() => {
+    return {
+      className: submitButton?.className ?? undefined,
+      color: submitButton?.color ?? undefined,
+      content: submitButton?.content ?? 'Submit',
+      disabled: cancelButton?.disabled ?? undefined,
+      ignoreDirty: submitButton?.ignoreDirty ?? ignoreDirty,
+      onClick: submitButton?.onClick ?? undefined,
+      submitting: submitButton?.submitting ?? submitting,
+      type: submitButton?.type ?? 'submit',
+      variant: submitButton?.variant ?? undefined,
+    };
+  }, [ignoreDirty, submitButton, submitting]);
+
+  const renderDefaultFooter = (): ReactNode => {
     return (
       <>
-        <FormButton className="Modal__default-cancel" ignoreDirty={ignoreDirty} onClick={close} variant="link">
-          {cancelButtonContent}
-        </FormButton>
-        <FormButton className="Modal__default-submit" ignoreDirty={ignoreDirty} type="submit">
-          {submitButtonContent}
-        </FormButton>
+        {!hideCancelButton && (
+          <FormButton
+            className={clsx('Modal__default-cancel', cancelProps.className)}
+            color={cancelProps.color}
+            disabled={cancelProps.disabled}
+            ignoreDirty={cancelProps.ignoreDirty}
+            onClick={cancelProps.onClick}
+            submitting={cancelProps.submitting}
+            type={cancelProps.type}
+            variant={cancelProps.variant}
+          >
+            {cancelProps.content}
+          </FormButton>
+        )}
+        {!hideSubmitButton && (
+          <FormButton
+            className={clsx('Modal__default-submit', submitProps.className)}
+            color={submitProps.color}
+            disabled={submitProps.disabled}
+            ignoreDirty={submitProps.ignoreDirty}
+            onClick={submitProps.onClick}
+            submitting={submitProps.submitting}
+            type={submitProps.type}
+            variant={submitProps.variant}
+          >
+            {submitting ? <Loader /> : submitProps.content}
+          </FormButton>
+        )}
       </>
     );
   };
@@ -65,11 +129,11 @@ const Modal: FC<ModalProps> = ({
   return open
     ? createPortal(
         <>
-          <div className="Modal__overlay" onClick={close} />
+          <div className={clsx('Modal__overlay', {submitting})} onClick={submitting ? noop : close} />
           <div className={clsx('Modal', className)} style={style}>
             <div className="Modal__header">
               {header || <h2>{title}</h2>}
-              <Icon className="Icon__close" icon="close" onClick={close} />
+              <Icon className={clsx('Icon__close', {submitting})} disabled={submitting} icon="close" onClick={close} />
             </div>
             <Form initialValues={initialValues} onSubmit={onSubmit}>
               <div className="Modal__content">{children}</div>

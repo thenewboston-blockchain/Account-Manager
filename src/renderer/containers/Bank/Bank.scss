@@ -11,4 +11,10 @@
   .Modal__title {
     color: var(--color-danger);
   }
+
+  .delete-warning-span {
+    color: var(--color-danger);
+    font-weight: bold;
+    text-transform: uppercase;
+  }
 }

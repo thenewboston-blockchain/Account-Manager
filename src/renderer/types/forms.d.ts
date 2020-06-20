@@ -8,8 +8,6 @@ export interface GenericFormValues {
   [fieldName: string]: boolean | string;
 }
 
-export type GenericFormOnSubmit = (values?: GenericFormValues) => void | Promise<void>;
-
 export interface SelectOption {
   label: string;
   value: string;

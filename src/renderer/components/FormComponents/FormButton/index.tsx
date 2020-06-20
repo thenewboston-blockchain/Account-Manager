@@ -2,12 +2,12 @@ import React, {FC, useMemo} from 'react';
 import {useFormikContext} from 'formik';
 import {Button, ButtonProps} from '@renderer/components/FormElements';
 
-interface ComponentProps extends ButtonProps {
+export interface FormButtonProps extends ButtonProps {
   ignoreDirty?: boolean;
   submitting?: boolean;
 }
 
-const FormButton: FC<ComponentProps> = ({
+const FormButton: FC<FormButtonProps> = ({
   children,
   className,
   color,
