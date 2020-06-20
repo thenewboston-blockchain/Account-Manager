@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
-import {SelectOption} from '@renderer/types/inputs';
+import {SelectOption} from '@renderer/types/forms';
 
 import './Connect.scss';
 

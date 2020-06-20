@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
 
-type IconType = 'add' | 'arrow_back' | 'arrow_forward' | 'more_vert' | 'play_arrow';
+type IconType = 'add' | 'arrow_back' | 'arrow_forward' | 'close' | 'more_vert' | 'play_arrow' | 'warning';
 
 interface ComponentProps {
   className?: string;

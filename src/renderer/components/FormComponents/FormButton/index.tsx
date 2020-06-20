@@ -3,14 +3,16 @@ import {useFormikContext} from 'formik';
 import {Button, ButtonProps} from '@renderer/components/FormElements';
 
 interface ComponentProps extends ButtonProps {
+  ignoreDirty?: boolean;
   submitting?: boolean;
 }
 
 const FormButton: FC<ComponentProps> = ({
-  className,
   children,
+  className,
   color,
   disabled = false,
+  ignoreDirty = false,
   onClick,
   submitting = false,
   type = 'button',
@@ -21,9 +23,9 @@ const FormButton: FC<ComponentProps> = ({
   const buttonIsDisabled = useMemo(() => {
     switch (type) {
       case 'submit':
-        return disabled || !dirty || !isValid || submitting;
+        return disabled || (!ignoreDirty && !dirty) || !isValid || submitting;
       case 'reset':
-        return disabled || !dirty || submitting;
+        return disabled || (!ignoreDirty && !dirty) || submitting;
       default:
         return disabled || submitting;
     }

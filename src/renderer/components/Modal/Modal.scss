@@ -1,0 +1,62 @@
+@keyframes addOverlay {
+  from {
+    background: rgba(0, 0, 0, 0);
+  }
+  to {
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.Modal {
+  border-radius: 3px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  background: var(--color-white);
+  position: fixed;
+
+  &__overlay {
+    animation: addOverlay 0.3s forwards;
+    height: 100vh;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+  }
+
+  &__header {
+    align-items: center;
+    display: flex;
+    height: 48px;
+    padding: 0 12px;
+    position: relative;
+
+    .Icon__close {
+      cursor: pointer;
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: color 0.3s;
+
+      &:hover {
+        color: var(--color-danger);
+      }
+    }
+  }
+
+  &__content {
+    background: var(--color-gray-6);
+    padding: 12px;
+  }
+
+  &__footer {
+    height: 60px;
+    padding: 0 12px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  &__default-cancel {
+    margin-right: 12px;
+  }
+}

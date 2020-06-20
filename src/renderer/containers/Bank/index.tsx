@@ -3,6 +3,7 @@ import noop from 'lodash/noop';
 
 import {Button} from '@renderer/components/FormElements';
 import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import Modal from '@renderer/components/Modal';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';
 import PageTable from '@renderer/containers/PageTable';
@@ -10,9 +11,16 @@ import PageTabs from '@renderer/components/PageTabs';
 import Pagination from '@renderer/components/Pagination';
 import TrustBadge from '@renderer/components/TrustBadge';
 
+import useBooleanState from '@renderer/hooks/useBooleanState';
+
 import './Bank.scss';
+import Icon from '@renderer/components/Icon';
 
 const Bank = () => {
+  const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
+
+  console.log('DELETE MODAL', deleteModalIsOpen);
+
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
       label: 'Edit',
@@ -22,7 +30,7 @@ const Bank = () => {
     },
     {
       label: 'Delete Account',
-      onClick: noop,
+      onClick: toggleDeleteModal,
     },
     {
       label: 'Unregister Bank',
@@ -90,6 +98,22 @@ const Bank = () => {
   return (
     <div className="Bank">
       <PageLayout content={renderContent()} top={renderTop()} />
+      <Modal
+        cancelButtonContent="No"
+        className="Bank__DeleteModal"
+        close={toggleDeleteModal}
+        header={
+          <>
+            <Icon className="Icon__warning" icon="warning" />
+            <h2 className="Modal__title">Delete Account</h2>
+          </>
+        }
+        open={deleteModalIsOpen}
+        onSubmit={() => console.log('HEY HO')}
+        submitButtonContent="Yes"
+      >
+        <>YO</>
+      </Modal>
     </div>
   );
 };
