@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 
-import Modal from '@renderer/components/Modal';
-import useBooleanState from '@renderer/hooks/useBooleanState';
 import Icon from '@renderer/components/Icon';
+import Modal from '@renderer/components/Modal';
 import {FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
+import useBooleanState from '@renderer/hooks/useBooleanState';
 import {SelectOption} from '@renderer/types/forms';
 
 import './EditBankModal.scss';

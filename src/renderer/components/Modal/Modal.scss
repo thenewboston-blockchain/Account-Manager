@@ -1,3 +1,6 @@
+$modal-header-height: 48px;
+$modal-footer-height: 60px;
+
 @keyframes addOverlay {
   from {
     background: rgba(0, 0, 0, 0);
@@ -36,7 +39,7 @@
   &__header {
     align-items: center;
     display: flex;
-    height: 48px;
+    height: $modal-header-height;
     padding: 0 12px;
     position: relative;
 
@@ -65,13 +68,15 @@
 
   &__content {
     background: var(--color-gray-6);
+    max-height: calc(85vh - #{$modal-header-height} - #{$modal-footer-height});
+    overflow-y: auto;
     padding: 12px;
   }
 
   &__footer {
     align-items: center;
     display: flex;
-    height: 60px;
+    height: $modal-footer-height;
     justify-content: flex-end;
     padding: 0 12px;
   }
