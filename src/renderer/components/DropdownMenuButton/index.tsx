@@ -1,4 +1,5 @@
-import React, {FC, ReactNode, useCallback, useEffect, useRef} from 'react';
+import React, {CSSProperties, FC, ReactNode, useCallback, useEffect, useRef, useState} from 'react';
+import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
 
@@ -18,9 +19,12 @@ interface ComponentProps {
   options: DropdownMenuOption[];
 }
 
+const dropdownRoot = document.getElementById('dropdown-root')!;
+
 const DropdownMenuButton: FC<ComponentProps> = ({options}) => {
-  const componentRef = useRef<HTMLDivElement>(null);
+  const iconRef = useRef<HTMLSpanElement>(null);
   const [open, toggleOpen, , closeMenu] = useBooleanState(false);
+  const [dropdownPositionStyle, setDropdownPositionStyle] = useState<CSSProperties | undefined>(undefined);
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClick);
@@ -30,13 +34,21 @@ const DropdownMenuButton: FC<ComponentProps> = ({options}) => {
   }, [open]);
 
   const handleClick = useCallback(
-    (e: MouseEvent): void => {
-      if (!componentRef.current?.contains(e.target as any)) {
+    (e: any): void => {
+      if (!dropdownRoot.contains(e.target) && !iconRef.current?.contains(e.target)) {
         closeMenu();
       }
     },
     [open],
   );
+
+  const handleOpenDropdown = () => {
+    if (iconRef.current) {
+      const {left, bottom, width} = iconRef.current.getBoundingClientRect();
+      setDropdownPositionStyle({left: left + width / 2, top: bottom + 3});
+      toggleOpen();
+    }
+  };
 
   const handleOptionClick = (optionOnClick: GenericVoidFunction) => async (): Promise<void> => {
     await optionOnClick();
@@ -44,24 +56,26 @@ const DropdownMenuButton: FC<ComponentProps> = ({options}) => {
   };
 
   return (
-    <div className="DropdownMenuButton" ref={componentRef}>
-      <Icon icon="more_vert" onClick={toggleOpen} />
-      {open && (
-        <div className="DropdownMenuButton__menu">
-          {options.map(({disabled, label, onClick: optionOnClick}, i) => {
-            return (
-              <div
-                className={clsx('DropdownMenuButton__option', {disabled})}
-                key={i}
-                onClick={disabled ? noop : handleOptionClick(optionOnClick)}
-              >
-                {label}
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
+    <>
+      <Icon className="DropdownMenuButton" icon="more_vert" onClick={handleOpenDropdown} ref={iconRef} />
+      {open &&
+        createPortal(
+          <div className="DropdownMenuButton__menu" style={dropdownPositionStyle}>
+            {options.map(({disabled, label, onClick: optionOnClick}, i) => {
+              return (
+                <div
+                  className={clsx('DropdownMenuButton__option', {disabled})}
+                  key={i}
+                  onClick={disabled ? noop : handleOptionClick(optionOnClick)}
+                >
+                  {label}
+                </div>
+              );
+            })}
+          </div>,
+          dropdownRoot,
+        )}
+    </>
   );
 };
 

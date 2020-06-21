@@ -1,33 +1,25 @@
 $button-height: 24px;
 
 .DropdownMenuButton {
-  align-items: center;
-  display: flex;
-  height: $button-height;
-  position: relative;
+  cursor: pointer;
+  transition: color 0.3s;
 
-  .Icon {
-    cursor: pointer;
-    transition: color 0.3s;
-
-    &:hover,
-    &.active {
-      color: var(--color-primary);
-    }
+  &:hover,
+  &.active {
+    color: var(--color-primary);
   }
+}
 
-  &__menu {
+#dropdown-root {
+  .DropdownMenuButton__menu {
     background: var(--color-white);
     border-radius: 3px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-    left: 9px;
     padding: 6px 0;
-    position: absolute;
-    top: $button-height + 3px;
-    z-index: 100;
+    position: fixed;
   }
 
-  &__option {
+  .DropdownMenuButton__option {
     align-items: center;
     display: flex;
     height: 30px;

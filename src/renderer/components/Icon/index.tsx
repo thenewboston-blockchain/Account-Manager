@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {forwardRef} from 'react';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
 
@@ -11,12 +11,12 @@ interface ComponentProps {
   onClick?(e: React.MouseEvent<HTMLSpanElement, MouseEvent>): void;
 }
 
-const Icon: FC<ComponentProps> = ({className, disabled, icon, onClick}) => {
+const Icon = forwardRef<HTMLSpanElement, ComponentProps>(({className, disabled, icon, onClick}, ref) => {
   return (
-    <span className={clsx('Icon material-icons', {disabled}, className)} onClick={disabled ? noop : onClick}>
+    <span className={clsx('Icon material-icons', {disabled}, className)} onClick={disabled ? noop : onClick} ref={ref}>
       {icon}
     </span>
   );
-};
+});
 
 export default Icon;
