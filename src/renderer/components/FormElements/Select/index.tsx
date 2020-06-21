@@ -35,6 +35,7 @@ const Select: FC<SelectProps> = ({
       className={clsx('Select', {error}, className)}
       classNamePrefix="Select"
       isSearchable={isSearchable}
+      menuPortalTarget={document.getElementById('dropdown-root')}
       name={name}
       onBlur={onBlur}
       onChange={onChange}
