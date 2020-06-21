@@ -78,8 +78,6 @@ const Bank = () => {
     </Modal>
   );
 
-  const renderEditBankModal = () => <EditBankModal close={toggleEditModal} />;
-
   const renderLeftTools = () => {
     return (
       <>
@@ -141,7 +139,7 @@ const Bank = () => {
     <div className="Bank">
       <PageLayout content={renderContent()} top={renderTop()} />
       {deleteModalIsOpen && renderDeleteModal()}
-      {editModalIsOpen && renderEditBankModal()}
+      {editModalIsOpen && <EditBankModal close={toggleEditModal} />}
       {unregisterBankModalIsOpen && renderUnregisterBankModal()}
     </div>
   );
