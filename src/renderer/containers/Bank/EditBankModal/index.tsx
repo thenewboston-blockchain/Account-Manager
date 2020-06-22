@@ -7,6 +7,7 @@ import useBooleanState from '@renderer/hooks/useBooleanState';
 import {SelectOption} from '@renderer/types/forms';
 
 import './EditBankModal.scss';
+import {FormatOptionLabelMeta} from 'react-select/base';
 
 interface ComponentProps {
   close(): void;
@@ -25,7 +26,43 @@ const selectFieldOptions: SelectOption[] = [
   'pikachu',
 ].map((poke) => ({label: poke[0].toUpperCase() + poke.slice(1), value: poke}));
 
+interface CustomSelectOption extends SelectOption {
+  nickname: string;
+}
+
+const formatOptionLabel = (
+  {value, label, nickname}: CustomSelectOption,
+  {context}: FormatOptionLabelMeta<CustomSelectOption>,
+) => {
+  if (context === 'value') return label;
+  return (
+    <div className="CustomOption">
+      <div className="CustomOption__nickname">{nickname}</div>
+      <div className="CustomOption__label">{value}</div>
+    </div>
+  );
+};
+
+const accountOptions: CustomSelectOption[] = [
+  {
+    label: 'Donations (0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb)',
+    nickname: 'Donations',
+    value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acda',
+  },
+  {
+    label: 'Personal (0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb)',
+    value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
+    nickname: 'Personal',
+  },
+  {
+    label: 'Validator Income (0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb)',
+    value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdc',
+    nickname: 'Validator Income',
+  },
+];
+
 const initialValues = {
+  account: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acda',
   name: '',
   type: '',
   selectField: selectFieldOptions[0].value,
@@ -114,7 +151,8 @@ const EditBankModal: FC<ComponentProps> = ({close}) => {
       ))}
       <FormInput label="Question 1" name="question1" />
       <FormInput label="Type" name="type" />
-      <FormSelect label="Pokemon" options={selectFieldOptions} name="selectField" />
+      {/*<FormSelect label="Pokemon" options={selectFieldOptions} name="selectField" />*/}
+      <FormSelect formatOptionLabel={formatOptionLabel} label="From: Account" options={accountOptions} name="account" />
     </Modal>
   );
 };

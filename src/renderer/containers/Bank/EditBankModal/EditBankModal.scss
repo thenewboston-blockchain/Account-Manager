@@ -7,3 +7,15 @@
     flex: 1;
   }
 }
+
+.CustomOption {
+  margin: 6px 0;
+
+  &__nickname {
+    color: var(--color-gray-3);
+  }
+
+  &__label {
+    word-break: break-all;
+  }
+}

@@ -1,27 +1,31 @@
-import React, {FC} from 'react';
-import ReactSelect, {ActionMeta, FocusEventHandler} from 'react-select';
+import React, {FC, ReactNode} from 'react';
+import ReactSelect, {ActionMeta, FocusEventHandler, FormatOptionLabelMeta, OptionTypeBase} from 'react-select';
 import {ValueType} from 'react-select/src/types';
 import clsx from 'clsx';
 
-import {SelectOption} from '@renderer/types/forms';
+import {CustomSelectOption} from '@renderer/types/forms';
+
+export type GenericOptionType = CustomSelectOption<OptionTypeBase>;
 
 import './Select.scss';
 
 export interface SelectProps {
   className?: string;
   error?: boolean;
+  formatOptionLabel?(option: GenericOptionType, labelMeta: FormatOptionLabelMeta<GenericOptionType>): ReactNode;
   isSearchable?: boolean;
   name?: string;
   onBlur?: FocusEventHandler;
-  onChange?(value: ValueType<SelectOption>, actionMeta?: ActionMeta<SelectOption>): void;
-  options: SelectOption[];
+  onChange?(value: ValueType<GenericOptionType>, actionMeta?: ActionMeta<GenericOptionType>): void;
+  options: GenericOptionType[];
   placeholder?: string;
-  value: SelectOption | null;
+  value: GenericOptionType | null;
 }
 
 const Select: FC<SelectProps> = ({
   className,
   error,
+  formatOptionLabel,
   isSearchable = true,
   options,
   name,
@@ -34,6 +38,8 @@ const Select: FC<SelectProps> = ({
     <ReactSelect
       className={clsx('Select', {error}, className)}
       classNamePrefix="Select"
+      formatOptionLabel={formatOptionLabel}
+      menuIsOpen
       isSearchable={isSearchable}
       menuPortalTarget={document.getElementById('dropdown-root')}
       name={name}
