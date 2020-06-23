@@ -30,30 +30,13 @@ const formatOptionLabel = ({value, label}: SelectOption, {context}: FormatOption
   );
 };
 
-const DetailedSelect: FC<DetailedSelect> = ({
-  className,
-  error,
-  isSearchable,
-  options,
-  name,
-  onBlur,
-  onChange,
-  placeholder,
-  value,
-}) => {
+const DetailedSelect: FC<DetailedSelect> = ({className, ...SelectProps}) => {
   return (
     <Select
       className={clsx('DetailedSelect', className)}
-      error={error}
       filterOption={filterOption}
       formatOptionLabel={formatOptionLabel}
-      isSearchable={isSearchable}
-      options={options}
-      name={name}
-      onBlur={onBlur}
-      onChange={onChange}
-      placeholder={placeholder}
-      value={value}
+      {...SelectProps}
     />
   );
 };

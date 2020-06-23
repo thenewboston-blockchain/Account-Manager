@@ -66,6 +66,7 @@ const Connect: FC = () => {
         <FormInput className="Connect__field" label="Port" name="port" type="number" />
         {/* TODO: Delete after PR */}
         <FormDetailedSelect
+          isSearchable={false} // TODO: it works now, no reasons to forget accidently
           options={[
             {label: 'Donations', value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb'},
             {label: 'Personal', value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdc'},
