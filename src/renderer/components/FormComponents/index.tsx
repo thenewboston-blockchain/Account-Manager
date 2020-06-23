@@ -1,7 +1,7 @@
 import Form from './Form';
 import FormButton, {FormButtonProps} from './FormButton';
-import FormDetailedSelect from './FormDetailedSelect';
 import FormInput from './FormInput';
 import FormSelect from './FormSelect';
+import FormSelectDetailed from './FormSelectDetailed';
 
-export {Form, FormButton, FormButtonProps, FormDetailedSelect, FormInput, FormSelect};
+export {Form, FormButton, FormButtonProps, FormInput, FormSelect, FormSelectDetailed};

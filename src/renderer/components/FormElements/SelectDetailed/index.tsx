@@ -5,9 +5,9 @@ import clsx from 'clsx';
 import {Select, SelectProps} from '@renderer/components/FormElements';
 import {SelectOption} from '@renderer/types/forms';
 
-import './DetailedSelect.scss';
+import './SelectDetailed.scss';
 
-type DetailedSelect = SelectProps;
+type SelectDetailed = SelectProps;
 
 const filterOption = ({value, label}: SelectOption, rawInput: string): boolean => {
   const rawInputLowercase = rawInput.toLocaleLowerCase();
@@ -23,14 +23,14 @@ const formatOptionLabel = ({value, label}: SelectOption, {context}: FormatOption
   }
 
   return (
-    <div className="DetailedSelect__option">
-      {label ? <div className="DetailedSelect__option-label">{label}</div> : null}
-      <div className="DetailedSelect__option-value">{value}</div>
+    <div className="SelectDetailed__option">
+      {label ? <div className="SelectDetailed__option-label">{label}</div> : null}
+      <div className="SelectDetailed__option-value">{value}</div>
     </div>
   );
 };
 
-const DetailedSelect: FC<DetailedSelect> = ({
+const SelectDetailed: FC<SelectDetailed> = ({
   className,
   error,
   isSearchable,
@@ -43,7 +43,7 @@ const DetailedSelect: FC<DetailedSelect> = ({
 }) => {
   return (
     <Select
-      className={clsx('DetailedSelect', className)}
+      className={clsx('SelectDetailed', className)}
       error={error}
       filterOption={filterOption}
       formatOptionLabel={formatOptionLabel}
@@ -58,4 +58,4 @@ const DetailedSelect: FC<DetailedSelect> = ({
   );
 };
 
-export default DetailedSelect;
+export default SelectDetailed;
