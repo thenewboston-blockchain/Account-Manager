@@ -2,12 +2,19 @@ import React, {FC} from 'react';
 import {Field} from 'formik';
 import clsx from 'clsx';
 
-import {Input, InputProps} from '@renderer/components/FormElements';
+import {Input} from '@renderer/components/FormElements';
 import useFormContext from '@renderer/hooks/useFormContext';
-import {FormComponentBaseProps} from '@renderer/types/forms';
 import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
 
-type ComponentProps = FormComponentBaseProps<InputProps>;
+type ComponentProps = {
+  className?: string;
+  error?: boolean;
+  label?: string;
+  name: string;
+  placeholder?: string;
+  required?: boolean;
+  type?: 'text' | 'number';
+};
 
 const FormInput: FC<ComponentProps> = ({className, label, name, placeholder, required, type}) => {
   const {error} = useFormContext(name);

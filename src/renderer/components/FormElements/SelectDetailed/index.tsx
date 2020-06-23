@@ -1,13 +1,24 @@
 import React, {FC} from 'react';
-import {FormatOptionLabelMeta} from 'react-select';
+import {ActionMeta, FocusEventHandler, FormatOptionLabelMeta} from 'react-select';
 import clsx from 'clsx';
 
-import {Select, SelectProps} from '@renderer/components/FormElements';
+import {Select} from '@renderer/components/FormElements';
 import {SelectOption} from '@renderer/types/forms';
 
 import './SelectDetailed.scss';
+import {ValueType} from 'react-select/src/types';
 
-type SelectDetailed = SelectProps;
+interface ComponentProps {
+  className?: string;
+  error?: boolean;
+  isSearchable?: boolean;
+  name?: string;
+  onBlur?: FocusEventHandler;
+  onChange?(value: ValueType<SelectOption>, actionMeta?: ActionMeta<SelectOption>): void;
+  options: SelectOption[];
+  placeholder?: string;
+  value?: SelectOption | null;
+}
 
 const filterOption = ({value, label}: SelectOption, rawInput: string): boolean => {
   const rawInputLowercase = rawInput.toLocaleLowerCase();
@@ -30,7 +41,7 @@ const formatOptionLabel = ({value, label}: SelectOption, {context}: FormatOption
   );
 };
 
-const SelectDetailed: FC<SelectDetailed> = ({
+const SelectDetailed: FC<ComponentProps> = ({
   className,
   error,
   isSearchable,

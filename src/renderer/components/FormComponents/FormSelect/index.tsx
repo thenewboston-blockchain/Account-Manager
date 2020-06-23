@@ -1,12 +1,21 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
 
-import {Select, SelectProps} from '@renderer/components/FormElements';
+import {Select} from '@renderer/components/FormElements';
 import useFormSelect from '@renderer/hooks/useFormSelect';
-import {FormComponentBaseProps} from '@renderer/types/forms';
+import {SelectOption} from '@renderer/types/forms';
 import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
 
-type ComponentProps = FormComponentBaseProps<SelectProps>;
+interface ComponentProps {
+  className?: string;
+  error?: boolean;
+  isSearchable?: boolean;
+  label?: string;
+  name: string;
+  options: SelectOption[];
+  placeholder?: string;
+  required?: boolean;
+}
 
 const FormSelect: FC<ComponentProps> = ({className, isSearchable, label, name, required, options, placeholder}) => {
   const {error, handleBlur, handleChange, selectedOption} = useFormSelect(name, options);
