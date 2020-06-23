@@ -7,7 +7,7 @@ import {SelectOption} from '@renderer/types/forms';
 
 import './SelectDetailed.scss';
 
-type SelectDetailed = SelectProps;
+type SelectDetailedProps = SelectProps;
 
 const filterOption = ({value, label}: SelectOption, rawInput: string): boolean => {
   const rawInputLowercase = rawInput.toLocaleLowerCase();
@@ -30,7 +30,7 @@ const formatOptionLabel = ({value, label}: SelectOption, {context}: FormatOption
   );
 };
 
-const SelectDetailed: FC<SelectDetailed> = ({
+const SelectDetailed: FC<SelectDetailedProps> = ({
   className,
   error,
   isSearchable,
