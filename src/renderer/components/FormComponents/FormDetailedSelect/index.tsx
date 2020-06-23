@@ -1,11 +1,10 @@
 import React, {FC} from 'react';
-import {ErrorMessage} from 'formik';
 import clsx from 'clsx';
 
 import {DetailedSelect, SelectProps} from '@renderer/components/FormElements';
-import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import useFormSelect from '@renderer/hooks/useFormSelect';
 import {FormComponentBaseProps} from '@renderer/types/forms';
+import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
 
 type ComponentProps = FormComponentBaseProps<SelectProps>;
 
@@ -22,12 +21,7 @@ const FormDetailedSelect: FC<ComponentProps> = ({
 
   return (
     <div className={clsx('FormDetailedSelect FormFieldComponent', className)}>
-      {label ? (
-        <label htmlFor={name}>
-          {label}
-          {required ? <RequiredAsterisk /> : null}
-        </label>
-      ) : null}
+      {renderFormLabel(name, label, required)}
       <DetailedSelect
         className="FormField"
         error={error}
@@ -39,9 +33,7 @@ const FormDetailedSelect: FC<ComponentProps> = ({
         placeholder={placeholder}
         value={selectedOption}
       />
-      <span className="error">
-        <ErrorMessage name={name} />
-      </span>
+      {renderFormError(name)}
     </div>
   );
 };

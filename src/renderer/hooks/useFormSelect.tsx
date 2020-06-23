@@ -1,10 +1,9 @@
 import React, {useMemo} from 'react';
-import {useFormikContext} from 'formik';
+import useFormContext from '@renderer/hooks/useFormContext';
 import {SelectOption} from '@renderer/types/forms';
 
 const useFormSelect = (name: string, options: SelectOption[]) => {
-  const {errors, setFieldTouched, setFieldValue, touched, values} = useFormikContext<{[name: string]: string}>();
-  const error = !!errors[name] && !!touched[name];
+  const {error, setFieldTouched, setFieldValue, values} = useFormContext(name);
 
   const selectedOption = useMemo(() => {
     const value = values[name];
