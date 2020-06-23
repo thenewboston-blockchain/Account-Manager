@@ -3,7 +3,7 @@ import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
 
-import {Form, FormButton, FormButtonProps} from '@renderer/components/FormComponents';
+import {Form, FormButton} from '@renderer/components/FormComponents';
 import Icon from '@renderer/components/Icon';
 import Loader from '@renderer/components/FormElements/Loader';
 
@@ -12,8 +12,16 @@ import {GenericFunction} from '@renderer/types/generic';
 
 import './Modal.scss';
 
-export interface ModalButtonProps extends FormButtonProps {
+interface ModalButtonProps {
+  className?: string;
+  color?: 'primary' | 'secondary' | 'tertiary';
   content: ReactNode;
+  disabled?: boolean;
+  ignoreDirty?: boolean;
+  onClick?(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
+  submitting?: boolean;
+  type?: 'button' | 'reset' | 'submit';
+  variant?: 'contained' | 'link' | 'outlined';
 }
 
 interface ModalProps {

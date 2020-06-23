@@ -1,13 +1,19 @@
 import React, {FC, useMemo} from 'react';
 import {useFormikContext} from 'formik';
-import {Button, ButtonProps} from '@renderer/components/FormElements';
+import {Button, ComponentProps} from '@renderer/components/FormElements';
 
-export interface FormButtonProps extends ButtonProps {
+export interface ComponentProps {
+  className?: string;
+  color?: 'primary' | 'secondary' | 'tertiary';
+  disabled?: boolean;
   ignoreDirty?: boolean;
+  onClick?(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
   submitting?: boolean;
+  type?: 'button' | 'reset' | 'submit';
+  variant?: 'contained' | 'link' | 'outlined';
 }
 
-const FormButton: FC<FormButtonProps> = ({
+const FormButton: FC<ComponentProps> = ({
   children,
   className,
   color,

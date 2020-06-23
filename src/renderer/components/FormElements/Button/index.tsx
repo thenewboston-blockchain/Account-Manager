@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import './Button.scss';
 
-export interface ButtonProps {
+export interface ComponentProps {
   className?: string;
   color?: 'primary' | 'secondary' | 'tertiary';
   disabled?: boolean;
@@ -12,7 +12,7 @@ export interface ButtonProps {
   variant?: 'contained' | 'link' | 'outlined';
 }
 
-const Button: FC<ButtonProps> = ({
+const Button: FC<ComponentProps> = ({
   children,
   color = 'primary',
   className,
