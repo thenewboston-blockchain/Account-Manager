@@ -13,9 +13,9 @@ const FormDetailedSelect: FC<ComponentProps> = ({
   isSearchable,
   label,
   name,
-  required,
   options,
   placeholder,
+  required,
 }) => {
   const {error, handleBlur, handleChange, selectedOption} = useFormSelect(name, options);
 
@@ -26,10 +26,10 @@ const FormDetailedSelect: FC<ComponentProps> = ({
         className="FormField"
         error={error}
         isSearchable={isSearchable}
-        options={options}
+        name={name}
         onBlur={handleBlur}
         onChange={handleChange}
-        name={name}
+        options={options}
         placeholder={placeholder}
         value={selectedOption}
       />
