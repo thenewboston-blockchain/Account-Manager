@@ -30,10 +30,10 @@ const Select: FC<ExtendedSelectProps> = ({
   filterOption,
   formatOptionLabel,
   isSearchable = true,
-  options,
   name,
   onBlur,
   onChange,
+  options,
   placeholder,
   value,
 }) => {

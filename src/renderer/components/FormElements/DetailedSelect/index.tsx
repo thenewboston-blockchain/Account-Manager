@@ -34,10 +34,10 @@ const DetailedSelect: FC<DetailedSelect> = ({
   className,
   error,
   isSearchable,
-  options,
   name,
   onBlur,
   onChange,
+  options,
   placeholder,
   value,
 }) => {
@@ -48,10 +48,10 @@ const DetailedSelect: FC<DetailedSelect> = ({
       filterOption={filterOption}
       formatOptionLabel={formatOptionLabel}
       isSearchable={isSearchable}
-      options={options}
       name={name}
       onBlur={onBlur}
       onChange={onChange}
+      options={options}
       placeholder={placeholder}
       value={value}
     />

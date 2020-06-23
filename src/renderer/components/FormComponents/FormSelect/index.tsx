@@ -18,10 +18,10 @@ const FormSelect: FC<ComponentProps> = ({className, isSearchable, label, name, r
         className="FormField"
         error={error}
         isSearchable={isSearchable}
-        options={options}
+        name={name}
         onBlur={handleBlur}
         onChange={handleChange}
-        name={name}
+        options={options}
         placeholder={placeholder}
         value={selectedOption}
       />
