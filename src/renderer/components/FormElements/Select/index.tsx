@@ -7,15 +7,18 @@ import {SelectOption} from '@renderer/types/forms';
 
 import './Select.scss';
 
-interface ComponentProps {
+export interface BaseSelectProps {
   className?: string;
   error?: boolean;
   isSearchable?: boolean;
+  options: SelectOption[];
+  placeholder?: string;
+}
+
+interface ComponentProps extends BaseSelectProps {
   name?: string;
   onBlur?: FocusEventHandler;
   onChange?(value: ValueType<SelectOption>, actionMeta?: ActionMeta<SelectOption>): void;
-  options: SelectOption[];
-  placeholder?: string;
   value?: SelectOption | null;
 }
 
