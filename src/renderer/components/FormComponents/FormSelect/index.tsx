@@ -15,7 +15,7 @@ const FormSelect: FC<ComponentProps> = ({className, isSearchable, label, name, r
   const selectedOption = useMemo(() => {
     const value = values[name];
     return options.find((option) => option.value === value) || null;
-  }, [name, values]);
+  }, [name, options, values]);
 
   const handleBlur = (): void => {
     setFieldTouched(name, true);
