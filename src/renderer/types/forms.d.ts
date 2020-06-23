@@ -9,6 +9,6 @@ export interface GenericFormValues {
 }
 
 export interface SelectOption {
-  label: string;
+  label?: string;
   value: string;
 }

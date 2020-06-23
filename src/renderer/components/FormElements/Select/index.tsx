@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import ReactSelect, {ActionMeta, FocusEventHandler} from 'react-select';
+import React, {FC, ReactNode} from 'react';
+import ReactSelect, {ActionMeta, FocusEventHandler, FormatOptionLabelMeta} from 'react-select';
 import {ValueType} from 'react-select/src/types';
 import clsx from 'clsx';
 
@@ -19,9 +19,14 @@ export interface SelectProps {
   value: SelectOption | null;
 }
 
-const Select: FC<SelectProps> = ({
+interface ExtendedSelectProps extends SelectProps {
+  formatOptionLabel?(option: SelectOption, labelMeta: FormatOptionLabelMeta<SelectOption>): ReactNode;
+}
+
+const Select: FC<ExtendedSelectProps> = ({
   className,
   error,
+  formatOptionLabel,
   isSearchable = true,
   options,
   name,
@@ -30,10 +35,14 @@ const Select: FC<SelectProps> = ({
   placeholder,
   value,
 }) => {
+  const getOptionLabel = ({label, value}: SelectOption): string => label || value;
+
   return (
     <ReactSelect
       className={clsx('Select', {error}, className)}
       classNamePrefix="Select"
+      formatOptionLabel={formatOptionLabel}
+      getOptionLabel={getOptionLabel}
       isSearchable={isSearchable}
       menuPortalTarget={document.getElementById('dropdown-root')}
       name={name}

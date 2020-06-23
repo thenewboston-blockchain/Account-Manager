@@ -16,10 +16,7 @@ const initialValues = {
 
 type FormValues = typeof initialValues;
 
-const protocolOptions: SelectOption[] = [
-  {label: 'http', value: 'http'},
-  {label: 'https', value: 'https'},
-];
+const protocolOptions: SelectOption[] = [{value: 'http'}, {value: 'https'}];
 
 const genericIpAddressRegex = /([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(\d{1,3}\.){3}\d{1,3}/;
 
