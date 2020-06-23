@@ -4,19 +4,15 @@ import {ValueType} from 'react-select/src/types';
 import clsx from 'clsx';
 
 import {Select} from '@renderer/components/FormElements';
+import {BaseSelectProps} from '@renderer/components/FormElements/Select';
 import {SelectOption} from '@renderer/types/forms';
 
 import './SelectDetailed.scss';
 
-interface ComponentProps {
-  className?: string;
-  error?: boolean;
-  isSearchable?: boolean;
+interface ComponentProps extends BaseSelectProps {
   name?: string;
   onBlur?: FocusEventHandler;
   onChange?(value: ValueType<SelectOption>, actionMeta?: ActionMeta<SelectOption>): void;
-  options: SelectOption[];
-  placeholder?: string;
   value?: SelectOption | null;
 }
 

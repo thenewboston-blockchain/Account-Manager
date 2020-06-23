@@ -1,16 +1,12 @@
 import React, {FC, useMemo} from 'react';
 import {useFormikContext} from 'formik';
-import {Button} from '@renderer/components/FormElements';
 
-interface ComponentProps {
-  className?: string;
-  color?: 'primary' | 'secondary' | 'tertiary';
-  disabled?: boolean;
+import {Button} from '@renderer/components/FormElements';
+import {BaseButtonProps} from '@renderer/components/FormElements/Button';
+
+interface ComponentProps extends BaseButtonProps {
   ignoreDirty?: boolean;
-  onClick?(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
   submitting?: boolean;
-  type?: 'button' | 'reset' | 'submit';
-  variant?: 'contained' | 'link' | 'outlined';
 }
 
 const FormButton: FC<ComponentProps> = ({
