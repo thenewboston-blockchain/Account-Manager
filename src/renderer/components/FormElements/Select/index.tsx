@@ -16,16 +16,18 @@ export interface SelectProps {
   onChange?(value: ValueType<SelectOption>, actionMeta?: ActionMeta<SelectOption>): void;
   options: SelectOption[];
   placeholder?: string;
-  value: SelectOption | null;
+  value?: SelectOption | null;
 }
 
 interface ExtendedSelectProps extends SelectProps {
+  filterOption?(option: SelectOption, rawInput: string): boolean;
   formatOptionLabel?(option: SelectOption, labelMeta: FormatOptionLabelMeta<SelectOption>): ReactNode;
 }
 
 const Select: FC<ExtendedSelectProps> = ({
   className,
   error,
+  filterOption,
   formatOptionLabel,
   isSearchable = true,
   options,
@@ -41,6 +43,7 @@ const Select: FC<ExtendedSelectProps> = ({
     <ReactSelect
       className={clsx('Select', {error}, className)}
       classNamePrefix="Select"
+      filterOption={filterOption}
       formatOptionLabel={formatOptionLabel}
       getOptionLabel={getOptionLabel}
       isSearchable={isSearchable}
