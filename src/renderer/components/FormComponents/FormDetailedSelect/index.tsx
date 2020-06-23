@@ -10,7 +10,7 @@ type ComponentProps = FormComponentBaseProps<SelectProps>;
 
 const FormDetailedSelect: FC<ComponentProps> = ({
   className,
-  isSearchable,
+  // TODO: OOPS, forgot to add it here
   label,
   name,
   required,
@@ -25,7 +25,6 @@ const FormDetailedSelect: FC<ComponentProps> = ({
       <DetailedSelect
         className="FormField"
         error={error}
-        isSearchable={isSearchable}
         options={options}
         onBlur={handleBlur}
         onChange={handleChange}

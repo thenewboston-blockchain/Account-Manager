@@ -72,6 +72,7 @@ const Connect: FC = () => {
             {label: 'Validator Income', value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdd'},
             {value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acde'},
           ]}
+          isSearchable={false} // TODO: No typescript errors, yet doesn't work
           name="account"
           label="From: Account"
         />

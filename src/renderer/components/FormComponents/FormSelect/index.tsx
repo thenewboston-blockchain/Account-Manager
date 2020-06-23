@@ -8,6 +8,7 @@ import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
 
 type ComponentProps = FormComponentBaseProps<SelectProps>;
 
+// TODO: add it below
 const FormSelect: FC<ComponentProps> = ({className, isSearchable, label, name, required, options, placeholder}) => {
   const {error, handleBlur, handleChange, selectedOption} = useFormSelect(name, options);
 
@@ -17,7 +18,7 @@ const FormSelect: FC<ComponentProps> = ({className, isSearchable, label, name, r
       <Select
         className="FormField"
         error={error}
-        isSearchable={isSearchable}
+        isSearchable={isSearchable} // TODO: add it here
         options={options}
         onBlur={handleBlur}
         onChange={handleChange}

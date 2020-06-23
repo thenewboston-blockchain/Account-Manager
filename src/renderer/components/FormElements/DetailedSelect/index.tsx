@@ -33,7 +33,7 @@ const formatOptionLabel = ({value, label}: SelectOption, {context}: FormatOption
 const DetailedSelect: FC<DetailedSelect> = ({
   className,
   error,
-  isSearchable,
+  isSearchable, // TODO: add it here
   options,
   name,
   onBlur,
@@ -47,7 +47,7 @@ const DetailedSelect: FC<DetailedSelect> = ({
       error={error}
       filterOption={filterOption}
       formatOptionLabel={formatOptionLabel}
-      isSearchable={isSearchable}
+      isSearchable={isSearchable} // TODO: add it here
       options={options}
       name={name}
       onBlur={onBlur}
