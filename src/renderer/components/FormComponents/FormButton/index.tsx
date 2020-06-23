@@ -1,8 +1,8 @@
 import React, {FC, useMemo} from 'react';
 import {useFormikContext} from 'formik';
-import {Button, ComponentProps} from '@renderer/components/FormElements';
+import {Button} from '@renderer/components/FormElements';
 
-export interface ComponentProps {
+interface ComponentProps {
   className?: string;
   color?: 'primary' | 'secondary' | 'tertiary';
   disabled?: boolean;
