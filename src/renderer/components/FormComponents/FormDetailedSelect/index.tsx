@@ -1,10 +1,11 @@
-import React, {FC, useMemo} from 'react';
-import {ErrorMessage, useFormikContext} from 'formik';
+import React, {FC} from 'react';
+import {ErrorMessage} from 'formik';
 import clsx from 'clsx';
 
-import {FormComponentBaseProps, SelectOption} from '@renderer/types/forms';
 import {DetailedSelect, SelectProps} from '@renderer/components/FormElements';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
+import useFormSelect from '@renderer/hooks/useFormSelect';
+import {FormComponentBaseProps} from '@renderer/types/forms';
 
 type ComponentProps = FormComponentBaseProps<SelectProps>;
 
@@ -17,21 +18,7 @@ const FormDetailedSelect: FC<ComponentProps> = ({
   options,
   placeholder,
 }) => {
-  const {errors, setFieldTouched, setFieldValue, touched, values} = useFormikContext<{[name: string]: string}>();
-  const error = !!errors[name] && !!touched[name];
-
-  const selectedOption = useMemo(() => {
-    const value = values[name];
-    return options.find((option) => option.value === value) || null;
-  }, [name, options, values]);
-
-  const handleBlur = (): void => {
-    setFieldTouched(name, true);
-  };
-
-  const handleChange = (option: SelectOption): void => {
-    setFieldValue(name, option.value);
-  };
+  const {error, handleBlur, handleChange, selectedOption} = useFormSelect(name, options);
 
   return (
     <div className={clsx('FormDetailedSelect FormFieldComponent', className)}>
