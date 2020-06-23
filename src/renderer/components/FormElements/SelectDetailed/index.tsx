@@ -1,12 +1,12 @@
 import React, {FC} from 'react';
 import {ActionMeta, FocusEventHandler, FormatOptionLabelMeta} from 'react-select';
+import {ValueType} from 'react-select/src/types';
 import clsx from 'clsx';
 
 import {Select} from '@renderer/components/FormElements';
 import {SelectOption} from '@renderer/types/forms';
 
 import './SelectDetailed.scss';
-import {ValueType} from 'react-select/src/types';
 
 interface ComponentProps {
   className?: string;
