@@ -16,18 +16,15 @@ export interface BaseSelectProps {
 }
 
 interface ComponentProps extends BaseSelectProps {
+  filterOption?(option: SelectOption, rawInput: string): boolean;
+  formatOptionLabel?(option: SelectOption, labelMeta: FormatOptionLabelMeta<SelectOption>): ReactNode;
   name?: string;
   onBlur?: FocusEventHandler;
   onChange?(value: ValueType<SelectOption>, actionMeta?: ActionMeta<SelectOption>): void;
   value?: SelectOption | null;
 }
 
-interface ExtendedSelectProps extends ComponentProps {
-  filterOption?(option: SelectOption, rawInput: string): boolean;
-  formatOptionLabel?(option: SelectOption, labelMeta: FormatOptionLabelMeta<SelectOption>): ReactNode;
-}
-
-const Select: FC<ExtendedSelectProps> = ({
+const Select: FC<ComponentProps> = ({
   className,
   error,
   filterOption,
