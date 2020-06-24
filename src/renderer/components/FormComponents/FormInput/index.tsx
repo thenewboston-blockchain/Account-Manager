@@ -4,10 +4,10 @@ import clsx from 'clsx';
 
 import {Input, InputProps} from '@renderer/components/FormElements';
 import useFormContext from '@renderer/hooks/useFormContext';
-import {FormComponentBaseProps} from '@renderer/types/forms';
+import {BaseFormComponentProps} from '@renderer/types/forms';
 import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
 
-type ComponentProps = FormComponentBaseProps<InputProps>;
+type ComponentProps = BaseFormComponentProps<InputProps>;
 
 const FormInput: FC<ComponentProps> = ({className, label, name, placeholder, required, type}) => {
   const {error} = useFormContext(name);

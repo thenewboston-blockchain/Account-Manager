@@ -1,28 +1,26 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
 
-import {Select, SelectProps} from '@renderer/components/FormElements';
+import {Select, BaseSelectProps} from '@renderer/components/FormElements';
 import useFormSelect from '@renderer/hooks/useFormSelect';
-import {FormComponentBaseProps} from '@renderer/types/forms';
+import {BaseFormComponentProps} from '@renderer/types/forms';
 import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
 
-type ComponentProps = FormComponentBaseProps<SelectProps>;
+type ComponentProps = BaseFormComponentProps<BaseSelectProps>;
 
-const FormSelect: FC<ComponentProps> = ({className, isSearchable, label, name, required, options, placeholder}) => {
+const FormSelect: FC<ComponentProps> = ({label, required, ...baseSelectProps}) => {
+  const {className, name, options} = baseSelectProps;
   const {error, handleBlur, handleChange, selectedOption} = useFormSelect(name, options);
 
   return (
     <div className={clsx('FormSelect FormFieldComponent', className)}>
       {renderFormLabel(name, label, required)}
       <Select
+        {...baseSelectProps}
         className="FormField"
         error={error}
-        isSearchable={isSearchable}
-        name={name}
         onBlur={handleBlur}
         onChange={handleChange}
-        options={options}
-        placeholder={placeholder}
         value={selectedOption}
       />
       {renderFormError(name)}
