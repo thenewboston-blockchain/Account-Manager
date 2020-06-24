@@ -1,4 +1,4 @@
-export type FormComponentBaseProps<T> = Omit<T, 'name' | 'onBlur' | 'onChange' | 'value'> & {
+export type BaseFormComponentProps<T> = Omit<T, 'name' | 'onBlur' | 'onChange' | 'value'> & {
   label?: string;
   name: string;
   required?: boolean;

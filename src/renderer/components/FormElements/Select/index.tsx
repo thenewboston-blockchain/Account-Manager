@@ -7,7 +7,7 @@ import {SelectOption} from '@renderer/types/forms';
 
 import './Select.scss';
 
-export interface SelectProps {
+export interface BaseSelectProps {
   className?: string;
   error?: boolean;
   isSearchable?: boolean;
@@ -19,12 +19,12 @@ export interface SelectProps {
   value?: SelectOption | null;
 }
 
-interface ExtendedSelectProps extends SelectProps {
+interface ComponentProps extends BaseSelectProps {
   filterOption?(option: SelectOption, rawInput: string): boolean;
   formatOptionLabel?(option: SelectOption, labelMeta: FormatOptionLabelMeta<SelectOption>): ReactNode;
 }
 
-const Select: FC<ExtendedSelectProps> = ({
+const Select: FC<ComponentProps> = ({
   className,
   error,
   filterOption,

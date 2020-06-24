@@ -1,22 +1,14 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
 
-import {SelectDetailed, SelectProps} from '@renderer/components/FormElements';
+import {SelectDetailed, BaseSelectProps} from '@renderer/components/FormElements';
 import useFormSelect from '@renderer/hooks/useFormSelect';
-import {FormComponentBaseProps} from '@renderer/types/forms';
+import {BaseFormComponentProps} from '@renderer/types/forms';
 import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
 
-type ComponentProps = FormComponentBaseProps<SelectProps>;
+type ComponentProps = BaseFormComponentProps<BaseSelectProps>;
 
-const FormSelectDetailed: FC<ComponentProps> = ({
-  className,
-  isSearchable,
-  label,
-  name,
-  options,
-  placeholder,
-  required,
-}) => {
+const FormSelectDetailed: FC<ComponentProps> = ({className, label, name, options, required, ...baseSelectProps}) => {
   const {error, handleBlur, handleChange, selectedOption} = useFormSelect(name, options);
 
   return (
@@ -25,13 +17,12 @@ const FormSelectDetailed: FC<ComponentProps> = ({
       <SelectDetailed
         className="FormField"
         error={error}
-        isSearchable={isSearchable}
         name={name}
         onBlur={handleBlur}
         onChange={handleChange}
         options={options}
-        placeholder={placeholder}
         value={selectedOption}
+        {...baseSelectProps}
       />
       {renderFormError(name)}
     </div>
