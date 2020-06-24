@@ -28,13 +28,15 @@ const formatOptionLabel = ({value, label}: SelectOption, {context}: FormatOption
   );
 };
 
-const SelectDetailed: FC<BaseSelectProps> = ({className, ...baseSelectProps}) => {
+const SelectDetailed: FC<BaseSelectProps> = ({...baseSelectProps}) => {
+  const {className} = baseSelectProps;
+
   return (
     <Select
+      {...baseSelectProps}
       className={clsx('SelectDetailed', className)}
       filterOption={filterOption}
       formatOptionLabel={formatOptionLabel}
-      {...baseSelectProps}
     />
   );
 };

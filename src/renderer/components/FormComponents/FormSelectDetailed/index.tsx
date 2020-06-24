@@ -8,21 +8,20 @@ import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
 
 type ComponentProps = BaseFormComponentProps<BaseSelectProps>;
 
-const FormSelectDetailed: FC<ComponentProps> = ({className, label, name, options, required, ...baseSelectProps}) => {
+const FormSelectDetailed: FC<ComponentProps> = ({label, required, ...baseSelectProps}) => {
+  const {className, name, options} = baseSelectProps;
   const {error, handleBlur, handleChange, selectedOption} = useFormSelect(name, options);
 
   return (
     <div className={clsx('FormSelectDetailed FormFieldComponent', className)}>
       {renderFormLabel(name, label, required)}
       <SelectDetailed
+        {...baseSelectProps}
         className="FormField"
         error={error}
-        name={name}
         onBlur={handleBlur}
         onChange={handleChange}
-        options={options}
         value={selectedOption}
-        {...baseSelectProps}
       />
       {renderFormError(name)}
     </div>

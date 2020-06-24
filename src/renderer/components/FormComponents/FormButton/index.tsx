@@ -7,15 +7,8 @@ export interface FormButtonProps extends BaseButtonProps {
   submitting?: boolean;
 }
 
-const FormButton: FC<FormButtonProps> = ({
-  children,
-  disabled = false,
-  ignoreDirty = false,
-  onClick,
-  submitting = false,
-  type = 'button',
-  ...baseButtonProps
-}) => {
+const FormButton: FC<FormButtonProps> = ({children, ignoreDirty = false, submitting = false, ...baseButtonProps}) => {
+  const {disabled = false, onClick, type = 'button'} = baseButtonProps;
   const {dirty, handleReset, handleSubmit, isValid} = useFormikContext();
 
   const buttonIsDisabled = useMemo(() => {
@@ -41,7 +34,7 @@ const FormButton: FC<FormButtonProps> = ({
   };
 
   return (
-    <Button disabled={buttonIsDisabled} onClick={handleClick} type={type} {...baseButtonProps}>
+    <Button {...baseButtonProps} disabled={buttonIsDisabled} onClick={handleClick}>
       {children}
     </Button>
   );
