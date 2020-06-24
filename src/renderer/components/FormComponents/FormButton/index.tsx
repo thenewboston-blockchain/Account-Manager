@@ -1,6 +1,6 @@
 import React, {FC, useMemo} from 'react';
 import {useFormikContext} from 'formik';
-import {Button, BaseButtonProps} from '@renderer/components/FormElements';
+import {BaseButtonProps, Button} from '@renderer/components/FormElements';
 
 export interface FormButtonProps extends BaseButtonProps {
   ignoreDirty?: boolean;
