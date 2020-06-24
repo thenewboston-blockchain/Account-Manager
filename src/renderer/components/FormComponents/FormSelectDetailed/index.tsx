@@ -1,21 +1,21 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
 
-import {Select, BaseSelectProps} from '@renderer/components/FormElements';
+import {SelectDetailed, BaseSelectProps} from '@renderer/components/FormElements';
 import useFormSelect from '@renderer/hooks/useFormSelect';
 import {BaseFormComponentProps} from '@renderer/types/forms';
 import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
 
 type ComponentProps = BaseFormComponentProps<BaseSelectProps>;
 
-const FormSelect: FC<ComponentProps> = ({label, required, ...baseSelectProps}) => {
+const FormSelectDetailed: FC<ComponentProps> = ({label, required, ...baseSelectProps}) => {
   const {className, name, options} = baseSelectProps;
   const {error, handleBlur, handleChange, selectedOption} = useFormSelect(name, options);
 
   return (
-    <div className={clsx('FormSelect FormFieldComponent', className)}>
+    <div className={clsx('FormSelectDetailed FormFieldComponent', className)}>
       {renderFormLabel(name, label, required)}
-      <Select
+      <SelectDetailed
         {...baseSelectProps}
         className="FormField"
         error={error}
@@ -28,4 +28,4 @@ const FormSelect: FC<ComponentProps> = ({label, required, ...baseSelectProps}) =
   );
 };
 
-export default FormSelect;
+export default FormSelectDetailed;

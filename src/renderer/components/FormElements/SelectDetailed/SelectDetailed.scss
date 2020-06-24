@@ -1,0 +1,11 @@
+.SelectDetailed {
+  &__option-label {
+    color: var(--color-gray-3);
+    font-size: var(--font-size-small);
+  }
+
+  &__option-value {
+    font-family: var(--font-family-mono);
+    word-break: break-all;
+  }
+}

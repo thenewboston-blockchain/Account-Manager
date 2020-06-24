@@ -1,23 +1,14 @@
 import React, {FC, useMemo} from 'react';
 import {useFormikContext} from 'formik';
-import {Button, ButtonProps} from '@renderer/components/FormElements';
+import {BaseButtonProps, Button} from '@renderer/components/FormElements';
 
-export interface FormButtonProps extends ButtonProps {
+export interface FormButtonProps extends BaseButtonProps {
   ignoreDirty?: boolean;
   submitting?: boolean;
 }
 
-const FormButton: FC<FormButtonProps> = ({
-  children,
-  className,
-  color,
-  disabled = false,
-  ignoreDirty = false,
-  onClick,
-  submitting = false,
-  type = 'button',
-  variant,
-}) => {
+const FormButton: FC<FormButtonProps> = ({children, ignoreDirty = false, submitting = false, ...baseButtonProps}) => {
+  const {disabled = false, onClick, type = 'button'} = baseButtonProps;
   const {dirty, handleReset, handleSubmit, isValid} = useFormikContext();
 
   const buttonIsDisabled = useMemo(() => {
@@ -43,14 +34,7 @@ const FormButton: FC<FormButtonProps> = ({
   };
 
   return (
-    <Button
-      className={className}
-      color={color}
-      disabled={buttonIsDisabled}
-      onClick={handleClick}
-      type={type}
-      variant={variant}
-    >
+    <Button {...baseButtonProps} disabled={buttonIsDisabled} onClick={handleClick}>
       {children}
     </Button>
   );

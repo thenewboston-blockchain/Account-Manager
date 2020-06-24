@@ -2,13 +2,14 @@ import React, {FC} from 'react';
 import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
 
-import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
+import {Form, FormButton, FormInput, FormSelect, FormSelectDetailed} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
 import {SelectOption} from '@renderer/types/forms';
 
 import './Connect.scss';
 
 const initialValues = {
+  account: '', // TODO: Delete after PR Review
   protocol: 'http',
   ipAddress: '',
   port: '80',
@@ -16,10 +17,7 @@ const initialValues = {
 
 type FormValues = typeof initialValues;
 
-const protocolOptions: SelectOption[] = [
-  {label: 'http', value: 'http'},
-  {label: 'https', value: 'https'},
-];
+const protocolOptions: SelectOption[] = [{value: 'http'}, {value: 'https'}];
 
 const genericIpAddressRegex = /([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(\d{1,3}\.){3}\d{1,3}/;
 
@@ -66,6 +64,17 @@ const Connect: FC = () => {
         />
         <FormInput className="Connect__field" label="IP Address" name="ipAddress" required />
         <FormInput className="Connect__field" label="Port" name="port" type="number" />
+        {/* TODO: Delete after PR */}
+        <FormSelectDetailed
+          options={[
+            {label: 'Donations', value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb'},
+            {label: 'Personal', value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdc'},
+            {label: 'Validator Income', value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdd'},
+            {value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acde'},
+          ]}
+          name="account"
+          label="From: Account"
+        />
         <FormButton type="submit">Connect</FormButton>
         <FormButton className="Connect__go" onClick={goToMain}>
           Go

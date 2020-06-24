@@ -1,25 +1,20 @@
 import React, {FC} from 'react';
+import {Field} from 'formik';
 import clsx from 'clsx';
-import {ErrorMessage, Field, useFormikContext} from 'formik';
 
 import {Input, InputProps} from '@renderer/components/FormElements';
-import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
-import {FormComponentBaseProps} from '@renderer/types/forms';
+import useFormContext from '@renderer/hooks/useFormContext';
+import {BaseFormComponentProps} from '@renderer/types/forms';
+import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
 
-type ComponentProps = FormComponentBaseProps<InputProps>;
+type ComponentProps = BaseFormComponentProps<InputProps>;
 
 const FormInput: FC<ComponentProps> = ({className, label, name, placeholder, required, type}) => {
-  const {errors, touched} = useFormikContext<{[name: string]: string}>();
-  const error = !!errors[name] && !!touched[name];
+  const {error} = useFormContext(name);
 
   return (
     <div className={clsx('FormInput FormFieldComponent', className)}>
-      {label ? (
-        <label htmlFor={name}>
-          {label}
-          {required ? <RequiredAsterisk /> : null}
-        </label>
-      ) : null}
+      {renderFormLabel(name, label, required)}
       <Field
         as={Input}
         className="FormField"
@@ -29,9 +24,7 @@ const FormInput: FC<ComponentProps> = ({className, label, name, placeholder, req
         required={required}
         type={type}
       />
-      <span className="error">
-        <ErrorMessage name={name} />
-      </span>
+      {renderFormError(name)}
     </div>
   );
 };
