@@ -9,6 +9,7 @@ import './Select.scss';
 
 export interface BaseSelectProps {
   className?: string;
+  disabled?: boolean;
   error?: boolean;
   isSearchable?: boolean;
   name?: string;
@@ -26,6 +27,7 @@ interface ComponentProps extends BaseSelectProps {
 
 const Select: FC<ComponentProps> = ({
   className,
+  disabled,
   error,
   filterOption,
   formatOptionLabel,
@@ -51,6 +53,7 @@ const Select: FC<ComponentProps> = ({
       filterOption={filterOption}
       formatOptionLabel={formatOptionLabel}
       getOptionLabel={getOptionLabel}
+      isDisabled={disabled}
       isSearchable={isSearchable}
       menuPortalTarget={document.getElementById('dropdown-root')}
       name={name}

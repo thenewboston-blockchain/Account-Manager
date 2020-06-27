@@ -17,6 +17,10 @@
     }
   }
 
+  &.Select--is-disabled {
+    pointer-events: unset;
+  }
+
   .Select__control {
     border-radius: 3px;
     border: 1px solid var(--color-gray-3);
@@ -28,6 +32,32 @@
     &:hover,
     &--is-focused {
       border-color: var(--color-secondary);
+    }
+
+    &--is-disabled {
+      background: var(--color-white);
+      border-color: var(--color-gray-4);
+
+      &:hover {
+        cursor: not-allowed;
+        border-color: var(--color-gray-4);
+      }
+
+      .Select__indicator {
+        color: var(--color-gray-4);
+
+        &:hover {
+          color: var(--color-gray-4);
+        }
+      }
+
+      .Select__single-value {
+        color: var(--color-gray-4);
+      }
+
+      .Select__placeholder {
+        color: var(--color-gray-4);
+      }
     }
   }
 
