@@ -31,8 +31,13 @@ $button-height: 24px;
       cursor: pointer;
 
       &:hover {
-        background: var(--color-secondary-outline-bg);
+        background: var(--color-gray-5);
       }
+    }
+
+    &.disabled {
+      color: var(--color-gray-4);
+      cursor: not-allowed;
     }
   }
 }
