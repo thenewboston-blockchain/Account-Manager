@@ -5,6 +5,7 @@ import './Input.scss';
 
 export interface BaseInputProps {
   className?: string;
+  disabled?: boolean;
   error?: boolean;
   name?: string;
   onBlur?(e: FocusEvent<HTMLInputElement>): void;
@@ -14,10 +15,21 @@ export interface BaseInputProps {
   value: string;
 }
 
-const Input: FC<BaseInputProps> = ({className, error, name, onBlur, onChange, placeholder, type = 'text', value}) => {
+const Input: FC<BaseInputProps> = ({
+  className,
+  disabled,
+  error,
+  name,
+  onBlur,
+  onChange,
+  placeholder,
+  type = 'text',
+  value,
+}) => {
   return (
     <input
       className={clsx('Input', {error}, className)}
+      disabled={disabled}
       name={name}
       onBlur={onBlur}
       onChange={onChange}

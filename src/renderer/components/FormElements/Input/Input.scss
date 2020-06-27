@@ -11,6 +11,11 @@
     border-color: var(--color-secondary);
   }
 
+  &:disabled {
+    border-color: var(--color-gray-4);
+    color: var(--color-gray-4);
+  }
+
   &.error {
     border-color: var(--color-danger);
   }

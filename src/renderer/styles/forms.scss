@@ -1,8 +1,27 @@
-// get rid of arrows/spinners for numeric inputs
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+input {
+  &:hover {
+    border-color: var(--color-secondary);
+  }
+
+  &:disabled {
+    background: var(--color-white);
+    cursor: not-allowed;
+
+    &::placeholder {
+      color: var(--color-gray-4);
+    }
+  }
+
+  &::placeholder {
+    color: var(--color-gray-3);
+  }
+
+  // get rid of arrows/spinners for numeric inputs
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 form {
