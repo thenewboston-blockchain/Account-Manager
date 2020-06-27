@@ -61,7 +61,7 @@ const Connect: FC = () => {
           name="protocol"
           required
         />
-        <FormInput className="Connect__field" label="IP Address" name="ipAddress" required />
+        <FormInput className="Connect__field" disabled label="IP Address" name="ipAddress" required />
         <FormInput className="Connect__field" label="Port" name="port" type="number" />
         <FormButton type="submit">Connect</FormButton>
         <FormButton className="Connect__go" onClick={goToMain}>

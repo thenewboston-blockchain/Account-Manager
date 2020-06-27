@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import './Input.scss';
 
-export interface InputProps {
+export interface BaseInputProps {
   className?: string;
   error?: boolean;
   name?: string;
@@ -14,7 +14,7 @@ export interface InputProps {
   value: string;
 }
 
-const Input: FC<InputProps> = ({className, error, name, onBlur, onChange, placeholder, type = 'text', value}) => {
+const Input: FC<BaseInputProps> = ({className, error, name, onBlur, onChange, placeholder, type = 'text', value}) => {
   return (
     <input
       className={clsx('Input', {error}, className)}
