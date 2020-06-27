@@ -44,12 +44,17 @@
 
   .Select__single-value {
     color: var(--color-gray-1);
-    margin: 0;
+    margin: 1px 0 0;
+  }
+
+  .Select__placeholder {
+    color: var(--color-gray-3);
+    margin: 1px 0 0;
   }
 
   .Select__input {
     height: 100%;
-    margin-top: 6px;
+    margin-top: 7px;
 
     input {
       color: var(--color-gray-1);
@@ -62,7 +67,7 @@
   }
 
   .Select__indicator-separator {
-    margin: 6px 0;
+    display: none;
   }
 
   .Select__indicator {
@@ -77,5 +82,33 @@
 #dropdown-root {
   .Select__menu {
     margin-top: 3px;
+  }
+
+  .Select__option {
+    height: 30px;
+    padding: 8px 24px 8px 6px;
+    position: relative;
+
+    &--is-selected {
+      background: unset;
+      color: unset;
+
+      &::after {
+        content: 'done';
+        font-family: var(--font-family-icon);
+        position: absolute;
+        right: 12px;
+        top: 6px;
+      }
+    }
+
+    &--is-focused {
+      background: var(--color-gray-4);
+    }
+
+    &--is-disabled {
+      color: var(--color-gray-4);
+      cursor: not-allowed;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useMemo} from 'react';
 import ReactSelect, {ActionMeta, FocusEventHandler, FormatOptionLabelMeta} from 'react-select';
 import {ValueType} from 'react-select/src/types';
 import clsx from 'clsx';
@@ -37,6 +37,11 @@ const Select: FC<ComponentProps> = ({
   placeholder,
   value,
 }) => {
+  const formattedOptions = useMemo(
+    () => options.map(({disabled, label, value}) => ({isDisabled: disabled, label, value})),
+    [options],
+  );
+
   const getOptionLabel = ({label, value}: SelectOption): string => label || value;
 
   return (
@@ -51,7 +56,7 @@ const Select: FC<ComponentProps> = ({
       name={name}
       onBlur={onBlur}
       onChange={onChange}
-      options={options}
+      options={formattedOptions}
       placeholder={placeholder}
       value={value}
     />

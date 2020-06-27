@@ -2,7 +2,7 @@ $button-height: 24px;
 
 .DropdownMenuButton {
   cursor: pointer;
-  transition: color 0.3s;
+  transition: color 0.1s;
 
   &:hover,
   &.active {
@@ -24,7 +24,7 @@ $button-height: 24px;
     display: flex;
     height: 30px;
     padding: 12px;
-    transition: background 0.3s;
+    transition: background 0.1s;
     white-space: nowrap;
 
     &:not(.disabled) {

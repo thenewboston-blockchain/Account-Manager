@@ -49,7 +49,7 @@ $modal-footer-height: 60px;
       right: 12px;
       top: 50%;
       transform: translateY(-50%);
-      transition: color 0.3s;
+      transition: color 0.1s;
 
       &:hover:not(.disabled) {
         color: var(--color-danger);
