@@ -1,5 +1,5 @@
 .Select {
-  height: 30px;
+  height: 24px;
 
   &.error {
     .Select__control {
@@ -79,12 +79,12 @@
 
   .Select__placeholder {
     color: var(--color-gray-3);
-    margin: 1px 0 0;
+    margin: 0;
   }
 
   .Select__input {
     height: 100%;
-    margin-top: 7px;
+    margin-top: 3px;
 
     input {
       color: var(--color-gray-1);
@@ -115,8 +115,8 @@
   }
 
   .Select__option {
-    height: 30px;
-    padding: 8px 24px 8px 6px;
+    height: 24px;
+    padding: 4px 24px 4px 6px;
     position: relative;
 
     &--is-selected {
@@ -128,7 +128,7 @@
         font-family: var(--font-family-icon);
         position: absolute;
         right: 12px;
-        top: 6px;
+        top: 3px;
       }
     }
 
