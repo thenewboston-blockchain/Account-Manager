@@ -65,7 +65,7 @@
     height: 100%;
     padding: 0 6px;
 
-    & > div:last-child {
+    & > div:last-child:not(.Select__single-value) {
       height: 100%;
       margin: 0;
       padding: 0;
@@ -139,6 +139,10 @@
     &--is-disabled {
       color: var(--color-gray-4);
       cursor: not-allowed;
+
+      &.Select__option--is-focused {
+        color: var(--color-white);
+      }
     }
   }
 }
