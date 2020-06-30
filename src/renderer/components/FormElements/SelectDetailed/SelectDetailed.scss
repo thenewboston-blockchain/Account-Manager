@@ -31,6 +31,13 @@
     &:last-child {
       border-bottom: none;
     }
+
+    &--is-disabled {
+      .SelectDetailed__option-label,
+      .SelectDetailed__option-value {
+        color: var(--color-neutral-400);
+      }
+    }
   }
 
   .SelectDetailed__option-label {

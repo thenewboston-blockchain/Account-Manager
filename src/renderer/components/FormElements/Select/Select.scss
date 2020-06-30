@@ -77,7 +77,7 @@
   }
 
   .Select__placeholder {
-    color: var(--color-neutral-600);
+    color: var(--color-neutral-400);
     margin: 0;
   }
 
@@ -132,7 +132,7 @@
     }
 
     &--is-focused {
-      background: var(--color-neutral-400);
+      background: var(--color-neutral-200);
     }
 
     &--is-disabled {
