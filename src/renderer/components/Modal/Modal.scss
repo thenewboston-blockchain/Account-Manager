@@ -57,7 +57,7 @@ $modal-footer-height: 60px;
 
       &.disabled {
         color: var(--color-primary-disabled);
-        cursor: not-allowed;
+        cursor: auto;
       }
 
       &.submitting {

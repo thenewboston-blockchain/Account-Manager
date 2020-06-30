@@ -5,7 +5,6 @@ input {
 
   &:disabled {
     background: var(--color-white);
-    cursor: not-allowed;
 
     &::placeholder {
       color: var(--color-neutral-400);

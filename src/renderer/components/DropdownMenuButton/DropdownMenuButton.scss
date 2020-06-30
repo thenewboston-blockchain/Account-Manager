@@ -37,7 +37,7 @@ $button-height: 24px;
 
     &.disabled {
       color: var(--color-neutral-400);
-      cursor: not-allowed;
+      cursor: auto;
     }
   }
 }

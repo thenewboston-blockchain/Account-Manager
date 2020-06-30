@@ -39,7 +39,6 @@
       border-color: var(--color-neutral-400);
 
       &:hover {
-        cursor: not-allowed;
         border-color: var(--color-neutral-400);
       }
 
@@ -138,7 +137,6 @@
 
     &--is-disabled {
       color: var(--color-neutral-400);
-      cursor: not-allowed;
 
       &.Select__option--is-focused {
         color: var(--color-white);

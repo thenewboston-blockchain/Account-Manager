@@ -8,7 +8,7 @@
   transition: all 0.1s;
 
   &.Button--disabled {
-    cursor: not-allowed;
+    cursor: auto;
   }
 
   &--contained {
