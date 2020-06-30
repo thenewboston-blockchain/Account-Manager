@@ -23,7 +23,7 @@
 
   .Select__control {
     border-radius: 3px;
-    border: 1px solid var(--color-gray-3);
+    border: 1px solid var(--color-neutral-600);
     box-shadow: unset !important;
     height: 100%;
     min-height: unset;
@@ -36,27 +36,27 @@
 
     &--is-disabled {
       background: var(--color-white);
-      border-color: var(--color-gray-4);
+      border-color: var(--color-neutral-400);
 
       &:hover {
         cursor: not-allowed;
-        border-color: var(--color-gray-4);
+        border-color: var(--color-neutral-400);
       }
 
       .Select__indicator {
-        color: var(--color-gray-4);
+        color: var(--color-neutral-400);
 
         &:hover {
-          color: var(--color-gray-4);
+          color: var(--color-neutral-400);
         }
       }
 
       .Select__single-value {
-        color: var(--color-gray-4);
+        color: var(--color-neutral-400);
       }
 
       .Select__placeholder {
-        color: var(--color-gray-4);
+        color: var(--color-neutral-400);
       }
     }
   }
@@ -73,12 +73,12 @@
   }
 
   .Select__single-value {
-    color: var(--color-gray-1);
+    color: var(--color-neutral-900);
     margin: 1px 0 0;
   }
 
   .Select__placeholder {
-    color: var(--color-gray-3);
+    color: var(--color-neutral-600);
     margin: 0;
   }
 
@@ -87,7 +87,7 @@
     margin-top: 3px;
 
     input {
-      color: var(--color-gray-1);
+      color: var(--color-neutral-900);
       transition: none;
     }
   }
@@ -101,7 +101,7 @@
   }
 
   .Select__indicator {
-    color: var(--color-gray-3);
+    color: var(--color-neutral-600);
 
     &:hover {
       color: var(--color-secondary);
@@ -133,11 +133,11 @@
     }
 
     &--is-focused {
-      background: var(--color-gray-4);
+      background: var(--color-neutral-400);
     }
 
     &--is-disabled {
-      color: var(--color-gray-4);
+      color: var(--color-neutral-400);
       cursor: not-allowed;
 
       &.Select__option--is-focused {

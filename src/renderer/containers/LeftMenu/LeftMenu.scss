@@ -3,7 +3,7 @@
   flex-direction: column;
 
   .submenu-title {
-    color: var(--color-gray-3);
+    color: var(--color-neutral-600);
     font-weight: 500;
 
     &:hover {
@@ -12,7 +12,7 @@
   }
 
   &__points {
-    border-bottom: 1px solid var(--color-gray-4);
+    border-bottom: 1px solid var(--color-neutral-400);
     padding: 12px;
 
     .points__amount {

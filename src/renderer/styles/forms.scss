@@ -8,12 +8,12 @@ input {
     cursor: not-allowed;
 
     &::placeholder {
-      color: var(--color-gray-4);
+      color: var(--color-neutral-400);
     }
   }
 
   &::placeholder {
-    color: var(--color-gray-3);
+    color: var(--color-neutral-600);
   }
 
   // get rid of arrows/spinners for numeric inputs
@@ -26,7 +26,7 @@ input {
 
 form {
   label {
-    color: var(--color-gray-3);
+    color: var(--color-neutral-600);
     font-weight: bold;
   }
 

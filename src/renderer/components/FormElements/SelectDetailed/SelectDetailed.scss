@@ -24,7 +24,7 @@
 
 #dropdown-root {
   .Select__option {
-    border-bottom: 1px solid var(--color-gray-5);
+    border-bottom: 1px solid var(--color-neutral-300);
     height: unset;
     padding: 6px 30px 6px 6px;
 
@@ -34,7 +34,7 @@
   }
 
   .SelectDetailed__option-label {
-    color: var(--color-gray-3);
+    color: var(--color-neutral-600);
     font-size: var(--font-size-small);
   }
 
