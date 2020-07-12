@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 import * as Yup from 'yup';
 
+import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import useBooleanState from '@renderer/hooks/useBooleanState';
-import {FormInput} from '@renderer/components/FormComponents';
 
 const initialValues = {
   nickname: '',
