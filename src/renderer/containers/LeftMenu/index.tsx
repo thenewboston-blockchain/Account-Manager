@@ -7,6 +7,8 @@ import LeftSubmenu from '@renderer/containers/LeftSubmenu';
 import {RootState} from '@renderer/types/store';
 
 import './LeftMenu.scss';
+import useBooleanState from '@renderer/hooks/useBooleanState';
+import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
 
 const LeftComponentSelector = ({accounts, banks, friends, points, validators}: RootState) => ({
   accounts,
@@ -18,6 +20,7 @@ const LeftComponentSelector = ({accounts, banks, friends, points, validators}: R
 
 const LeftMenu = () => {
   const {accounts, banks, friends, points, validators} = useSelector(LeftComponentSelector);
+  const [addAccountModalIsOpen, toggleAddAccountModal] = useBooleanState(false);
 
   const renderAccounts = () => {
     return accounts.map(({account_number}) => (
@@ -68,10 +71,23 @@ const LeftMenu = () => {
         ]}
         title="Network"
       />
-      <LeftSubmenu menuItems={renderManagedBanks()} title="Managed Banks" tool={<Icon icon="add" />} />
-      <LeftSubmenu menuItems={renderManagedValidators()} title="Managed Validators" tool={<Icon icon="add" />} />
-      <LeftSubmenu menuItems={renderAccounts()} title="Accounts" tool={<Icon icon="add" />} />
-      <LeftSubmenu menuItems={renderFriends()} title="Friends" tool={<Icon icon="add" />} />
+      <LeftSubmenu
+        menuItems={renderManagedBanks()}
+        title="Managed Banks"
+        tool={<Icon className="tool__add-icon" icon="add" />}
+      />
+      <LeftSubmenu
+        menuItems={renderManagedValidators()}
+        title="Managed Validators"
+        tool={<Icon className="tool__add-icon" icon="add" />}
+      />
+      <LeftSubmenu
+        menuItems={renderAccounts()}
+        title="Accounts"
+        tool={<Icon className="tool__add-icon" icon="add" onClick={toggleAddAccountModal} />}
+      />
+      <LeftSubmenu menuItems={renderFriends()} title="Friends" tool={<Icon className="tool__add-icon" icon="add" />} />
+      {addAccountModalIsOpen && <AddAccountModal close={toggleAddAccountModal} />}
     </div>
   );
 };
