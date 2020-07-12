@@ -1,0 +1,12 @@
+.ArrowToggle {
+  .Icon {
+    color: var(--color-neutral-700);
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.06s linear;
+
+    &.expanded {
+      transform: rotate(90deg);
+    }
+  }
+}

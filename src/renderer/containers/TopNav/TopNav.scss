@@ -1,0 +1,25 @@
+.TopNav {
+  align-items: center;
+  background: white;
+  display: flex;
+
+  .navigation-icons {
+    display: flex;
+
+    .Icon {
+      padding: 0 4px;
+    }
+  }
+
+  .thenewboston {
+    align-items: center;
+    border-right: none;
+    display: flex;
+    padding: 12px 14px;
+    width: var(--left-menu-width);
+
+    .Logo {
+      margin-right: 6px;
+    }
+  }
+}

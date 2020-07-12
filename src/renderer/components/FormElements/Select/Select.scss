@@ -1,0 +1,146 @@
+.Select {
+  height: 24px;
+
+  &.error {
+    .Select__control {
+      &,
+      &:active,
+      &:hover,
+      &--is-focused {
+        border-color: var(--color-danger);
+      }
+    }
+    .Select__indicator {
+      &:hover {
+        color: var(--color-danger);
+      }
+    }
+  }
+
+  &.Select--is-disabled {
+    pointer-events: unset;
+  }
+
+  .Select__control {
+    border-radius: 3px;
+    border: 1px solid var(--color-neutral-600);
+    box-shadow: unset !important;
+    height: 100%;
+    min-height: unset;
+
+    &:active,
+    &:hover,
+    &--is-focused {
+      border-color: var(--color-secondary);
+    }
+
+    &--is-disabled {
+      background: var(--color-white);
+      border-color: var(--color-neutral-400);
+
+      &:hover {
+        border-color: var(--color-neutral-400);
+      }
+
+      .Select__indicator {
+        color: var(--color-neutral-400);
+
+        &:hover {
+          color: var(--color-neutral-400);
+        }
+      }
+
+      .Select__single-value {
+        color: var(--color-neutral-400);
+      }
+
+      .Select__placeholder {
+        color: var(--color-neutral-400);
+      }
+    }
+  }
+
+  .Select__value-container {
+    height: 100%;
+    padding: 0 6px;
+
+    & > div:last-child:not(.Select__single-value) {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  .Select__single-value {
+    color: var(--color-neutral-900);
+    margin: 1px 0 0;
+  }
+
+  .Select__placeholder {
+    color: var(--color-neutral-400);
+    margin: 0;
+  }
+
+  .Select__input {
+    height: 100%;
+    margin-top: 3px;
+
+    input {
+      color: var(--color-neutral-900);
+      transition: none;
+    }
+  }
+
+  .Select__indicators {
+    height: 100%;
+  }
+
+  .Select__indicator-separator {
+    display: none;
+  }
+
+  .Select__indicator {
+    color: var(--color-neutral-600);
+
+    &:hover {
+      color: var(--color-secondary);
+    }
+  }
+}
+
+#dropdown-root {
+  .Select__menu {
+    margin-top: 3px;
+  }
+
+  .Select__option {
+    height: 24px;
+    padding: 4px 24px 4px 6px;
+    position: relative;
+
+    &--is-selected {
+      background: unset;
+      color: unset;
+
+      &::after {
+        content: 'done';
+        font-family: var(--font-family-icon);
+        position: absolute;
+        right: 12px;
+        top: 3px;
+      }
+    }
+
+    &--is-focused {
+      background: var(--color-neutral-200);
+    }
+
+    &--is-disabled {
+      color: var(--color-neutral-400);
+
+      &.Select__option--is-focused {
+        color: var(--color-white);
+      }
+    }
+  }
+}

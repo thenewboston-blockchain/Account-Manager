@@ -1,0 +1,20 @@
+.Bank {
+  height: 100%;
+}
+
+.Bank__DeleteModal {
+  .Icon__warning {
+    color: var(--color-danger);
+    margin-right: 12px;
+  }
+
+  .Modal__title {
+    color: var(--color-danger);
+  }
+
+  .delete-warning-span {
+    color: var(--color-danger);
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+}

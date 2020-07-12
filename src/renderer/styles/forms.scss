@@ -1,0 +1,53 @@
+input {
+  &:hover {
+    border-color: var(--color-secondary);
+  }
+
+  &:disabled {
+    background: var(--color-white);
+
+    &::placeholder {
+      color: var(--color-neutral-400);
+    }
+  }
+
+  &::placeholder {
+    color: var(--color-neutral-600);
+  }
+
+  // get rid of arrows/spinners for numeric inputs
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+form {
+  label {
+    color: var(--color-neutral-600);
+    font-weight: bold;
+  }
+
+  span.error {
+    color: var(--color-danger);
+  }
+}
+
+.FormFieldComponent {
+  label {
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .FormField {
+    width: 360px;
+  }
+
+  span.error {
+    display: block;
+    font-size: var(--font-size-small);
+    margin-top: 6px;
+    height: 14px;
+  }
+}

@@ -1,0 +1,27 @@
+.PageHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+
+  .left-section {
+    align-items: center;
+    display: flex;
+
+    .header-title {
+      margin-right: 6px;
+    }
+
+    .TrustBadge {
+      margin-right: 6px;
+    }
+  }
+
+  .right-section {
+    align-items: center;
+    display: flex;
+
+    button {
+      margin-left: 12px;
+    }
+  }
+}

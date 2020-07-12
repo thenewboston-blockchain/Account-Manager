@@ -1,0 +1,38 @@
+.PageTabs {
+  border-bottom: 1px solid var(--color-neutral-400);
+  display: flex;
+  padding: 0 12px;
+  text-transform: uppercase;
+
+  .tab {
+    cursor: pointer;
+    margin-right: 30px;
+
+    &-indicator {
+      background: transparent;
+      border-radius: 3px 3px 0 0;
+      height: 3px;
+      transition: all 0.1s;
+    }
+
+    &-name {
+      font-weight: 500;
+      padding-bottom: 6px;
+      transition: all 0.1s;
+    }
+
+    &:hover,
+    &.active {
+      .tab {
+        &-indicator {
+          background: var(--color-primary);
+          color: var(--color-primary);
+        }
+
+        &-name {
+          color: var(--color-primary);
+        }
+      }
+    }
+  }
+}
