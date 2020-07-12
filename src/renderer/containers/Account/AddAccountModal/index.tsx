@@ -1,5 +1,7 @@
 import React, {FC} from 'react';
 import * as Yup from 'yup';
+import {sign} from 'tweetnacl';
+import {encodeBase64} from 'tweetnacl-util';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
@@ -24,7 +26,9 @@ const AddAccountModal: FC<ComponentProps> = ({close}) => {
   const [submitting, , setSubmittingTrue, setSubmittingFalse] = useBooleanState(false);
 
   const handleSubmit = async (values: FormValues): Promise<void> => {
-    console.log('VALUES', values);
+    const {publicKey, secretKey} = sign.keyPair();
+    console.log('PUBLIC KEY', publicKey);
+    console.log('PRIVATE KEY', secretKey);
   };
 
   return (
