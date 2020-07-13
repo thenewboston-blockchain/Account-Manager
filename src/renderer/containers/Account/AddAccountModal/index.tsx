@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import * as Yup from 'yup';
 import {sign} from 'tweetnacl';
-import {encodeBase64} from 'tweetnacl-util';
+import {encodeBase64, encodeUTF8} from 'tweetnacl-util';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
@@ -27,8 +27,8 @@ const AddAccountModal: FC<ComponentProps> = ({close}) => {
 
   const handleSubmit = async (values: FormValues): Promise<void> => {
     const {publicKey, secretKey} = sign.keyPair();
-    console.log('PUBLIC KEY', publicKey);
-    console.log('PRIVATE KEY', secretKey);
+    console.log('PUBLIC KEY', Buffer.from(publicKey).toString('hex'));
+    console.log('PRIVATE KEY', Buffer.from(secretKey).toString('hex'));
   };
 
   return (
