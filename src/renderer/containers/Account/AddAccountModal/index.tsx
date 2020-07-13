@@ -1,11 +1,10 @@
 import React, {FC} from 'react';
+import {useDispatch} from 'react-redux';
 import * as Yup from 'yup';
-import {sign} from 'tweetnacl';
-import {encodeBase64, encodeUTF8} from 'tweetnacl-util';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import useBooleanState from '@renderer/hooks/useBooleanState';
+import {createAccount} from '@renderer/store/accounts';
 
 const initialValues = {
   nickname: '',
@@ -23,12 +22,11 @@ interface ComponentProps {
 }
 
 const AddAccountModal: FC<ComponentProps> = ({close}) => {
-  const [submitting, , setSubmittingTrue, setSubmittingFalse] = useBooleanState(false);
+  const dispatch = useDispatch();
 
-  const handleSubmit = async (values: FormValues): Promise<void> => {
-    const {publicKey, secretKey} = sign.keyPair();
-    console.log('PUBLIC KEY', Buffer.from(publicKey).toString('hex'));
-    console.log('PRIVATE KEY', Buffer.from(secretKey).toString('hex'));
+  const handleSubmit = ({nickname}: FormValues): void => {
+    dispatch(createAccount(nickname));
+    close();
   };
 
   return (
@@ -39,7 +37,6 @@ const AddAccountModal: FC<ComponentProps> = ({close}) => {
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitButton="Create"
-      submitting={submitting}
       validationSchema={validationSchema}
     >
       <FormInput label="Account Nickname" name="nickname" />

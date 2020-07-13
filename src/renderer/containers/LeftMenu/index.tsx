@@ -1,14 +1,15 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
 import Icon from '@renderer/components/Icon';
 import LeftSubmenu from '@renderer/containers/LeftSubmenu';
+import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
+import useBooleanState from '@renderer/hooks/useBooleanState';
+import {getAccount} from '@renderer/store/accounts';
 import {RootState} from '@renderer/types/store';
 
 import './LeftMenu.scss';
-import useBooleanState from '@renderer/hooks/useBooleanState';
-import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
 
 const LeftComponentSelector = ({accounts, banks, friends, points, validators}: RootState) => ({
   accounts,
@@ -19,12 +20,18 @@ const LeftComponentSelector = ({accounts, banks, friends, points, validators}: R
 });
 
 const LeftMenu = () => {
+  const dispatch = useDispatch();
   const {accounts, banks, friends, points, validators} = useSelector(LeftComponentSelector);
   const [addAccountModalIsOpen, toggleAddAccountModal] = useBooleanState(false);
 
+  useEffect(() => {
+    dispatch(getAccount());
+  }, []);
+
   const renderAccounts = () => {
-    return accounts.map(({account_number}) => (
+    return Object.values(accounts).map(({account_number, nickname}) => (
       <NavLink className="MenuItem" key={account_number} to="/account">
+        {nickname ? `${nickname} - ` : null}
         {account_number}
       </NavLink>
     ));
