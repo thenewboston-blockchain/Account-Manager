@@ -22,3 +22,27 @@
     text-transform: uppercase;
   }
 }
+
+.Account__SendPointsModal {
+  table {
+    td,
+    th {
+      border-bottom: 1px solid var(--color-neutral-400);
+      text-align: left;
+      padding: 6px 0;
+    }
+
+    td:nth-child(1),
+    th {
+      color: var(--color-neutral-600);
+      font-weight: 500;
+    }
+
+    td {
+      min-width: 150px;
+      .error {
+        display: none;
+      }
+    }
+  }
+}

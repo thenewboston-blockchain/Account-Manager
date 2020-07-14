@@ -10,14 +10,26 @@ import PageLayout from '@renderer/containers/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import QR from '@renderer/components/QR';
 import {Button} from '@renderer/components/FormElements';
-
 import useBooleanState from '@renderer/hooks/useBooleanState';
-
 import './Account.scss';
+import {FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
+import {SelectOption} from '@renderer/types/forms';
+import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
+
+const initialPointsToSendValues = {
+  points: '0.00',
+};
+
+type FormValues = typeof initialPointsToSendValues;
 
 const Account = () => {
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
+  const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
+
+  const handlePointsToSendSubmit = ({points}: FormValues): void => {
+    console.log(points);
+  };
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
@@ -29,6 +41,24 @@ const Account = () => {
       onClick: toggleDeleteModal,
     },
   ];
+
+  const accountFromSelectFieldOptions: SelectOption[] = [
+    '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
+    '2cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdq',
+    '4cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdw',
+    '3cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acde',
+    '5cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdr',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+  ].map((acc) => ({label: acc, value: acc}));
+
+  const accountToSelectFieldOptions: SelectOption[] = [
+    '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
+    '2cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdq',
+    '4cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdw',
+    '3cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acde',
+    '5cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdr',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+  ].map((acc) => ({label: acc, value: acc}));
 
   const handleDeleteAccountFromModal = async (): Promise<void> => {
     try {
@@ -115,7 +145,7 @@ const Account = () => {
 
   const renderRightPageHeaderButtons = () => (
     <>
-      <Button>Send Points</Button>
+      <Button onClick={toggleSendPointsModal}>Send Points</Button>
     </>
   );
 
@@ -141,10 +171,73 @@ const Account = () => {
     </>
   );
 
+  const renderSendPointsModal = () => (
+    <Modal
+      className="Account__SendPointsModal"
+      close={toggleSendPointsModal}
+      initialValues={initialPointsToSendValues}
+      footer={
+        <>
+          <FormButton className="Modal__default-cancel" onClick={toggleSendPointsModal} variant="outlined">
+            Cancel
+          </FormButton>
+          <FormButton className="Modal__default-submit" type="submit">
+            Send
+          </FormButton>
+        </>
+      }
+      header={
+        <>
+          <h2>Send Points</h2>
+        </>
+      }
+      onSubmit={handlePointsToSendSubmit}
+    >
+      <>
+        <FormSelect
+          required
+          className="account-select-form"
+          label="From: Account"
+          options={accountFromSelectFieldOptions}
+          name="selectFromAcc"
+        />
+        <FormSelect required label="To: Friend" options={accountToSelectFieldOptions} name="selectToAcc" />
+        <table>
+          <tr>
+            <td>Account Balance</td>
+            <td>0.00</td>
+          </tr>
+          <tr>
+            <td>
+              Points
+              <RequiredAsterisk />
+            </td>
+            <td>
+              <FormInput name="points" placeholder="0.00" type="number" />
+            </td>
+          </tr>
+          <tr>
+            <td>Bank Registration Fee</td>
+            <td>0.01</td>
+          </tr>
+          <tr>
+            <td>Validator Tx Fee</td>
+            <td>0.02</td>
+          </tr>
+          <tr>
+            <td>TOTAL Tx</td>
+            <td>0.00</td>
+          </tr>
+        </table>
+      </>
+    </Modal>
+  );
+
   return (
     <div className="Account">
       <PageLayout content={renderDetailPanels()} top={renderTop()} />
       {deleteModalIsOpen && renderDeleteModal()}
+      {sendPointsModalIsOpen && renderSendPointsModal()}
     </div>
   );
 };
