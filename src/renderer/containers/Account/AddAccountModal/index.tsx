@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import * as Yup from 'yup';
 
@@ -13,23 +13,29 @@ const initialValues = {
 
 type FormValues = typeof initialValues;
 
-// TODO: Make it unique if inputted
-const validationSchema = Yup.object().shape({
-  nickname: Yup.string(),
-});
-
 interface ComponentProps {
   close(): void;
 }
 
 const AddAccountModal: FC<ComponentProps> = ({close}) => {
   const dispatch = useDispatch();
-  const accounts = useSelector((state: RootState) => state.accounts, shallowEqual);
+  const nicknames = useSelector(
+    (state: RootState) => state.accounts.map((account) => account.nickname).filter((nickname) => !!nickname),
+    shallowEqual,
+  );
 
   const handleSubmit = ({nickname}: FormValues): void => {
     dispatch(createAccount(nickname));
     close();
   };
+
+  const validationSchema = useMemo(
+    () =>
+      Yup.object().shape({
+        nickname: Yup.string().notOneOf(nicknames, 'That nickname is already taken'),
+      }),
+    [nicknames],
+  );
 
   return (
     <Modal
