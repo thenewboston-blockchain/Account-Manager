@@ -1,7 +1,38 @@
 .Account {
   .detail-panels {
     .DetailPanel {
-      margin: 18px 12px 0;
+      margin: 30px 12px 0;
+
+      .panel-table {
+        width: 100%;
+      }
+      .balance__amount {
+        color: var(--color-tertiary);
+      }
+      .show-signing-key {
+        color: var(--color-secondary);
+        margin-left: 15px;
+      }
+      .ip-address {
+        color: var(--color-secondary);
+      }
     }
+  }
+}
+
+.Account__DeleteModal {
+  .Icon__warning {
+    color: var(--color-danger);
+    margin-right: 12px;
+  }
+
+  .Modal__title {
+    color: var(--color-danger);
+  }
+
+  .delete-warning-span {
+    color: var(--color-danger);
+    font-weight: bold;
+    text-transform: uppercase;
   }
 }
