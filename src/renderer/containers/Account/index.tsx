@@ -1,15 +1,15 @@
 import React from 'react';
 import noop from 'lodash/noop';
 
-import {Button} from '@renderer/components/FormElements';
 import DetailPanel from '@renderer/containers/DetailPanel';
 import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import Icon from '@renderer/components/Icon';
+import Modal from '@renderer/components/Modal';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import QR from '@renderer/components/QR';
-import Icon from '@renderer/components/Icon';
-import Modal from '@renderer/components/Modal';
+import {Button} from '@renderer/components/FormElements';
 
 import useBooleanState from '@renderer/hooks/useBooleanState';
 
