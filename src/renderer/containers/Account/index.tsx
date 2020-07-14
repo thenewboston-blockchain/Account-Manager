@@ -1,25 +1,28 @@
 import React from 'react';
+import noop from 'lodash/noop';
 
-import {Button} from '@renderer/components/FormElements';
 import DetailPanel from '@renderer/containers/DetailPanel';
+import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import Icon from '@renderer/components/Icon';
+import Modal from '@renderer/components/Modal';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import QR from '@renderer/components/QR';
-import './Account.scss';
-import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import {Button} from '@renderer/components/FormElements';
+
 import useBooleanState from '@renderer/hooks/useBooleanState';
-import Modal from '@renderer/components/Modal';
-import Icon from '@renderer/components/Icon';
+
+import './Account.scss';
 
 const Account = () => {
-  const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
+  const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
       label: 'Edit',
-      onClick: () => null,
+      onClick: noop,
     },
     {
       label: 'Delete Account',
@@ -46,28 +49,22 @@ const Account = () => {
           items={[
             {
               attribute: 'Balance',
-              value: <span className="balance__amount">184.35</span>,
+              value: '184.35',
             },
             {
               attribute: 'Account Number',
-              value: (
-                <div>
-                  <p>0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb</p>
-                  <QR text="0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb" />
-                </div>
-              ),
+              value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
             },
             {
               attribute: 'Signing Key',
-              value: (
-                <div>
-                  <span>**************************</span>
-                  <a className="show-signing-key">Show</a>
-                </div>
-              ),
+              value: '**************************',
+            },
+            {
+              attribute: 'QR Code',
+              value: <QR text="0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb" />,
             },
           ]}
-          title="Personal Info"
+          title="Account Info"
         />
         <DetailPanel
           items={[
@@ -77,39 +74,11 @@ const Account = () => {
             },
             {
               attribute: 'Account Number',
-              value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
+              value: 'Account Number',
             },
             {
               attribute: 'Protocol',
               value: 'http',
-            },
-            {
-              attribute: 'IP Address',
-              value: <span className="ip-address">223.125.111.178</span>,
-            },
-            {
-              attribute: 'Port',
-              value: '80',
-            },
-            {
-              attribute: 'Version',
-              value: 'w87Cx0Wir',
-            },
-            {
-              attribute: 'Default Tx Fee',
-              value: '2 Points',
-            },
-            {
-              attribute: 'Registered',
-              value: 'v1.0',
-            },
-            {
-              attribute: 'Trust',
-              value: '2 Points',
-            },
-            {
-              attribute: 'Network Trust Avg',
-              value: 'v1.0',
             },
           ]}
           title="Bank Info"
@@ -118,39 +87,9 @@ const Account = () => {
     );
   };
 
-  const renderRightPageHeaderButtons = () => (
-    <>
-      <Button>Send Points</Button>
-    </>
-  );
-
-  const renderLeftPageHeaderTools = () => <DropdownMenuButton options={dropdownMenuOptions} />;
-
-  const renderTop = () => (
-    <>
-      <PageHeader
-        leftTools={renderLeftPageHeaderTools()}
-        rightContent={renderRightPageHeaderButtons()}
-        title="Donations (43hawrjkef243d)"
-      />
-      <PageTabs
-        items={[
-          {
-            name: 'Overview',
-            active: true,
-          },
-          {
-            name: 'Transactions',
-            active: false,
-          },
-        ]}
-      />
-    </>
-  );
-
   const renderDeleteModal = () => (
     <Modal
-      cancelButton="No"
+      cancelButton="Cancel"
       className="Account__DeleteModal"
       close={toggleDeleteModal}
       header={
@@ -168,6 +107,38 @@ const Account = () => {
         in your account as well as your signing key. Are you sure you want to delete your account?
       </>
     </Modal>
+  );
+
+  const renderLeftTools = () => {
+    return <DropdownMenuButton options={dropdownMenuOptions} />;
+  };
+
+  const renderRightPageHeaderButtons = () => (
+    <>
+      <Button>Send Points</Button>
+    </>
+  );
+
+  const renderTop = () => (
+    <>
+      <PageHeader
+        leftTools={renderLeftTools()}
+        rightContent={renderRightPageHeaderButtons()}
+        title="Donations (43hawrjkef243d)"
+      />
+      <PageTabs
+        items={[
+          {
+            name: 'Overview',
+            active: true,
+          },
+          {
+            name: 'Transactions',
+            active: false,
+          },
+        ]}
+      />
+    </>
   );
 
   return (

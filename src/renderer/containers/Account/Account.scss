@@ -1,21 +1,7 @@
 .Account {
   .detail-panels {
     .DetailPanel {
-      margin: 30px 12px 0;
-
-      .panel-table {
-        width: 100%;
-      }
-      .balance__amount {
-        color: var(--color-tertiary);
-      }
-      .show-signing-key {
-        color: var(--color-secondary);
-        margin-left: 15px;
-      }
-      .ip-address {
-        color: var(--color-secondary);
-      }
+      margin: 18px 12px 0;
     }
   }
 }
