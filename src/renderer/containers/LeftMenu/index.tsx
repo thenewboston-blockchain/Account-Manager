@@ -1,9 +1,12 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
 import Icon from '@renderer/components/Icon';
 import LeftSubmenu from '@renderer/containers/LeftSubmenu';
+import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
+import useBooleanState from '@renderer/hooks/useBooleanState';
+import {getAccount} from '@renderer/store/accounts';
 import {RootState} from '@renderer/types/store';
 
 import './LeftMenu.scss';
@@ -17,12 +20,19 @@ const LeftComponentSelector = ({accounts, banks, friends, points, validators}: R
 });
 
 const LeftMenu = () => {
+  const dispatch = useDispatch();
   const {accounts, banks, friends, points, validators} = useSelector(LeftComponentSelector);
+  const [addAccountModalIsOpen, toggleAddAccountModal] = useBooleanState(false);
+
+  useEffect(() => {
+    dispatch(getAccount());
+  }, []);
 
   const renderAccounts = () => {
-    return accounts.map(({account_number}) => (
-      <NavLink className="MenuItem" key={account_number} to="/account">
-        {account_number}
+    return accounts.map(({accountNumber, nickname}) => (
+      <NavLink className="MenuItem" key={accountNumber} to="/account">
+        {nickname ? `${nickname} - ` : null}
+        {accountNumber}
       </NavLink>
     ));
   };
@@ -68,10 +78,23 @@ const LeftMenu = () => {
         ]}
         title="Network"
       />
-      <LeftSubmenu menuItems={renderManagedBanks()} title="Managed Banks" tool={<Icon icon="add" />} />
-      <LeftSubmenu menuItems={renderManagedValidators()} title="Managed Validators" tool={<Icon icon="add" />} />
-      <LeftSubmenu menuItems={renderAccounts()} title="Accounts" tool={<Icon icon="add" />} />
-      <LeftSubmenu menuItems={renderFriends()} title="Friends" tool={<Icon icon="add" />} />
+      <LeftSubmenu
+        menuItems={renderManagedBanks()}
+        title="Managed Banks"
+        tool={<Icon className="tool__add-icon" icon="add" />}
+      />
+      <LeftSubmenu
+        menuItems={renderManagedValidators()}
+        title="Managed Validators"
+        tool={<Icon className="tool__add-icon" icon="add" />}
+      />
+      <LeftSubmenu
+        menuItems={renderAccounts()}
+        title="Accounts"
+        tool={<Icon className="tool__add-icon" icon="add" onClick={toggleAddAccountModal} />}
+      />
+      <LeftSubmenu menuItems={renderFriends()} title="Friends" tool={<Icon className="tool__add-icon" icon="add" />} />
+      {addAccountModalIsOpen && <AddAccountModal close={toggleAddAccountModal} />}
     </div>
   );
 };

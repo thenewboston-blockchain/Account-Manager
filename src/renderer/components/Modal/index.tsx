@@ -24,11 +24,13 @@ interface ModalProps {
   displaySubmitButton?: boolean;
   footer?: ReactNode;
   header?: ReactNode;
+  ignoreDirty?: boolean;
   initialValues?: GenericFormValues;
   onSubmit: GenericFunction;
   style?: CSSProperties;
   submitButton?: ModalButtonProps | string;
   submitting?: boolean;
+  validationSchema?: any;
 }
 
 const Modal: FC<ModalProps> = ({
@@ -40,13 +42,18 @@ const Modal: FC<ModalProps> = ({
   displaySubmitButton = true,
   footer,
   header,
+  ignoreDirty: ignoreDirtyProps = false,
   initialValues = {},
   onSubmit,
   style,
   submitButton,
   submitting = false,
+  validationSchema,
 }) => {
-  const ignoreDirty = useMemo<boolean>(() => Object.keys(initialValues).length === 0, [initialValues]);
+  const ignoreDirty = useMemo<boolean>(() => ignoreDirtyProps || Object.keys(initialValues).length === 0, [
+    ignoreDirtyProps,
+    initialValues,
+  ]);
 
   const cancelProps = useMemo<ModalButtonProps>(() => {
     if (typeof cancelButton === 'string') {
@@ -136,7 +143,7 @@ const Modal: FC<ModalProps> = ({
           {typeof header === 'string' ? <h2>{header}</h2> : header}
           <Icon className={clsx('Icon__close', {submitting})} disabled={submitting} icon="close" onClick={close} />
         </div>
-        <Form initialValues={initialValues} onSubmit={onSubmit}>
+        <Form initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
           <div className="Modal__content">{children}</div>
           <div className="Modal__footer">{footer || renderDefaultFooter()}</div>
         </Form>

@@ -1,6 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit';
 
-import accounts, {sampleAccounts} from '@renderer/store/accounts';
+import accountsSlice, {sampleAccounts} from '@renderer/store/accounts';
 import banks, {sampleBanks} from '@renderer/store/banks';
 import friends, {sampleFriends} from '@renderer/store/friends';
 import points, {samplePoints} from '@renderer/store/points';
@@ -16,7 +16,7 @@ const preloadedState = {
 
 export default configureStore({
   reducer: {
-    accounts: accounts.reducer,
+    accounts: accountsSlice.reducer,
     banks: banks.reducer,
     friends: friends.reducer,
     points: points.reducer,

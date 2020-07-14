@@ -11,6 +11,15 @@
     }
   }
 
+  .tool__add-icon {
+    cursor: pointer;
+    transition: color 0.1s;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+
   &__points {
     border-bottom: 1px solid var(--color-neutral-400);
     padding: 12px;
