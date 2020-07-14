@@ -1,10 +1,11 @@
 import React, {FC} from 'react';
-import {useDispatch} from 'react-redux';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import * as Yup from 'yup';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import {createAccount} from '@renderer/store/accounts';
+import {RootState} from '@renderer/types/store';
 
 const initialValues = {
   nickname: '',
@@ -23,6 +24,7 @@ interface ComponentProps {
 
 const AddAccountModal: FC<ComponentProps> = ({close}) => {
   const dispatch = useDispatch();
+  const accounts = useSelector((state: RootState) => state.accounts, shallowEqual);
 
   const handleSubmit = ({nickname}: FormValues): void => {
     dispatch(createAccount(nickname));

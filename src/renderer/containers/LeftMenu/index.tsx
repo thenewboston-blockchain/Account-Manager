@@ -29,10 +29,10 @@ const LeftMenu = () => {
   }, []);
 
   const renderAccounts = () => {
-    return Object.values(accounts).map(({account_number, nickname}) => (
-      <NavLink className="MenuItem" key={account_number} to="/account">
+    return accounts.map(({accountNumber, nickname}) => (
+      <NavLink className="MenuItem" key={accountNumber} to="/account">
         {nickname ? `${nickname} - ` : null}
-        {account_number}
+        {accountNumber}
       </NavLink>
     ));
   };

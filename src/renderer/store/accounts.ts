@@ -13,57 +13,57 @@ const electronStore = new ElectronStore({
 });
 
 interface Account {
-  account_number: string;
+  accountNumber: string;
   nickname?: string;
 }
 
 const accountsSlice = createSlice({
   name: 'accounts',
-  initialState: {} as Data<Account>,
+  initialState: [] as Account[],
   reducers: {
     create: {
-      reducer: (state, action: PayloadAction<string>) => {
-        const {payload: nickname} = action;
-        const accounts = electronStore.get('accounts') as Data<Account>;
+      prepare: (nickname: string = '') => {
+        const accounts = electronStore.get('accounts') as Account[];
         const {publicKey, secretKey} = sign.keyPair();
         const publicKeyHex = Buffer.from(publicKey).toString('hex');
         const secretKeyHex = Buffer.from(secretKey).toString('hex').slice(64);
         electronStore.set('accounts', {
           ...accounts,
-          [publicKeyHex]: {
-            nickname,
-            secretKey: secretKeyHex,
-          },
+          [publicKeyHex]: {nickname: nickname || '', secretKey: secretKeyHex},
         });
-        state[publicKeyHex] = {
-          account_number: publicKeyHex,
-          nickname,
+        return {
+          payload: {
+            accountNumber: publicKeyHex,
+            nickname: nickname || '',
+          },
         };
       },
-      prepare: (nickname: string) => ({payload: nickname || ''}),
+      reducer: (state, action: PayloadAction<Account>) => {
+        state.push(action.payload);
+      },
     },
-    get: () => {
-      const accounts = electronStore.get('accounts') as Data<Account>;
-      return Object.entries(accounts).reduce(
-        (acc, [accountNumber, account]) => ({
-          ...acc,
-          [accountNumber]: {
-            account_number: accountNumber,
-            nickname: account.nickname,
-          },
-        }),
-        {},
-      );
+    get: {
+      prepare: () => {
+        const accountsFromStore = electronStore.get('accounts') as Data<Account>;
+        const accountsArray = Object.entries(accountsFromStore).map(([accountNumber, {nickname}]) => ({
+          accountNumber,
+          nickname,
+        }));
+        return {
+          payload: accountsArray,
+        };
+      },
+      reducer: (state, action: PayloadAction<Account[]>) => action.payload,
     },
   },
 });
 
-export const sampleAccounts: Data<Account> = {
-  '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb': {
-    account_number: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
+export const sampleAccounts: Account[] = [
+  {
+    accountNumber: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
     nickname: 'hello',
   },
-};
+];
 
 export const {create: createAccount, get: getAccount} = accountsSlice.actions;
 
