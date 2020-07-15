@@ -11,10 +11,10 @@ import PageTabs from '@renderer/components/PageTabs';
 import QR from '@renderer/components/QR';
 import {Button} from '@renderer/components/FormElements';
 import useBooleanState from '@renderer/hooks/useBooleanState';
-import './Account.scss';
-import {FormButton, FormInput, FormSelect, FormSelectDetailed} from '@renderer/components/FormComponents';
+import {FormButton, FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import {SelectOption} from '@renderer/types/forms';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
+import './Account.scss';
 
 const initialPointsToSendValues = {
   points: '0.00',
