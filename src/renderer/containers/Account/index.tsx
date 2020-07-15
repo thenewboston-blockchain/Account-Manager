@@ -12,7 +12,7 @@ import QR from '@renderer/components/QR';
 import {Button} from '@renderer/components/FormElements';
 import useBooleanState from '@renderer/hooks/useBooleanState';
 import './Account.scss';
-import {FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
+import {FormButton, FormInput, FormSelect, FormSelectDetailed} from '@renderer/components/FormComponents';
 import {SelectOption} from '@renderer/types/forms';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 
@@ -49,7 +49,7 @@ const Account = () => {
     '3cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acde',
     '5cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdr',
     '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
-  ].map((acc) => ({label: acc, value: acc}));
+  ].map((acc) => ({label: 'Amy', value: acc}));
 
   const accountToSelectFieldOptions: SelectOption[] = [
     '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
@@ -58,7 +58,50 @@ const Account = () => {
     '3cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acde',
     '5cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdr',
     '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
-  ].map((acc) => ({label: acc, value: acc}));
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+    '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+  ].map((acc) => ({label: 'Amy', value: acc}));
 
   const handleDeleteAccountFromModal = async (): Promise<void> => {
     try {
@@ -174,11 +217,12 @@ const Account = () => {
   const renderSendPointsModal = () => (
     <Modal
       className="Account__SendPointsModal"
+      style={{left: '50%', transform: 'translate(-50%, -50%)', top: '50%', width: 384}}
       close={toggleSendPointsModal}
       initialValues={initialPointsToSendValues}
       footer={
         <>
-          <FormButton className="Modal__default-cancel" onClick={toggleSendPointsModal} variant="outlined">
+          <FormButton className="Modal__default-cancel" onClick={toggleSendPointsModal} variant="link">
             Cancel
           </FormButton>
           <FormButton className="Modal__default-submit" type="submit">
@@ -194,18 +238,26 @@ const Account = () => {
       onSubmit={handlePointsToSendSubmit}
     >
       <>
-        <FormSelect
+        <FormSelectDetailed
+          className="acc-form-select"
           required
-          className="account-select-form"
           label="From: Account"
           options={accountFromSelectFieldOptions}
           name="selectFromAcc"
         />
-        <FormSelect required label="To: Friend" options={accountToSelectFieldOptions} name="selectToAcc" />
+        <FormSelectDetailed
+          className="acc-form-select"
+          required
+          label="To: Friend"
+          options={accountToSelectFieldOptions}
+          name="selectToAcc"
+        />
         <table>
           <tr>
             <td>Account Balance</td>
-            <td>0.00</td>
+            <td>
+              <span className="acc-balance">0.00</span>
+            </td>
           </tr>
           <tr>
             <td>
@@ -213,7 +265,7 @@ const Account = () => {
               <RequiredAsterisk />
             </td>
             <td>
-              <FormInput name="points" placeholder="0.00" type="number" />
+              <FormInput className="points-input" name="points" placeholder="0.00" type="number" />
             </td>
           </tr>
           <tr>
@@ -226,7 +278,9 @@ const Account = () => {
           </tr>
           <tr>
             <td>TOTAL Tx</td>
-            <td>0.00</td>
+            <td>
+              <b>0.00</b>
+            </td>
           </tr>
         </table>
       </>
