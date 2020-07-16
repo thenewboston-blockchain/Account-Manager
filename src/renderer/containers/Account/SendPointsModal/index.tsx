@@ -1,4 +1,5 @@
 import React, {FC, ReactNode} from 'react';
+import * as Yup from 'yup';
 
 import {FormButton, FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
@@ -12,6 +13,12 @@ const initialValues = {
   points: '0.00',
   toAccount: '',
 };
+
+const validationSchema = Yup.object().shape({
+  fromAccount: Yup.string().required('This field is required'),
+  points: Yup.number().positive().required('This field is required'),
+  toAccount: Yup.string().required('This field is required'),
+});
 
 type FormValues = typeof initialValues;
 
@@ -56,56 +63,59 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
     <Modal
       className="SendPointsModal"
       close={close}
-      initialValues={initialValues}
       footer={renderFooter()}
       header="Send Points"
+      initialValues={initialValues}
       onSubmit={handleSubmit}
+      validationSchema={validationSchema}
     >
       <>
         <FormSelectDetailed
-          className="acc-form-select"
+          className="SendPointsModal__select"
           required
           label="From: Account"
           options={accountFromSelectFieldOptions}
           name="fromAccount"
         />
         <FormSelectDetailed
-          className="acc-form-select"
+          className="SendPointsModal__select"
           required
           label="To: Friend"
           options={accountToSelectFieldOptions}
           name="toAccount"
         />
         <table>
-          <tr>
-            <td>Account Balance</td>
-            <td>
-              <span className="acc-balance">0.00</span>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Points
-              <RequiredAsterisk />
-            </td>
-            <td>
-              <FormInput className="points-input" name="points" placeholder="0.00" type="number" />
-            </td>
-          </tr>
-          <tr>
-            <td>Bank Registration Fee</td>
-            <td>0.01</td>
-          </tr>
-          <tr>
-            <td>Validator Tx Fee</td>
-            <td>0.02</td>
-          </tr>
-          <tr>
-            <td>TOTAL Tx</td>
-            <td>
-              <b>0.00</b>
-            </td>
-          </tr>
+          <tbody>
+            <tr>
+              <td>Account Balance</td>
+              <td>
+                <span className="acc-balance">0.00</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Points
+                <RequiredAsterisk />
+              </td>
+              <td>
+                <FormInput className="points-input" name="points" placeholder="0.00" type="number" />
+              </td>
+            </tr>
+            <tr>
+              <td>Bank Registration Fee</td>
+              <td>0.01</td>
+            </tr>
+            <tr>
+              <td>Validator Tx Fee</td>
+              <td>0.02</td>
+            </tr>
+            <tr>
+              <td>TOTAL Tx</td>
+              <td>
+                <b>0.00</b>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </>
     </Modal>

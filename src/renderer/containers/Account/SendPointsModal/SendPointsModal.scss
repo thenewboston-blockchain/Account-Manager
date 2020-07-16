@@ -1,5 +1,9 @@
-.Modal.SendPointsModal {
+.SendPointsModal {
   width: 384px;
+
+  &__select {
+    margin-bottom: 3px;
+  }
 
   table {
     width: 100%;
