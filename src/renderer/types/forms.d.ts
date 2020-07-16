@@ -1,4 +1,5 @@
 export type BaseFormComponentProps<T> = Omit<T, 'name' | 'onBlur' | 'onChange' | 'value'> & {
+  hideError?: boolean;
   label?: string;
   name: string;
   required?: boolean;

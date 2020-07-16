@@ -98,7 +98,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
                 <RequiredAsterisk />
               </td>
               <td>
-                <FormInput className="points-input" name="points" placeholder="0.00" type="number" />
+                <FormInput className="points-input" hideError name="points" placeholder="0.00" type="number" />
               </td>
             </tr>
             <tr>
