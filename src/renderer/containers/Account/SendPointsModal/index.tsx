@@ -5,6 +5,8 @@ import Modal from '@renderer/components/Modal';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import {SelectOption} from '@renderer/types/forms';
 
+import './SendPointsModal.scss';
+
 const initialValues = {
   fromAccount: '',
   points: '0.00',
@@ -52,8 +54,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
 
   return (
     <Modal
-      className="Account__SendPointsModal"
-      style={{left: '50%', transform: 'translate(-50%, -50%)', top: '50%', width: 384}}
+      className="SendPointsModal"
       close={close}
       initialValues={initialValues}
       footer={renderFooter()}
