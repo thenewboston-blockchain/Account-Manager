@@ -16,7 +16,7 @@ const initialValues = {
 
 const validationSchema = Yup.object().shape({
   fromAccount: Yup.string().required('This field is required'),
-  points: Yup.number().positive().required('This field is required'),
+  points: Yup.number().moreThan(0, 'Must be greater than 0').required('This field is required'),
   toAccount: Yup.string().required('This field is required'),
 });
 
