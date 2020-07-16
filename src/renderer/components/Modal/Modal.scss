@@ -16,7 +16,7 @@ $modal-footer-height: 60px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   position: fixed;
 
-  &.default {
+  &__default-position {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);

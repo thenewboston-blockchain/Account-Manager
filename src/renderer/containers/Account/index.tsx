@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import noop from 'lodash/noop';
 
 import DetailPanel from '@renderer/containers/DetailPanel';
@@ -10,14 +10,15 @@ import PageLayout from '@renderer/containers/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import QR from '@renderer/components/QR';
 import {Button} from '@renderer/components/FormElements';
-
 import useBooleanState from '@renderer/hooks/useBooleanState';
 
+import SendPointsModal from './SendPointsModal';
 import './Account.scss';
 
-const Account = () => {
+const Account: FC = () => {
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
+  const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
@@ -115,7 +116,7 @@ const Account = () => {
 
   const renderRightPageHeaderButtons = () => (
     <>
-      <Button>Send Points</Button>
+      <Button onClick={toggleSendPointsModal}>Send Points</Button>
     </>
   );
 
@@ -145,6 +146,7 @@ const Account = () => {
     <div className="Account">
       <PageLayout content={renderDetailPanels()} top={renderTop()} />
       {deleteModalIsOpen && renderDeleteModal()}
+      {sendPointsModalIsOpen && <SendPointsModal close={toggleSendPointsModal} />}
     </div>
   );
 };

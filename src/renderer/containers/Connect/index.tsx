@@ -22,7 +22,7 @@ const protocolOptions: SelectOption[] = [{value: 'http'}, {value: 'https'}];
 
 const genericIpAddressRegex = /([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(\d{1,3}\.){3}\d{1,3}/;
 
-const ValidationSchema = Yup.object().shape({
+const validationSchema = Yup.object().shape({
   protocol: Yup.string().required(),
   ipAddress: Yup.string()
     .required('This field is required')
@@ -53,7 +53,7 @@ const Connect: FC = () => {
         className="Connect__form"
         initialValues={initialValues}
         onSubmit={handleSubmit}
-        validationSchema={ValidationSchema}
+        validationSchema={validationSchema}
       >
         <FormSelect
           className="Connect__field"
