@@ -1,6 +1,7 @@
 import React, {FC, ReactNode} from 'react';
 import * as Yup from 'yup';
 
+import {ChevronIcon} from './icons';
 import {FormButton, FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
@@ -53,7 +54,9 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
           Cancel
         </FormButton>
         <FormButton className="Modal__default-submit" type="submit">
-          Send
+          <>
+            Send <ChevronIcon iconClassName="SendPointsModal__chevron" />
+          </>
         </FormButton>
       </>
     );

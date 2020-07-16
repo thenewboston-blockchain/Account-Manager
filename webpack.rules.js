@@ -7,7 +7,7 @@ const rules = [
   {
     test: /\.(m?js|node)$/,
     exclude: /(.webpack|node_modules)/,
-    parser: { amd: false },
+    parser: {amd: false},
     use: {
       loader: '@marshallofsound/webpack-asset-relocator-loader',
       options: {
@@ -35,14 +35,14 @@ const rules = [
     use: ['style-loader', 'css-loader', 'sass-loader'],
   },
   {
-    test: /\.(svg|ico|icns)$/,
+    test: /\.(ico|icns)$/,
     loader: 'file-loader',
     options: {
       name: '[path][name].[ext]',
     },
   },
   {
-    test: /\.(jpg|png|woff|woff2|eot|ttf)$/,
+    test: /\.(jpg|png|woff|woff2|eot|ttf|svg)$/,
     loader: 'url-loader',
     options: {
       name: '[path][name].[ext]',
