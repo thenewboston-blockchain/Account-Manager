@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, ReactNode} from 'react';
 
 import {FormButton, FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
@@ -37,27 +37,27 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
     console.log(points);
   };
 
+  const renderFooter = (): ReactNode => {
+    return (
+      <>
+        <FormButton className="Modal__default-cancel" onClick={close} variant="link">
+          Cancel
+        </FormButton>
+        <FormButton className="Modal__default-submit" type="submit">
+          Send
+        </FormButton>
+      </>
+    );
+  };
+
   return (
     <Modal
       className="Account__SendPointsModal"
       style={{left: '50%', transform: 'translate(-50%, -50%)', top: '50%', width: 384}}
       close={close}
       initialValues={initialValues}
-      footer={
-        <>
-          <FormButton className="Modal__default-cancel" onClick={close} variant="link">
-            Cancel
-          </FormButton>
-          <FormButton className="Modal__default-submit" type="submit">
-            Send
-          </FormButton>
-        </>
-      }
-      header={
-        <>
-          <h2>Send Points</h2>
-        </>
-      }
+      footer={renderFooter()}
+      header="Send Points"
       onSubmit={handleSubmit}
     >
       <>
