@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import noop from 'lodash/noop';
 
 import DetailPanel from '@renderer/containers/DetailPanel';
@@ -14,11 +14,15 @@ import useBooleanState from '@renderer/hooks/useBooleanState';
 
 import SendPointsModal from './SendPointsModal';
 import './Account.scss';
+import PageTable from '../PageTable';
+import Pagination from '@renderer/components/Pagination';
 
 const Account: FC = () => {
+  const tabs = ['Overview', 'Transactions'];
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
   const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
+  const [activeTabName, setActiveTab] = useState(tabs[0]);
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
@@ -128,16 +132,15 @@ const Account: FC = () => {
         title="Donations (43hawrjkef243d)"
       />
       <PageTabs
-        items={[
-          {
-            name: 'Overview',
-            active: true,
-          },
-          {
-            name: 'Transactions',
-            active: false,
-          },
-        ]}
+        items={tabs.map(
+          (item) =>({
+            name: item,
+            active: activeTabName === item ? true : false,
+            onClick: (name) => {
+              setActiveTab(name)
+            }
+          })
+        )}
       />
     </>
   );

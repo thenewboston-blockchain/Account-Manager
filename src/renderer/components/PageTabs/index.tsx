@@ -5,6 +5,7 @@ import './PageTabs.scss';
 interface Item {
   active: boolean;
   name: string;
+  onClick(name: string): void;
 }
 
 interface ComponentProps {
@@ -14,8 +15,8 @@ interface ComponentProps {
 const PageTabs: FC<ComponentProps> = ({items}) => {
   return (
     <div className="PageTabs">
-      {items.map(({active, name}) => (
-        <div className={`tab ${active ? 'active' : ''}`} key={name}>
+      {items.map(({active, name, onClick}) => (
+        <div className={`tab ${active ? 'active' : ''}`} key={name} onClick={() => onClick(name)} >
           <div className="tab-name">{name}</div>
           <div className="tab-indicator">&nbsp;</div>
         </div>
