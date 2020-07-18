@@ -1,24 +1,37 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import noop from 'lodash/noop';
 
-import DetailPanel from '@renderer/containers/DetailPanel';
+import {Button} from '@renderer/components/FormElements';
 import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import Icon from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import PageHeader from '@renderer/components/PageHeader';
-import PageLayout from '@renderer/containers/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
+import Pagination from '@renderer/components/Pagination';
 import QR from '@renderer/components/QR';
-import {Button} from '@renderer/components/FormElements';
+
+import DetailPanel from '@renderer/containers/DetailPanel';
+import PageLayout from '@renderer/containers/PageLayout';
+import PageTable from '@renderer/containers/PageTable';
+
 import useBooleanState from '@renderer/hooks/useBooleanState';
+import transactionSampleData from '@renderer/mock/TransactionSampleData';
 
 import SendPointsModal from './SendPointsModal';
+
 import './Account.scss';
 
+enum Tabs {
+  OVERVIEW = 'Overview',
+  TRANSACTIONS = 'Transactions',
+}
+const tabs = [Tabs.OVERVIEW, Tabs.TRANSACTIONS];
+
 const Account: FC = () => {
+  const [activeTab, setActiveTab] = useState(tabs[0]);
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
-  const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
   const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
+  const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
@@ -42,6 +55,28 @@ const Account: FC = () => {
       console.log('ERROR', error);
     }
   };
+
+  const renderDeleteModal = () => (
+    <Modal
+      cancelButton="Cancel"
+      className="Account__DeleteModal"
+      close={toggleDeleteModal}
+      header={
+        <>
+          <Icon className="Icon__warning" icon="warning" />
+          <h2 className="Modal__title">Delete Account</h2>
+        </>
+      }
+      onSubmit={handleDeleteAccountFromModal}
+      submitButton="Yes"
+      submitting={submittingDeleteModal}
+    >
+      <>
+        <span className="delete-warning-span">Warning: </span> If you delete your account, you will lose all the points
+        in your account as well as your signing key. Are you sure you want to delete your account?
+      </>
+    </Modal>
+  );
 
   const renderDetailPanels = () => {
     return (
@@ -88,37 +123,30 @@ const Account: FC = () => {
     );
   };
 
-  const renderDeleteModal = () => (
-    <Modal
-      cancelButton="Cancel"
-      className="Account__DeleteModal"
-      close={toggleDeleteModal}
-      header={
-        <>
-          <Icon className="Icon__warning" icon="warning" />
-          <h2 className="Modal__title">Delete Account</h2>
-        </>
-      }
-      onSubmit={handleDeleteAccountFromModal}
-      submitButton="Yes"
-      submitting={submittingDeleteModal}
-    >
-      <>
-        <span className="delete-warning-span">Warning: </span> If you delete your account, you will lose all the points
-        in your account as well as your signing key. Are you sure you want to delete your account?
-      </>
-    </Modal>
-  );
-
   const renderLeftTools = () => {
     return <DropdownMenuButton options={dropdownMenuOptions} />;
   };
+
+  const renderPageTable = () => (
+    <>
+      <PageTable items={transactionSampleData} />
+      <Pagination />
+    </>
+  );
 
   const renderRightPageHeaderButtons = () => (
     <>
       <Button onClick={toggleSendPointsModal}>Send Points</Button>
     </>
   );
+
+  const renderTabContent = (activeTab: Tabs) => {
+    const tabContent = {
+      [Tabs.OVERVIEW]: renderDetailPanels(),
+      [Tabs.TRANSACTIONS]: renderPageTable(),
+    };
+    return tabContent[activeTab] || null;
+  };
 
   const renderTop = () => (
     <>
@@ -128,23 +156,20 @@ const Account: FC = () => {
         title="Donations (43hawrjkef243d)"
       />
       <PageTabs
-        items={[
-          {
-            name: 'Overview',
-            active: true,
+        items={tabs.map((item) => ({
+          name: item.toString(),
+          active: activeTab === item,
+          onClick: (name) => {
+            setActiveTab(name as Tabs);
           },
-          {
-            name: 'Transactions',
-            active: false,
-          },
-        ]}
+        }))}
       />
     </>
   );
 
   return (
     <div className="Account">
-      <PageLayout content={renderDetailPanels()} top={renderTop()} />
+      <PageLayout content={renderTabContent(activeTab)} top={renderTop()} />
       {deleteModalIsOpen && renderDeleteModal()}
       {sendPointsModalIsOpen && <SendPointsModal close={toggleSendPointsModal} />}
     </div>
