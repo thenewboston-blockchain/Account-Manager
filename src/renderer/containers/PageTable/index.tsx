@@ -27,7 +27,7 @@ const PageTable: FC<ComponentProps> = ({items}) => {
      data.map((item) => (
       <ExpandableTableRow key={item["id"]}>{
         Object.keys(header).map((key) => (
-          <td key={key + item["id"]}>{item[key]}</td>
+          <td key={key}>{item[key]}</td>
         ))
       }</ExpandableTableRow>
     ));
