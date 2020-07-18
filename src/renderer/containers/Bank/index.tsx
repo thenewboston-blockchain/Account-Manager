@@ -15,6 +15,7 @@ import TrustBadge from '@renderer/components/TrustBadge';
 import useBooleanState from '@renderer/hooks/useBooleanState';
 
 import './Bank.scss';
+import sampleData from '@renderer/mock/OverviewSampleData';
 
 const Bank = () => {
   const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
@@ -51,7 +52,7 @@ const Bank = () => {
 
   const renderContent = () => (
     <>
-      <PageTable />
+      <PageTable items={sampleData}/>
       <Pagination />
     </>
   );

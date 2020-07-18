@@ -16,6 +16,7 @@ import SendPointsModal from './SendPointsModal';
 import './Account.scss';
 import PageTable from '../PageTable';
 import Pagination from '@renderer/components/Pagination';
+import transactionSampleData from '@renderer/mock/TransactionSampleData';
 
 enum Tabs {
   OVERVIEW = "Overview",
@@ -99,7 +100,7 @@ const Account: FC = () => {
 
   const renderPageTable = () => (
     <>
-      <PageTable />
+      <PageTable items={transactionSampleData}/>
       <Pagination />
     </>
   );
