@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, {FC} from 'react';
 import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
@@ -5,12 +6,11 @@ import * as Yup from 'yup';
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
 import {SelectOption} from '@renderer/types/forms';
+import {formatAddress} from '@renderer/utils/format';
 
 import './Connect.scss';
 
 const initialValues = {
-  account1: '10cdd4ba04456ca169baca3d66eace869520c62fe84421329086e0391a68acdb',
-  account2: '',
   protocol: 'http',
   ipAddress: '',
   port: '80',
@@ -37,9 +37,12 @@ const Connect: FC = () => {
     history.push('/bank');
   };
 
-  const handleSubmit = (values: FormValues) => {
-    console.log(values.account1.length);
-    history.push('/bank');
+  const handleSubmit = async (values: FormValues) => {
+    const {ipAddress, port, protocol} = values;
+    const address = formatAddress(ipAddress, port, protocol);
+    const response = await axios.get(`${address}/config`);
+    console.warn(response);
+    // history.push('/bank');
   };
 
   return (
@@ -48,7 +51,7 @@ const Connect: FC = () => {
         <Logo size={30} />
         <h2>thenewboston</h2>
       </div>
-      <div className="Connect__subheader">Enter the address of any node on the network to connect.</div>
+      <div className="Connect__subheader">Enter the address of a bank.</div>
       <Form
         className="Connect__form"
         initialValues={initialValues}
