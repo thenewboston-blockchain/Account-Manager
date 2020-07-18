@@ -1,4 +1,5 @@
 import React from 'react';
+import noop from 'lodash/noop';
 
 import {Button} from '@renderer/components/FormElements';
 import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
@@ -14,8 +15,9 @@ import TrustBadge from '@renderer/components/TrustBadge';
 
 import useBooleanState from '@renderer/hooks/useBooleanState';
 
-import './Bank.scss';
 import sampleData from '@renderer/mock/OverviewSampleData';
+
+import './Bank.scss';
 
 const Bank = () => {
   const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
@@ -105,24 +107,29 @@ const Bank = () => {
       <PageTabs
         items={[
           {
-            name: 'Overview',
             active: true,
+            name: 'Overview',
+            onClick: noop
           },
           {
+            active: false,
             name: 'Members',
-            active: false,
+            onClick: noop
           },
           {
+            active: false,
             name: 'Transactions',
-            active: false,
+            onClick: noop
           },
           {
+            active: false,
             name: 'Banks',
-            active: false,
+            onClick: noop
           },
           {
-            name: 'Validators',
             active: false,
+            name: 'Validators',
+            onClick: noop
           },
         ]}
       />
