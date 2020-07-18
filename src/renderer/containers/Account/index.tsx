@@ -17,12 +17,17 @@ import './Account.scss';
 import PageTable from '../PageTable';
 import Pagination from '@renderer/components/Pagination';
 
+enum Tabs {
+  OVERVIEW = "Overview",
+  TRANSACTIONS = "Transactions"
+}
+
 const Account: FC = () => {
-  const tabs = ['Overview', 'Transactions'];
+  const tabs = [Tabs.OVERVIEW, Tabs.TRANSACTIONS];
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
   const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
-  const [activeTabName, setActiveTab] = useState(tabs[0]);
+  const [activeTab, setActiveTab] = useState(tabs[0]);
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
@@ -92,6 +97,24 @@ const Account: FC = () => {
     );
   };
 
+  const renderPageTable = () => (
+    <>
+      <PageTable />
+      <Pagination />
+    </>
+  );
+
+  const renderContent = (activeTab: Tabs) => {
+    switch (activeTab) {
+      case Tabs.OVERVIEW:
+        return  renderDetailPanels();
+      case Tabs.TRANSACTIONS:
+        return renderPageTable()
+      default:
+        return <></>;
+    }
+  };
+
   const renderDeleteModal = () => (
     <Modal
       cancelButton="Cancel"
@@ -134,10 +157,10 @@ const Account: FC = () => {
       <PageTabs
         items={tabs.map(
           (item) =>({
-            name: item,
-            active: activeTabName === item ? true : false,
+            name: item.toString(),
+            active: activeTab === item ? true : false,
             onClick: (name) => {
-              setActiveTab(name)
+              setActiveTab(name as Tabs)
             }
           })
         )}
@@ -147,7 +170,7 @@ const Account: FC = () => {
 
   return (
     <div className="Account">
-      <PageLayout content={renderDetailPanels()} top={renderTop()} />
+      <PageLayout content={renderContent(activeTab)} top={renderTop()} />
       {deleteModalIsOpen && renderDeleteModal()}
       {sendPointsModalIsOpen && <SendPointsModal close={toggleSendPointsModal} />}
     </div>
