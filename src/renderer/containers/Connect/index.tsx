@@ -62,8 +62,8 @@ const Connect: FC = () => {
           className="Connect__field"
           isSearchable={false}
           label="Protocol"
-          options={protocolOptions}
           name="protocol"
+          options={protocolOptions}
           required
         />
         <FormInput className="Connect__field" label="IP Address" name="ipAddress" required />
