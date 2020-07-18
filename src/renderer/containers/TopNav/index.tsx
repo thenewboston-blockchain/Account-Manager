@@ -13,8 +13,8 @@ const TopNav = () => {
         <h2>thenewboston</h2>
       </div>
       <div className="navigation-icons">
-        <Icon icon="arrow_back" />
-        <Icon icon="arrow_forward" />
+        <Icon icon="arrow" matchContainer />
+        <Icon icon="arrow-forward" matchContainer />
       </div>
     </div>
   );

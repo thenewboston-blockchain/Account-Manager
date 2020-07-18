@@ -1,13 +1,13 @@
 import React, {FC, ReactNode} from 'react';
 import * as Yup from 'yup';
 
-import {ChevronIcon} from './icons';
 import {FormButton, FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import {SelectOption} from '@renderer/types/forms';
 
 import './SendPointsModal.scss';
+import Icon from '@renderer/components/Icon';
 
 const initialValues = {
   fromAccount: '',
@@ -55,7 +55,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
         </FormButton>
         <FormButton className="Modal__default-submit" type="submit">
           <>
-            Send <ChevronIcon iconClassName="SendPointsModal__chevron" />
+            Send <Icon className="SendPointsModal__chevron" icon="chevron" />
           </>
         </FormButton>
       </>

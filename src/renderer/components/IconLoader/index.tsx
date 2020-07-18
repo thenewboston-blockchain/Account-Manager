@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {forwardRef} from 'react';
 import clsx from 'clsx';
 import './index.scss';
 
@@ -8,7 +8,7 @@ interface ComponentProps {
   heightAuto?: boolean;
   widthAuto?: boolean;
   matchContainer?: boolean;
-  propsToAppendToElement?: Object;
+  propsToAppendToElement?: object;
 }
 
 /**
@@ -19,7 +19,7 @@ interface ComponentProps {
  * @param propsToAppendToElement {*} : Object of properties to override default icon behavior. DOM event handlers can be passed here
  */
 
-const IconLoader: FC<ComponentProps> = (props) => {
+const IconLoader = forwardRef<HTMLSpanElement, ComponentProps>((props, ref) => {
   if (!props.src || !props.src.match) {
     return null;
   }
@@ -32,9 +32,10 @@ const IconLoader: FC<ComponentProps> = (props) => {
     return null;
   }
 
-  const {src, heightAuto, widthAuto, matchContainer, iconClassName, ...propsToAppendToElement} = props;
+  const {src, heightAuto, widthAuto, matchContainer, className, ...propsToAppendToElement} = props;
   return (
     <span
+      ref={ref}
       {...propsToAppendToElement}
       className={clsx(
         'default-icon-style',
@@ -43,11 +44,11 @@ const IconLoader: FC<ComponentProps> = (props) => {
           'ht-auto': heightAuto,
           'wt-auto': widthAuto,
         },
-        iconClassName || '',
+        className || '',
       )}
       dangerouslySetInnerHTML={{__html: html}}
     />
   );
-};
+});
 
 export default IconLoader;
