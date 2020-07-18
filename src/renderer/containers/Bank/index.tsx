@@ -14,7 +14,6 @@ import Pagination from '@renderer/components/Pagination';
 import TrustBadge from '@renderer/components/TrustBadge';
 
 import useBooleanState from '@renderer/hooks/useBooleanState';
-
 import sampleData from '@renderer/mock/OverviewSampleData';
 
 import './Bank.scss';
@@ -54,7 +53,7 @@ const Bank = () => {
 
   const renderContent = () => (
     <>
-      <PageTable items={sampleData}/>
+      <PageTable items={sampleData} />
       <Pagination />
     </>
   );
@@ -109,27 +108,27 @@ const Bank = () => {
           {
             active: true,
             name: 'Overview',
-            onClick: noop
+            onClick: noop,
           },
           {
             active: false,
             name: 'Members',
-            onClick: noop
+            onClick: noop,
           },
           {
             active: false,
             name: 'Transactions',
-            onClick: noop
+            onClick: noop,
           },
           {
             active: false,
             name: 'Banks',
-            onClick: noop
+            onClick: noop,
           },
           {
             active: false,
             name: 'Validators',
-            onClick: noop
+            onClick: noop,
           },
         ]}
       />

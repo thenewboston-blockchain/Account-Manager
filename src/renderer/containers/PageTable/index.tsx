@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, {FC} from 'react';
 
 import ExpandableTableRow from '@renderer/components/ExpandableTableRow';
 
@@ -9,6 +9,7 @@ interface Header {
 }
 
 interface Data {
+  id: string;
   [key: string]: string | number;
 }
 
@@ -23,13 +24,14 @@ interface ComponentProps {
 
 const PageTable: FC<ComponentProps> = ({items}) => {
   const {header, data} = items;
+
   const renderSampleRows = () =>
-     data.map((item) => (
-      <ExpandableTableRow key={item["id"]}>{
-        Object.keys(header).map((key) => (
+    data.map((item) => (
+      <ExpandableTableRow key={item.id}>
+        {Object.keys(header).map((key) => (
           <td key={key}>{item[key]}</td>
-        ))
-      }</ExpandableTableRow>
+        ))}
+      </ExpandableTableRow>
     ));
 
   return (
@@ -37,7 +39,9 @@ const PageTable: FC<ComponentProps> = ({items}) => {
       <thead>
         <tr>
           <th />
-          {Object.entries(header).map(([key, value]) => <td key={key}>{value}</td>)}
+          {Object.entries(header).map(([key, value]) => (
+            <td key={key}>{value}</td>
+          ))}
         </tr>
       </thead>
       <tbody>{renderSampleRows()}</tbody>

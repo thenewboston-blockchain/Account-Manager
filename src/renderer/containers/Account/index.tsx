@@ -15,20 +15,19 @@ import PageLayout from '@renderer/containers/PageLayout';
 import PageTable from '@renderer/containers/PageTable';
 
 import useBooleanState from '@renderer/hooks/useBooleanState';
+import transactionSampleData from '@renderer/mock/TransactionSampleData';
 
 import SendPointsModal from './SendPointsModal';
 
 import './Account.scss';
 
-import transactionSampleData from '@renderer/mock/TransactionSampleData';
-
 enum Tabs {
-  OVERVIEW = "Overview",
-  TRANSACTIONS = "Transactions"
+  OVERVIEW = 'Overview',
+  TRANSACTIONS = 'Transactions',
 }
+const tabs = [Tabs.OVERVIEW, Tabs.TRANSACTIONS];
 
 const Account: FC = () => {
-  const tabs = [Tabs.OVERVIEW, Tabs.TRANSACTIONS];
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
@@ -130,7 +129,7 @@ const Account: FC = () => {
 
   const renderPageTable = () => (
     <>
-      <PageTable items={transactionSampleData}/>
+      <PageTable items={transactionSampleData} />
       <Pagination />
     </>
   );
@@ -145,10 +144,9 @@ const Account: FC = () => {
     const tabContent = {
       [Tabs.OVERVIEW]: renderDetailPanels(),
       [Tabs.TRANSACTIONS]: renderPageTable(),
-    }
+    };
     return tabContent[activeTab] || null;
   };
-
 
   const renderTop = () => (
     <>
@@ -158,15 +156,13 @@ const Account: FC = () => {
         title="Donations (43hawrjkef243d)"
       />
       <PageTabs
-        items={tabs.map(
-          (item) =>({
-            name: item.toString(),
-            active: activeTab === item,
-            onClick: (name) => {
-              setActiveTab(name as Tabs)
-            }
-          })
-        )}
+        items={tabs.map((item) => ({
+          name: item.toString(),
+          active: activeTab === item,
+          onClick: (name) => {
+            setActiveTab(name as Tabs);
+          },
+        }))}
       />
     </>
   );
