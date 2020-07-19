@@ -1,10 +1,12 @@
 import axios from 'axios';
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
+import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
 
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
+import {fetchBanks} from '@renderer/store/banks';
 import {SelectOption} from '@renderer/types/forms';
 import {formatAddress} from '@renderer/utils/format';
 
@@ -31,7 +33,15 @@ const validationSchema = Yup.object().shape({
 });
 
 const Connect: FC = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await dispatch(fetchBanks());
+    };
+    fetchData();
+  }, []);
 
   const goToMain = () => {
     history.push('/bank');
