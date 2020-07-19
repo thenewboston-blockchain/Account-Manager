@@ -10,6 +10,9 @@ import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
 import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
 
+import TnbIcon from './TnbIcon';
+import './Icon.scss';
+
 // https://materialdesignicons.com/
 export enum IconType {
   alert,
@@ -19,21 +22,19 @@ export enum IconType {
   dotsVertical,
   play,
   plus,
+  tnb,
 }
 
 interface ComponentProps {
   className?: string;
   disabled?: boolean;
   icon: IconType;
-  onClick?(e: React.MouseEvent<HTMLSpanElement, MouseEvent>): void;
+  onClick?(e: React.MouseEvent<SVGSVGElement, MouseEvent>): void;
   size?: number | string;
 }
 
 const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled, icon, onClick, size}, ref) => {
   const iconProps = {
-    className: clsx('Icon', className, {
-      disabled,
-    }),
     onClick: disabled ? noop : onClick,
     size,
   };
@@ -54,12 +55,23 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled, i
         return <PlayIcon {...iconProps} />;
       case IconType.plus:
         return <PlusIcon {...iconProps} />;
+      case IconType.tnb:
+        return <TnbIcon {...iconProps} />;
       default:
         return <PlusIcon {...iconProps} />;
     }
   };
 
-  return <div ref={ref}>{renderIcon()}</div>;
+  return (
+    <div
+      className={clsx('Icon', className, {
+        disabled,
+      })}
+      ref={ref}
+    >
+      {renderIcon()}
+    </div>
+  );
 });
 
 export default Icon;
