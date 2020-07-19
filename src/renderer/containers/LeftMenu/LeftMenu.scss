@@ -4,7 +4,8 @@
 
   .submenu-title {
     color: var(--color-neutral-600);
-    font-weight: 500;
+    font-weight: normal;
+    font-family: Helvetica Neue;
 
     &:hover {
       cursor: default;
@@ -21,13 +22,34 @@
   }
 
   &__points {
-    border-bottom: 1px solid var(--color-neutral-400);
     padding: 12px;
+
+    .submenu-title {
+      margin-bottom: 6px;
+      margin-left: 30px;
+    }
 
     .points__amount {
       color: var(--color-tertiary);
       font-size: var(--font-size-medium);
       font-weight: 500;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .Icon {
+        background-color: var(--color-primary);
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        color: var(--color-white);
+        padding-top: 2px;
+        padding-left: 4px;
+        margin-right: 10px;
+      }
     }
   }
 }
