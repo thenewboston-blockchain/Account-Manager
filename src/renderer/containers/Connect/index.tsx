@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, {FC} from 'react';
-import {Route, useHistory} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
 
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
@@ -47,7 +47,6 @@ const Connect: FC = () => {
 
   return (
     <div className="Connect">
-      <div className="draggable-area draggable" />
       <div className="Connect__header">
         <Logo size={30} />
         <h2>thenewboston</h2>
