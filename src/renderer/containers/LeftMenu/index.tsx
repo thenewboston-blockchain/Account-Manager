@@ -13,7 +13,7 @@ import './LeftMenu.scss';
 
 const LeftComponentSelector = ({accounts, banks, friends, points, validators}: RootState) => ({
   accounts,
-  banks,
+  banks: banks.entities,
   friends,
   points,
   validators,
