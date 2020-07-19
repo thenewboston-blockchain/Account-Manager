@@ -15,7 +15,7 @@ interface Validator {
   trust: string;
 }
 
-const validators = createSlice({
+const validatorsSlice = createSlice({
   initialState: [] as Validator[],
   name: 'validators',
   reducers: {},
@@ -39,4 +39,4 @@ export const sampleValidator: Validator[] = [
   },
 ];
 
-export default validators;
+export default validatorsSlice;

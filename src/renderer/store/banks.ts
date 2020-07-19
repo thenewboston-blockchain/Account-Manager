@@ -13,7 +13,7 @@ interface Bank {
   name?: string;
 }
 
-const banks = createSlice({
+const banksSlice = createSlice({
   name: 'banks',
   initialState: [] as Bank[],
   reducers: {},
@@ -33,4 +33,4 @@ export const sampleBanks: Bank[] = [
   },
 ];
 
-export default banks;
+export default banksSlice;
