@@ -5,7 +5,7 @@ interface Friend {
   id: string;
 }
 
-const friends = createSlice({
+const friendsSlice = createSlice({
   name: 'friends',
   initialState: [] as Friend[],
   reducers: {},
@@ -16,4 +16,4 @@ export const sampleFriends: Friend[] = [
   {name: 'Dave', id: '4525JLK32E23E'},
 ];
 
-export default friends;
+export default friendsSlice;
