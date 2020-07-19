@@ -9,6 +9,9 @@ import CloseIcon from 'mdi-react/CloseIcon';
 import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
 import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
+import BellIcon from 'mdi-react/BellIcon';
+import HelpCircleIcon from 'mdi-react/HelpCircleIcon';
+import CogIcon from 'mdi-react/CogIcon';
 
 import TnbIcon from './TnbIcon';
 import './Icon.scss';
@@ -23,6 +26,9 @@ export enum IconType {
   play,
   plus,
   tnb,
+  bell,
+  helpCircle,
+  cog,
 }
 
 interface ComponentProps {
@@ -57,6 +63,12 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled, i
         return <PlusIcon {...iconProps} />;
       case IconType.tnb:
         return <TnbIcon {...iconProps} />;
+      case IconType.bell:
+        return <BellIcon {...iconProps} />;
+      case IconType.helpCircle:
+        return <HelpCircleIcon {...iconProps} />;
+      case IconType.cog:
+        return <CogIcon {...iconProps} />;
       default:
         return <PlusIcon {...iconProps} />;
     }

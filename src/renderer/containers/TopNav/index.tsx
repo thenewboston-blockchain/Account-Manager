@@ -13,8 +13,15 @@ const TopNav = () => {
         <h2>thenewboston</h2>
       </div>
       <div className="navigation-icons">
-        <Icon icon={IconType.arrowLeft} />
-        <Icon icon={IconType.arrowRight} />
+        <div>
+          <Icon icon={IconType.arrowLeft} />
+          <Icon icon={IconType.arrowRight} />
+        </div>
+        <div>
+          <Icon icon={IconType.bell} />
+          <Icon icon={IconType.helpCircle} />
+          <Icon icon={IconType.cog} />
+        </div>
       </div>
     </div>
   );

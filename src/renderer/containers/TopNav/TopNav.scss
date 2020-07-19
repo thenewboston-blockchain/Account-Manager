@@ -2,12 +2,25 @@
   align-items: center;
   background: white;
   display: flex;
+  padding: 12px 14px;
+
+  .Icon {
+    color: var(--color-blue-gray-700);
+    cursor: pointer;
+  }
 
   .navigation-icons {
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex: 1;
 
-    .Icon {
-      margin: 0 4px;
+    div {
+      display: flex;
+
+      .Icon {
+        margin: 0 4px;
+      }
     }
   }
 
@@ -15,7 +28,6 @@
     align-items: center;
     border-right: none;
     display: flex;
-    padding: 12px 14px;
     width: var(--left-menu-width);
 
     .Logo {
