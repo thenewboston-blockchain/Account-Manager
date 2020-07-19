@@ -46,3 +46,15 @@ h3 {
 p {
   margin: 0 0 20px 0;
 }
+
+.draggable {
+  -webkit-app-region: drag;
+}
+
+.draggable-area {
+  height: 25px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}

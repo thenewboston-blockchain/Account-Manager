@@ -12,7 +12,7 @@ import './Layout.scss';
 export const Layout: FC = () => {
   return (
     <div className="Layout">
-      <div className="top">
+      <div className="top draggable">
         <TopNav />
       </div>
       <div className="left">
