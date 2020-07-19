@@ -3,7 +3,7 @@ import noop from 'lodash/noop';
 
 import {Button} from '@renderer/components/FormElements';
 import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-import Icon from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import PageHeader from '@renderer/components/PageHeader';
 import PageTabs from '@renderer/components/PageTabs';
@@ -63,7 +63,7 @@ const Account: FC = () => {
       close={toggleDeleteModal}
       header={
         <>
-          <Icon className="Icon__warning" icon="warning" />
+          <Icon className="Icon__alert" icon={IconType.alert} />
           <h2 className="Modal__title">Delete Account</h2>
         </>
       }

@@ -3,7 +3,7 @@ import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
 
-import Icon from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon';
 import useBooleanState from '@renderer/hooks/useBooleanState';
 import {GenericVoidFunction} from '@renderer/types/generic';
 
@@ -22,7 +22,7 @@ interface ComponentProps {
 const dropdownRoot = document.getElementById('dropdown-root')!;
 
 const DropdownMenuButton: FC<ComponentProps> = ({options}) => {
-  const iconRef = useRef<HTMLSpanElement>(null);
+  const iconRef = useRef<HTMLDivElement>(null);
   const [open, toggleOpen, , closeMenu] = useBooleanState(false);
   const [dropdownPositionStyle, setDropdownPositionStyle] = useState<CSSProperties | undefined>(undefined);
 
@@ -57,7 +57,7 @@ const DropdownMenuButton: FC<ComponentProps> = ({options}) => {
 
   return (
     <>
-      <Icon className="DropdownMenuButton" icon="more_vert" onClick={handleOpenDropdown} ref={iconRef} />
+      <Icon className="DropdownMenuButton" icon={IconType.dotsVertical} onClick={handleOpenDropdown} ref={iconRef} />
       {open &&
         createPortal(
           <div className="DropdownMenuButton__menu" style={dropdownPositionStyle}>

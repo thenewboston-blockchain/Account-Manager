@@ -7,6 +7,7 @@ import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import {SelectOption} from '@renderer/types/forms';
 
 import './SendPointsModal.scss';
+import Icon, {IconType} from '@renderer/components/Icon';
 
 const initialValues = {
   fromAccount: '',
@@ -49,11 +50,11 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
   const renderFooter = (): ReactNode => {
     return (
       <>
-        <FormButton className="Modal__default-cancel" onClick={close} variant="link">
+        <FormButton className="Modal__default-cancel SendPointsModal__default-cancel" onClick={close} variant="link">
           Cancel
         </FormButton>
-        <FormButton className="Modal__default-submit" type="submit">
-          Send
+        <FormButton className="Modal__default-submit SendPointsModal__default-submit" type="submit">
+          Send <Icon icon={IconType.tnb} size={16} />
         </FormButton>
       </>
     );

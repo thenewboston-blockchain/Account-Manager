@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 
-import Icon from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import {FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import useBooleanState from '@renderer/hooks/useBooleanState';
@@ -81,7 +81,7 @@ const EditBankModal: FC<ComponentProps> = ({close}) => {
   const renderHeader = () => {
     return (
       <>
-        <Icon className="Icon__arrow" icon="arrow_forward" />
+        <Icon className="Icon__arrow" icon={IconType.arrowRight} />
         <h2 className="Modal__title">Edit Account</h2>
       </>
     );

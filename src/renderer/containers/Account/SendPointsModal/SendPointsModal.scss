@@ -39,4 +39,13 @@
       }
     }
   }
+
+  &__default-submit {
+    display: flex;
+    height: 35.5px;
+
+    .Icon {
+      margin-left: 6px;
+    }
+  }
 }
