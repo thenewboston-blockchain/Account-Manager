@@ -2,12 +2,12 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
+import {fetchBanks} from '@renderer/api/bank';
 import Icon from '@renderer/components/Icon';
 import LeftSubmenu from '@renderer/containers/LeftSubmenu';
 import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
 import useBooleanState from '@renderer/hooks/useBooleanState';
 import {getAccount} from '@renderer/store/accounts';
-import {fetchBanks} from '@renderer/store/banks';
 import {RootState} from '@renderer/types/store';
 
 import './LeftMenu.scss';

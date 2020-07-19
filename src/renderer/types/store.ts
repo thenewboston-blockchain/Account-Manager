@@ -1,3 +1,4 @@
+import {SerializedError} from '@reduxjs/toolkit';
 import store from '@renderer/store';
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -15,5 +16,5 @@ export interface StateSlice<S> {
   entities: S;
   loading: Loading;
   currentRequestId?: string;
-  error: any;
+  error: SerializedError | null;
 }
