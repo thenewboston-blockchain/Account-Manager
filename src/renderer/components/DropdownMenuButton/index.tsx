@@ -57,7 +57,7 @@ const DropdownMenuButton: FC<ComponentProps> = ({options}) => {
 
   return (
     <>
-      <Icon className="DropdownMenuButton" icon="more_vert" onClick={handleOpenDropdown} ref={iconRef} matchContainer />
+      <Icon className="DropdownMenuButton" icon="more_vert" onClick={handleOpenDropdown} ref={iconRef} />
       {open &&
         createPortal(
           <div className="DropdownMenuButton__menu" style={dropdownPositionStyle}>
