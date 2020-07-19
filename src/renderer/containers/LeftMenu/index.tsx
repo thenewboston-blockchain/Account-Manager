@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
+import {fetchBanks} from '@renderer/api/bank';
 import Icon from '@renderer/components/Icon';
 import LeftSubmenu from '@renderer/containers/LeftSubmenu';
 import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
@@ -13,7 +14,7 @@ import './LeftMenu.scss';
 
 const LeftComponentSelector = ({accounts, banks, friends, points, validators}: RootState) => ({
   accounts,
-  banks,
+  banks: banks.entities,
   friends,
   points,
   validators,
@@ -26,6 +27,7 @@ const LeftMenu = () => {
 
   useEffect(() => {
     dispatch(getAccount());
+    dispatch(fetchBanks());
   }, []);
 
   const renderAccounts = () => {

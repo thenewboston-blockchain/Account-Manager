@@ -1,36 +1,32 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-interface Bank {
-  account_number: string;
-  ip_address: string;
-  network_identifier: string;
-  port?: number | null;
-  protocol: 'http' | 'https';
-  version: string;
-  default_transaction_fee: string;
-  registration_fee: string;
-  trust: string;
-  name?: string;
-}
+import {fetchBanks} from '@renderer/api/bank';
+import {BANKS} from '@renderer/constants/store';
+import {Bank} from '@renderer/types/entities/Bank';
+import {Loading, StateSlice} from '@renderer/types/store';
+import {fulfilledReducer, pendingReducer, rejectedReducer} from '@renderer/utils/store';
 
-const banks = createSlice({
-  name: 'banks',
-  initialState: [] as Bank[],
+const banksSlice = createSlice({
+  name: BANKS,
+  initialState: {
+    entities: [],
+    loading: Loading.idle,
+    currentRequestId: undefined,
+    error: null,
+  } as StateSlice<Bank[]>,
   reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchBanks.pending, pendingReducer);
+    builder.addCase(fetchBanks.fulfilled, fulfilledReducer);
+    builder.addCase(fetchBanks.rejected, rejectedReducer);
+  },
 });
 
-export const sampleBanks: Bank[] = [
-  {
-    account_number: '5e12967707909e62b2bb2036c209085a784fabbc3deccefee70052b6181c8ed8',
-    ip_address: '192.168.1.232',
-    network_identifier: 'd5356888dc9303e44ce52b1e06c3165a7759b9df1e6a6dfbd33ee1c3df1ab4d1',
-    port: 8000,
-    protocol: 'http',
-    version: 'v1.0',
-    default_transaction_fee: '1.0000000000000000',
-    registration_fee: '2.0000000000000000',
-    trust: '100.00',
-  },
-];
+export const sampleBanks: StateSlice<Bank[]> = {
+  entities: [],
+  loading: Loading.idle,
+  currentRequestId: undefined,
+  error: null,
+};
 
-export default banks;
+export default banksSlice;

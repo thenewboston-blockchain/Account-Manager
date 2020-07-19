@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-const points = createSlice({
+const pointsSlice = createSlice({
   name: 'points',
   initialState: 0 as number,
   reducers: {},
@@ -8,4 +8,4 @@ const points = createSlice({
 
 export const samplePoints = 25903.36;
 
-export default points;
+export default pointsSlice;
