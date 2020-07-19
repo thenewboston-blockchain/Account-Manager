@@ -1,24 +1,28 @@
-.SelectDetailed {
-  height: 48px;
+.Select {
+  $self: &;
 
-  .Select__single-value,
-  .Select__placeholder,
-  .Select__input {
-    height: 100%;
-    margin-top: 6px;
-    padding-right: 42px;
-  }
+  &.SelectDetailed {
+    height: 48px;
 
-  .Select__single-value {
-    font-family: var(--font-family-mono);
-    text-overflow: unset;
-    white-space: unset;
-    word-break: break-all;
-  }
+    #{$self}__single-value,
+    #{$self}__placeholder,
+    #{$self}__input {
+      height: 100%;
+      margin-top: 6px;
+      padding-right: 42px;
+    }
 
-  .Select__indicator {
-    height: 100%;
-    padding: 3px 8px;
+    #{$self}__single-value {
+      font-family: var(--font-family-mono);
+      text-overflow: unset;
+      white-space: unset;
+      word-break: break-all;
+    }
+
+    #{$self}__indicator {
+      height: 100%;
+      padding: 3px 8px;
+    }
   }
 }
 
