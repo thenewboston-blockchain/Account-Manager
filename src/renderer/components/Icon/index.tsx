@@ -13,7 +13,7 @@ import PlusIcon from 'mdi-react/PlusIcon';
 import TnbIcon from './TnbIcon';
 import './Icon.scss';
 
-// https://materialdesignicons.com/
+// These names are camelCased versions of the names found in https://materialdesignicons.com/
 export enum IconType {
   alert,
   arrowLeft,
