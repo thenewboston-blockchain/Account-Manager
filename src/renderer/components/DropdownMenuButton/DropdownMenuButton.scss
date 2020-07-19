@@ -6,9 +6,7 @@ $button-height: 24px;
 
   &:hover,
   &.active {
-    svg {
-      fill: var(--color-primary);
-    }
+    color: var(--color-primary);
   }
 }
 

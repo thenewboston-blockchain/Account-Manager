@@ -7,7 +7,6 @@ import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import {SelectOption} from '@renderer/types/forms';
 
 import './SendPointsModal.scss';
-import Icon from '@renderer/components/Icon';
 
 const initialValues = {
   fromAccount: '',
@@ -54,9 +53,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
           Cancel
         </FormButton>
         <FormButton className="Modal__default-submit" type="submit">
-          <>
-            Send <Icon className="SendPointsModal__chevron" icon="chevron" />
-          </>
+          Send
         </FormButton>
       </>
     );

@@ -7,8 +7,8 @@
 }
 
 .Account__DeleteModal {
-  svg {
-    fill: var(--color-danger);
+  .Icon__warning {
+    color: var(--color-danger);
     margin-right: 12px;
   }
 

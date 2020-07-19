@@ -35,14 +35,14 @@ const rules = [
     use: ['style-loader', 'css-loader', 'sass-loader'],
   },
   {
-    test: /\.(ico|icns)$/,
+    test: /\.(svg|ico|icns)$/,
     loader: 'file-loader',
     options: {
       name: '[path][name].[ext]',
     },
   },
   {
-    test: /\.(jpg|png|woff|woff2|eot|ttf|svg)$/,
+    test: /\.(jpg|png|woff|woff2|eot|ttf)$/,
     loader: 'url-loader',
     options: {
       name: '[path][name].[ext]',

@@ -14,11 +14,6 @@
   .tool__add-icon {
     cursor: pointer;
     transition: color 0.1s;
-    svg {
-      fill: var(--color-neutral-700);
-      height: 20px;
-      width: 20px;
-    }
 
     &:hover {
       color: var(--color-primary);

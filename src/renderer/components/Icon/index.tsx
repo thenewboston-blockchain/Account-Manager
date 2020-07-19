@@ -1,35 +1,22 @@
 import React, {forwardRef} from 'react';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
-import {ICON_MAPPING} from './icons';
 
-type IconType = 'add' | 'arrow' | 'arrow-forward' | 'close' | 'more-vert' | 'play-arrow' | 'warning' | 'chevron';
+type IconType = 'add' | 'arrow_back' | 'arrow_forward' | 'close' | 'more_vert' | 'play_arrow' | 'warning';
 
 interface ComponentProps {
   className?: string;
   disabled?: boolean;
   icon: IconType;
   onClick?(e: React.MouseEvent<HTMLSpanElement, MouseEvent>): void;
-  otherProps: object;
-  matchContainer: boolean;
 }
 
-const Icon = forwardRef<HTMLSpanElement, ComponentProps>(
-  ({className, matchContainer, disabled, icon, onClick, ...otherProps}, ref) => {
-    if (ICON_MAPPING[icon]) {
-      const IconComponent = ICON_MAPPING[icon];
-      return (
-        <IconComponent
-          {...otherProps}
-          matchContainer={matchContainer}
-          className={className}
-          onClick={disabled ? noop : onClick}
-          ref={ref}
-        />
-      );
-    }
-    return null;
-  },
-);
+const Icon = forwardRef<HTMLSpanElement, ComponentProps>(({className, disabled, icon, onClick}, ref) => {
+  return (
+    <span className={clsx('Icon material-icons', {disabled}, className)} onClick={disabled ? noop : onClick} ref={ref}>
+      {icon}
+    </span>
+  );
+});
 
 export default Icon;
