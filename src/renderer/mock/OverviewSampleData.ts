@@ -1,17 +1,18 @@
 const sampleData = {
   header: {
-    network_id: "Network ID",
-    account_number: "Account Number",
-    protocol: "Protocol",
-    ip_address: "IP Address",
-    port: "Port",
-    version: "Version",
-    default_tx_fee: "Default Tx Fee",
-    trust: "Trust",
-    network_trust_avg: "Network Trust Avg",
+    network_id: 'Network ID',
+    account_number: 'Account Number',
+    protocol: 'Protocol',
+    ip_address: 'IP Address',
+    port: 'Port',
+    version: 'Version',
+    default_tx_fee: 'Default Tx Fee',
+    trust: 'Trust',
+    network_trust_avg: 'Network Trust Avg',
   },
-  data: [{
-      id: 1,
+  data: [
+    {
+      id: 'a0e24a9d-41e5-497f-a5cd-3267ef049224',
       network_id: 'BkQj2sgGO5T',
       account_number: 'G9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8IctsrG9Be8Ictsr',
       protocol: 'http',
@@ -23,7 +24,7 @@ const sampleData = {
       network_trust_avg: 80.01,
     },
     {
-      id: 2,
+      id: 'a558670b-8c7d-4db0-945d-3bb7a114842b',
       network_id: 'G3lNpOFL8',
       account_number: 'xdjL7EiK',
       protocol: 'http',
@@ -35,7 +36,7 @@ const sampleData = {
       network_trust_avg: 78.69,
     },
     {
-      id: 3,
+      id: '3ff9ebca-3344-4468-a981-062c1b0877cd',
       network_id: 'KLqlaZmjMJmh',
       account_number: '778Az9VRicy',
       protocol: 'http',
@@ -47,7 +48,7 @@ const sampleData = {
       network_trust_avg: 81.56,
     },
     {
-      id: 4,
+      id: '8f88f54f-91f3-418d-81dc-7a1e31f49b0d',
       network_id: 'gYn6p7ES7E',
       account_number: 'qZdBOFA',
       protocol: 'http',
@@ -59,7 +60,7 @@ const sampleData = {
       network_trust_avg: 72.31,
     },
     {
-      id: 5,
+      id: 'a5a36e24-683b-489c-9295-1b22470135b6',
       network_id: 'kNIf2IspUKK',
       account_number: 'UwbHyB',
       protocol: 'http',
@@ -71,7 +72,7 @@ const sampleData = {
       network_trust_avg: 86.25,
     },
     {
-      id: 6,
+      id: '8a2b1fd6-fdac-4969-96b3-c3834cc0bd9b',
       network_id: 'nx3oVQ8KS',
       account_number: 'IJ9FGBtI4Q',
       protocol: 'http',
@@ -83,7 +84,7 @@ const sampleData = {
       network_trust_avg: 70.08,
     },
     {
-      id: 7,
+      id: '2a242682-9a54-418b-99c7-54534a45bf18',
       network_id: '3RLikXr9',
       account_number: 'JqNPxnh8Vzps',
       protocol: 'http',
@@ -95,7 +96,7 @@ const sampleData = {
       network_trust_avg: 89.25,
     },
     {
-      id: 8,
+      id: '012fb614-005a-478d-9a08-6654da1b106b',
       network_id: 'uaVYgbpornd',
       account_number: 'lVNZoQZZ2GTF',
       protocol: 'http',
@@ -107,7 +108,7 @@ const sampleData = {
       network_trust_avg: 63.14,
     },
     {
-      id: 9,
+      id: 'b970d356-359e-4396-9b83-58210959730e',
       network_id: 'MrKpL5ZG',
       account_number: 'CfEg4i',
       protocol: 'http',
@@ -119,7 +120,7 @@ const sampleData = {
       network_trust_avg: 73.63,
     },
     {
-      id: 10,
+      id: '97939cef-21f0-4a56-a3c3-d40197d2e2a6',
       network_id: '3hmI1Plh',
       account_number: 'qo2Q9Hxql7',
       protocol: 'http',
@@ -131,7 +132,7 @@ const sampleData = {
       network_trust_avg: 65.95,
     },
     {
-      id: 11,
+      id: '398bbcb4-1f9e-4e5f-873c-2ee492729333',
       network_id: 'u23vfkhBJ',
       account_number: 'aa5cw0xK4dj',
       protocol: 'http',
@@ -143,7 +144,7 @@ const sampleData = {
       network_trust_avg: 83.62,
     },
     {
-      id: 12,
+      id: 'f5b70fd8-3afc-40ae-b005-fb2ddb99775b',
       network_id: 'QEVGcCm',
       account_number: '361IXlNj7bs3',
       protocol: 'http',
@@ -155,7 +156,7 @@ const sampleData = {
       network_trust_avg: 79.49,
     },
     {
-      id: 13,
+      id: '58132f4a-a98a-4d5a-99c9-03c205026fd9',
       network_id: 'cCcOVCX',
       account_number: 'P9xbLGKb',
       protocol: 'http',
@@ -167,7 +168,7 @@ const sampleData = {
       network_trust_avg: 84.44,
     },
     {
-      id: 14,
+      id: 'da885fe4-93d3-463a-a389-51b7e9472c21',
       network_id: 'vfdk7H',
       account_number: 'fSPvq5TgG',
       protocol: 'http',
@@ -179,7 +180,7 @@ const sampleData = {
       network_trust_avg: 66.82,
     },
     {
-      id: 15,
+      id: '54236ebf-e4c4-4b32-9afb-d3050e4dbbd6',
       network_id: 'eMhjvHWcIoF',
       account_number: 'pgpK8laF',
       protocol: 'http',
@@ -191,7 +192,7 @@ const sampleData = {
       network_trust_avg: 95.55,
     },
     {
-      id: 16,
+      id: 'f3ad7880-23b2-46db-9e76-a27817757894',
       network_id: 'p9ZMXF',
       account_number: 'n2QrlqOC0',
       protocol: 'http',
@@ -203,7 +204,7 @@ const sampleData = {
       network_trust_avg: 91.69,
     },
     {
-      id: 17,
+      id: 'ebcc5384-95ef-4b95-b2c5-f4bedb48dd5f',
       network_id: 'nGRb5CdqwwSA',
       account_number: 'uGXGFc8PbHzw',
       protocol: 'http',
@@ -215,7 +216,7 @@ const sampleData = {
       network_trust_avg: 73.54,
     },
     {
-      id: 18,
+      id: '14acca74-76c1-40ec-8b34-530a89e6eceb',
       network_id: 'RjrJcrq0',
       account_number: 'oaLKipWbx',
       protocol: 'http',
@@ -227,7 +228,7 @@ const sampleData = {
       network_trust_avg: 72.6,
     },
     {
-      id: 19,
+      id: 'edf876e0-20a6-4121-bd97-940ee47d6238',
       network_id: 'zH8BilODSYkn',
       account_number: 'we8qnkt80',
       protocol: 'http',
@@ -239,7 +240,7 @@ const sampleData = {
       network_trust_avg: 76.86,
     },
     {
-      id: 20,
+      id: '9559dab5-8f32-41ae-a62c-37154c2734a1',
       network_id: '68o3lLf',
       account_number: 'DrUIKQiUobJ',
       protocol: 'http',
@@ -251,7 +252,7 @@ const sampleData = {
       network_trust_avg: 60.92,
     },
     {
-      id: 21,
+      id: '10435cbf-10ef-4a58-8ce3-b4f9f74786e0',
       network_id: 'BDPwipG',
       account_number: 'zVeOSEYed',
       protocol: 'http',
@@ -263,7 +264,7 @@ const sampleData = {
       network_trust_avg: 70.51,
     },
     {
-      id: 22,
+      id: '7e83b81a-f9ee-45e8-8c04-cf66567869f9',
       network_id: 'wmLakETznO',
       account_number: '8Z8bzTxN',
       protocol: 'http',
@@ -275,7 +276,7 @@ const sampleData = {
       network_trust_avg: 62.31,
     },
     {
-      id: 23,
+      id: '7934f0ba-a9c4-4c08-a7d4-71bb331e9ed6',
       network_id: 'BwCDU481ssj6',
       account_number: 'SIzy10TRAKX',
       protocol: 'http',
@@ -287,7 +288,7 @@ const sampleData = {
       network_trust_avg: 96.25,
     },
     {
-      id: 24,
+      id: '41ef493f-ddf6-4107-bcaf-2e365a29b494',
       network_id: 'QKhcPO',
       account_number: 'R66TCrPI',
       protocol: 'http',
@@ -299,7 +300,7 @@ const sampleData = {
       network_trust_avg: 77.77,
     },
     {
-      id: 25,
+      id: '00e70113-12df-4028-8cb7-fbc1860f4337',
       network_id: 'qEcXlOxBIlAE',
       account_number: 'OS8P7C',
       protocol: 'http',
@@ -311,7 +312,7 @@ const sampleData = {
       network_trust_avg: 89.39,
     },
     {
-      id: 26,
+      id: 'df677fda-e2d6-4726-b8d8-c5e5344ab0c7',
       network_id: 'WSKVLYvruZu',
       account_number: 'hVjSDVoKONM',
       protocol: 'http',
@@ -323,7 +324,7 @@ const sampleData = {
       network_trust_avg: 88.93,
     },
     {
-      id: 27,
+      id: '90ed278f-2ed5-4c39-aef9-78929c51089f',
       network_id: 'yqShOY',
       account_number: 'WesPijdr',
       protocol: 'http',
@@ -335,7 +336,7 @@ const sampleData = {
       network_trust_avg: 71.85,
     },
     {
-      id: 28,
+      id: '402df203-ebe3-4b01-8321-f7d3e5e2a3bc',
       network_id: 'xuWQjFcD',
       account_number: 'ybjhH7m1DS5',
       protocol: 'http',
@@ -347,7 +348,7 @@ const sampleData = {
       network_trust_avg: 72.8,
     },
     {
-      id: 29,
+      id: 'b89db4ce-cd9c-4d36-928d-b4ee845f0647',
       network_id: 'wfvYuWb',
       account_number: 'YJ0vF2',
       protocol: 'http',
@@ -359,7 +360,7 @@ const sampleData = {
       network_trust_avg: 74.12,
     },
     {
-      id: 30,
+      id: 'e2886cdf-6f8d-424d-b5cd-356bc8bc3b79',
       network_id: '9q6Oa9',
       account_number: 'ht1iNN0j8iwF',
       protocol: 'http',
@@ -371,7 +372,7 @@ const sampleData = {
       network_trust_avg: 94.04,
     },
     {
-      id: 31,
+      id: 'e3c9952e-fe1d-4b42-ac8c-5285cdbb9f21',
       network_id: 'GNq0CK6',
       account_number: 'dMlPSa',
       protocol: 'http',
@@ -383,7 +384,7 @@ const sampleData = {
       network_trust_avg: 61.31,
     },
     {
-      id: 32,
+      id: '78e35dea-9114-4b88-8b42-314233287ae6',
       network_id: 'F38zNBqRiqNB',
       account_number: 'nD0W5qTdWa2m',
       protocol: 'http',
@@ -395,7 +396,7 @@ const sampleData = {
       network_trust_avg: 87.7,
     },
     {
-      id: 33,
+      id: '7a5735e6-0a68-4bbe-b55d-e30313f397ab',
       network_id: 'O1umVtlBcJ',
       account_number: 'TWfVqao4ax',
       protocol: 'http',
@@ -407,7 +408,7 @@ const sampleData = {
       network_trust_avg: 73.89,
     },
     {
-      id: 34,
+      id: '20522446-8f7d-48bd-a7eb-94ac39e53168',
       network_id: 'FREmo82Go',
       account_number: 'jvNpOPDXcpsT',
       protocol: 'http',
@@ -419,7 +420,7 @@ const sampleData = {
       network_trust_avg: 97.63,
     },
     {
-      id: 35,
+      id: '1327ae47-86fb-48dc-aaec-a514f21880ee',
       network_id: 'khitcfTHuL5',
       account_number: 'WUUVLTIk4',
       protocol: 'http',
@@ -431,7 +432,7 @@ const sampleData = {
       network_trust_avg: 92.2,
     },
     {
-      id: 36,
+      id: 'bd0e6dc8-c8c1-4aa1-8eff-47c085d0457e',
       network_id: 'TlNOYW',
       account_number: 'uhFTsIDq6',
       protocol: 'http',
@@ -443,7 +444,7 @@ const sampleData = {
       network_trust_avg: 84.56,
     },
     {
-      id: 37,
+      id: 'c19180a7-c211-4bb4-90fb-bf2cd4dc7f57',
       network_id: 'uHUQ0Yhl8U',
       account_number: 'AxGW9TE',
       protocol: 'http',
@@ -455,7 +456,7 @@ const sampleData = {
       network_trust_avg: 97.86,
     },
     {
-      id: 38,
+      id: 'ae3d381a-1da4-4d45-908f-551ba48c5f44',
       network_id: 'dDl1NAX',
       account_number: '0wrJXxZd1',
       protocol: 'http',
@@ -467,7 +468,7 @@ const sampleData = {
       network_trust_avg: 62.67,
     },
     {
-      id: 39,
+      id: '355549f4-ef44-4f65-aac2-5482c506bc17',
       network_id: 'ButhUnjx',
       account_number: 'TfqUwBT',
       protocol: 'http',
@@ -479,7 +480,7 @@ const sampleData = {
       network_trust_avg: 84.17,
     },
     {
-      id: 40,
+      id: '8aef1587-e82d-4610-8402-44e32b0fcf66',
       network_id: '2N8J6XDG',
       account_number: 'exh4dSE',
       protocol: 'http',
@@ -491,7 +492,7 @@ const sampleData = {
       network_trust_avg: 97.79,
     },
     {
-      id: 41,
+      id: '480a4624-73f0-414a-85b1-a47163ab63e5',
       network_id: 'tOZWf7pIBAq',
       account_number: 'BmdUpfcwfP',
       protocol: 'http',
@@ -503,7 +504,7 @@ const sampleData = {
       network_trust_avg: 64.03,
     },
     {
-      id: 42,
+      id: 'b3aa263c-fe5a-4fd8-952c-a512bd5ab462',
       network_id: 'axxs7lFnbq6t',
       account_number: 'bd5SkrcpTL',
       protocol: 'http',
@@ -515,7 +516,7 @@ const sampleData = {
       network_trust_avg: 83.48,
     },
     {
-      id: 43,
+      id: '94d40912-21b0-42e2-884b-bbc8cbd37dcc',
       network_id: 'xFAMdcxQvc7x',
       account_number: 'SdqTs96h5y',
       protocol: 'http',
@@ -527,7 +528,7 @@ const sampleData = {
       network_trust_avg: 64.51,
     },
     {
-      id: 44,
+      id: '48dfac82-096a-4520-b714-9cabd28c780a',
       network_id: 'IERrzVKaP8BC',
       account_number: 'U9F1PuWf',
       protocol: 'http',
@@ -539,7 +540,7 @@ const sampleData = {
       network_trust_avg: 92.35,
     },
     {
-      id: 45,
+      id: 'e09084a8-6ff2-4e9b-8b77-55b224e1542b',
       network_id: 'fj9CuZv',
       account_number: 'C6eb8TiO5',
       protocol: 'http',
@@ -551,7 +552,7 @@ const sampleData = {
       network_trust_avg: 75.57,
     },
     {
-      id: 46,
+      id: '27558072-28a7-46ea-91f2-d193c90196fa',
       network_id: 'aZJe6BFV',
       account_number: 'ie1NLuLJz',
       protocol: 'http',
@@ -563,7 +564,7 @@ const sampleData = {
       network_trust_avg: 71.08,
     },
     {
-      id: 47,
+      id: '9a21f860-7471-4309-a2cd-20411963c58f',
       network_id: '9oOXSlZCx',
       account_number: 'Luiyo1nqyoW',
       protocol: 'http',
@@ -575,7 +576,7 @@ const sampleData = {
       network_trust_avg: 68.52,
     },
     {
-      id: 48,
+      id: 'ccceae3d-0513-467e-8d90-b3fc6e368f8e',
       network_id: 'DxtPrlNAo6',
       account_number: 'vmGGng6Myreu',
       protocol: 'http',
@@ -587,7 +588,7 @@ const sampleData = {
       network_trust_avg: 70.53,
     },
     {
-      id: 49,
+      id: '471f1d79-129b-4bd7-aeb4-182a5a6cd148',
       network_id: 'qqSx3Qom5xAx',
       account_number: 'dtGTtoSqdvI',
       protocol: 'http',
@@ -599,7 +600,7 @@ const sampleData = {
       network_trust_avg: 62.2,
     },
     {
-      id: 50,
+      id: '11aef7c3-183d-4e0b-a026-140de1c129e3',
       network_id: 'NxVahTIOd3xl',
       account_number: 'zqFr6AfI',
       protocol: 'http',
@@ -610,7 +611,7 @@ const sampleData = {
       trust: 96.34,
       network_trust_avg: 67.59,
     },
-  ]
+  ],
 };
 
 export default sampleData;
