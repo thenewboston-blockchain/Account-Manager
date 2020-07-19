@@ -8,10 +8,10 @@ import './TopNav.scss';
 const TopNav = () => {
   return (
     <div className="TopNav">
-      <div className="thenewboston">
-        <Logo />
-        <h2>thenewboston</h2>
-      </div>
+      {/*<div className="thenewboston">*/}
+      {/*<Logo />*/}
+      {/*<h2>thenewboston</h2>*/}
+      {/*</div>*/}
       <div className="navigation-icons">
         <div>
           <Icon icon={IconType.arrowLeft} />
