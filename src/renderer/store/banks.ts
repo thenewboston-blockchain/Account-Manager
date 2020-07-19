@@ -17,7 +17,7 @@ export const fetchBanks = createAsyncThunk<Bank[], void, {state: RootState}>(
   'banks/fetch',
   async (_, {getState, rejectWithValue, requestId}) => {
     const {currentRequestId, loading} = getState().banks;
-    if (loading !== 'pending' || requestId !== currentRequestId) return;
+    if (loading !== Loading.pending || requestId !== currentRequestId) return;
 
     try {
       const response = await axios.get('http://167.99.173.247/banks');
