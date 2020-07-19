@@ -4,7 +4,7 @@ import noop from 'lodash/noop';
 import {Button} from '@renderer/components/FormElements';
 import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import EditBankModal from '@renderer/containers/Bank/EditBankModal';
-import Icon from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';
@@ -65,7 +65,7 @@ const Bank = () => {
       close={toggleDeleteModal}
       header={
         <>
-          <Icon className="Icon__warning" icon="warning" />
+          <Icon className="Icon__alert" icon={IconType.alert} />
           <h2 className="Modal__title">Delete Account</h2>
         </>
       }

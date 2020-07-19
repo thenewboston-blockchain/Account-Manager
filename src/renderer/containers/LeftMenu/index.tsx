@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
 import {fetchBanks} from '@renderer/api/bank';
-import Icon from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon';
 import LeftSubmenu from '@renderer/containers/LeftSubmenu';
 import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
 import useBooleanState from '@renderer/hooks/useBooleanState';
@@ -83,19 +83,23 @@ const LeftMenu = () => {
       <LeftSubmenu
         menuItems={renderManagedBanks()}
         title="Managed Banks"
-        tool={<Icon className="tool__add-icon" icon="add" />}
+        tool={<Icon className="tool__plus-icon" icon={IconType.plus} />}
       />
       <LeftSubmenu
         menuItems={renderManagedValidators()}
         title="Managed Validators"
-        tool={<Icon className="tool__add-icon" icon="add" />}
+        tool={<Icon className="tool__plus-icon" icon={IconType.plus} />}
       />
       <LeftSubmenu
         menuItems={renderAccounts()}
         title="Accounts"
-        tool={<Icon className="tool__add-icon" icon="add" onClick={toggleAddAccountModal} />}
+        tool={<Icon className="tool__plus-icon" icon={IconType.plus} onClick={toggleAddAccountModal} />}
       />
-      <LeftSubmenu menuItems={renderFriends()} title="Friends" tool={<Icon className="tool__add-icon" icon="add" />} />
+      <LeftSubmenu
+        menuItems={renderFriends()}
+        title="Friends"
+        tool={<Icon className="tool__plus-icon" icon={IconType.plus} />}
+      />
       {addAccountModalIsOpen && <AddAccountModal close={toggleAddAccountModal} />}
     </div>
   );

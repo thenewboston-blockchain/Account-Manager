@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import noop from 'lodash/noop';
 
 import {Form, FormButton, FormButtonProps} from '@renderer/components/FormComponents';
-import Icon from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon';
 import Loader from '@renderer/components/FormElements/Loader';
 
 import {GenericFormValues} from '@renderer/types/forms';
@@ -141,7 +141,12 @@ const Modal: FC<ModalProps> = ({
       <div className={clsx('Modal', {'Modal__default-position': !style}, className)} style={style}>
         <div className="Modal__header">
           {typeof header === 'string' ? <h2>{header}</h2> : header}
-          <Icon className={clsx('Icon__close', {submitting})} disabled={submitting} icon="close" onClick={close} />
+          <Icon
+            className={clsx('Icon__close', {submitting})}
+            disabled={submitting}
+            icon={IconType.close}
+            onClick={close}
+          />
         </div>
         <Form initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
           <div className="Modal__content">{children}</div>

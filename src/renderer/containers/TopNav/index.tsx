@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Icon from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon';
 import Logo from '@renderer/components/Logo';
 
 import './TopNav.scss';
@@ -13,8 +13,8 @@ const TopNav = () => {
         <h2>thenewboston</h2>
       </div>
       <div className="navigation-icons">
-        <Icon icon="arrow_back" />
-        <Icon icon="arrow_forward" />
+        <Icon icon={IconType.arrowLeft} />
+        <Icon icon={IconType.arrowRight} />
       </div>
     </div>
   );
