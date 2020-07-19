@@ -1,4 +1,5 @@
 import React from 'react';
+import noop from 'lodash/noop';
 
 import {Button} from '@renderer/components/FormElements';
 import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
@@ -13,6 +14,7 @@ import Pagination from '@renderer/components/Pagination';
 import TrustBadge from '@renderer/components/TrustBadge';
 
 import useBooleanState from '@renderer/hooks/useBooleanState';
+import sampleData from '@renderer/mock/OverviewSampleData';
 
 import './Bank.scss';
 
@@ -51,7 +53,7 @@ const Bank = () => {
 
   const renderContent = () => (
     <>
-      <PageTable />
+      <PageTable items={sampleData} />
       <Pagination />
     </>
   );
@@ -104,24 +106,29 @@ const Bank = () => {
       <PageTabs
         items={[
           {
-            name: 'Overview',
             active: true,
+            name: 'Overview',
+            onClick: noop,
           },
           {
+            active: false,
             name: 'Members',
-            active: false,
+            onClick: noop,
           },
           {
+            active: false,
             name: 'Transactions',
-            active: false,
+            onClick: noop,
           },
           {
+            active: false,
             name: 'Banks',
-            active: false,
+            onClick: noop,
           },
           {
-            name: 'Validators',
             active: false,
+            name: 'Validators',
+            onClick: noop,
           },
         ]}
       />
