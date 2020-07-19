@@ -7,6 +7,7 @@ import LeftSubmenu from '@renderer/containers/LeftSubmenu';
 import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
 import useBooleanState from '@renderer/hooks/useBooleanState';
 import {getAccount} from '@renderer/store/accounts';
+import {fetchBanks} from '@renderer/store/banks';
 import {RootState} from '@renderer/types/store';
 
 import './LeftMenu.scss';
@@ -26,6 +27,7 @@ const LeftMenu = () => {
 
   useEffect(() => {
     dispatch(getAccount());
+    dispatch(fetchBanks());
   }, []);
 
   const renderAccounts = () => {
