@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-between;
   padding: 12px;
+  margin-bottom: 30px;
 
   .left-section {
     align-items: center;
@@ -9,6 +10,9 @@
 
     .header-title {
       margin-right: 6px;
+      font-family: Helvetica Neue;
+      font-weight: normal;
+      color: var(--color-primary);
     }
 
     .TrustBadge {
