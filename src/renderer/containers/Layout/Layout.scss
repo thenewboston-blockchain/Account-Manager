@@ -18,9 +18,9 @@
   }
 
   .right {
+    background-color: var(--color-panels-bg);
     grid-column: 2 / span 1;
     grid-row: 2 / span 1;
     overflow-y: auto;
-    background-color: var(--color-panels-bg);
   }
 }

@@ -5,13 +5,13 @@ import noop from 'lodash/noop';
 import AlertIcon from 'mdi-react/AlertIcon';
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon';
 import ArrowRightIcon from 'mdi-react/ArrowRightIcon';
+import BellIcon from 'mdi-react/BellIcon';
 import CloseIcon from 'mdi-react/CloseIcon';
+import CogIcon from 'mdi-react/CogIcon';
 import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
+import HelpCircleIcon from 'mdi-react/HelpCircleIcon';
 import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
-import BellIcon from 'mdi-react/BellIcon';
-import HelpCircleIcon from 'mdi-react/HelpCircleIcon';
-import CogIcon from 'mdi-react/CogIcon';
 
 import TnbIcon from './TnbIcon';
 import './Icon.scss';
@@ -21,14 +21,14 @@ export enum IconType {
   alert,
   arrowLeft,
   arrowRight,
+  bell,
   close,
+  cog,
   dotsVertical,
+  helpCircle,
   play,
   plus,
   tnb,
-  bell,
-  helpCircle,
-  cog,
 }
 
 interface ComponentProps {
@@ -53,24 +53,24 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled, i
         return <ArrowLeftIcon {...iconProps} />;
       case IconType.arrowRight:
         return <ArrowRightIcon {...iconProps} />;
+      case IconType.bell:
+        return <BellIcon {...iconProps} />;
       case IconType.close:
         return <CloseIcon {...iconProps} />;
+      case IconType.cog:
+        return <CogIcon {...iconProps} />;
       case IconType.dotsVertical:
         return <DotsVerticalIcon {...iconProps} />;
+      case IconType.helpCircle:
+        return <HelpCircleIcon {...iconProps} />;
       case IconType.play:
         return <PlayIcon {...iconProps} />;
       case IconType.plus:
         return <PlusIcon {...iconProps} />;
       case IconType.tnb:
         return <TnbIcon {...iconProps} />;
-      case IconType.bell:
-        return <BellIcon {...iconProps} />;
-      case IconType.helpCircle:
-        return <HelpCircleIcon {...iconProps} />;
-      case IconType.cog:
-        return <CogIcon {...iconProps} />;
       default:
-        return <PlusIcon {...iconProps} />;
+        return null;
     }
   };
 

@@ -4,10 +4,9 @@
   text-transform: uppercase;
 
   .tab {
+    color: var(--color-blue-gray-500);
     cursor: pointer;
     margin-right: 30px;
-    font-family: Helvetica Neue;
-    color: var(--color-blue-gray-500);
 
     &-indicator {
       background: transparent;

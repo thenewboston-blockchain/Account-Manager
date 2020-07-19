@@ -1,18 +1,17 @@
 .PageHeader {
   display: flex;
   justify-content: space-between;
-  padding: 12px;
   margin-bottom: 30px;
+  padding: 12px;
 
   .left-section {
     align-items: center;
     display: flex;
 
     .header-title {
-      margin-right: 6px;
-      font-family: Helvetica Neue;
-      font-weight: normal;
       color: var(--color-primary);
+      font-weight: normal;
+      margin-right: 6px;
     }
 
     .TrustBadge {
