@@ -6,6 +6,8 @@ import useBooleanState from '@renderer/hooks/useBooleanState';
 
 import './ExpandableTableRow.scss';
 
+// TODO: Possibly don't need
+
 interface ComponentProps {
   children: ReactNode[];
 }
