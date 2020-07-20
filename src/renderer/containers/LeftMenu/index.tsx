@@ -11,6 +11,7 @@ import {getAccount} from '@renderer/store/accounts';
 import {RootState} from '@renderer/types/store';
 
 import './LeftMenu.scss';
+import AddFriendModal from '@renderer/containers/Account/AddFriendModal';
 
 const LeftComponentSelector = ({accounts, banks, friends, points, validators}: RootState) => ({
   accounts,
@@ -24,6 +25,7 @@ const LeftMenu = () => {
   const dispatch = useDispatch();
   const {accounts, banks, friends, points, validators} = useSelector(LeftComponentSelector);
   const [addAccountModalIsOpen, toggleAddAccountModal] = useBooleanState(false);
+  const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
 
   useEffect(() => {
     dispatch(getAccount());
@@ -91,7 +93,7 @@ const LeftMenu = () => {
       <LeftSubmenu
         menuItems={renderFriends()}
         title="Friends"
-        tool={<Icon className="tool__plus-icon" icon={IconType.plus} />}
+        tool={<Icon className="tool__plus-icon" icon={IconType.plus} onClick={toggleAddFriendModal} />}
       />
       <LeftSubmenu
         menuItems={renderManagedBanks()}
@@ -104,6 +106,7 @@ const LeftMenu = () => {
         tool={<Icon className="tool__plus-icon" icon={IconType.plus} />}
       />
       {addAccountModalIsOpen && <AddAccountModal close={toggleAddAccountModal} />}
+      {addFriendModalIsOpen && <AddFriendModal close={toggleAddFriendModal} />}
     </div>
   );
 };
