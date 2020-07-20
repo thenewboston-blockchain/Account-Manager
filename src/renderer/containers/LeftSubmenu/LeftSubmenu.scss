@@ -1,5 +1,4 @@
 .LeftSubmenu {
-  border-bottom: 1px solid var(--color-neutral-400);
   padding: 12px 12px 12px 6px;
 
   &__header {
@@ -13,7 +12,7 @@
       display: flex;
 
       .submenu-title {
-        padding: 2px 0 0 4px;
+        padding: 2px 0 0 10px;
       }
     }
 
@@ -38,8 +37,9 @@
     display: block;
     line-height: 24px;
     overflow: hidden;
-    padding: 0 0 0 28px; /* 28px is the width of the menu toggle */
+    padding-left: 35px;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: var(--color-primary);
   }
 }

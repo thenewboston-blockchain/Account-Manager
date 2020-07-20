@@ -1,6 +1,7 @@
 .PageHeader {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 30px;
   padding: 12px;
 
   .left-section {
@@ -8,6 +9,7 @@
     display: flex;
 
     .header-title {
+      color: var(--color-primary);
       margin-right: 6px;
     }
 

@@ -11,6 +11,7 @@ const PageLayout: FC<ComponentProps> = ({content, top}) => {
   return (
     <div className="PageLayout">
       <div className="PageLayout-header">{top}</div>
+      <hr className="PageLayout-divider" />
       <div className="PageLayout-content">{content}</div>
     </div>
   );
