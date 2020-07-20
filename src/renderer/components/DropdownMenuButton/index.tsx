@@ -57,7 +57,12 @@ const DropdownMenuButton: FC<ComponentProps> = ({options}) => {
 
   return (
     <>
-      <Icon className="DropdownMenuButton" icon={IconType.dotsVertical} onClick={handleOpenDropdown} ref={iconRef} />
+      <Icon
+        className={clsx('DropdownMenuButton', {'DropdownMenuButton--active': open})}
+        icon={IconType.dotsVertical}
+        onClick={handleOpenDropdown}
+        ref={iconRef}
+      />
       {open &&
         createPortal(
           <div className="DropdownMenuButton__menu" style={dropdownPositionStyle}>
