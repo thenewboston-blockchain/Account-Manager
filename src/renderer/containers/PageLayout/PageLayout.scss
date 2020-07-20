@@ -4,8 +4,7 @@
   height: 100%;
 
   .PageLayout-divider {
-    height: 1px;
-    background-color: var(--color-blue-gray-100);
+    border-top: 1px solid var(--color-blue-gray-100);
     margin: 0 10px 12px 10px;
   }
 

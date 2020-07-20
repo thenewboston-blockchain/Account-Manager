@@ -37,10 +37,9 @@
     display: block;
     line-height: 24px;
     overflow: hidden;
-    padding: 0 0 0 35px; /* 28px is the width of the menu toggle */
+    padding-left: 35px;
     text-overflow: ellipsis;
     white-space: nowrap;
     color: var(--color-primary);
-    font-family: Helvetica Neue;
   }
 }

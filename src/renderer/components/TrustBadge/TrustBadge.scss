@@ -1,9 +1,10 @@
 .TrustBadge {
+  align-items: center;
   background: var(--color-tertiary);
   border-radius: 12px;
   color: var(--color-white);
+  display: flex;
   font-weight: 500;
-  line-height: 18px;
-  overflow: hidden;
-  padding: 3px 6px;
+  justify-content: center;
+  padding: 4px 8px;
 }

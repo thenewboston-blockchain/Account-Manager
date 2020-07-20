@@ -2,33 +2,23 @@
   align-items: center;
   background: white;
   display: flex;
+  justify-content: space-between;
   padding: 6px 12px;
 
-  .Icon {
-  }
-
-  .navigation-icons {
+  &__container {
+    color: var(--color-blue-gray-700);
+    cursor: pointer;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex: 1;
 
-    div {
-      color: var(--color-blue-gray-700);
-      cursor: pointer;
-      display: flex;
+    .Icon {
+      margin: 0 4px;
 
-      .Icon {
-        margin: 0 4px;
+      &:first-of-type {
+        margin-left: 0;
+      }
 
-        &:first-of-type {
-          margin-left: 0;
-        }
-
-        &:last-of-type {
-          margin-right: 0;
-        }
-
+      &:last-of-type {
+        margin-right: 0;
       }
     }
   }
