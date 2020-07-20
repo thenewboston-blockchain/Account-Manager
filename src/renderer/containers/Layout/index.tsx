@@ -8,6 +8,7 @@ import TopNav from '@renderer/containers/TopNav';
 import Validator from '@renderer/containers/Validator';
 
 import './Layout.scss';
+import Friend from '@renderer/containers/Friend';
 
 export const Layout: FC = () => {
   return (
@@ -22,6 +23,9 @@ export const Layout: FC = () => {
         <Switch>
           <Route path="/account">
             <Account />
+          </Route>
+          <Route path="/friend">
+            <Friend />
           </Route>
           <Route path="/bank">
             <Bank />

@@ -11,7 +11,7 @@ import {getAccount} from '@renderer/store/accounts';
 import {RootState} from '@renderer/types/store';
 
 import './LeftMenu.scss';
-import AddFriendModal from '@renderer/containers/Account/AddFriendModal';
+import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 
 const LeftComponentSelector = ({accounts, banks, friends, points, validators}: RootState) => ({
   accounts,
@@ -43,7 +43,7 @@ const LeftMenu = () => {
 
   const renderFriends = () => {
     return friends.map(({id, name}) => (
-      <NavLink className="MenuItem" key={id} to="/">
+      <NavLink className="MenuItem" key={id} to="/friend">
         {name}
       </NavLink>
     ));

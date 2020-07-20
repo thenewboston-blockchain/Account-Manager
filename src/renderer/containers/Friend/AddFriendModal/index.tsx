@@ -29,7 +29,7 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
 
   const handleSubmit = ({accountNumber, friendNickname}: FormValues): void => {
     dispatch(createFriend(friendNickname, accountNumber));
-    history.push('/account');
+    history.push('/friend');
     close();
   };
 
