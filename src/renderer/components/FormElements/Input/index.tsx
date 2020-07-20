@@ -28,7 +28,7 @@ const Input: FC<BaseInputProps> = ({
 }) => {
   return (
     <input
-      className={clsx('Input', {error}, className)}
+      className={clsx('Input', className, {'Input--error': error})}
       disabled={disabled}
       name={name}
       onBlur={onBlur}

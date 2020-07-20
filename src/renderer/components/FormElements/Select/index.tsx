@@ -48,7 +48,7 @@ const Select: FC<ComponentProps> = ({
 
   return (
     <ReactSelect
-      className={clsx('Select', {error}, className)}
+      className={clsx('Select', className, {'Select--error': error})}
       classNamePrefix="Select"
       filterOption={filterOption}
       formatOptionLabel={formatOptionLabel}
