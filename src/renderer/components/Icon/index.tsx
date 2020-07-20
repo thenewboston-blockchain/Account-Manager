@@ -13,6 +13,7 @@ import HelpCircleIcon from 'mdi-react/HelpCircleIcon';
 import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
 
+import {getCustomClassNames} from '@renderer/utils/components';
 import TnbIcon from './TnbIcon';
 import './Icon.scss';
 
@@ -39,7 +40,7 @@ interface ComponentProps {
   size?: number | string;
 }
 
-const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled, icon, onClick, size}, ref) => {
+const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled = false, icon, onClick, size}, ref) => {
   const iconProps = {
     onClick: disabled ? noop : onClick,
     size,
@@ -77,7 +78,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled, i
   return (
     <div
       className={clsx('Icon', className, {
-        disabled,
+        'Icon--disabled': disabled,
+        ...getCustomClassNames(className, '--disabled', disabled),
       })}
       ref={ref}
     >

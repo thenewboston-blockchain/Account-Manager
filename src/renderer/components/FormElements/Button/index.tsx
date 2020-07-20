@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
 
+import {getCustomClassNames} from '@renderer/utils/components';
 import './Button.scss';
 
 export interface BaseButtonProps {
@@ -16,14 +17,19 @@ const Button: FC<BaseButtonProps> = ({
   children,
   color = 'primary',
   className,
-  disabled,
+  disabled = false,
   onClick,
   type = 'button',
   variant = 'contained',
 }) => {
   return (
     <button
-      className={clsx('Button', `Button--${variant}`, `Button--${color}`, {'Button--disabled': disabled}, className)}
+      className={clsx('Button', `Button--${variant}`, `Button--${color}`, className, {
+        'Button--disabled': disabled,
+        ...getCustomClassNames(className, `--${variant}`, true),
+        ...getCustomClassNames(className, `--${color}`, true),
+        ...getCustomClassNames(className, '--disabled', disabled),
+      })}
       disabled={disabled}
       onClick={onClick}
       type={type}

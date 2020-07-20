@@ -16,7 +16,7 @@ $modal-footer-height: 60px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   position: fixed;
 
-  &__default-position {
+  &--default-position {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -31,7 +31,7 @@ $modal-footer-height: 60px;
     top: 0;
     width: 100vw;
 
-    &.submitting {
+    &--submitting {
       cursor: wait;
     }
   }
@@ -42,27 +42,27 @@ $modal-footer-height: 60px;
     height: $modal-header-height;
     padding: 0 12px;
     position: relative;
+  }
 
-    .Icon__close {
-      cursor: pointer;
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      transition: color 0.1s;
+  &__close-icon {
+    cursor: pointer;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: color 0.1s;
 
-      &:hover:not(.disabled) {
-        color: var(--color-danger);
-      }
+    &:hover:not(&--disabled) {
+      color: var(--color-danger);
+    }
 
-      &.disabled {
-        color: var(--color-primary-disabled);
-        cursor: auto;
-      }
+    &--disabled {
+      color: var(--color-primary-disabled);
+      cursor: auto;
+    }
 
-      &.submitting {
-        cursor: wait;
-      }
+    &--submitting {
+      cursor: wait;
     }
   }
 
