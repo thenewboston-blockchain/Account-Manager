@@ -1,17 +1,15 @@
 .ExpandableTableRow {
+  $self: &;
+
   td {
     max-width: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: top;
     white-space: nowrap;
-
-    .ArrowToggle {
-      display: flex;
-    }
   }
 
-  &.expanded {
+  &--expanded {
     td {
       white-space: normal;
       word-wrap: break-word;

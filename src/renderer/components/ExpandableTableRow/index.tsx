@@ -14,9 +14,9 @@ const ExpandableTableRow: FC<ComponentProps> = ({children}) => {
   const [expanded, toggleExpanded] = useBooleanState(false);
 
   return (
-    <tr className={clsx('ExpandableTableRow', {expanded: expanded})}>
+    <tr className={clsx('ExpandableTableRow', {'ExpandableTableRow--expanded': expanded})}>
       <td>
-        <ArrowToggle expanded={expanded} onClick={toggleExpanded} />
+        <ArrowToggle className="ExpandableTableRow__ArrowToggle" expanded={expanded} onClick={toggleExpanded} />
       </td>
       {children}
     </tr>
