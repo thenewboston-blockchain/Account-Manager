@@ -5,20 +5,20 @@
   height: 100vh;
 
   .top {
-    border-bottom: 1px solid var(--color-neutral-400);
+    border-bottom: 1px solid var(--color-neutral-300);
     grid-column: 1 / span 2;
     grid-row: 1 / span 1;
   }
 
   .left {
     background: var(--color-white);
-    box-shadow: 2px 0 2px rgba(0, 0, 0, 0.1);
     grid-column: 1 / span 1;
     grid-row: 2 / span 1;
     overflow-y: auto;
   }
 
   .right {
+    background-color: var(--color-panels-bg);
     grid-column: 2 / span 1;
     grid-row: 2 / span 1;
     overflow-y: auto;

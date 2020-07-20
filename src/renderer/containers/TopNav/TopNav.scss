@@ -2,24 +2,24 @@
   align-items: center;
   background: white;
   display: flex;
+  justify-content: space-between;
+  padding: 6px 12px;
 
-  .navigation-icons {
+  &__container {
+    color: var(--color-blue-gray-700);
+    cursor: pointer;
     display: flex;
 
     .Icon {
       margin: 0 4px;
-    }
-  }
 
-  .thenewboston {
-    align-items: center;
-    border-right: none;
-    display: flex;
-    padding: 12px 14px;
-    width: var(--left-menu-width);
+      &:first-of-type {
+        margin-left: 0;
+      }
 
-    .Logo {
-      margin-right: 6px;
+      &:last-of-type {
+        margin-right: 0;
+      }
     }
   }
 }

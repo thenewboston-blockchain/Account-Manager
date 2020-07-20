@@ -3,6 +3,10 @@
   padding: 4px 0 0 12px;
   width: 100%;
 
+  thead {
+    color: var(--color-blue-gray-500);
+  }
+
   td,
   th {
     border-bottom: 1px solid var(--color-neutral-400);
@@ -10,7 +14,7 @@
   }
 
   th {
-    color: var(--color-neutral-600);
+    color: var(--color-blue-gray-900);
     font-weight: 500;
     text-align: left;
   }

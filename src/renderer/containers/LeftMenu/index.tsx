@@ -67,7 +67,10 @@ const LeftMenu = () => {
     <div className="LeftMenu">
       <div className="LeftMenu__points">
         <div className="submenu-title">Points</div>
-        <div className="points__amount">{points.toLocaleString()}</div>
+        <div className="points__amount">
+          <Icon size={18} icon={IconType.tnb} />
+          {points.toLocaleString()}
+        </div>
       </div>
       <LeftSubmenu
         menuItems={[
@@ -81,16 +84,6 @@ const LeftMenu = () => {
         title="Network"
       />
       <LeftSubmenu
-        menuItems={renderManagedBanks()}
-        title="Managed Banks"
-        tool={<Icon className="tool__plus-icon" icon={IconType.plus} />}
-      />
-      <LeftSubmenu
-        menuItems={renderManagedValidators()}
-        title="Managed Validators"
-        tool={<Icon className="tool__plus-icon" icon={IconType.plus} />}
-      />
-      <LeftSubmenu
         menuItems={renderAccounts()}
         title="Accounts"
         tool={<Icon className="tool__plus-icon" icon={IconType.plus} onClick={toggleAddAccountModal} />}
@@ -98,6 +91,16 @@ const LeftMenu = () => {
       <LeftSubmenu
         menuItems={renderFriends()}
         title="Friends"
+        tool={<Icon className="tool__plus-icon" icon={IconType.plus} />}
+      />
+      <LeftSubmenu
+        menuItems={renderManagedBanks()}
+        title="Managed Banks"
+        tool={<Icon className="tool__plus-icon" icon={IconType.plus} />}
+      />
+      <LeftSubmenu
+        menuItems={renderManagedValidators()}
+        title="Managed Validators"
         tool={<Icon className="tool__plus-icon" icon={IconType.plus} />}
       />
       {addAccountModalIsOpen && <AddAccountModal close={toggleAddAccountModal} />}
