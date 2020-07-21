@@ -13,8 +13,9 @@ import './Validator.scss';
 const Validator = () => {
   const renderDetailPanels = () => {
     return (
-      <div className="detail-panels">
+      <div className="Validator__panels">
         <DetailPanel
+          className="Validator__DetailPanel"
           items={[
             {
               key: 'Node Type',
@@ -32,6 +33,7 @@ const Validator = () => {
           title="Validator Information"
         />
         <DetailPanel
+          className="Validator__DetailPanel"
           items={[
             {
               key: '90',
