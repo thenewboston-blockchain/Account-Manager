@@ -2,51 +2,21 @@
   display: flex;
   flex-direction: column;
 
-  .submenu-title {
-    color: var(--color-neutral-600);
+  .points {
+    margin: 12px 12px 12px 33px;
 
-    &:hover {
+    &__title {
+      color: var(--color-neutral-600);
       cursor: default;
-    }
-  }
-
-  .tool__plus-icon {
-    cursor: pointer;
-    transition: color 0.1s;
-
-    &:hover {
-      color: var(--color-primary);
-    }
-  }
-
-  &__points {
-    padding: 12px;
-
-    .submenu-title {
       margin-bottom: 6px;
-      margin-left: 30px;
     }
 
-    .points__amount {
+    &__amount {
       align-items: center;
       color: var(--color-tertiary);
       display: flex;
       font-size: var(--font-size-medium);
       font-weight: 500;
-
-      .Icon {
-        align-items: center;
-        background: var(--color-primary);
-        border-radius: 50%;
-        color: var(--color-white);
-        display: flex;
-        height: 20px;
-        justify-content: center;
-        margin-right: 10px;
-        padding-left: 4px;
-        padding-top: 4px;
-        width: 20px;
-      }
     }
   }
 }

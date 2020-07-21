@@ -3,12 +3,12 @@
   flex-direction: column;
   height: 100%;
 
-  .PageLayout-divider {
+  &__divider {
     border-top: 1px solid var(--color-blue-gray-100);
     margin: 0 10px 12px 10px;
   }
 
-  &-content {
+  &__content {
     flex: 1;
     overflow: auto;
   }

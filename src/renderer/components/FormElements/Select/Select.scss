@@ -5,7 +5,7 @@
   &.Select {
     height: 24px;
 
-    &.error {
+    &#{$self}--error {
       #{$self}__control {
         &,
         &:active,

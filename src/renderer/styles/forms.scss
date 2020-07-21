@@ -23,20 +23,11 @@ input {
   }
 }
 
-form {
-  label {
-    color: var(--color-neutral-600);
-    font-weight: bold;
-  }
-
-  span.error {
-    color: var(--color-danger);
-  }
-}
-
 .FormFieldComponent {
-  label {
+  &__label {
+    color: var(--color-neutral-600);
     display: block;
+    font-weight: bold;
     margin-bottom: 3px;
   }
 
@@ -44,7 +35,8 @@ form {
     width: 100%;
   }
 
-  span.error {
+  &__error-message {
+    color: var(--color-danger);
     display: block;
     font-size: var(--font-size-small);
     margin-top: 6px;

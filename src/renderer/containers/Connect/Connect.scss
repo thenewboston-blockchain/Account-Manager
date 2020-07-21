@@ -8,10 +8,10 @@
   &__header {
     align-items: center;
     display: flex;
+  }
 
-    .Logo {
-      margin-right: 12px;
-    }
+  &__logo {
+    margin-right: 12px;
   }
 
   &__form {

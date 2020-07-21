@@ -1,13 +1,10 @@
 .Validator {
-  .detail-panels {
+  &__panels {
     display: flex;
+    margin: 18px 12px;
+  }
 
-    .DetailPanel {
-      margin: 18px 0 0 24px;
-
-      &:first-of-type {
-        margin-left: 12px;
-      }
-    }
+  &__DetailPanel {
+    margin-right: 12px;
   }
 }
