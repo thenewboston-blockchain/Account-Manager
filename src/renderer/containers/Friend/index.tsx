@@ -25,19 +25,19 @@ const Friend: FC = () => {
         <DetailPanel
           items={[
             {
-              attribute: 'Balance',
+              key: 'Balance',
               value: '184.35',
             },
             {
-              attribute: 'Account Number',
+              key: 'Account Number',
               value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
             },
             {
-              attribute: 'Signing Key',
+              key: 'Signing Key',
               value: '**************************',
             },
             {
-              attribute: 'QR Code',
+              key: 'QR Code',
               value: <QR text="0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb" />,
             },
           ]}
@@ -46,15 +46,15 @@ const Friend: FC = () => {
         <DetailPanel
           items={[
             {
-              attribute: 'Network ID',
+              key: 'Network ID',
               value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
             },
             {
-              attribute: 'Account Number',
+              key: 'Account Number',
               value: 'Account Number',
             },
             {
-              attribute: 'Protocol',
+              key: 'Protocol',
               value: 'http',
             },
           ]}
