@@ -2,17 +2,17 @@
   height: 100%;
 }
 
-.Bank__DeleteModal {
-  .Icon__alert {
+.BankDeleteModal {
+  &__icon {
     color: var(--color-danger);
     margin-right: 12px;
   }
 
-  .Modal__title {
+  &__title {
     color: var(--color-danger);
   }
 
-  .delete-warning-span {
+  &__warning-span {
     color: var(--color-danger);
     font-weight: bold;
     text-transform: uppercase;
