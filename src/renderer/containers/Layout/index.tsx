@@ -12,13 +12,13 @@ import './Layout.scss';
 export const Layout: FC = () => {
   return (
     <div className="Layout">
-      <div className="top">
+      <div className="Layout__top">
         <TopNav />
       </div>
-      <div className="left">
+      <div className="Layout__left">
         <LeftMenu />
       </div>
-      <div className="right">
+      <div className="Layout__right">
         <Switch>
           <Route path="/account">
             <Account />
