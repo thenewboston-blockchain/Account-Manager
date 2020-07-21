@@ -2,17 +2,16 @@ import React, {FC, useState} from 'react';
 import noop from 'lodash/noop';
 
 import {Button} from '@renderer/components/FormElements';
+import DetailPanel from '@renderer/components/DetailPanel';
 import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import PageHeader from '@renderer/components/PageHeader';
+import PageLayout from '@renderer/containers/PageLayout';
+import PageTable from '@renderer/containers/PageTable';
 import PageTabs from '@renderer/components/PageTabs';
 import Pagination from '@renderer/components/Pagination';
 import QR from '@renderer/components/QR';
-
-import DetailPanel from '@renderer/containers/DetailPanel';
-import PageLayout from '@renderer/containers/PageLayout';
-import PageTable from '@renderer/containers/PageTable';
 
 import useBooleanState from '@renderer/hooks/useBooleanState';
 import transactionSampleData from '@renderer/mock/TransactionSampleData';
@@ -84,19 +83,19 @@ const Account: FC = () => {
         <DetailPanel
           items={[
             {
-              attribute: 'Balance',
+              key: 'Balance',
               value: '184.35',
             },
             {
-              attribute: 'Account Number',
+              key: 'Account Number',
               value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
             },
             {
-              attribute: 'Signing Key',
+              key: 'Signing Key',
               value: '**************************',
             },
             {
-              attribute: 'QR Code',
+              key: 'QR Code',
               value: <QR text="0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb" />,
             },
           ]}
@@ -105,15 +104,15 @@ const Account: FC = () => {
         <DetailPanel
           items={[
             {
-              attribute: 'Network ID',
+              key: 'Network ID',
               value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
             },
             {
-              attribute: 'Account Number',
+              key: 'Account Number',
               value: 'Account Number',
             },
             {
-              attribute: 'Protocol',
+              key: 'Protocol',
               value: 'http',
             },
           ]}

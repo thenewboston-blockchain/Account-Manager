@@ -1,7 +1,8 @@
 import React from 'react';
+import noop from 'lodash/noop';
 
 import Button from '@renderer/components/FormElements/Button';
-import DetailPanel from '@renderer/containers/DetailPanel';
+import DetailPanel from '@renderer/components/DetailPanel';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/containers/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
@@ -16,15 +17,15 @@ const Validator = () => {
         <DetailPanel
           items={[
             {
-              attribute: 'Node Type',
+              key: 'Node Type',
               value: 'Validator',
             },
             {
-              attribute: 'Network ID',
+              key: 'Network ID',
               value: 'Gn53dfs4a2z',
             },
             {
-              attribute: 'Protocol',
+              key: 'Protocol',
               value: 'http',
             },
           ]}
@@ -33,22 +34,15 @@ const Validator = () => {
         <DetailPanel
           items={[
             {
-              attribute: '90',
+              key: '90',
               value: '1.00',
             },
             {
-              attribute: '70',
+              key: '70',
               value: '1.22',
             },
           ]}
-          tableHead={
-            <thead>
-              <tr>
-                <th>Bank Trust Level</th>
-                <th>Tx Fee (Points)</th>
-              </tr>
-            </thead>
-          }
+          tableHeaders={['Bank Trust Level', 'Tx Fee (Points)']}
           title="Trust Levels"
         />
       </div>
@@ -73,24 +67,29 @@ const Validator = () => {
         <PageTabs
           items={[
             {
-              name: 'Overview',
               active: true,
+              name: 'Overview',
+              onClick: noop,
             },
             {
+              active: false,
               name: 'Members',
-              active: false,
+              onClick: noop,
             },
             {
+              active: false,
               name: 'Transactions',
-              active: false,
+              onClick: noop,
             },
             {
+              active: false,
               name: 'Banks',
-              active: false,
+              onClick: noop,
             },
             {
-              name: 'Validators',
               active: false,
+              name: 'Validators',
+              onClick: noop,
             },
           ]}
         />
