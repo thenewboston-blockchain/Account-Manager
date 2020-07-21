@@ -16,7 +16,7 @@
     color: var(--color-neutral-400);
   }
 
-  &.error {
+  &--error {
     border-color: var(--color-danger);
   }
 }

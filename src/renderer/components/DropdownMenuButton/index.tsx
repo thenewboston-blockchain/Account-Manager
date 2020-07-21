@@ -6,6 +6,7 @@ import noop from 'lodash/noop';
 import Icon, {IconType} from '@renderer/components/Icon';
 import useBooleanState from '@renderer/hooks/useBooleanState';
 import {GenericVoidFunction} from '@renderer/types/generic';
+import {getCustomClassNames} from '@renderer/utils/components';
 
 import './DropdownMenuButton.scss';
 
@@ -16,12 +17,13 @@ export interface DropdownMenuOption {
 }
 
 interface ComponentProps {
+  className?: string;
   options: DropdownMenuOption[];
 }
 
 const dropdownRoot = document.getElementById('dropdown-root')!;
 
-const DropdownMenuButton: FC<ComponentProps> = ({options}) => {
+const DropdownMenuButton: FC<ComponentProps> = ({className, options}) => {
   const iconRef = useRef<HTMLDivElement>(null);
   const [open, toggleOpen, , closeMenu] = useBooleanState(false);
   const [dropdownPositionStyle, setDropdownPositionStyle] = useState<CSSProperties | undefined>(undefined);
@@ -57,14 +59,28 @@ const DropdownMenuButton: FC<ComponentProps> = ({options}) => {
 
   return (
     <>
-      <Icon className="DropdownMenuButton" icon={IconType.dotsVertical} onClick={handleOpenDropdown} ref={iconRef} />
+      <Icon
+        className={clsx('DropdownMenuButton', className, {
+          'DropdownMenuButton--active': open,
+          ...getCustomClassNames(className, '--active', open),
+        })}
+        icon={IconType.dotsVertical}
+        onClick={handleOpenDropdown}
+        ref={iconRef}
+      />
       {open &&
         createPortal(
-          <div className="DropdownMenuButton__menu" style={dropdownPositionStyle}>
-            {options.map(({disabled, label, onClick: optionOnClick}, i) => {
+          <div
+            className={clsx('DropdownMenuButton__menu', {...getCustomClassNames(className, '__menu', true)})}
+            style={dropdownPositionStyle}
+          >
+            {options.map(({disabled = false, label, onClick: optionOnClick}, i) => {
               return (
                 <div
-                  className={clsx('DropdownMenuButton__option', {disabled})}
+                  className={clsx('DropdownMenuButton__option', {
+                    'DropdownMenuButton__option--disabled': disabled,
+                    ...getCustomClassNames(className, '__option--disabled', disabled),
+                  })}
                   key={i}
                   onClick={disabled ? noop : handleOptionClick(optionOnClick)}
                 >

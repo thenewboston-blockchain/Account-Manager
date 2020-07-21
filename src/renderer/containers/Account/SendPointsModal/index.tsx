@@ -54,7 +54,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
           Cancel
         </FormButton>
         <FormButton className="Modal__default-submit SendPointsModal__default-submit" type="submit">
-          Send <Icon icon={IconType.tnb} size={16} />
+          Send <Icon className="SendPointsModal__submit-icon" icon={IconType.tnb} size={16} />
         </FormButton>
       </>
     );
@@ -85,12 +85,12 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
           options={accountToSelectFieldOptions}
           name="toAccount"
         />
-        <table>
+        <table className="SendPointsModal__table">
           <tbody>
             <tr>
               <td>Account Balance</td>
               <td>
-                <span className="acc-balance">0.00</span>
+                <span className="SendPointsModal__acc-balance">0.00</span>
               </td>
             </tr>
             <tr>
@@ -99,7 +99,13 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
                 <RequiredAsterisk />
               </td>
               <td>
-                <FormInput className="points-input" hideError name="points" placeholder="0.00" type="number" />
+                <FormInput
+                  className="SendPointsModal__points-input"
+                  hideError
+                  name="points"
+                  placeholder="0.00"
+                  type="number"
+                />
               </td>
             </tr>
             <tr>
@@ -110,7 +116,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
               <td>Validator Tx Fee</td>
               <td>0.02</td>
             </tr>
-            <tr>
+            <tr className="SendPointsModal__total-tr">
               <td>TOTAL Tx</td>
               <td>
                 <b>0.00</b>

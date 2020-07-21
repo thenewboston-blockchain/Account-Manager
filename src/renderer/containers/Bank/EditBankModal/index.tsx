@@ -67,7 +67,7 @@ const EditBankModal: FC<ComponentProps> = ({close}) => {
   const renderFooter = () => {
     return (
       <>
-        <div className="footer-left-text">Here's some left text to showcase custom footer</div>
+        <div className="EditBankModal__footer-left">Here's some left text to showcase custom footer</div>
         <FormButton className="Modal__default-cancel" onClick={close} variant="outlined">
           No
         </FormButton>
@@ -81,8 +81,8 @@ const EditBankModal: FC<ComponentProps> = ({close}) => {
   const renderHeader = () => {
     return (
       <>
-        <Icon className="Icon__arrow" icon={IconType.arrowRight} />
-        <h2 className="Modal__title">Edit Account</h2>
+        <Icon className="EditBankModal__header-icon" icon={IconType.arrowRight} />
+        <h2 className="EditBankModal__title">Edit Account</h2>
       </>
     );
   };

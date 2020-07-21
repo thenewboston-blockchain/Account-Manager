@@ -9,6 +9,7 @@ import Loader from '@renderer/components/FormElements/Loader';
 
 import {GenericFormValues} from '@renderer/types/forms';
 import {GenericFunction} from '@renderer/types/generic';
+import {getCustomClassNames} from '@renderer/utils/components';
 
 import './Modal.scss';
 
@@ -105,7 +106,9 @@ const Modal: FC<ModalProps> = ({
       <>
         {displayCancelButton && (
           <FormButton
-            className={clsx('Modal__default-cancel', cancelProps.className)}
+            className={clsx('Modal__default-cancel', cancelProps.className, {
+              ...getCustomClassNames(className, '__default-cancel', true),
+            })}
             color={cancelProps.color}
             disabled={cancelProps.disabled}
             ignoreDirty={cancelProps.ignoreDirty}
@@ -119,7 +122,9 @@ const Modal: FC<ModalProps> = ({
         )}
         {displaySubmitButton && (
           <FormButton
-            className={clsx('Modal__default-submit', submitProps.className)}
+            className={clsx('Modal__default-submit', submitProps.className, {
+              ...getCustomClassNames(className, '__default-submit', true),
+            })}
             color={submitProps.color}
             disabled={submitProps.disabled}
             ignoreDirty={submitProps.ignoreDirty}
@@ -137,20 +142,42 @@ const Modal: FC<ModalProps> = ({
 
   return createPortal(
     <>
-      <div className={clsx('Modal__overlay', {submitting})} onClick={submitting ? noop : close} />
-      <div className={clsx('Modal', {'Modal__default-position': !style}, className)} style={style}>
-        <div className="Modal__header">
+      <div
+        className={clsx('Modal__overlay', {
+          'Modal__overlay--submitting': submitting,
+          ...getCustomClassNames(className, '__overlay', true),
+          ...getCustomClassNames(className, '__overlay--submitting', submitting),
+        })}
+        onClick={submitting ? noop : close}
+      />
+      <div
+        className={clsx(
+          'Modal',
+          {'Modal--default-position': !style, ...getCustomClassNames(className, '--default-position', !style)},
+          className,
+        )}
+        style={style}
+      >
+        <div className={clsx('Modal__header', {...getCustomClassNames(className, '__header', true)})}>
           {typeof header === 'string' ? <h2>{header}</h2> : header}
           <Icon
-            className={clsx('Icon__close', {submitting})}
+            className={clsx('Modal__close-icon', {
+              'Modal__close-icon--submitting': submitting,
+              ...getCustomClassNames(className, '__close-icon', true),
+              ...getCustomClassNames(className, '__close-icon--submitting', submitting),
+            })}
             disabled={submitting}
             icon={IconType.close}
             onClick={close}
           />
         </div>
         <Form initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
-          <div className="Modal__content">{children}</div>
-          <div className="Modal__footer">{footer || renderDefaultFooter()}</div>
+          <div className={clsx('Modal__content', {...getCustomClassNames(className, '__content', true)})}>
+            {children}
+          </div>
+          <div className={clsx('Modal__footer', {...getCustomClassNames(className, '__footer', true)})}>
+            {footer || renderDefaultFooter()}
+          </div>
         </Form>
       </div>
     </>,
