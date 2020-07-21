@@ -1,17 +1,16 @@
 $button-height: 24px;
 
 .DropdownMenuButton {
+  $self: &;
   cursor: pointer;
   transition: color 0.1s;
 
   &:hover,
-  &.active {
+  &--active {
     color: var(--color-primary);
   }
-}
 
-#dropdown-root {
-  .DropdownMenuButton__menu {
+  &__menu {
     background: var(--color-white);
     border-radius: 3px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
@@ -19,7 +18,7 @@ $button-height: 24px;
     position: fixed;
   }
 
-  .DropdownMenuButton__option {
+  &__option {
     align-items: center;
     display: flex;
     height: 30px;
@@ -27,7 +26,7 @@ $button-height: 24px;
     transition: background 0.1s;
     white-space: nowrap;
 
-    &:not(.disabled) {
+    &:not(&--disabled) {
       cursor: pointer;
 
       &:hover {
@@ -35,9 +34,9 @@ $button-height: 24px;
       }
     }
 
-    &.disabled {
+    &--disabled {
       color: var(--color-neutral-400);
-      cursor: auto;
+      cursor: default;
     }
   }
 }

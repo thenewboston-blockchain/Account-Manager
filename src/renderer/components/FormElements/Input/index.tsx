@@ -1,6 +1,7 @@
 import React, {ChangeEvent, FC, FocusEvent} from 'react';
 import clsx from 'clsx';
 
+import {getCustomClassNames} from '@renderer/utils/components';
 import './Input.scss';
 
 export interface BaseInputProps {
@@ -18,7 +19,7 @@ export interface BaseInputProps {
 const Input: FC<BaseInputProps> = ({
   className,
   disabled,
-  error,
+  error = false,
   name,
   onBlur,
   onChange,
@@ -28,7 +29,7 @@ const Input: FC<BaseInputProps> = ({
 }) => {
   return (
     <input
-      className={clsx('Input', {error}, className)}
+      className={clsx('Input', className, {'Input--error': error, ...getCustomClassNames(className, '--error', error)})}
       disabled={disabled}
       name={name}
       onBlur={onBlur}

@@ -1,9 +1,9 @@
 .EditBankModal {
-  .Icon__arrow {
+  &__header-icon {
     margin-right: 12px;
   }
 
-  .footer-left-text {
+  &__footer-left {
     flex: 1;
   }
 }

@@ -2,17 +2,16 @@ import React, {FC, useState} from 'react';
 import noop from 'lodash/noop';
 
 import {Button} from '@renderer/components/FormElements';
+import DetailPanel from '@renderer/components/DetailPanel';
 import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import PageHeader from '@renderer/components/PageHeader';
+import PageLayout from '@renderer/components/PageLayout';
+import PageTable from '@renderer/components/PageTable';
 import PageTabs from '@renderer/components/PageTabs';
 import Pagination from '@renderer/components/Pagination';
 import QR from '@renderer/components/QR';
-
-import DetailPanel from '@renderer/containers/DetailPanel';
-import PageLayout from '@renderer/containers/PageLayout';
-import PageTable from '@renderer/containers/PageTable';
 
 import useBooleanState from '@renderer/hooks/useBooleanState';
 import transactionSampleData from '@renderer/mock/TransactionSampleData';
@@ -59,12 +58,12 @@ const Account: FC = () => {
   const renderDeleteModal = () => (
     <Modal
       cancelButton="Cancel"
-      className="Account__DeleteModal"
+      className="AccountDeleteModal"
       close={toggleDeleteModal}
       header={
         <>
-          <Icon className="Icon__alert" icon={IconType.alert} />
-          <h2 className="Modal__title">Delete Account</h2>
+          <Icon className="AccountDeleteModal__icon" icon={IconType.alert} />
+          <h2 className="AccountDeleteModal__title">Delete Account</h2>
         </>
       }
       onSubmit={handleDeleteAccountFromModal}
@@ -72,48 +71,50 @@ const Account: FC = () => {
       submitting={submittingDeleteModal}
     >
       <>
-        <span className="delete-warning-span">Warning: </span> If you delete your account, you will lose all the points
-        in your account as well as your signing key. Are you sure you want to delete your account?
+        <span className="AccountDeleteModal__warning-span">Warning: </span> If you delete your account, you will lose
+        all the points in your account as well as your signing key. Are you sure you want to delete your account?
       </>
     </Modal>
   );
 
   const renderDetailPanels = () => {
     return (
-      <div className="detail-panels">
+      <div className="Account__panels">
         <DetailPanel
+          className="Account__DetailPanel"
           items={[
             {
-              attribute: 'Balance',
+              key: 'Balance',
               value: '184.35',
             },
             {
-              attribute: 'Account Number',
+              key: 'Account Number',
               value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
             },
             {
-              attribute: 'Signing Key',
+              key: 'Signing Key',
               value: '**************************',
             },
             {
-              attribute: 'QR Code',
+              key: 'QR Code',
               value: <QR text="0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb" />,
             },
           ]}
           title="Account Info"
         />
         <DetailPanel
+          className="Account__DetailPanel"
           items={[
             {
-              attribute: 'Network ID',
+              key: 'Network ID',
               value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
             },
             {
-              attribute: 'Account Number',
+              key: 'Account Number',
               value: 'Account Number',
             },
             {
-              attribute: 'Protocol',
+              key: 'Protocol',
               value: 'http',
             },
           ]}

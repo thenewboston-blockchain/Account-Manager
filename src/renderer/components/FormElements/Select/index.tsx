@@ -4,6 +4,7 @@ import {ValueType} from 'react-select/src/types';
 import clsx from 'clsx';
 
 import {SelectOption} from '@renderer/types/forms';
+import {getCustomClassNames} from '@renderer/utils/components';
 
 import './Select.scss';
 
@@ -28,7 +29,7 @@ interface ComponentProps extends BaseSelectProps {
 const Select: FC<ComponentProps> = ({
   className,
   disabled,
-  error,
+  error = false,
   filterOption,
   formatOptionLabel,
   isSearchable = true,
@@ -48,7 +49,10 @@ const Select: FC<ComponentProps> = ({
 
   return (
     <ReactSelect
-      className={clsx('Select', {error}, className)}
+      className={clsx('Select', className, {
+        'Select--error': error,
+        ...getCustomClassNames(className, '--error', error),
+      })}
       classNamePrefix="Select"
       filterOption={filterOption}
       formatOptionLabel={formatOptionLabel}

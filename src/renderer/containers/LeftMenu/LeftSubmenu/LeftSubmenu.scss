@@ -1,0 +1,42 @@
+.LeftSubmenu {
+  padding: 12px 12px 12px 6px;
+
+  &__header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__left-items {
+    align-items: center;
+    display: flex;
+  }
+
+  &__title {
+    color: var(--color-neutral-600);
+    cursor: default;
+    padding: 2px 0 0 10px;
+  }
+
+  &__add-icon {
+    color: var(--color-neutral-700);
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    transition: color 0.1s;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+
+  &__menu-item {
+    display: block;
+    line-height: 24px;
+    overflow: hidden;
+    padding-left: 35px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-primary);
+  }
+}

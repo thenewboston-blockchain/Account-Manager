@@ -1,4 +1,5 @@
 .Button {
+  $self: &;
   border-radius: 3px;
   border-width: 1px;
   border-style: solid;
@@ -7,14 +8,14 @@
   padding: 9px 12px;
   transition: all 0.1s;
 
-  &.Button--disabled {
+  &--disabled {
     cursor: auto;
   }
 
   &--contained {
     color: var(--color-white);
 
-    &.Button--primary {
+    &#{$self}--primary {
       background: var(--color-primary);
       border-color: var(--color-primary);
 
@@ -23,14 +24,14 @@
         border-color: var(--color-primary-dark);
       }
 
-      &.Button--disabled,
-      &.Button--disabled:hover {
+      &#{$self}--disabled,
+      &#{$self}--disabled:hover {
         background: var(--color-primary-disabled);
         border-color: var(--color-primary-disabled);
       }
     }
 
-    &.Button--secondary {
+    &#{$self}--secondary {
       background: var(--color-secondary);
       border-color: var(--color-secondary);
 
@@ -40,7 +41,7 @@
       }
     }
 
-    &.Button--tertiary {
+    &#{$self}--tertiary {
       background: var(--color-tertiary);
       border-color: var(--color-tertiary);
 
@@ -54,7 +55,7 @@
   &--outlined {
     background: transparent;
 
-    &.Button--primary {
+    &#{$self}--primary {
       border-color: var(--color-blue-gray-200);
       color: var(--color-primary);
 
@@ -62,15 +63,15 @@
         background: var(--color-primary-outline-bg);
       }
 
-      &.Button--disabled,
-      &.Button--disabled:hover {
+      &#{$self}--disabled,
+      &#{$self}--disabled:hover {
         background: var(--color-primary-disabled-fill);
         border-color: var(--color-primary-disabled-text);
         color: var(--color-primary-disabled-text);
       }
     }
 
-    &.Button--secondary {
+    &#{$self}--secondary {
       border-color: var(--color-secondary);
       color: var(--color-secondary);
 
@@ -80,7 +81,7 @@
       }
     }
 
-    &.Button--tertiary {
+    &#{$self}--tertiary {
       border-color: var(--color-tertiary);
       color: var(--color-tertiary);
 
@@ -99,11 +100,11 @@
       text-decoration: underline;
     }
 
-    &.Button--primary {
+    &#{$self}--primary {
       color: var(--color-primary);
 
-      &.Button--disabled,
-      &.Button--disabled:hover {
+      &#{$self}--disabled,
+      &#{$self}--disabled:hover {
         color: var(--color-primary-disabled-text);
         text-decoration: none;
       }

@@ -7,8 +7,8 @@ import EditBankModal from '@renderer/containers/Bank/EditBankModal';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import PageHeader from '@renderer/components/PageHeader';
-import PageLayout from '@renderer/containers/PageLayout';
-import PageTable from '@renderer/containers/PageTable';
+import PageLayout from '@renderer/components/PageLayout';
+import PageTable from '@renderer/components/PageTable';
 import PageTabs from '@renderer/components/PageTabs';
 import Pagination from '@renderer/components/Pagination';
 import TrustBadge from '@renderer/components/TrustBadge';
@@ -61,12 +61,12 @@ const Bank = () => {
   const renderDeleteModal = () => (
     <Modal
       cancelButton="No"
-      className="Bank__DeleteModal"
+      className="BankDeleteModal"
       close={toggleDeleteModal}
       header={
         <>
-          <Icon className="Icon__alert" icon={IconType.alert} />
-          <h2 className="Modal__title">Delete Account</h2>
+          <Icon className="BankDeleteModal__icon" icon={IconType.alert} />
+          <h2 className="BankDeleteModal__title">Delete Account</h2>
         </>
       }
       onSubmit={handleDeleteAccountFromModal}
@@ -74,8 +74,8 @@ const Bank = () => {
       submitting={submittingDeleteModal}
     >
       <>
-        <span className="delete-warning-span">Warning: </span> If you delete your account, you will lose all the points
-        in your account as well as your signing key. Are you sure you want to delete your account?
+        <span className="BankDeleteModal__warning-span">Warning: </span> If you delete your account, you will lose all
+        the points in your account as well as your signing key. Are you sure you want to delete your account?
       </>
     </Modal>
   );

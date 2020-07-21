@@ -4,21 +4,19 @@
   justify-content: center;
   padding: 24px 0;
 
-  .next-button {
+  &__prev-button {
+    margin-right: 30px;
+  }
+
+  &__next-button {
     margin-left: 30px;
   }
 
-  .pages {
-    .page {
-      padding: 0 3px;
+  &__page {
+    padding: 0 3px;
 
-      &.active {
-        color: var(--color-neutral-900);
-      }
+    &--active {
+      color: var(--color-neutral-900);
     }
-  }
-
-  .prev-button {
-    margin-right: 30px;
   }
 }

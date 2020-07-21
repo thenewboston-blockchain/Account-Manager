@@ -1,38 +1,37 @@
 .PageTabs {
+  $self: &;
   display: flex;
   padding: 0 12px;
   text-transform: uppercase;
 
-  .tab {
+  &__tab {
     color: var(--color-blue-gray-500);
     cursor: pointer;
     margin-right: 30px;
 
-    &-indicator {
-      background: transparent;
-      border-radius: 3px 3px 0 0;
-      height: 3px;
-      transition: all 0.1s;
-    }
-
-    &-name {
-      font-weight: 500;
-      padding-bottom: 6px;
-      transition: all 0.1s;
-    }
-
     &:hover,
-    &.active {
-      .tab {
-        &-indicator {
-          background: var(--color-primary);
-          color: var(--color-primary);
-        }
+    &--active {
+      #{$self}__tab-name {
+        color: var(--color-primary);
+      }
 
-        &-name {
-          color: var(--color-primary);
-        }
+      #{$self}__tab-indicator {
+        background: var(--color-primary);
+        color: var(--color-primary);
       }
     }
+  }
+
+  &__tab-name {
+    font-weight: 500;
+    padding-bottom: 6px;
+    transition: all 0.1s;
+  }
+
+  &__tab-indicator {
+    background: transparent;
+    border-radius: 3px 3px 0 0;
+    height: 3px;
+    transition: all 0.1s;
   }
 }
