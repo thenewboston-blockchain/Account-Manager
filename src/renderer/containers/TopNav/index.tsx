@@ -8,13 +8,13 @@ const TopNav = () => {
   return (
     <div className="TopNav">
       <div className="TopNav__container">
-        <Icon icon={IconType.arrowLeft} />
-        <Icon icon={IconType.arrowRight} />
+        <Icon className="TopNav__icon" icon={IconType.arrowLeft} />
+        <Icon className="TopNav__icon" icon={IconType.arrowRight} />
       </div>
       <div className="TopNav__container">
-        <Icon icon={IconType.bell} />
-        <Icon icon={IconType.helpCircle} />
-        <Icon icon={IconType.cog} />
+        <Icon className="TopNav__icon" icon={IconType.bell} />
+        <Icon className="TopNav__icon" icon={IconType.helpCircle} />
+        <Icon className="TopNav__icon" icon={IconType.cog} />
       </div>
     </div>
   );
