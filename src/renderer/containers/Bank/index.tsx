@@ -7,7 +7,7 @@ import EditBankModal from '@renderer/containers/Bank/EditBankModal';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import PageHeader from '@renderer/components/PageHeader';
-import PageLayout from '@renderer/containers/PageLayout';
+import PageLayout from '@renderer/components/PageLayout';
 import PageTable from '@renderer/containers/PageTable';
 import PageTabs from '@renderer/components/PageTabs';
 import Pagination from '@renderer/components/Pagination';

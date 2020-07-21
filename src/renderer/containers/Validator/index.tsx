@@ -4,7 +4,7 @@ import noop from 'lodash/noop';
 import Button from '@renderer/components/FormElements/Button';
 import DetailPanel from '@renderer/components/DetailPanel';
 import PageHeader from '@renderer/components/PageHeader';
-import PageLayout from '@renderer/containers/PageLayout';
+import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import TrustBadge from '@renderer/components/TrustBadge';
 
