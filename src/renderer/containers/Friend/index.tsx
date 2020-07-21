@@ -3,9 +3,9 @@ import PageHeader from '@renderer/components/PageHeader';
 import PageTabs from '@renderer/components/PageTabs';
 import Pagination from '@renderer/components/Pagination';
 import QR from '@renderer/components/QR';
-import DetailPanel from '@renderer/containers/DetailPanel';
-import PageLayout from '@renderer/containers/PageLayout';
-import PageTable from '@renderer/containers/PageTable';
+import DetailPanel from '@renderer/components/DetailPanel';
+import PageLayout from '@renderer/components/PageLayout';
+import PageTable from '@renderer/components/PageTable';
 import transactionSampleData from '@renderer/mock/TransactionSampleData';
 
 import './Friend.scss';
