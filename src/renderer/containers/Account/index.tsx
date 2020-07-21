@@ -58,12 +58,12 @@ const Account: FC = () => {
   const renderDeleteModal = () => (
     <Modal
       cancelButton="Cancel"
-      className="Account__DeleteModal"
+      className="AccountDeleteModal"
       close={toggleDeleteModal}
       header={
         <>
-          <Icon className="Icon__alert" icon={IconType.alert} />
-          <h2 className="Modal__title">Delete Account</h2>
+          <Icon className="AccountDeleteModal__icon" icon={IconType.alert} />
+          <h2 className="AccountDeleteModal__title">Delete Account</h2>
         </>
       }
       onSubmit={handleDeleteAccountFromModal}
@@ -71,16 +71,17 @@ const Account: FC = () => {
       submitting={submittingDeleteModal}
     >
       <>
-        <span className="delete-warning-span">Warning: </span> If you delete your account, you will lose all the points
-        in your account as well as your signing key. Are you sure you want to delete your account?
+        <span className="AccountDeleteModal__warning-span">Warning: </span> If you delete your account, you will lose
+        all the points in your account as well as your signing key. Are you sure you want to delete your account?
       </>
     </Modal>
   );
 
   const renderDetailPanels = () => {
     return (
-      <div className="detail-panels">
+      <div className="Account__panels">
         <DetailPanel
+          className="Account__DetailPanel"
           items={[
             {
               key: 'Balance',
@@ -102,6 +103,7 @@ const Account: FC = () => {
           title="Account Info"
         />
         <DetailPanel
+          className="Account__DetailPanel"
           items={[
             {
               key: 'Network ID',
