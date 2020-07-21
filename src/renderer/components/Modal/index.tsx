@@ -106,7 +106,9 @@ const Modal: FC<ModalProps> = ({
       <>
         {displayCancelButton && (
           <FormButton
-            className={clsx('Modal__default-cancel', cancelProps.className)}
+            className={clsx('Modal__default-cancel', cancelProps.className, {
+              ...getCustomClassNames(className, '__default-cancel', true),
+            })}
             color={cancelProps.color}
             disabled={cancelProps.disabled}
             ignoreDirty={cancelProps.ignoreDirty}
@@ -120,7 +122,9 @@ const Modal: FC<ModalProps> = ({
         )}
         {displaySubmitButton && (
           <FormButton
-            className={clsx('Modal__default-submit', submitProps.className)}
+            className={clsx('Modal__default-submit', submitProps.className, {
+              ...getCustomClassNames(className, '__default-submit', true),
+            })}
             color={submitProps.color}
             disabled={submitProps.disabled}
             ignoreDirty={submitProps.ignoreDirty}
