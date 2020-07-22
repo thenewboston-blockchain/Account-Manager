@@ -4,13 +4,14 @@ import noop from 'lodash/noop';
 
 import {fetchBanks} from '@renderer/api/bank';
 import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
+import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import useBooleanState from '@renderer/hooks/useBooleanState';
 import {getAccount} from '@renderer/store/accounts';
 import {RootState} from '@renderer/types/store';
 
 import LeftSubmenu, {LeftSubmenuItem} from './LeftSubmenu';
+
 import './LeftMenu.scss';
-import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 
 const LeftComponentSelector = ({accounts, banks, friends, points, validators}: RootState) => ({
   accounts,
