@@ -4,11 +4,13 @@ import noop from 'lodash/noop';
 
 import {fetchBanks} from '@renderer/api/bank';
 import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
+import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import useBooleanState from '@renderer/hooks/useBooleanState';
 import {getAccount} from '@renderer/store/accounts';
 import {RootState} from '@renderer/types/store';
 
 import LeftSubmenu, {LeftSubmenuItem} from './LeftSubmenu';
+
 import './LeftMenu.scss';
 
 const LeftComponentSelector = ({accounts, banks, friends, points, validators}: RootState) => ({
@@ -23,6 +25,7 @@ const LeftMenu = () => {
   const dispatch = useDispatch();
   const {accounts, banks, friends, points, validators} = useSelector(LeftComponentSelector);
   const [addAccountModalIsOpen, toggleAddAccountModal] = useBooleanState(false);
+  const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
 
   useEffect(() => {
     dispatch(getAccount());
@@ -38,7 +41,7 @@ const LeftMenu = () => {
   };
 
   const getFriendItems = (): LeftSubmenuItem[] => {
-    return friends.map(({id, name}) => ({key: id, label: name, to: '/'}));
+    return friends.map(({id, name}) => ({key: id, label: name, to: '/friend'}));
   };
 
   const getBankItems = (): LeftSubmenuItem[] => {
@@ -64,10 +67,11 @@ const LeftMenu = () => {
       </div>
       <LeftSubmenu menuItems={getNetworkItems()} title="Network" />
       <LeftSubmenu addOnClick={toggleAddAccountModal} menuItems={getAccountItems()} title="Accounts" />
-      <LeftSubmenu addOnClick={noop} menuItems={getFriendItems()} title="Friends" />
+      <LeftSubmenu addOnClick={toggleAddFriendModal} menuItems={getFriendItems()} title="Friends" />
       <LeftSubmenu addOnClick={noop} menuItems={getBankItems()} title="Managed Banks" />
       <LeftSubmenu addOnClick={noop} menuItems={getValidatorItems()} title="Managed Validators" />
       {addAccountModalIsOpen && <AddAccountModal close={toggleAddAccountModal} />}
+      {addFriendModalIsOpen && <AddFriendModal close={toggleAddFriendModal} />}
     </div>
   );
 };

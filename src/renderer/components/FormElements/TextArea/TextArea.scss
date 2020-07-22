@@ -1,0 +1,23 @@
+.TextArea {
+  border-radius: 3px;
+  border: 1px solid var(--color-neutral-600);
+  height: 48px;
+  outline: none;
+  padding: 6px;
+  resize: none;
+  transition: all 0.1s;
+
+  &:active,
+  &:focus {
+    border-color: var(--color-secondary);
+  }
+
+  &:disabled {
+    border-color: var(--color-neutral-400);
+    color: var(--color-neutral-400);
+  }
+
+  &--error {
+    border-color: var(--color-danger);
+  }
+}

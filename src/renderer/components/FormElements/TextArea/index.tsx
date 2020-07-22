@@ -2,21 +2,20 @@ import React, {ChangeEvent, FC, FocusEvent} from 'react';
 import clsx from 'clsx';
 
 import {getCustomClassNames} from '@renderer/utils/components';
-import './Input.scss';
+import './TextArea.scss';
 
 export interface BaseInputProps {
   className?: string;
   disabled?: boolean;
   error?: boolean;
   name?: string;
-  onBlur?(e: FocusEvent<HTMLInputElement>): void;
-  onChange?(e: ChangeEvent<HTMLInputElement>): void;
+  onBlur?(e: FocusEvent<HTMLTextAreaElement>): void;
+  onChange?(e: ChangeEvent<HTMLTextAreaElement>): void;
   placeholder?: string;
-  type?: 'text' | 'number';
   value: string;
 }
 
-const Input: FC<BaseInputProps> = ({
+const InputTextArea: FC<BaseInputProps> = ({
   className,
   disabled,
   error = false,
@@ -24,21 +23,22 @@ const Input: FC<BaseInputProps> = ({
   onBlur,
   onChange,
   placeholder = 'Enter',
-  type = 'text',
   value,
 }) => {
   return (
-    <input
-      className={clsx('Input', className, {'Input--error': error, ...getCustomClassNames(className, '--error', error)})}
+    <textarea
+      className={clsx('TextArea', className, {
+        'TextArea--error': error,
+        ...getCustomClassNames(className, '--error', error),
+      })}
       disabled={disabled}
       name={name}
       onBlur={onBlur}
       onChange={onChange}
       placeholder={placeholder}
-      type={type}
       value={value}
     />
   );
 };
 
-export default Input;
+export default InputTextArea;
