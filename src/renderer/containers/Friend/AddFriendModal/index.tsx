@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import Modal from '@renderer/components/Modal';
-import {FormInput, FormTextArea} from '@renderer/components/FormComponents';
+import {FormInput, FormSelectDetailed, FormTextArea} from '@renderer/components/FormComponents';
 import {createFriend} from '@renderer/store/friends';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
@@ -44,8 +44,9 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
       submitButton="Create"
       validationSchema={validationSchema}
     >
-      <FormTextArea label="Account Number" name="accountNumber" />
-      <FormInput label="Friend Nickname" name="friendNickname" />
+      <FormSelectDetailed options={[]} name="testSelect" label="Account Number" required />
+      <FormTextArea label="Account Number" name="accountNumber" required />
+      <FormInput label="Friend Nickname" name="friendNickname" required />
     </Modal>
   );
 };

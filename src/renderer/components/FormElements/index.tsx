@@ -1,8 +1,8 @@
 import Button, {BaseButtonProps} from './Button';
 import Input, {BaseInputProps} from './Input';
-import InputTextArea from './InputTextArea';
 import Loader from './Loader';
 import Select, {BaseSelectProps} from './Select';
 import SelectDetailed from './SelectDetailed';
+import TextArea from './TextArea';
 
-export {BaseButtonProps, BaseInputProps, BaseSelectProps, Button, Input, InputTextArea, Loader, Select, SelectDetailed};
+export {BaseButtonProps, BaseInputProps, BaseSelectProps, Button, Input, TextArea, Loader, Select, SelectDetailed};

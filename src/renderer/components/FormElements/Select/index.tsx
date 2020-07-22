@@ -37,7 +37,7 @@ const Select: FC<ComponentProps> = ({
   onBlur,
   onChange,
   options,
-  placeholder,
+  placeholder = 'Select',
   value,
 }) => {
   const formattedOptions = useMemo(

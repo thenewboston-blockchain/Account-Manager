@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {Field} from 'formik';
 import clsx from 'clsx';
 
-import {InputTextArea, BaseInputProps} from '@renderer/components/FormElements';
+import {BaseInputProps, TextArea} from '@renderer/components/FormElements';
 import useFormContext from '@renderer/hooks/useFormContext';
 import {BaseFormComponentProps} from '@renderer/types/forms';
 import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
@@ -16,7 +16,7 @@ const FormTextArea: FC<ComponentProps> = ({hideError = false, label, required, .
   return (
     <div className={clsx('FormTextArea FormFieldComponent', className)}>
       {renderFormLabel(name, className, label, required)}
-      <Field {...baseInputProps} as={InputTextArea} className="FormField" error={error} required={required} />
+      <Field {...baseInputProps} as={TextArea} className="FormField" error={error} required={required} />
       {hideError ? null : renderFormError(name, className)}
     </div>
   );

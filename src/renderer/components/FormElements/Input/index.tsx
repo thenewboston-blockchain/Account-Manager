@@ -23,7 +23,7 @@ const Input: FC<BaseInputProps> = ({
   name,
   onBlur,
   onChange,
-  placeholder,
+  placeholder = 'Enter',
   type = 'text',
   value,
 }) => {
