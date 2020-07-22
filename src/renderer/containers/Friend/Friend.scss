@@ -1,7 +1,5 @@
 .Friend {
-  .detail-panels {
-    .DetailPanel {
-      margin: 18px 12px 0;
-    }
+  &__DetailPanel {
+    margin: 18px 12px 0;
   }
 }

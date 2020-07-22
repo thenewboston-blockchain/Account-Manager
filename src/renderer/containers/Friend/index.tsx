@@ -21,8 +21,9 @@ const Friend: FC = () => {
 
   const renderDetailPanels = () => {
     return (
-      <div className="detail-panels">
+      <div className="Friend__panels">
         <DetailPanel
+          className="Friend__DetailPanel"
           items={[
             {
               key: 'Balance',
@@ -44,6 +45,7 @@ const Friend: FC = () => {
           title="Account Info"
         />
         <DetailPanel
+          className="Friend__DetailPanel"
           items={[
             {
               key: 'Network ID',
@@ -95,7 +97,7 @@ const Friend: FC = () => {
   );
 
   return (
-    <div className="Account">
+    <div className="Friend">
       <PageLayout content={renderTabContent(activeTab)} top={renderTop()} />
     </div>
   );
