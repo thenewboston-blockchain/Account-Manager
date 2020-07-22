@@ -1,4 +1,5 @@
-input {
+input,
+textarea {
   &:hover {
     border-color: var(--color-secondary);
   }
@@ -12,7 +13,7 @@ input {
   }
 
   &::placeholder {
-    color: var(--color-neutral-600);
+    color: var(--color-neutral-500);
   }
 
   // get rid of arrows/spinners for numeric inputs
@@ -39,7 +40,7 @@ input {
     color: var(--color-danger);
     display: block;
     font-size: var(--font-size-small);
-    margin-top: 6px;
+    margin: 3px 0 6px;
     height: 14px;
   }
 }
