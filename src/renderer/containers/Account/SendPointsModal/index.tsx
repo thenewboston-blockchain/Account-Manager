@@ -1,13 +1,14 @@
 import React, {FC, ReactNode} from 'react';
 import * as Yup from 'yup';
-
 import {FormButton, FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import {SelectOption} from '@renderer/types/forms';
-
 import './SendPointsModal.scss';
 import Icon, {IconType} from '@renderer/components/Icon';
+import axios from 'axios';
+import {sign} from 'tweetnacl';
+import useBooleanState from '@renderer/hooks/useBooleanState';
 
 const initialValues = {
   fromAccount: '',
@@ -24,18 +25,18 @@ const validationSchema = Yup.object().shape({
 type FormValues = typeof initialValues;
 
 const accountFromSelectFieldOptions: SelectOption[] = [
-  '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
-  '2cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdq',
-  '4cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdw',
-  '3cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acde',
-  '5cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdr',
-  '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
+  'e0ba29c1c493d01a5f665db55a4bd77caa140cf9722d0ed367ce4183230d2e02',
+  'e0ba29c1c493d01a5f665db55a4bd77caa140cf9722d0ed367ce4183230d2e02',
+  'e0ba29c1c493d01a5f665db55a4bd77caa140cf9722d0ed367ce4183230d2e02',
+  'e0ba29c1c493d01a5f665db55a4bd77caa140cf9722d0ed367ce4183230d2e02',
+  'e0ba29c1c493d01a5f665db55a4bd77caa140cf9722d0ed367ce4183230d2e02',
+  'e0ba29c1c493d01a5f665db55a4bd77caa140cf9722d0ed367ce4183230d2e02',
 ].map((acc) => ({label: 'Amy', value: acc}));
 
 const accountToSelectFieldOptions: SelectOption[] = [
-  '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
-  '2cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdq',
-  '4cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdw',
+  '2157d41e4863baa69ee3b76c5027686116f248cf84bade80cdfda9d2c62f72c4',
+  '2157d41e4863baa69ee3b76c5027686116f248cf84bade80cdfda9d2c62f72c4',
+  '2157d41e4863baa69ee3b76c5027686116f248cf84bade80cdfda9d2c62f72c4',
 ].map((acc) => ({label: 'Amy', value: acc}));
 
 interface ComponentProps {
@@ -43,8 +44,60 @@ interface ComponentProps {
 }
 
 const SendPointsModal: FC<ComponentProps> = ({close}) => {
-  const handleSubmit = ({points}: FormValues): void => {
-    console.log(points);
+  const [sendingPoints, toggleSendingPoints, , pointsSent] = useBooleanState(false);
+
+  const handleSubmit = ({points, fromAccount, toAccount}: FormValues): void => {
+    toggleSendingPoints();
+    const {secretKey} = sign.keyPair();
+    const secretKeyHex = Buffer.from(secretKey).toString('hex');
+    axios
+      .get('http://167.99.173.247/config')
+      .then((nodeConfig) => {
+        axios
+          .get(
+            'http://64.225.47.205/account_balance_lock/ad1f8845c6a1abb6011a2a434a079a087c460657aad54329a84b406dce8bf314',
+          )
+          .then((balanceLockResponse) => {
+            axios
+              .post('http://167.99.173.247/blocks', {
+                account_number: fromAccount,
+                message: {
+                  balance_key: balanceLockResponse.data.balance_lock,
+                  txs: [
+                    {
+                      amount: points,
+                      recipient: toAccount,
+                    },
+                    {
+                      amount: nodeConfig.data.default_transaction_fee,
+                      recipient: nodeConfig.data.account_number,
+                    },
+                    {
+                      amount: nodeConfig.data.primary_validator.default_transaction_fee,
+                      recipient: nodeConfig.data.primary_validator.account_number,
+                    },
+                  ],
+                },
+                signature: secretKeyHex,
+              })
+              .then((block) => {
+                console.log(block);
+                pointsSent();
+              })
+              .catch((err) => {
+                pointsSent();
+                console.error(err);
+              });
+          })
+          .catch((err) => {
+            console.error(err);
+            pointsSent();
+          });
+      })
+      .catch((err) => {
+        console.error(err);
+        pointsSent();
+      });
   };
 
   const renderFooter = (): ReactNode => {
@@ -53,7 +106,11 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
         <FormButton className="Modal__default-cancel SendPointsModal__default-cancel" onClick={close} variant="link">
           Cancel
         </FormButton>
-        <FormButton className="Modal__default-submit SendPointsModal__default-submit" type="submit">
+        <FormButton
+          submitting={sendingPoints}
+          className="Modal__default-submit SendPointsModal__default-submit"
+          type="submit"
+        >
           Send <Icon className="SendPointsModal__submit-icon" icon={IconType.tnb} size={16} />
         </FormButton>
       </>
