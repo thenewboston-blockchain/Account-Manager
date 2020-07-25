@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC, ReactNode} from 'react';
 import noop from 'lodash/noop';
 
 import Button from '@renderer/components/FormElements/Button';
@@ -10,8 +10,8 @@ import TrustBadge from '@renderer/components/TrustBadge';
 
 import './Validator.scss';
 
-const Validator = () => {
-  const renderDetailPanels = () => {
+const Validator: FC = () => {
+  const renderDetailPanels = (): ReactNode => {
     return (
       <div className="Validator__panels">
         <DetailPanel
@@ -51,14 +51,14 @@ const Validator = () => {
     );
   };
 
-  const renderRightPageHeaderButtons = () => (
+  const renderRightPageHeaderButtons = (): ReactNode => (
     <>
       <Button variant="outlined">Add to Managed Validators</Button>
       <Button>Register Bank</Button>
     </>
   );
 
-  const renderTop = () => {
+  const renderTop = (): ReactNode => {
     return (
       <>
         <PageHeader
