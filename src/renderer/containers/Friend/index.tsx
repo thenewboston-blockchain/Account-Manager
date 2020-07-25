@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, ReactNode, useState} from 'react';
 
 import DetailPanel from '@renderer/components/DetailPanel';
 import PageHeader from '@renderer/components/PageHeader';
@@ -20,7 +20,7 @@ const tabs = [Tabs.OVERVIEW, Tabs.TRANSACTIONS];
 const Friend: FC = () => {
   const [activeTab, setActiveTab] = useState(tabs[0]);
 
-  const renderDetailPanels = () => {
+  const renderDetailPanels = (): ReactNode => {
     return (
       <div className="Friend__panels">
         <DetailPanel
@@ -67,28 +67,28 @@ const Friend: FC = () => {
     );
   };
 
-  const renderPageTable = () => (
+  const renderPageTable = (): ReactNode => (
     <>
       <PageTable items={transactionSampleData} />
       <Pagination />
     </>
   );
 
-  const renderTabContent = (activeTab: Tabs) => {
+  const renderTabContent = (activeTabParam: Tabs): ReactNode => {
     const tabContent = {
       [Tabs.OVERVIEW]: renderDetailPanels(),
       [Tabs.TRANSACTIONS]: renderPageTable(),
     };
-    return tabContent[activeTab] || null;
+    return tabContent[activeTabParam] || null;
   };
 
-  const renderTop = () => (
+  const renderTop = (): ReactNode => (
     <>
       <PageHeader title="Donations (43hawrjkef243d)" />
       <PageTabs
         items={tabs.map((item) => ({
-          name: item.toString(),
           active: activeTab === item,
+          name: item.toString(),
           onClick: (name) => {
             setActiveTab(name as Tabs);
           },

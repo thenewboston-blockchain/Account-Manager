@@ -6,23 +6,23 @@ import {Data} from '@renderer/types/store';
 const electronStore = new ElectronStore({
   schema: {
     accounts: {
-      type: 'object',
       default: {},
+      type: 'object',
     },
   },
 });
 
-interface Account {
+export interface Account {
   accountNumber: string;
   nickname?: string;
 }
 
 const accountsSlice = createSlice({
-  name: 'accounts',
   initialState: [] as Account[],
+  name: 'accounts',
   reducers: {
     create: {
-      prepare: (nickname: string = '') => {
+      prepare: (nickname = '') => {
         const accounts = electronStore.get('accounts') as Account[];
         const {publicKey, secretKey} = sign.keyPair();
         const publicKeyHex = Buffer.from(publicKey).toString('hex');

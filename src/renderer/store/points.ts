@@ -1,8 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const pointsSlice = createSlice({
-  name: 'points',
   initialState: 0 as number,
+  name: 'points',
   reducers: {},
 });
 

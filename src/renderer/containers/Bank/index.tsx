@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC, ReactNode} from 'react';
 import noop from 'lodash/noop';
 
 import {Button} from '@renderer/components/FormElements';
@@ -18,7 +18,7 @@ import sampleData from '@renderer/mock/OverviewSampleData';
 
 import './Bank.scss';
 
-const Bank = () => {
+const Bank: FC = () => {
   const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
@@ -51,14 +51,14 @@ const Bank = () => {
     }
   };
 
-  const renderContent = () => (
+  const renderContent = (): ReactNode => (
     <>
       <PageTable items={sampleData} />
       <Pagination />
     </>
   );
 
-  const renderDeleteModal = () => (
+  const renderDeleteModal = (): ReactNode => (
     <Modal
       cancelButton="No"
       className="BankDeleteModal"
@@ -80,7 +80,7 @@ const Bank = () => {
     </Modal>
   );
 
-  const renderLeftTools = () => {
+  const renderLeftTools = (): ReactNode => {
     return (
       <>
         <TrustBadge score={98.34} />
@@ -89,14 +89,14 @@ const Bank = () => {
     );
   };
 
-  const renderRightPageHeaderButtons = () => (
+  const renderRightPageHeaderButtons = (): ReactNode => (
     <>
       <Button variant="outlined">Add to Managed Banks</Button>
       <Button>Register as Member</Button>
     </>
   );
 
-  const renderTop = () => (
+  const renderTop = (): ReactNode => (
     <>
       <PageHeader
         leftTools={renderLeftTools()}
@@ -135,10 +135,10 @@ const Bank = () => {
     </>
   );
 
-  const renderUnregisterBankModal = () => (
+  const renderUnregisterBankModal = (): ReactNode => (
     <Modal close={toggleUnregisterBankModal} header="Unregister Bank" onSubmit={toggleUnregisterBankModal}>
-      Here is the modal used very minimally. It is using most of modal's defaults, and it's not using any custom header
-      or footer
+      Here is the modal used very minimally. It is using most of modal&apos;s defaults, and it&apos;s not using any
+      custom header or footer
     </Modal>
   );
 

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {FC} from 'react';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 
 import './TopNav.scss';
 
-const TopNav = () => {
+const TopNav: FC = () => {
   return (
     <div className="TopNav">
       <div className="TopNav__container">

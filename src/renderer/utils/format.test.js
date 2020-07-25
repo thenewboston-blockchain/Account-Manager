@@ -1,4 +1,4 @@
-import {formatAddress} from './format.ts';
+import {formatAddress} from './format';
 
 describe('formatAddress to return the following: ', () => {
   test('correct IP without port when port 80 is passed', () => {

@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, ReactNode, useState} from 'react';
 import noop from 'lodash/noop';
 
 import {Button} from '@renderer/components/FormElements';
@@ -44,18 +44,14 @@ const Account: FC = () => {
   ];
 
   const handleDeleteAccountFromModal = async (): Promise<void> => {
-    try {
-      setSubmittingDeleteModalTrue();
-      setTimeout(() => {
-        setSubmittingDeleteModalFalse();
-        toggleDeleteModal();
-      }, 1000);
-    } catch (error) {
-      console.log('ERROR', error);
-    }
+    setSubmittingDeleteModalTrue();
+    setTimeout(() => {
+      setSubmittingDeleteModalFalse();
+      toggleDeleteModal();
+    }, 1000);
   };
 
-  const renderDeleteModal = () => (
+  const renderDeleteModal = (): ReactNode => (
     <Modal
       cancelButton="Cancel"
       className="AccountDeleteModal"
@@ -77,7 +73,7 @@ const Account: FC = () => {
     </Modal>
   );
 
-  const renderDetailPanels = () => {
+  const renderDetailPanels = (): ReactNode => {
     return (
       <div className="Account__panels">
         <DetailPanel
@@ -124,32 +120,32 @@ const Account: FC = () => {
     );
   };
 
-  const renderLeftTools = () => {
+  const renderLeftTools = (): ReactNode => {
     return <DropdownMenuButton options={dropdownMenuOptions} />;
   };
 
-  const renderPageTable = () => (
+  const renderPageTable = (): ReactNode => (
     <>
       <PageTable items={transactionSampleData} />
       <Pagination />
     </>
   );
 
-  const renderRightPageHeaderButtons = () => (
+  const renderRightPageHeaderButtons = (): ReactNode => (
     <>
       <Button onClick={toggleSendPointsModal}>Send Points</Button>
     </>
   );
 
-  const renderTabContent = (activeTab: Tabs) => {
+  const renderTabContent = (activeTabParam: Tabs): ReactNode => {
     const tabContent = {
       [Tabs.OVERVIEW]: renderDetailPanels(),
       [Tabs.TRANSACTIONS]: renderPageTable(),
     };
-    return tabContent[activeTab] || null;
+    return tabContent[activeTabParam] || null;
   };
 
-  const renderTop = () => (
+  const renderTop = (): ReactNode => (
     <>
       <PageHeader
         leftTools={renderLeftTools()}
@@ -158,8 +154,8 @@ const Account: FC = () => {
       />
       <PageTabs
         items={tabs.map((item) => ({
-          name: item.toString(),
           active: activeTab === item,
+          name: item.toString(),
           onClick: (name) => {
             setActiveTab(name as Tabs);
           },

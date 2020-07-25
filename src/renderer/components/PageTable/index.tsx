@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, ReactNode, useState} from 'react';
 import clsx from 'clsx';
 
 import ArrowToggle from '@renderer/components/ArrowToggle';
@@ -29,7 +29,11 @@ const PageTable: FC<ComponentProps> = ({className, items}) => {
   const {header, data} = items;
   const [expanded, setExpanded] = useState<boolean[]>(data.map(() => false));
 
-  const renderSampleRows = () => {
+  const toggleExpanded = (indexToToggle: number) => (): void => {
+    setExpanded(expanded.map((rowIsExpanded, i) => (i === indexToToggle ? !rowIsExpanded : rowIsExpanded)));
+  };
+
+  const renderSampleRows = (): ReactNode => {
     return data.map((item, dataIndex) => {
       const rowIsExpanded = expanded[dataIndex];
 
@@ -55,10 +59,6 @@ const PageTable: FC<ComponentProps> = ({className, items}) => {
         </tr>
       );
     });
-  };
-
-  const toggleExpanded = (indexToToggle: number) => (): void => {
-    setExpanded(expanded.map((rowIsExpanded, i) => (i === indexToToggle ? !rowIsExpanded : rowIsExpanded)));
   };
 
   return (

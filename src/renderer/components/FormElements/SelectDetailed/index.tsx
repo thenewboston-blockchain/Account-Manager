@@ -1,4 +1,6 @@
-import React, {FC} from 'react';
+/* eslint-disable react/jsx-props-no-spreading */
+
+import React, {FC, ReactNode} from 'react';
 import {FormatOptionLabelMeta} from 'react-select';
 import clsx from 'clsx';
 
@@ -17,7 +19,10 @@ const filterOption = ({label, value}: SelectOption, rawInput: string): boolean =
   );
 };
 
-const formatOptionLabel = ({value, label}: SelectOption, {context}: FormatOptionLabelMeta<SelectOption>) => {
+const formatOptionValue = (value: string): string =>
+  `${value.slice(0, VALUE_LENGTH / 2)}\n${value.slice(VALUE_LENGTH / 2)}`;
+
+const formatOptionLabel = ({value, label}: SelectOption, {context}: FormatOptionLabelMeta<SelectOption>): ReactNode => {
   if (context === 'value') {
     return formatOptionValue(value);
   }
@@ -29,8 +34,6 @@ const formatOptionLabel = ({value, label}: SelectOption, {context}: FormatOption
     </>
   );
 };
-
-const formatOptionValue = (value: string) => `${value.slice(0, VALUE_LENGTH / 2)}\n${value.slice(VALUE_LENGTH / 2)}`;
 
 const SelectDetailed: FC<BaseSelectProps> = ({...baseSelectProps}) => {
   const {className} = baseSelectProps;

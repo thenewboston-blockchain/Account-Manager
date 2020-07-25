@@ -7,26 +7,26 @@ import {Loading, StateSlice} from '@renderer/types/store';
 import {fulfilledReducer, pendingReducer, rejectedReducer} from '@renderer/utils/store';
 
 const banksSlice = createSlice({
-  name: BANKS,
-  initialState: {
-    entities: [],
-    loading: Loading.idle,
-    currentRequestId: undefined,
-    error: null,
-  } as StateSlice<Bank[]>,
-  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchBanks.pending, pendingReducer);
     builder.addCase(fetchBanks.fulfilled, fulfilledReducer);
     builder.addCase(fetchBanks.rejected, rejectedReducer);
   },
+  initialState: {
+    currentRequestId: undefined,
+    entities: [],
+    error: null,
+    loading: Loading.idle,
+  } as StateSlice<Bank[]>,
+  name: BANKS,
+  reducers: {},
 });
 
 export const sampleBanks: StateSlice<Bank[]> = {
-  entities: [],
-  loading: Loading.idle,
   currentRequestId: undefined,
+  entities: [],
   error: null,
+  loading: Loading.idle,
 };
 
 export default banksSlice;

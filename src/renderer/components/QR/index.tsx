@@ -11,11 +11,7 @@ const QR: FC<ComponentProps> = ({margin = 0, text, width = 140}) => {
   const [qr, setQR] = useState<ReactNode | null>(null);
 
   useEffect(() => {
-    generateQR();
-  }, []);
-
-  const generateQR = async () => {
-    try {
+    const generateQR = async (): Promise<void> => {
       const url = await QRCode.toDataURL(text, {
         color: {
           dark: '#000000',
@@ -25,10 +21,10 @@ const QR: FC<ComponentProps> = ({margin = 0, text, width = 140}) => {
         width,
       });
       setQR(<img alt="QR Code" src={url} />);
-    } catch (err) {
-      return;
-    }
-  };
+    };
+
+    generateQR();
+  }, [margin, text, width]);
 
   return <>{qr}</>;
 };

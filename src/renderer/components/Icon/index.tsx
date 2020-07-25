@@ -1,4 +1,6 @@
-import React, {forwardRef} from 'react';
+/* eslint-disable react/jsx-props-no-spreading */
+
+import React, {forwardRef, ReactNode} from 'react';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
 
@@ -46,7 +48,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled = 
     size,
   };
 
-  const renderIcon = () => {
+  const renderIcon = (): ReactNode => {
     switch (icon) {
       case IconType.alert:
         return <AlertIcon {...iconProps} />;

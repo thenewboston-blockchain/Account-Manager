@@ -4,26 +4,26 @@ import ElectronStore from 'electron-store';
 const electronStore = new ElectronStore({
   schema: {
     friends: {
-      type: 'object',
       default: {},
+      type: 'object',
     },
   },
 });
 
-interface Friend {
+export interface Friend {
   name: string;
   id: string;
 }
 
 const friendsSlice = createSlice({
-  name: 'friends',
   initialState: [] as Friend[],
+  name: 'friends',
   reducers: {
     create: {
-      prepare: (name: string = '', id: string = '') => {
-        electronStore.set('friends', {name, id});
+      prepare: (name = '', id = '') => {
+        electronStore.set('friends', {id, name});
         return {
-          payload: {name, id},
+          payload: {id, name},
         };
       },
       reducer: (state, action: PayloadAction<Friend>) => {
@@ -34,8 +34,8 @@ const friendsSlice = createSlice({
 });
 
 export const sampleFriends: Friend[] = [
-  {name: 'Amy', id: '044de869fbf337'},
-  {name: 'Dave', id: '4525JLK32E23E'},
+  {id: '044de869fbf337', name: 'Amy'},
+  {id: '4525JLK32E23E', name: 'Dave'},
 ];
 
 export const {create: createFriend} = friendsSlice.actions;

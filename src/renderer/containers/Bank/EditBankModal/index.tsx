@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, ReactNode} from 'react';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
@@ -26,14 +26,10 @@ const selectFieldOptions: SelectOption[] = [
 ].map((poke) => ({label: poke[0].toUpperCase() + poke.slice(1), value: poke}));
 
 const initialValues = {
-  name: '',
-  type: '',
-  selectField: selectFieldOptions[0].value,
   address1: '',
   address2: '',
   city: '',
-  state: '',
-  zip: '',
+  name: '',
   question1: '',
   question2: '',
   question3: '',
@@ -44,6 +40,10 @@ const initialValues = {
   question8: '',
   question9: '',
   question10: '',
+  selectField: selectFieldOptions[0].value,
+  state: '',
+  type: '',
+  zip: '',
 };
 
 type Values = typeof initialValues;
@@ -51,7 +51,7 @@ type Values = typeof initialValues;
 const EditBankModal: FC<ComponentProps> = ({close}) => {
   const [submitting, , setSubmittingTrue, setSubmittingFalse] = useBooleanState(false);
 
-  const handleSubmit = (values: Values) => {
+  const handleSubmit = (values: Values): void => {
     setSubmittingTrue();
     try {
       console.log('VALUES', values);
@@ -64,10 +64,10 @@ const EditBankModal: FC<ComponentProps> = ({close}) => {
     }
   };
 
-  const renderFooter = () => {
+  const renderFooter = (): ReactNode => {
     return (
       <>
-        <div className="EditBankModal__footer-left">Here's some left text to showcase custom footer</div>
+        <div className="EditBankModal__footer-left">Here&apos;s some left text to showcase custom footer</div>
         <FormButton className="Modal__default-cancel" onClick={close} variant="outlined">
           No
         </FormButton>
@@ -78,7 +78,7 @@ const EditBankModal: FC<ComponentProps> = ({close}) => {
     );
   };
 
-  const renderHeader = () => {
+  const renderHeader = (): ReactNode => {
     return (
       <>
         <Icon className="EditBankModal__header-icon" icon={IconType.arrowRight} />
@@ -99,9 +99,9 @@ const EditBankModal: FC<ComponentProps> = ({close}) => {
       style={{left: '100px', top: '30px', width: 500}}
     >
       <p>
-        Here is a bs form. Most of the modal's logic can be contained in a component like this, instead of polluting the
-        parent element. I also decided to showcase how Forms can work, and how we can send custom footer and header
-        element. This is also custom positioned.
+        Here is a bs form. Most of the modal&apos;s logic can be contained in a component like this, instead of
+        polluting the parent element. I also decided to showcase how Forms can work, and how we can send custom footer
+        and header element. This is also custom positioned.
       </p>
       <FormInput label="Name" name="name" />
       <FormInput label="Address 1" name="address1" />

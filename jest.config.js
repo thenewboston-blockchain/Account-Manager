@@ -2,7 +2,6 @@
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
-  modulePaths: ['node_modules', '<rootDir>/src', '<rootDir>'],
   // An array of directory names to be searched recursively up from the requiring module's location
   moduleDirectories: ['<rootDir>/node_modules', '<rootDir>/src'],
 
@@ -13,8 +12,11 @@ module.exports = {
   moduleNameMapper: {
     '^.+\\.(css|less|scss)$': 'identity-obj-proxy',
   },
+
+  modulePaths: ['node_modules', '<rootDir>/src', '<rootDir>'],
+
   transform: {
-    '^.+\\.js$': 'babel-jest',
     '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.js$': 'babel-jest',
   },
 };
