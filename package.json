@@ -9,7 +9,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
+    "lint": "tsc --noEmit && eslint './src/**/*.{js,ts,tsx}'",
     "test": "jest"
   },
   "keywords": [],
