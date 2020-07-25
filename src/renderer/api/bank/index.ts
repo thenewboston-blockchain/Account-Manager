@@ -2,7 +2,8 @@ import axios from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
 import {BANKS} from '@renderer/constants/store';
-import {Bank, Loading, RootState} from '@renderer/types/store';
+import {Bank} from '@renderer/types/entities/Bank';
+import {Loading, RootState} from '@renderer/types/store';
 import {fetchActionType} from '@renderer/utils/store';
 
 export const fetchBanks = createAsyncThunk<Bank[], void, {state: RootState}>(
