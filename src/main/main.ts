@@ -27,9 +27,7 @@ const createWindow = (): void => {
 
 app.whenReady().then(() => {
   installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
-    // eslint-disable-next-line no-console
     .then((name) => console.log(`Added Extension: ${name}`))
-    // eslint-disable-next-line no-console
     .catch((error) => console.log('An error occurred: ', error));
 });
 
