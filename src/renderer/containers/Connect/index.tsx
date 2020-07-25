@@ -11,9 +11,9 @@ import {formatAddress} from '@renderer/utils/format';
 import './Connect.scss';
 
 const initialValues = {
-  protocol: 'http',
   ipAddress: '',
   port: '80',
+  protocol: 'http',
 };
 
 type FormValues = typeof initialValues;
@@ -23,21 +23,21 @@ const protocolOptions: SelectOption[] = [{value: 'http'}, {value: 'https'}];
 const genericIpAddressRegex = /([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(\d{1,3}\.){3}\d{1,3}/;
 
 const validationSchema = Yup.object().shape({
-  protocol: Yup.string().required(),
   ipAddress: Yup.string()
     .required('This field is required')
-    .matches(genericIpAddressRegex, {message: 'IPv4 or IPv6 addresses only', excludeEmptyString: true}),
+    .matches(genericIpAddressRegex, {excludeEmptyString: true, message: 'IPv4 or IPv6 addresses only'}),
   port: Yup.number().integer(),
+  protocol: Yup.string().required(),
 });
 
 const Connect: FC = () => {
   const history = useHistory();
 
-  const goToMain = () => {
+  const goToMain = (): void => {
     history.push('/bank');
   };
 
-  const handleSubmit = async (values: FormValues) => {
+  const handleSubmit = async (values: FormValues): Promise<void> => {
     const {ipAddress, port, protocol} = values;
     const address = formatAddress(ipAddress, port, protocol);
     const response = await axios.get(`${address}/config`);
