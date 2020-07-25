@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import noop from 'lodash/noop';
 
@@ -6,14 +6,28 @@ import {fetchBanks} from '@renderer/api/bank';
 import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
 import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import useBooleanState from '@renderer/hooks/useBooleanState';
-import {getAccount} from '@renderer/store/accounts';
-import {RootState} from '@renderer/types/store';
+import {Account, getAccount} from '@renderer/store/accounts';
+import {Friend} from '@renderer/store/friends';
+import {Validator} from '@renderer/store/validators';
+import {Bank, RootState} from '@renderer/types/store';
 
 import LeftSubmenu, {LeftSubmenuItem} from './LeftSubmenu';
 
 import './LeftMenu.scss';
 
-const LeftComponentSelector = ({accounts, banks, friends, points, validators}: RootState) => ({
+const LeftComponentSelector = ({
+  accounts,
+  banks,
+  friends,
+  points,
+  validators,
+}: RootState): {
+  accounts: Account[];
+  banks: Bank[];
+  friends: Friend[];
+  points: number;
+  validators: Validator[];
+} => ({
   accounts,
   banks: banks.entities,
   friends,
@@ -21,7 +35,7 @@ const LeftComponentSelector = ({accounts, banks, friends, points, validators}: R
   validators,
 });
 
-const LeftMenu = () => {
+const LeftMenu: FC = () => {
   const dispatch = useDispatch();
   const {accounts, banks, friends, points, validators} = useSelector(LeftComponentSelector);
   const [addAccountModalIsOpen, toggleAddAccountModal] = useBooleanState(false);
@@ -30,7 +44,7 @@ const LeftMenu = () => {
   useEffect(() => {
     dispatch(getAccount());
     dispatch(fetchBanks());
-  }, []);
+  }, [dispatch]);
 
   const getAccountItems = (): LeftSubmenuItem[] => {
     return accounts.map(({accountNumber, nickname}) => ({
@@ -45,7 +59,7 @@ const LeftMenu = () => {
   };
 
   const getBankItems = (): LeftSubmenuItem[] => {
-    return banks.map(({ip_address}) => ({key: ip_address, label: ip_address, to: '/'}));
+    return banks.map(({ip_address: ipAddress}) => ({key: ipAddress, label: ipAddress, to: '/'}));
   };
 
   const getNetworkItems = (): LeftSubmenuItem[] => {
@@ -56,7 +70,7 @@ const LeftMenu = () => {
   };
 
   const getValidatorItems = (): LeftSubmenuItem[] => {
-    return validators.map(({ip_address}) => ({key: ip_address, label: ip_address, to: '/'}));
+    return validators.map(({ip_address: ipAddress}) => ({key: ipAddress, label: ipAddress, to: '/'}));
   };
 
   return (

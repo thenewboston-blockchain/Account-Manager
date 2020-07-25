@@ -15,6 +15,7 @@ const preloadedState = {
 };
 
 export default configureStore({
+  preloadedState,
   reducer: {
     accounts: accountsSlice.reducer,
     banks: banksSlice.reducer,
@@ -22,5 +23,4 @@ export default configureStore({
     points: pointsSlice.reducer,
     validators: validatorsSlice.reducer,
   },
-  preloadedState,
 });
