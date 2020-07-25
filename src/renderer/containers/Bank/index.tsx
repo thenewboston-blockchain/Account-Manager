@@ -2,7 +2,7 @@ import React, {FC, ReactNode} from 'react';
 import noop from 'lodash/noop';
 
 import {Button} from '@renderer/components/FormElements';
-import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import EditBankModal from '@renderer/containers/Bank/EditBankModal';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
@@ -11,7 +11,6 @@ import PageLayout from '@renderer/components/PageLayout';
 import PageTable from '@renderer/components/PageTable';
 import PageTabs from '@renderer/components/PageTabs';
 import Pagination from '@renderer/components/Pagination';
-import TrustBadge from '@renderer/components/TrustBadge';
 
 import useBooleanState from '@renderer/hooks/useBooleanState';
 import sampleData from '@renderer/mock/OverviewSampleData';
@@ -80,15 +79,6 @@ const Bank: FC = () => {
     </Modal>
   );
 
-  const renderLeftTools = (): ReactNode => {
-    return (
-      <>
-        <TrustBadge score={98.34} />
-        <DropdownMenuButton options={dropdownMenuOptions} />
-      </>
-    );
-  };
-
   const renderRightPageHeaderButtons = (): ReactNode => (
     <>
       <Button variant="outlined">Add to Managed Banks</Button>
@@ -99,9 +89,10 @@ const Bank: FC = () => {
   const renderTop = (): ReactNode => (
     <>
       <PageHeader
-        leftTools={renderLeftTools()}
+        dropdownMenuOptions={dropdownMenuOptions}
         rightContent={renderRightPageHeaderButtons()}
         title="Digital Ocean Bank (223.125.111.178)"
+        trustScore={98.34}
       />
       <PageTabs
         items={[

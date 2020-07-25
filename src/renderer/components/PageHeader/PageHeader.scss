@@ -9,10 +9,10 @@
   &__left-section {
     align-items: center;
     display: flex;
+  }
 
-    .TrustBadge {
-      margin-right: 6px;
-    }
+  &__TrustBadge {
+    margin-right: 6px;
   }
 
   &__title {

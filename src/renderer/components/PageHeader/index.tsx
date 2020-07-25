@@ -1,21 +1,24 @@
 import React, {FC, ReactNode} from 'react';
 
+import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import TrustBadge from '@renderer/components/TrustBadge';
+
 import './PageHeader.scss';
 
 interface ComponentProps {
-  leftTools?: ReactNode;
+  dropdownMenuOptions?: DropdownMenuOption[];
   rightContent?: ReactNode;
   title: string;
+  trustScore?: number;
 }
 
-// TODO
-
-const PageHeader: FC<ComponentProps> = ({leftTools, rightContent, title}) => {
+const PageHeader: FC<ComponentProps> = ({dropdownMenuOptions, rightContent, title, trustScore}) => {
   return (
     <div className="PageHeader">
       <div className="PageHeader__left-section">
         <h1 className="PageHeader__title">{title}</h1>
-        {leftTools && leftTools}
+        {trustScore ? <TrustBadge className="PageHeader__TrustBadge" score={trustScore} /> : null}
+        {dropdownMenuOptions ? <DropdownMenuButton options={dropdownMenuOptions} /> : null}
       </div>
       {rightContent && <div className="PageHeader__right-section">{rightContent}</div>}
     </div>

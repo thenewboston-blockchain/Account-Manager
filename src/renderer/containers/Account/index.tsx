@@ -3,7 +3,7 @@ import noop from 'lodash/noop';
 
 import {Button} from '@renderer/components/FormElements';
 import DetailPanel from '@renderer/components/DetailPanel';
-import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import PageHeader from '@renderer/components/PageHeader';
@@ -120,10 +120,6 @@ const Account: FC = () => {
     );
   };
 
-  const renderLeftTools = (): ReactNode => {
-    return <DropdownMenuButton options={dropdownMenuOptions} />;
-  };
-
   const renderPageTable = (): ReactNode => (
     <>
       <PageTable items={transactionSampleData} />
@@ -148,7 +144,7 @@ const Account: FC = () => {
   const renderTop = (): ReactNode => (
     <>
       <PageHeader
-        leftTools={renderLeftTools()}
+        dropdownMenuOptions={dropdownMenuOptions}
         rightContent={renderRightPageHeaderButtons()}
         title="Donations (43hawrjkef243d)"
       />
