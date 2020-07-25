@@ -1,8 +1,15 @@
-import React, {useMemo} from 'react';
+import {useMemo} from 'react';
 import useFormContext from '@renderer/hooks/useFormContext';
 import {SelectOption} from '@renderer/types/forms';
 
-const useFormSelect = (name: string, options: SelectOption[]) => {
+interface UseFormSelectOutput {
+  error: boolean;
+  handleBlur(): void;
+  handleChange(option: SelectOption): void;
+  selectedOption: SelectOption | null;
+}
+
+const useFormSelect = (name: string, options: SelectOption[]): UseFormSelectOutput => {
   const {error, setFieldTouched, setFieldValue, values} = useFormContext(name);
 
   const selectedOption = useMemo(() => {
