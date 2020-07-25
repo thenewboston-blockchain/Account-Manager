@@ -63,7 +63,7 @@
     }
   },
   "lint-staged": {
-    "{,!(node_modules)/**/}*.{ts,tsx,js,json,css,scss}": [
+    "{,!(node_modules)/**/}*.{ts,tsx,js,css,scss}": [
       "eslint --cache --fix",
       "prettier --write"
     ]
