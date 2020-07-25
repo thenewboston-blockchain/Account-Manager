@@ -18,11 +18,11 @@ interface ComponentProps {
 }
 
 const DetailPanel: FC<ComponentProps> = ({className, items, tableHeaders, title}) => {
-  const renderTableBody = () => {
+  const renderTableBody = (): ReactNode => {
     return (
       <tbody>
-        {items.map(({key, value}, i) => (
-          <tr key={i}>
+        {items.map(({key, value}) => (
+          <tr key={key}>
             <td>{key}</td>
             <td>{value}</td>
           </tr>

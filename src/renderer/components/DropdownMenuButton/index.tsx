@@ -1,4 +1,4 @@
-import React, {CSSProperties, FC, ReactNode, useCallback, useEffect, useRef, useState} from 'react';
+import React, {CSSProperties, FC, ReactNode, KeyboardEvent, useCallback, useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
@@ -28,23 +28,23 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, options}) => {
   const [open, toggleOpen, , closeMenu] = useBooleanState(false);
   const [dropdownPositionStyle, setDropdownPositionStyle] = useState<CSSProperties | undefined>(undefined);
 
+  const handleClick = useCallback(
+    (e): void => {
+      if (!dropdownRoot.contains(e.target) && !iconRef.current?.contains(e.target)) {
+        closeMenu();
+      }
+    },
+    [closeMenu],
+  );
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClick);
     return () => {
       document.removeEventListener('mousedown', handleClick);
     };
-  }, [open]);
+  }, [handleClick]);
 
-  const handleClick = useCallback(
-    (e: any): void => {
-      if (!dropdownRoot.contains(e.target) && !iconRef.current?.contains(e.target)) {
-        closeMenu();
-      }
-    },
-    [open],
-  );
-
-  const handleOpenDropdown = () => {
+  const handleOpenDropdown = (): void => {
     if (iconRef.current) {
       const {left, bottom, width} = iconRef.current.getBoundingClientRect();
       setDropdownPositionStyle({left: left + width / 2, top: bottom + 3});
@@ -55,6 +55,15 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, options}) => {
   const handleOptionClick = (optionOnClick: GenericVoidFunction) => async (): Promise<void> => {
     await optionOnClick();
     closeMenu();
+  };
+
+  const handleOptionKeyPress = (optionOnClick: GenericVoidFunction) => async (
+    e: KeyboardEvent<HTMLDivElement>,
+  ): Promise<void> => {
+    if (e.key === 'Enter') {
+      await optionOnClick();
+      closeMenu();
+    }
   };
 
   return (
@@ -81,8 +90,11 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, options}) => {
                     'DropdownMenuButton__option--disabled': disabled,
                     ...getCustomClassNames(className, '__option--disabled', disabled),
                   })}
-                  key={i}
+                  key={JSON.stringify(label)}
+                  onKeyPress={disabled ? noop : handleOptionKeyPress(optionOnClick)}
                   onClick={disabled ? noop : handleOptionClick(optionOnClick)}
+                  role="button"
+                  tabIndex={i}
                 >
                   {label}
                 </div>

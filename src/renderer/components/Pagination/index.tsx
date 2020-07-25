@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, ReactNode} from 'react';
 import clsx from 'clsx';
 
 import {getCustomClassNames} from '@renderer/utils/components';
@@ -9,7 +9,7 @@ interface ComponentProps {
 }
 
 const Pagination: FC<ComponentProps> = ({className}) => {
-  const renderSamplePages = () => {
+  const renderSamplePages = (): ReactNode => {
     return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
       <a
         className={clsx('Pagination__page', {
@@ -17,7 +17,7 @@ const Pagination: FC<ComponentProps> = ({className}) => {
           ...getCustomClassNames(className, '__page', true),
           ...getCustomClassNames(className, '__page--active', i === 1),
         })}
-        href="#"
+        href="/"
         key={i}
       >
         {i}
@@ -29,7 +29,7 @@ const Pagination: FC<ComponentProps> = ({className}) => {
     <div className={clsx('Pagination', className)}>
       <a
         className={clsx('Pagination__prev-button', {...getCustomClassNames(className, '__prev-button', true)})}
-        href="#"
+        href="/"
       >
         {'<< Prev'}
       </a>
@@ -38,7 +38,7 @@ const Pagination: FC<ComponentProps> = ({className}) => {
       </div>
       <a
         className={clsx('Pagination__next-button', {...getCustomClassNames(className, '__next-button', true)})}
-        href="#"
+        href="/"
       >
         {'Next >>'}
       </a>

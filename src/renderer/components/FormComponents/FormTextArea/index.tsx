@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+
 import React, {FC} from 'react';
 import {Field} from 'formik';
 import clsx from 'clsx';

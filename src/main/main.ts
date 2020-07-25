@@ -2,6 +2,7 @@ import {app, BrowserWindow} from 'electron';
 import contextMenu from 'electron-context-menu';
 import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from 'electron-devtools-installer';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const electronSquirrelStartup = require('electron-squirrel-startup');
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -13,20 +14,22 @@ if (electronSquirrelStartup) {
 
 contextMenu();
 
-const createWindow = () => {
+const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
     height: 1080,
-    width: 1920,
     webPreferences: {
       nodeIntegration: true,
     },
+    width: 1920,
   });
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 };
 
 app.whenReady().then(() => {
   installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
+    // eslint-disable-next-line no-console
     .then((name) => console.log(`Added Extension: ${name}`))
+    // eslint-disable-next-line no-console
     .catch((error) => console.log('An error occurred: ', error));
 });
 

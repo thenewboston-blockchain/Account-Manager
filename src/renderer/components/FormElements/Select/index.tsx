@@ -41,11 +41,16 @@ const Select: FC<ComponentProps> = ({
   value,
 }) => {
   const formattedOptions = useMemo(
-    () => options.map(({disabled, label, value}) => ({isDisabled: disabled, label, value})),
+    () =>
+      options.map(({disabled: optionDisabled, label, value: optionValue}) => ({
+        isDisabled: optionDisabled,
+        label,
+        value: optionValue,
+      })),
     [options],
   );
 
-  const getOptionLabel = ({label, value}: SelectOption): string => label || value;
+  const getOptionLabel = ({label, value: valueParam}: SelectOption): string => label || valueParam;
 
   return (
     <ReactSelect
