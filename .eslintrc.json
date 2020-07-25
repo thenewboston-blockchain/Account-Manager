@@ -29,6 +29,7 @@
   },
   "plugins": ["react", "@typescript-eslint", "jest"],
   "rules": {
+    "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/explicit-function-return-type": [
       "error",
       {

@@ -1,8 +1,6 @@
 import {SerializedError} from '@reduxjs/toolkit';
 import store from '@renderer/store';
 
-import {Bank} from '@renderer/types/entities/Bank';
-
 export type RootState = ReturnType<typeof store.getState>;
 
 export interface Data<T> {
@@ -20,5 +18,3 @@ export interface StateSlice<S> {
   currentRequestId?: string;
   error: SerializedError | null;
 }
-
-export {Bank};
