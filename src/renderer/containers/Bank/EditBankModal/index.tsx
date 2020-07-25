@@ -110,7 +110,7 @@ const EditBankModal: FC<ComponentProps> = ({close}) => {
       <FormInput label="State" name="state" />
       <FormInput label="Zip Code" name="zip" />
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-        <FormInput label={`Question ${i + 1}`} name={`question${i + 1}`} />
+        <FormInput key={i} label={`Question ${i + 1}`} name={`question${i + 1}`} />
       ))}
       <FormInput label="Question 1" name="question1" />
       <FormInput label="Type" name="type" />
