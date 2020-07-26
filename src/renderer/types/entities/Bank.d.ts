@@ -8,5 +8,5 @@ export interface Bank {
   version: string;
   default_transaction_fee: string;
   trust: string;
-  nickname?: string;
+  nickName?: string;
 }
