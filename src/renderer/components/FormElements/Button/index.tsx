@@ -1,5 +1,3 @@
-/* eslint-disable react/button-has-type */
-
 import React, {FC} from 'react';
 import clsx from 'clsx';
 
