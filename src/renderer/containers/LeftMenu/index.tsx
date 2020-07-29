@@ -9,7 +9,7 @@ import useBooleanState from '@renderer/hooks/useBooleanState';
 import {Account, getAccount} from '@renderer/store/accounts';
 import {Friend} from '@renderer/store/friends';
 import {Validator} from '@renderer/store/validators';
-import {Bank} from '@renderer/types/entities/Bank';
+import {Bank} from '@renderer/types/entities';
 import {RootState} from '@renderer/types/store';
 
 import LeftSubmenu, {LeftSubmenuItem} from './LeftSubmenu';

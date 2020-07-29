@@ -1,8 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
-
 import {fetchBanks} from '@renderer/api/bank';
 import {BANKS} from '@renderer/constants/store';
-import {Bank} from '@renderer/types/entities/Bank';
+import {Bank} from '@renderer/types/entities';
 import {Loading, StateSlice} from '@renderer/types/store';
 import {fulfilledReducer, pendingReducer, rejectedReducer} from '@renderer/utils/store';
 
