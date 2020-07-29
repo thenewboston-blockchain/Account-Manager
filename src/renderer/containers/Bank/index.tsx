@@ -3,7 +3,6 @@ import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-
 
 import {Button} from '@renderer/components/FormElements';
 import DeleteModal from '@renderer/containers/Bank/DeleteModal';
-import DetailPanel from '@renderer/components/DetailPanel';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import EditBankModal from '@renderer/containers/Bank/EditBankModal';
 import PageHeader from '@renderer/components/PageHeader';
@@ -40,47 +39,43 @@ const Bank: FC = (props) => {
 
   const renderRightPageHeaderButtons = (): ReactNode => <Button>Add to Managed Banks</Button>;
 
-  const renderTabContent = () => (
-    <Switch>
-      <Route path={`${path}/accounts`}>
-        <h1>Accounts</h1>
-      </Route>
-      <Route path={`${path}/banks`}>
-        <PageTable items={sampleData} />
-        <Pagination />
-      </Route>
-      <Route path={`${path}/overview`}>
-        <DetailPanel
-          className="Account__DetailPanel"
-          items={[
-            {
-              key: 'Balance',
-              value: '184.35',
-            },
-            {
-              key: 'Account Number',
-              value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
-            },
-            {
-              key: 'Signing Key',
-              value: '**************************',
-            },
-            {
-              key: 'QR Code',
-              value: '**************************',
-            },
-          ]}
-          title="Bank Overview"
-        />
-      </Route>
-      <Route path={`${path}/transactions`}>
-        <h1>Transactions</h1>
-      </Route>
-      <Route path={`${path}/validators`}>
-        <h1>Validators</h1>
-      </Route>
-    </Switch>
-  );
+  const renderTabContent = () => {
+    const tabContentRoutes = [
+      {
+        content: <h1>Accounts</h1>,
+        page: 'accounts',
+      },
+      {
+        content: (
+          <>
+            <PageTable items={sampleData} />
+            <Pagination />
+          </>
+        ),
+        page: 'banks',
+      },
+      {
+        content: <h1>Overview</h1>,
+        page: 'overview',
+      },
+      {
+        content: <h1>Transactions</h1>,
+        page: 'transactions',
+      },
+      {
+        content: <h1>Validators</h1>,
+        page: 'validators',
+      },
+    ];
+
+    return (
+      <Switch>
+        {tabContentRoutes.map(({content, page}) => (
+          <Route path={`${path}/${page}`}>{content}</Route>
+        ))}
+      </Switch>
+    );
+  };
 
   const renderTop = (): ReactNode => (
     <>
