@@ -48,7 +48,7 @@ const Connect: FC = () => {
   return (
     <div className="Connect">
       <div className="Connect__header">
-        <Logo className="Connect__logo" size={30} />
+        <Logo className="Connect__logo" size={30}/>
         <h2>thenewboston</h2>
       </div>
       <div className="Connect__subheader">Enter the address of a bank.</div>
@@ -66,8 +66,8 @@ const Connect: FC = () => {
           options={protocolOptions}
           required
         />
-        <FormInput className="Connect__field" label="IP Address" name="ipAddress" required />
-        <FormInput className="Connect__field" label="Port" name="port" type="number" />
+        <FormInput className="Connect__field" label="IP Address" name="ipAddress" required/>
+        <FormInput className="Connect__field" label="Port" name="port" type="number"/>
 
         <FormButton type="submit">Connect</FormButton>
         <FormButton className="Connect__go" onClick={goToMain}>
