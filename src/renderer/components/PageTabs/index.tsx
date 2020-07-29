@@ -1,40 +1,26 @@
 import React, {FC} from 'react';
-import clsx from 'clsx';
+import {NavLink} from 'react-router-dom';
 
-import {getCustomClassNames} from '@renderer/utils/components';
 import './PageTabs.scss';
 
 interface Item {
-  active: boolean;
+  baseUrl: string;
   name: string;
-  onClick(name: string): void;
+  page: string;
 }
 
 interface ComponentProps {
-  className?: string;
   items: Item[];
 }
 
-const PageTabs: FC<ComponentProps> = ({className, items}) => {
+const PageTabs: FC<ComponentProps> = ({items}) => {
   return (
-    <div className={clsx('PageTabs', className)}>
-      {items.map(({active, name, onClick}) => (
-        <div
-          className={clsx('PageTabs__tab', {
-            'PageTabs__tab--active': active,
-            ...getCustomClassNames(className, '__tab', true),
-            ...getCustomClassNames(className, '__tab--active', active),
-          })}
-          key={name}
-          onClick={() => onClick(name)}
-        >
-          <div className={clsx('PageTabs__tab-name', {...getCustomClassNames(className, '__tab-name', true)})}>
-            {name}
-          </div>
-          <div
-            className={clsx('PageTabs__tab-indicator', {...getCustomClassNames(className, '__tab-indicator', true)})}
-          />
-        </div>
+    <div className="PageTabs">
+      {items.map(({baseUrl, name, page}) => (
+        <NavLink activeClassName="PageTabs__tab--active" className="PageTabs__tab" to={`${baseUrl}/${page}`}>
+          <div className="PageTabs__tab-name">{name}</div>
+          <div className="PageTabs__tab-indicator"/>
+        </NavLink>
       ))}
     </div>
   );

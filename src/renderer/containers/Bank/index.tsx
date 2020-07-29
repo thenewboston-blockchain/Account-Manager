@@ -1,11 +1,10 @@
 import React, {FC, ReactNode} from 'react';
-import noop from 'lodash/noop';
+import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-dom';
 
 import {Button} from '@renderer/components/FormElements';
+import DeleteModal from '@renderer/containers/Bank/DeleteModal';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import EditBankModal from '@renderer/containers/Bank/EditBankModal';
-import Icon, {IconType} from '@renderer/components/Icon';
-import Modal from '@renderer/components/Modal';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTable from '@renderer/components/PageTable';
@@ -17,11 +16,15 @@ import sampleData from '@renderer/mock/OverviewSampleData';
 
 import './Bank.scss';
 
-const Bank: FC = () => {
-  const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
+const Bank: FC = (props) => {
+  console.log(props)
+  let {nid} = useParams();
+  let {path, url} = useRouteMatch();
+  console.log(path);
+  console.log(url);
+  console.log(nid);
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
-  const [unregisterBankModalIsOpen, toggleUnregisterBankModal] = useBooleanState(false);
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
@@ -29,61 +32,34 @@ const Bank: FC = () => {
       onClick: toggleEditModal,
     },
     {
-      label: 'Delete Account',
+      label: 'Remove Bank',
       onClick: toggleDeleteModal,
-    },
-    {
-      label: 'Unregister Bank',
-      onClick: toggleUnregisterBankModal,
     },
   ];
 
-  const handleDeleteAccountFromModal = async (): Promise<void> => {
-    try {
-      setSubmittingDeleteModalTrue();
-      setTimeout(() => {
-        setSubmittingDeleteModalFalse();
-        toggleDeleteModal();
-      }, 1000);
-    } catch (error) {
-      console.log('ERROR', error);
-    }
-  };
-
-  const renderContent = (): ReactNode => (
-    <>
-      <PageTable items={sampleData} />
-      <Pagination />
-    </>
-  );
-
-  const renderDeleteModal = (): ReactNode => (
-    <Modal
-      cancelButton="No"
-      className="BankDeleteModal"
-      close={toggleDeleteModal}
-      header={
-        <>
-          <Icon className="BankDeleteModal__icon" icon={IconType.alert} />
-          <h2 className="BankDeleteModal__title">Delete Account</h2>
-        </>
-      }
-      onSubmit={handleDeleteAccountFromModal}
-      submitButton="Yes"
-      submitting={submittingDeleteModal}
-    >
-      <>
-        <span className="BankDeleteModal__warning-span">Warning: </span> If you delete your account, you will lose all
-        the points in your account as well as your signing key. Are you sure you want to delete your account?
-      </>
-    </Modal>
-  );
-
   const renderRightPageHeaderButtons = (): ReactNode => (
-    <>
-      <Button variant="outlined">Add to Managed Banks</Button>
-      <Button>Register as Member</Button>
-    </>
+    <Button>Add to Managed Banks</Button>
+  );
+
+  const renderTabContent = () => (
+    <Switch>
+      <Route path={`${path}/accounts`}>
+        <h1>Accounts</h1>
+      </Route>
+      <Route path={`${path}/banks`}>
+        <h1>Banks</h1>
+      </Route>
+      <Route path={`${path}/overview`}>
+        <PageTable items={sampleData}/>
+        <Pagination/>
+      </Route>
+      <Route path={`${path}/transactions`}>
+        <h1>Transactions</h1>
+      </Route>
+      <Route path={`${path}/validators`}>
+        <h1>Validators</h1>
+      </Route>
+    </Switch>
   );
 
   const renderTop = (): ReactNode => (
@@ -91,56 +67,48 @@ const Bank: FC = () => {
       <PageHeader
         dropdownMenuOptions={dropdownMenuOptions}
         rightContent={renderRightPageHeaderButtons()}
-        title="Digital Ocean Bank (223.125.111.178)"
+        title={`Digital Ocean Bank (${nid})`}
         trustScore={98.34}
       />
       <PageTabs
         items={[
           {
-            active: true,
+            baseUrl: url,
             name: 'Overview',
-            onClick: noop,
+            page: 'overview',
           },
           {
-            active: false,
-            name: 'Members',
-            onClick: noop,
+            baseUrl: url,
+            name: 'Accounts',
+            page: 'accounts',
           },
           {
-            active: false,
+            baseUrl: url,
             name: 'Transactions',
-            onClick: noop,
+            page: 'transactions',
           },
           {
-            active: false,
+            baseUrl: url,
             name: 'Banks',
-            onClick: noop,
+            page: 'banks',
           },
           {
-            active: false,
+            baseUrl: url,
             name: 'Validators',
-            onClick: noop,
+            page: 'validators',
           },
         ]}
       />
     </>
   );
 
-  const renderUnregisterBankModal = (): ReactNode => (
-    <Modal close={toggleUnregisterBankModal} header="Unregister Bank" onSubmit={toggleUnregisterBankModal}>
-      Here is the modal used very minimally. It is using most of modal&apos;s defaults, and it&apos;s not using any
-      custom header or footer
-    </Modal>
-  );
-
   return (
     <div className="Bank">
-      <PageLayout content={renderContent()} top={renderTop()} />
-      {deleteModalIsOpen && renderDeleteModal()}
-      {editModalIsOpen && <EditBankModal close={toggleEditModal} />}
-      {unregisterBankModalIsOpen && renderUnregisterBankModal()}
+      <PageLayout content={renderTabContent()} top={renderTop()}/>
+      {deleteModalIsOpen && <DeleteModal toggleDeleteModal={toggleDeleteModal}/>}
+      {editModalIsOpen && <EditBankModal close={toggleEditModal}/>}
     </div>
   );
 };
 
-export default Bank;
+export default withRouter(Bank);
