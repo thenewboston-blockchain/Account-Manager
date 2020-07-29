@@ -5,11 +5,12 @@
   "description": "My Electron application description",
   "main": "./.webpack/main",
   "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
     "lint": "tsc --noEmit && eslint './src/**/*.{js,ts,tsx}'",
+    "make": "electron-forge make",
+    "package": "electron-forge package",
+    "prettier": "prettier --write \"{,!(.webpack|node_modules)/**/}*.{ts,tsx,js,json,css,less,scss}\"",
+    "publish": "electron-forge publish",
+    "start": "electron-forge start",
     "test": "jest"
   },
   "keywords": [],

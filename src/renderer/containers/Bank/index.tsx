@@ -3,6 +3,7 @@ import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-
 
 import {Button} from '@renderer/components/FormElements';
 import DeleteModal from '@renderer/containers/Bank/DeleteModal';
+import DetailPanel from '@renderer/components/DetailPanel';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import EditBankModal from '@renderer/containers/Bank/EditBankModal';
 import PageHeader from '@renderer/components/PageHeader';
@@ -17,7 +18,7 @@ import sampleData from '@renderer/mock/OverviewSampleData';
 import './Bank.scss';
 
 const Bank: FC = (props) => {
-  console.log(props)
+  console.log(props);
   let {nid} = useParams();
   let {path, url} = useRouteMatch();
   console.log(path);
@@ -37,9 +38,7 @@ const Bank: FC = (props) => {
     },
   ];
 
-  const renderRightPageHeaderButtons = (): ReactNode => (
-    <Button>Add to Managed Banks</Button>
-  );
+  const renderRightPageHeaderButtons = (): ReactNode => <Button>Add to Managed Banks</Button>;
 
   const renderTabContent = () => (
     <Switch>
@@ -47,11 +46,32 @@ const Bank: FC = (props) => {
         <h1>Accounts</h1>
       </Route>
       <Route path={`${path}/banks`}>
-        <h1>Banks</h1>
+        <PageTable items={sampleData} />
+        <Pagination />
       </Route>
       <Route path={`${path}/overview`}>
-        <PageTable items={sampleData}/>
-        <Pagination/>
+        <DetailPanel
+          className="Account__DetailPanel"
+          items={[
+            {
+              key: 'Balance',
+              value: '184.35',
+            },
+            {
+              key: 'Account Number',
+              value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
+            },
+            {
+              key: 'Signing Key',
+              value: '**************************',
+            },
+            {
+              key: 'QR Code',
+              value: '**************************',
+            },
+          ]}
+          title="Bank Overview"
+        />
       </Route>
       <Route path={`${path}/transactions`}>
         <h1>Transactions</h1>
@@ -104,9 +124,9 @@ const Bank: FC = (props) => {
 
   return (
     <div className="Bank">
-      <PageLayout content={renderTabContent()} top={renderTop()}/>
-      {deleteModalIsOpen && <DeleteModal toggleDeleteModal={toggleDeleteModal}/>}
-      {editModalIsOpen && <EditBankModal close={toggleEditModal}/>}
+      <PageLayout content={renderTabContent()} top={renderTop()} />
+      {deleteModalIsOpen && <DeleteModal toggleDeleteModal={toggleDeleteModal} />}
+      {editModalIsOpen && <EditBankModal close={toggleEditModal} />}
     </div>
   );
 };

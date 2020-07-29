@@ -30,7 +30,7 @@ const DeleteModal: FC<ComponentProps> = ({toggleDeleteModal}) => {
       close={toggleDeleteModal}
       header={
         <>
-          <Icon className="BankDeleteModal__icon" icon={IconType.alert}/>
+          <Icon className="BankDeleteModal__icon" icon={IconType.alert} />
           <h2 className="BankDeleteModal__title">Delete Account</h2>
         </>
       }
