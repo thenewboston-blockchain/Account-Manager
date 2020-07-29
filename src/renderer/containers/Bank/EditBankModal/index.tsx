@@ -1,8 +1,7 @@
 import React, {FC, ReactNode} from 'react';
+
 import Modal from '@renderer/components/Modal';
 import {FormInput} from '@renderer/components/FormComponents';
-import {useDispatch} from 'react-redux';
-import {updateBankNickname} from '@renderer/store/banks';
 
 import './EditBankModal.scss';
 
@@ -17,10 +16,8 @@ const initialValues = {
 type FormValues = typeof initialValues;
 
 const EditBankModal: FC<ComponentProps> = ({close}) => {
-  const dispatch = useDispatch();
-
   const handleSubmit = ({nickname}: FormValues): void => {
-    dispatch(updateBankNickname(nickname));
+    console.log('nickname', nickname);
     close();
   };
 
@@ -36,7 +33,6 @@ const EditBankModal: FC<ComponentProps> = ({close}) => {
     <Modal
       className="EditBankModal"
       close={close}
-      ignoreDirty
       header={renderHeader()}
       initialValues={initialValues}
       onSubmit={handleSubmit}
