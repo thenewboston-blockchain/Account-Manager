@@ -1,28 +1,26 @@
 import React, {FC, ReactNode} from 'react';
 import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-dom';
 
+import Accounts from '@renderer/containers/Bank/Accounts';
+import Banks from '@renderer/containers/Bank/Banks';
 import {Button} from '@renderer/components/FormElements';
 import DeleteModal from '@renderer/containers/Bank/DeleteModal';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import EditBankModal from '@renderer/containers/Bank/EditBankModal';
+import Overview from '@renderer/containers/Bank/Overview';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
-import PageTable from '@renderer/components/PageTable';
 import PageTabs from '@renderer/components/PageTabs';
-import Pagination from '@renderer/components/Pagination';
+import Transactions from '@renderer/containers/Bank/Transactions';
+import Validators from '@renderer/containers/Bank/Validators';
 
 import useBooleanState from '@renderer/hooks/useBooleanState';
-import sampleData from '@renderer/mock/OverviewSampleData';
 
 import './Bank.scss';
 
-const Bank: FC = (props) => {
-  console.log(props);
+const Bank: FC = () => {
   let {nid} = useParams();
   let {path, url} = useRouteMatch();
-  console.log(path);
-  console.log(url);
-  console.log(nid);
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
 
@@ -42,28 +40,23 @@ const Bank: FC = (props) => {
   const renderTabContent = () => {
     const tabContentRoutes = [
       {
-        content: <h1>Accounts</h1>,
+        content: <Accounts />,
         page: 'accounts',
       },
       {
-        content: (
-          <>
-            <PageTable items={sampleData} />
-            <Pagination />
-          </>
-        ),
+        content: <Banks />,
         page: 'banks',
       },
       {
-        content: <h1>Overview</h1>,
+        content: <Overview />,
         page: 'overview',
       },
       {
-        content: <h1>Transactions</h1>,
+        content: <Transactions />,
         page: 'transactions',
       },
       {
-        content: <h1>Validators</h1>,
+        content: <Validators />,
         page: 'validators',
       },
     ];
