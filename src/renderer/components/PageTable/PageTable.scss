@@ -6,19 +6,23 @@
   td,
   th {
     border-bottom: 1px solid var(--color-neutral-400);
-    padding: 6px 4px;
   }
 
   &__thead {
     color: var(--color-blue-gray-500);
     font-weight: 500;
     text-align: left;
+
+    td {
+      padding: 0 4px 6px;
+    }
   }
 
   &__row {
     td {
       max-width: 120px;
       overflow: hidden;
+      padding: 6px 4px;
       text-overflow: ellipsis;
       vertical-align: top;
       white-space: nowrap;

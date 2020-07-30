@@ -21,16 +21,16 @@ export const Layout: FC = () => {
       </div>
       <div className="Layout__right">
         <Switch>
-          <Route path="/account">
+          <Route path="/account/:accountNumber">
             <Account />
           </Route>
-          <Route path="/bank">
+          <Route path="/bank/:nid">
             <Bank />
           </Route>
           <Route path="/friend">
             <Friend />
           </Route>
-          <Route path="/validator">
+          <Route path="/validator/:nid">
             <Validator />
           </Route>
         </Switch>

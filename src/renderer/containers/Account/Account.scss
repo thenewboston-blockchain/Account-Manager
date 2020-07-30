@@ -1,22 +1,2 @@
 .Account {
-  &__DetailPanel {
-    margin: 18px 12px 0;
-  }
-}
-
-.AccountDeleteModal {
-  &__icon {
-    color: var(--color-danger);
-    margin-right: 12px;
-  }
-
-  &__title {
-    color: var(--color-danger);
-  }
-
-  &__warning-span {
-    color: var(--color-danger);
-    font-weight: bold;
-    text-transform: uppercase;
-  }
 }

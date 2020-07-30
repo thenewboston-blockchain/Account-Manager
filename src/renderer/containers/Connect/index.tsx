@@ -34,7 +34,7 @@ const Connect: FC = () => {
   const history = useHistory();
 
   const goToMain = (): void => {
-    history.push('/bank');
+    history.push('/bank/123456/overview');
   };
 
   const handleSubmit = async (values: FormValues): Promise<void> => {

@@ -2,6 +2,15 @@
   display: flex;
   flex-direction: column;
 
+  a {
+    color: var(--color-secondary);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .points {
     margin: 12px 12px 12px 33px;
 
