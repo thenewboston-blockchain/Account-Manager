@@ -1,15 +1,15 @@
-import React, {ReactNode} from 'react';
+import React, {FC, ReactNode} from 'react';
 
 import DetailPanel from '@renderer/components/DetailPanel';
-import QR from '@renderer/components/QR';
+import Qr from '@renderer/components/Qr';
 
 import './AccountOverview.scss';
 
-const AccountOverview = (): JSX.Element => {
+const AccountOverview: FC = () => {
   const renderAccountNumber = (): ReactNode => (
     <>
       <div>0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb</div>
-      <QR text="0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb" />
+      <Qr className="AccountOverview__qr" text="0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb" />
     </>
   );
 
