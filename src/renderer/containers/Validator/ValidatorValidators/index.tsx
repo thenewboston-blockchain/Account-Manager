@@ -5,13 +5,13 @@ import Pagination from '@renderer/components/Pagination';
 
 import sampleData from '@renderer/mock/OverviewSampleData';
 
-const Transactions = () => {
+const ValidatorValidators = () => {
   return (
-    <div className="Transactions">
+    <div className="ValidatorValidators">
       <PageTable items={sampleData} />
       <Pagination />
     </div>
   );
 };
 
-export default Transactions;
+export default ValidatorValidators;

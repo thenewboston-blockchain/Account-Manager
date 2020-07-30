@@ -1,14 +1,14 @@
 import React, {FC, ReactNode} from 'react';
 import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-dom';
 
-import Accounts from '@renderer/containers/Validator/Accounts';
-import Banks from '@renderer/containers/Validator/Banks';
-import {Button} from '@renderer/components/FormElements';
-import Overview from '@renderer/containers/Validator/Overview';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
-import Validators from '@renderer/containers/Validator/Validators';
+import ValidatorAccounts from '@renderer/containers/Validator/ValidatorAccounts';
+import ValidatorBanks from '@renderer/containers/Validator/ValidatorBanks';
+import ValidatorOverview from '@renderer/containers/Validator/ValidatorOverview';
+import ValidatorValidators from '@renderer/containers/Validator/ValidatorValidators';
+import {Button} from '@renderer/components/FormElements';
 
 import './Validator.scss';
 
@@ -21,19 +21,19 @@ const Validator: FC = () => {
   const renderTabContent = () => {
     const tabContentRoutes = [
       {
-        content: <Accounts />,
+        content: <ValidatorAccounts />,
         page: 'accounts',
       },
       {
-        content: <Banks />,
+        content: <ValidatorBanks />,
         page: 'banks',
       },
       {
-        content: <Overview />,
+        content: <ValidatorOverview />,
         page: 'overview',
       },
       {
-        content: <Validators />,
+        content: <ValidatorValidators />,
         page: 'validators',
       },
     ];

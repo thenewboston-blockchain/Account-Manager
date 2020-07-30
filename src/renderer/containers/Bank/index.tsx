@@ -1,18 +1,18 @@
 import React, {FC, ReactNode} from 'react';
 import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-dom';
 
-import Accounts from '@renderer/containers/Bank/Accounts';
-import Banks from '@renderer/containers/Bank/Banks';
-import {Button} from '@renderer/components/FormElements';
+import BankAccounts from '@renderer/containers/Bank/BankAccounts';
+import BankBanks from '@renderer/containers/Bank/BankBanks';
+import BankOverview from '@renderer/containers/Bank/BankOverview';
+import BankTransactions from '@renderer/containers/Bank/BankTransactions';
+import BankValidators from '@renderer/containers/Bank/BankValidators';
 import DeleteBankModal from '@renderer/containers/Bank/DeleteBankModal';
-import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import EditBankModal from '@renderer/containers/Bank/EditBankModal';
-import Overview from '@renderer/containers/Bank/Overview';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
-import Transactions from '@renderer/containers/Bank/Transactions';
-import Validators from '@renderer/containers/Bank/Validators';
+import {Button} from '@renderer/components/FormElements';
+import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 
 import useBooleanState from '@renderer/hooks/useBooleanState';
 
@@ -40,23 +40,23 @@ const Bank: FC = () => {
   const renderTabContent = () => {
     const tabContentRoutes = [
       {
-        content: <Accounts />,
+        content: <BankAccounts />,
         page: 'accounts',
       },
       {
-        content: <Banks />,
+        content: <BankBanks />,
         page: 'banks',
       },
       {
-        content: <Overview />,
+        content: <BankOverview />,
         page: 'overview',
       },
       {
-        content: <Transactions />,
+        content: <BankTransactions />,
         page: 'transactions',
       },
       {
-        content: <Validators />,
+        content: <BankValidators />,
         page: 'validators',
       },
     ];

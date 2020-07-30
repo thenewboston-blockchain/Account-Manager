@@ -2,11 +2,11 @@ import React from 'react';
 
 import DetailPanel from '@renderer/components/DetailPanel';
 
-import './Overview.scss';
+import './ValidatorOverview.scss';
 
-const Overview = () => {
+const ValidatorOverview = () => {
   return (
-    <div className="Overview">
+    <div className="ValidatorOverview">
       <DetailPanel
         items={[
           {
@@ -48,4 +48,4 @@ const Overview = () => {
   );
 };
 
-export default Overview;
+export default ValidatorOverview;

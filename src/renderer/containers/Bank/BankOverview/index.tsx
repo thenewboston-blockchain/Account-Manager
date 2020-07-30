@@ -2,11 +2,11 @@ import React from 'react';
 
 import DetailPanel from '@renderer/components/DetailPanel';
 
-import './Overview.scss';
+import './BankOverview.scss';
 
-const Overview = () => {
+const BankOverview = () => {
   return (
-    <div className="Overview">
+    <div className="BankOverview">
       <DetailPanel
         items={[
           {
@@ -48,4 +48,4 @@ const Overview = () => {
   );
 };
 
-export default Overview;
+export default BankOverview;
