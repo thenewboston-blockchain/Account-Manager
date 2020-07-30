@@ -18,8 +18,8 @@ import SendPointsModal from './SendPointsModal';
 import './Account.scss';
 
 const Account: FC = () => {
-  let {accountNumber} = useParams();
-  let {path, url} = useRouteMatch();
+  const {accountNumber} = useParams();
+  const {path, url} = useRouteMatch();
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
 
@@ -36,7 +36,7 @@ const Account: FC = () => {
 
   const renderRightPageHeaderButtons = (): ReactNode => <Button onClick={toggleSendPointsModal}>Send Points</Button>;
 
-  const renderTabContent = () => {
+  const renderTabContent = (): ReactNode => {
     const tabContentRoutes = [
       {
         content: <AccountOverview />,

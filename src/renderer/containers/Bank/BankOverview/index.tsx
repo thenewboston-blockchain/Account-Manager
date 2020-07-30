@@ -4,7 +4,7 @@ import DetailPanel from '@renderer/components/DetailPanel';
 
 import './BankOverview.scss';
 
-const BankOverview = () => {
+const BankOverview = (): JSX.Element => {
   return (
     <div className="BankOverview">
       <DetailPanel

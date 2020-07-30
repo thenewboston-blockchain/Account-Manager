@@ -13,12 +13,12 @@ import {Button} from '@renderer/components/FormElements';
 import './Validator.scss';
 
 const Validator: FC = () => {
-  let {nid} = useParams();
-  let {path, url} = useRouteMatch();
+  const {nid} = useParams();
+  const {path, url} = useRouteMatch();
 
   const renderRightPageHeaderButtons = (): ReactNode => <Button>Add to Managed Validators</Button>;
 
-  const renderTabContent = () => {
+  const renderTabContent = (): ReactNode => {
     const tabContentRoutes = [
       {
         content: <ValidatorAccounts />,

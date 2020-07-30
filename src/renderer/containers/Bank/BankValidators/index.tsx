@@ -5,7 +5,7 @@ import Pagination from '@renderer/components/Pagination';
 
 import sampleData from '@renderer/mock/OverviewSampleData';
 
-const BankValidators = () => {
+const BankValidators = (): JSX.Element => {
   return (
     <div className="BankValidators">
       <PageTable items={sampleData} />

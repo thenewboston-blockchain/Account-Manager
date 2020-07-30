@@ -5,7 +5,7 @@ import Pagination from '@renderer/components/Pagination';
 
 import transactionSampleData from '@renderer/mock/TransactionSampleData';
 
-const AccountTransactions = () => {
+const AccountTransactions = (): JSX.Element => {
   return (
     <div className="AccountTransactions">
       <PageTable items={transactionSampleData} />

@@ -19,8 +19,8 @@ import useBooleanState from '@renderer/hooks/useBooleanState';
 import './Bank.scss';
 
 const Bank: FC = () => {
-  let {nid} = useParams();
-  let {path, url} = useRouteMatch();
+  const {nid} = useParams();
+  const {path, url} = useRouteMatch();
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
 
@@ -37,7 +37,7 @@ const Bank: FC = () => {
 
   const renderRightPageHeaderButtons = (): ReactNode => <Button>Add to Managed Banks</Button>;
 
-  const renderTabContent = () => {
+  const renderTabContent = (): ReactNode => {
     const tabContentRoutes = [
       {
         content: <BankAccounts />,

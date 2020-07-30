@@ -4,7 +4,7 @@ import DetailPanel from '@renderer/components/DetailPanel';
 
 import './ValidatorOverview.scss';
 
-const ValidatorOverview = () => {
+const ValidatorOverview = (): JSX.Element => {
   return (
     <div className="ValidatorOverview">
       <DetailPanel
