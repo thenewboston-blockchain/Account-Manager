@@ -8,7 +8,7 @@ interface ComponentProps {
   toggleDeleteModal(): void;
 }
 
-const DeleteModal: FC<ComponentProps> = ({toggleDeleteModal}) => {
+const DeleteBankModal: FC<ComponentProps> = ({toggleDeleteModal}) => {
   const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
 
   const handleDeleteAccountFromModal = async (): Promise<void> => {
@@ -26,12 +26,12 @@ const DeleteModal: FC<ComponentProps> = ({toggleDeleteModal}) => {
   return (
     <Modal
       cancelButton="No"
-      className="BankDeleteModal"
+      className="DeleteBankModal"
       close={toggleDeleteModal}
       header={
         <>
-          <Icon className="BankDeleteModal__icon" icon={IconType.alert} />
-          <h2 className="BankDeleteModal__title">Delete Account</h2>
+          <Icon className="DeleteBankModal__icon" icon={IconType.alert} />
+          <h2 className="DeleteBankModal__title">Delete Account</h2>
         </>
       }
       onSubmit={handleDeleteAccountFromModal}
@@ -39,11 +39,11 @@ const DeleteModal: FC<ComponentProps> = ({toggleDeleteModal}) => {
       submitting={submittingDeleteModal}
     >
       <>
-        <span className="BankDeleteModal__warning-span">Warning: </span> If you delete your account, you will lose all
+        <span className="DeleteBankModal__warning-span">Warning: </span> If you delete your account, you will lose all
         the points in your account as well as your signing key. Are you sure you want to delete your account?
       </>
     </Modal>
   );
 };
 
-export default DeleteModal;
+export default DeleteBankModal;

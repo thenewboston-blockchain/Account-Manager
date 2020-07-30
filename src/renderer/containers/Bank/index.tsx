@@ -4,7 +4,7 @@ import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-
 import Accounts from '@renderer/containers/Bank/Accounts';
 import Banks from '@renderer/containers/Bank/Banks';
 import {Button} from '@renderer/components/FormElements';
-import DeleteModal from '@renderer/containers/Bank/DeleteModal';
+import DeleteBankModal from '@renderer/containers/Bank/DeleteBankModal';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import EditBankModal from '@renderer/containers/Bank/EditBankModal';
 import Overview from '@renderer/containers/Bank/Overview';
@@ -113,7 +113,7 @@ const Bank: FC = () => {
   return (
     <div className="Bank">
       <PageLayout content={renderTabContent()} top={renderTop()} />
-      {deleteModalIsOpen && <DeleteModal toggleDeleteModal={toggleDeleteModal} />}
+      {deleteModalIsOpen && <DeleteBankModal toggleDeleteModal={toggleDeleteModal} />}
       {editModalIsOpen && <EditBankModal close={toggleEditModal} />}
     </div>
   );
