@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {FC} from 'react';
 
 import DetailPanel from '@renderer/components/DetailPanel';
 
 import './BankOverview.scss';
 
-const BankOverview = (): JSX.Element => {
+const BankOverview: FC = () => {
   return (
     <div className="BankOverview">
       <DetailPanel

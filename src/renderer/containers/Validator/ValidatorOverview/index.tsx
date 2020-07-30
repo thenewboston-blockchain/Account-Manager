@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {FC} from 'react';
 
 import DetailPanel from '@renderer/components/DetailPanel';
 
 import './ValidatorOverview.scss';
 
-const ValidatorOverview = (): JSX.Element => {
+const ValidatorOverview: FC = () => {
   return (
     <div className="ValidatorOverview">
       <DetailPanel
