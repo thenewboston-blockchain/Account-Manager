@@ -1,7 +1,7 @@
 .AccountOverview {
   padding: var(--page-padding);
 
-  img {
+  &__qr {
     margin-top: 6px;
   }
 }
