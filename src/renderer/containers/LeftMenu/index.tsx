@@ -51,16 +51,16 @@ const LeftMenu: FC = () => {
     return accounts.map(({accountNumber, nickname}) => ({
       key: accountNumber,
       label: `${nickname ? `${nickname} - ` : ''}${accountNumber}`,
-      to: '/account',
+      to: `/account/${accountNumber}/overview`,
     }));
-  };
-
-  const getFriendItems = (): LeftSubmenuItem[] => {
-    return friends.map(({id, name}) => ({key: id, label: name, to: '/friend'}));
   };
 
   const getBankItems = (): LeftSubmenuItem[] => {
     return banks.map(({ip_address: ipAddress}) => ({key: ipAddress, label: ipAddress, to: '/'}));
+  };
+
+  const getFriendItems = (): LeftSubmenuItem[] => {
+    return friends.map(({id, name}) => ({key: id, label: name, to: '/friend'}));
   };
 
   const getNetworkItems = (): LeftSubmenuItem[] => {

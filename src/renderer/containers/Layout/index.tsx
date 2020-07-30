@@ -21,7 +21,7 @@ export const Layout: FC = () => {
       </div>
       <div className="Layout__right">
         <Switch>
-          <Route path="/account">
+          <Route path="/account/:accountNumber">
             <Account />
           </Route>
           <Route path="/bank/:nid">
