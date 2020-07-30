@@ -66,7 +66,7 @@ const LeftMenu: FC = () => {
   const getNetworkItems = (): LeftSubmenuItem[] => {
     return [
       {key: 'Banks', label: `Banks (${banks.length})`, to: '/bank/123456/overview'},
-      {key: 'Validators', label: `Validators (${validators.length})`, to: '/validator'},
+      {key: 'Validators', label: `Validators (${validators.length})`, to: '/validator/987685/overview'},
     ];
   };
 

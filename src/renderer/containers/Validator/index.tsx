@@ -1,108 +1,91 @@
 import React, {FC, ReactNode} from 'react';
-import noop from 'lodash/noop';
+import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-dom';
 
-import Button from '@renderer/components/FormElements/Button';
-import DetailPanel from '@renderer/components/DetailPanel';
+import Accounts from '@renderer/containers/Validator/Accounts';
+import Banks from '@renderer/containers/Validator/Banks';
+import {Button} from '@renderer/components/FormElements';
+import Overview from '@renderer/containers/Validator/Overview';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
+import Validators from '@renderer/containers/Validator/Validators';
 
 import './Validator.scss';
 
 const Validator: FC = () => {
-  const renderDetailPanels = (): ReactNode => {
+  let {nid} = useParams();
+  let {path, url} = useRouteMatch();
+
+  const renderRightPageHeaderButtons = (): ReactNode => <Button>Add to Managed Validators</Button>;
+
+  const renderTabContent = () => {
+    const tabContentRoutes = [
+      {
+        content: <Accounts />,
+        page: 'accounts',
+      },
+      {
+        content: <Banks />,
+        page: 'banks',
+      },
+      {
+        content: <Overview />,
+        page: 'overview',
+      },
+      {
+        content: <Validators />,
+        page: 'validators',
+      },
+    ];
+
     return (
-      <div className="Validator__panels">
-        <DetailPanel
-          className="Validator__DetailPanel"
-          items={[
-            {
-              key: 'Node Type',
-              value: 'Validator',
-            },
-            {
-              key: 'Network ID',
-              value: 'Gn53dfs4a2z',
-            },
-            {
-              key: 'Protocol',
-              value: 'http',
-            },
-          ]}
-          title="Validator Information"
-        />
-        <DetailPanel
-          className="Validator__DetailPanel"
-          items={[
-            {
-              key: '90',
-              value: '1.00',
-            },
-            {
-              key: '70',
-              value: '1.22',
-            },
-          ]}
-          tableHeaders={['Bank Trust Level', 'Tx Fee (Points)']}
-          title="Trust Levels"
-        />
-      </div>
+      <Switch>
+        {tabContentRoutes.map(({content, page}) => (
+          <Route path={`${path}/${page}`}>{content}</Route>
+        ))}
+      </Switch>
     );
   };
 
-  const renderRightPageHeaderButtons = (): ReactNode => (
+  const renderTop = (): ReactNode => (
     <>
-      <Button variant="outlined">Add to Managed Validators</Button>
-      <Button>Register Bank</Button>
+      <PageHeader
+        rightContent={renderRightPageHeaderButtons()}
+        title={`Awesome Validator (${nid})`}
+        trustScore={94.21}
+      />
+      <PageTabs
+        items={[
+          {
+            baseUrl: url,
+            name: 'Overview',
+            page: 'overview',
+          },
+          {
+            baseUrl: url,
+            name: 'Accounts',
+            page: 'accounts',
+          },
+          {
+            baseUrl: url,
+            name: 'Banks',
+            page: 'banks',
+          },
+          {
+            baseUrl: url,
+            name: 'Validators',
+            page: 'validators',
+          },
+        ]}
+      />
     </>
   );
 
-  const renderTop = (): ReactNode => {
-    return (
-      <>
-        <PageHeader
-          rightContent={renderRightPageHeaderButtons()}
-          title="My Validator (223.125.111.178)"
-          trustScore={98.34}
-        />
-        <PageTabs
-          items={[
-            {
-              active: true,
-              name: 'Overview',
-              onClick: noop,
-            },
-            {
-              active: false,
-              name: 'Members',
-              onClick: noop,
-            },
-            {
-              active: false,
-              name: 'Transactions',
-              onClick: noop,
-            },
-            {
-              active: false,
-              name: 'Banks',
-              onClick: noop,
-            },
-            {
-              active: false,
-              name: 'Validators',
-              onClick: noop,
-            },
-          ]}
-        />
-      </>
-    );
-  };
-
   return (
     <div className="Validator">
-      <PageLayout content={renderDetailPanels()} top={renderTop()} />
+      <PageLayout content={renderTabContent()} top={renderTop()} />
     </div>
   );
 };
 
-export default Validator;
+export default withRouter(Validator);
