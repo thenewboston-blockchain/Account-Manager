@@ -11,8 +11,8 @@ const electronStore = new ElectronStore({
 });
 
 export interface Friend {
-  name: string;
-  id: string;
+  accountNumber: string;
+  nickname?: string;
 }
 
 const friendsSlice = createSlice({
@@ -20,10 +20,10 @@ const friendsSlice = createSlice({
   name: 'friends',
   reducers: {
     create: {
-      prepare: (name = '', id = '') => {
-        electronStore.set('friends', {id, name});
+      prepare: (accountNumber = '', nickname = '') => {
+        electronStore.set('friends', {accountNumber, nickname});
         return {
-          payload: {id, name},
+          payload: {accountNumber, nickname},
         };
       },
       reducer: (state, action: PayloadAction<Friend>) => {
@@ -34,8 +34,8 @@ const friendsSlice = createSlice({
 });
 
 export const sampleFriends: Friend[] = [
-  {id: '044de869fbf337', name: 'Amy'},
-  {id: '4525JLK32E23E', name: 'Dave'},
+  {accountNumber: '044de869fbf337', nickname: 'Amy'},
+  {accountNumber: '4525JLK32E23E', nickname: 'Dave'},
 ];
 
 export const {create: createFriend} = friendsSlice.actions;

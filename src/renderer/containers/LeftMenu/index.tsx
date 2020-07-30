@@ -56,11 +56,19 @@ const LeftMenu: FC = () => {
   };
 
   const getBankItems = (): LeftSubmenuItem[] => {
-    return banks.map(({ip_address: ipAddress}) => ({key: ipAddress, label: ipAddress, to: '/'}));
+    return banks.map(({ip_address: ipAddress, node_identifier: nodeIdentifier}) => ({
+      key: nodeIdentifier,
+      label: ipAddress,
+      to: `/bank/${nodeIdentifier}/overview`,
+    }));
   };
 
   const getFriendItems = (): LeftSubmenuItem[] => {
-    return friends.map(({id, name}) => ({key: id, label: name, to: '/friend'}));
+    return friends.map(({accountNumber, nickname}) => ({
+      key: accountNumber,
+      label: `${nickname ? `${nickname} - ` : ''}${accountNumber}`,
+      to: `/account/${accountNumber}/overview`,
+    }));
   };
 
   const getNetworkItems = (): LeftSubmenuItem[] => {
@@ -71,7 +79,11 @@ const LeftMenu: FC = () => {
   };
 
   const getValidatorItems = (): LeftSubmenuItem[] => {
-    return validators.map(({ip_address: ipAddress}) => ({key: ipAddress, label: ipAddress, to: '/'}));
+    return validators.map(({ip_address: ipAddress, network_identifier: networkIdentifier}) => ({
+      key: ipAddress,
+      label: ipAddress,
+      to: `/validator/${networkIdentifier}/overview`,
+    }));
   };
 
   return (
