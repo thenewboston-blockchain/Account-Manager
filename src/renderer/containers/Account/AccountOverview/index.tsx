@@ -3,13 +3,13 @@ import React from 'react';
 import DetailPanel from '@renderer/components/DetailPanel';
 import QR from '@renderer/components/QR';
 
-import './Overview.scss';
+import './AccountOverview.scss';
 
-const Overview = () => {
+const AccountOverview = () => {
   return (
-    <div className="Overview">
+    <div className="AccountOverview">
       <DetailPanel
-        className="Account__DetailPanel"
+        className="AccountOverview__DetailPanel"
         items={[
           {
             key: 'Balance',
@@ -34,4 +34,4 @@ const Overview = () => {
   );
 };
 
-export default Overview;
+export default AccountOverview;

@@ -5,13 +5,13 @@ import Pagination from '@renderer/components/Pagination';
 
 import transactionSampleData from '@renderer/mock/TransactionSampleData';
 
-const Transactions = () => {
+const AccountTransactions = () => {
   return (
-    <div className="Transactions">
+    <div className="AccountTransactions">
       <PageTable items={transactionSampleData} />
       <Pagination />
     </div>
   );
 };
 
-export default Transactions;
+export default AccountTransactions;

@@ -2,12 +2,12 @@ import React, {FC, ReactNode} from 'react';
 import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
 import noop from 'lodash/noop';
 
+import AccountOverview from '@renderer/containers/Account/AccountOverview';
+import AccountTransactions from '@renderer/containers/Account/AccountTransactions';
 import DeleteAccountModal from '@renderer/containers/Account/DeleteAccountModal';
-import Overview from '@renderer/containers/Account/Overview';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
-import Transactions from '@renderer/containers/Account/Transactions';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 
@@ -39,11 +39,11 @@ const Account: FC = () => {
   const renderTabContent = () => {
     const tabContentRoutes = [
       {
-        content: <Overview />,
+        content: <AccountOverview />,
         page: 'overview',
       },
       {
-        content: <Transactions />,
+        content: <AccountTransactions />,
         page: 'transactions',
       },
     ];
