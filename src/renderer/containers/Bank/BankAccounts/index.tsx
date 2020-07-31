@@ -1,3 +1,5 @@
+/* eslint-disable sort-keys */
+
 import React, {FC} from 'react';
 
 import PageTable from '@renderer/components/PageTable';
@@ -6,19 +8,19 @@ import Pagination from '@renderer/components/Pagination';
 const sampleData = {
   data: [
     {
-      account_number: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
-      created_date: '2020-07-22T04:04:36.286467Z',
       id: 'd99d2349-3ee5-4bd9-a285-0d3e8f8a63b9',
-      modified_date: '2020-07-22T04:04:36.286498Z',
+      account_number: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
       trust: '0.00',
+      created_date: '2020-07-22T04:04:36.286467Z',
+      modified_date: '2020-07-22T04:04:36.286498Z',
     },
   ],
   header: {
-    account_number: 'Account Number',
-    created_date: 'Created',
     id: 'ID',
-    modified_date: 'Modified',
+    account_number: 'Account Number',
     trust: 'Trust',
+    created_date: 'Created',
+    modified_date: 'Modified',
   },
 };
 
