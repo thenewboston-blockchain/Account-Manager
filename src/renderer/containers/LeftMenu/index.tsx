@@ -65,7 +65,7 @@ const LeftMenu: FC = () => {
       {
         key: 'active-bank',
         label: 'Your Bank (223.125.111.178)',
-        status: 'offline',
+        status: 'online',
         to: '/bank/123/overview',
       },
     ];
@@ -81,7 +81,7 @@ const LeftMenu: FC = () => {
         label: ipAddress,
         to: `/bank/${nodeIdentifier}/overview`,
       }))
-      .map(({key, label, to}) => <LeftSubmenuItemStatus key={key} label={label} status="online" to={to} />);
+      .map(({key, label, to}) => <LeftSubmenuItemStatus key={key} label={label} status="offline" to={to} />);
   };
 
   const getFriendItems = (): ReactNode[] => {

@@ -12,10 +12,8 @@ import BellIcon from 'mdi-react/BellIcon';
 import CheckboxBlankCircleIcon from 'mdi-react/CheckboxBlankCircleIcon';
 import CheckboxBlankCircleOutlineIcon from 'mdi-react/CheckboxBlankCircleOutlineIcon';
 import CloseIcon from 'mdi-react/CloseIcon';
-import CogIcon from 'mdi-react/CogIcon';
 import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
 import EarthIcon from 'mdi-react/EarthIcon';
-import HelpCircleIcon from 'mdi-react/HelpCircleIcon';
 import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
 
@@ -33,10 +31,8 @@ export enum IconType {
   checkboxBlankCircle,
   checkboxBlankCircleOutline,
   close,
-  cog,
   dotsVertical,
   earth,
-  helpCircle,
   play,
   plus,
   tnb,
@@ -74,14 +70,10 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled = 
         return <CheckboxBlankCircleOutlineIcon {...iconProps} />;
       case IconType.close:
         return <CloseIcon {...iconProps} />;
-      case IconType.cog:
-        return <CogIcon {...iconProps} />;
       case IconType.dotsVertical:
         return <DotsVerticalIcon {...iconProps} />;
       case IconType.earth:
         return <EarthIcon {...iconProps} />;
-      case IconType.helpCircle:
-        return <HelpCircleIcon {...iconProps} />;
       case IconType.play:
         return <PlayIcon {...iconProps} />;
       case IconType.plus:

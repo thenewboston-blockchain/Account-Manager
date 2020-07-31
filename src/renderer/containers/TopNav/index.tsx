@@ -13,8 +13,6 @@ const TopNav: FC = () => {
       </div>
       <div className="TopNav__container">
         <Icon className="TopNav__icon" icon={IconType.bell} />
-        <Icon className="TopNav__icon" icon={IconType.helpCircle} />
-        <Icon className="TopNav__icon" icon={IconType.cog} />
       </div>
     </div>
   );
