@@ -1,23 +1,16 @@
-// TODO
-
 .PageHeader {
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
-  padding: 12px;
-
-  &__left-section {
-    align-items: center;
-    display: flex;
-  }
+  padding: 12px 12px 0 12px;
 
   &__TrustBadge {
     margin-right: 6px;
   }
 
-  &__title {
-    color: var(--color-primary);
-    margin-right: 6px;
+  &__left-section {
+    align-items: center;
+    display: flex;
   }
 
   &__right-section {
@@ -27,5 +20,10 @@
     button {
       margin-left: 12px;
     }
+  }
+
+  &__title {
+    color: var(--color-primary);
+    margin-right: 6px;
   }
 }
