@@ -8,6 +8,7 @@ import BankConfirmationBlocks from '@renderer/containers/Bank/BankConfirmationBl
 import BankInvalidBlocks from '@renderer/containers/Bank/BankInvalidBlocks';
 import BankOverview from '@renderer/containers/Bank/BankOverview';
 import BankTransactions from '@renderer/containers/Bank/BankTransactions';
+import BankValidatorConfirmationServices from '@renderer/containers/Bank/BankValidatorConfirmationServices';
 import BankValidators from '@renderer/containers/Bank/BankValidators';
 import DeleteBankModal from '@renderer/containers/Bank/DeleteBankModal';
 import EditBankModal from '@renderer/containers/Bank/EditBankModal';
@@ -71,6 +72,10 @@ const Bank: FC = () => {
         page: 'transactions',
       },
       {
+        content: <BankValidatorConfirmationServices />,
+        page: 'validator-confirmation-services',
+      },
+      {
         content: <BankValidators />,
         page: 'validators',
       },
@@ -113,7 +118,7 @@ const Bank: FC = () => {
             page: 'blocks',
           },
           {
-            name: 'Confirmation Blocks',
+            name: 'Confirmations',
             page: 'confirmation-blocks',
           },
           {
@@ -127,6 +132,10 @@ const Bank: FC = () => {
           {
             name: 'Validators',
             page: 'validators',
+          },
+          {
+            name: 'Confirmation Services',
+            page: 'validator-confirmation-services',
           },
         ]}
       />
