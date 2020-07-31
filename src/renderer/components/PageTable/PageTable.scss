@@ -1,6 +1,6 @@
 .PageTable {
   font-family: var(--font-family-mono);
-  padding: 4px 0 0 12px;
+  padding: var(--page-padding);
   width: 100%;
 
   td,
@@ -26,6 +26,10 @@
       text-overflow: ellipsis;
       vertical-align: top;
       white-space: nowrap;
+
+      &:first-of-type {
+        width: 26px;
+      }
     }
 
     &--expanded {

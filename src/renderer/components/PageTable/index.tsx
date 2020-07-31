@@ -12,7 +12,7 @@ interface Header {
 
 interface Data {
   id: string;
-  [key: string]: string | number;
+  [key: string]: string | number | null;
 }
 
 interface PageTableItems {
