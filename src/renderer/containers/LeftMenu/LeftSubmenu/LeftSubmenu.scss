@@ -17,21 +17,12 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 2px;
   }
 
   &__left-items {
     align-items: center;
     display: flex;
-  }
-
-  &__menu-item {
-    color: var(--color-primary);
-    display: block;
-    line-height: 24px;
-    overflow: hidden;
-    padding-left: 26px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   &__title {

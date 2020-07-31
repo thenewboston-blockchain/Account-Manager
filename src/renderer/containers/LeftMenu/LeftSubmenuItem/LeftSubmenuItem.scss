@@ -1,0 +1,10 @@
+.LeftSubmenuItem {
+  align-items: center;
+  color: var(--color-primary);
+  display: flex;
+  line-height: 24px;
+  overflow: hidden;
+  padding-left: 26px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,31 @@
+.LeftSubmenuItemStatus {
+  align-items: center;
+  color: var(--color-primary);
+  display: flex;
+  line-height: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &__Icon {
+    width: 16px;
+
+    svg {
+      height: 8px;
+      width: 8px;
+    }
+
+    &--offline {
+      color: var(--color-sail-gray-300);
+    }
+
+    &--online {
+      color: var(--color-tertiary);
+    }
+  }
+
+  &__label {
+    line-height: 24px;
+    padding-left: 10px;
+  }
+}
