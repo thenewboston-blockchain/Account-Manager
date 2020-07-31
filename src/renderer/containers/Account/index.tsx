@@ -65,14 +65,13 @@ const Account: FC = () => {
         title={`Donations (${accountNumber})`}
       />
       <PageTabs
+        baseUrl={url}
         items={[
           {
-            baseUrl: url,
             name: 'Overview',
             page: 'overview',
           },
           {
-            baseUrl: url,
             name: 'Transactions',
             page: 'transactions',
           },
