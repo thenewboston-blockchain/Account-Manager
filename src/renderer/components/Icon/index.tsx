@@ -11,6 +11,7 @@ import BellIcon from 'mdi-react/BellIcon';
 import CloseIcon from 'mdi-react/CloseIcon';
 import CogIcon from 'mdi-react/CogIcon';
 import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
+import EarthIcon from 'mdi-react/EarthIcon';
 import HelpCircleIcon from 'mdi-react/HelpCircleIcon';
 import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
@@ -28,6 +29,7 @@ export enum IconType {
   close,
   cog,
   dotsVertical,
+  earth,
   helpCircle,
   play,
   plus,
@@ -64,6 +66,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled = 
         return <CogIcon {...iconProps} />;
       case IconType.dotsVertical:
         return <DotsVerticalIcon {...iconProps} />;
+      case IconType.earth:
+        return <EarthIcon {...iconProps} />;
       case IconType.helpCircle:
         return <HelpCircleIcon {...iconProps} />;
       case IconType.play:

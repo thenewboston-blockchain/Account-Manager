@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import noop from 'lodash/noop';
 
 import {fetchBanks} from '@renderer/api/bank';
+import Icon, {IconType} from '@renderer/components/Icon';
 import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
 import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import useBooleanState from '@renderer/hooks/useBooleanState';
@@ -92,7 +93,11 @@ const LeftMenu: FC = () => {
         <div className="points__title">Points</div>
         <div className="points__amount">{points.toLocaleString()}</div>
       </div>
-      <LeftSubmenu menuItems={getNetworkItems()} title="Network" />
+      <LeftSubmenu
+        leftIcon={<Icon className="LeftMenu__icon" icon={IconType.earth} />}
+        menuItems={getNetworkItems()}
+        title="Network"
+      />
       <LeftSubmenu addOnClick={toggleAddAccountModal} menuItems={getAccountItems()} title="Accounts" />
       <LeftSubmenu addOnClick={toggleAddFriendModal} menuItems={getFriendItems()} title="Friends" />
       <LeftSubmenu addOnClick={noop} menuItems={getBankItems()} title="Managed Banks" />

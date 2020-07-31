@@ -15,11 +15,12 @@ export interface LeftSubmenuItem {
 
 interface ComponentProps {
   addOnClick?(): void;
+  leftIcon?: ReactNode;
   menuItems: LeftSubmenuItem[];
   title: string;
 }
 
-const LeftSubmenu: FC<ComponentProps> = ({addOnClick, menuItems, title}) => {
+const LeftSubmenu: FC<ComponentProps> = ({addOnClick, leftIcon, menuItems, title}) => {
   const [expanded, toggleExpanded] = useBooleanState(true);
 
   const renderMenuItems = (): ReactNode => {
@@ -34,7 +35,7 @@ const LeftSubmenu: FC<ComponentProps> = ({addOnClick, menuItems, title}) => {
     <div className="LeftSubmenu">
       <div className="LeftSubmenu__header">
         <div className="LeftSubmenu__left-items">
-          <ArrowToggle expanded={expanded} onClick={toggleExpanded} />
+          {leftIcon || <ArrowToggle expanded={expanded} onClick={toggleExpanded} />}
           <span className="LeftSubmenu__title">{title}</span>
         </div>
         {addOnClick ? <Icon className="LeftSubmenu__add-icon" icon={IconType.plus} onClick={addOnClick} /> : null}

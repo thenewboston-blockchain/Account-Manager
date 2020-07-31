@@ -1,5 +1,17 @@
 .LeftSubmenu {
-  padding: 12px 12px 12px 6px;
+  padding: 12px 12px 12px 10px;
+
+  &__add-icon {
+    color: var(--color-sail-gray-700);
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    transition: color 0.1s;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
 
   &__header {
     align-items: center;
@@ -12,31 +24,19 @@
     display: flex;
   }
 
-  &__title {
-    color: var(--color-neutral-600);
-    cursor: default;
-    padding: 2px 0 0 10px;
-  }
-
-  &__add-icon {
-    color: var(--color-neutral-700);
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 700;
-    transition: color 0.1s;
-
-    &:hover {
-      color: var(--color-primary);
-    }
-  }
-
   &__menu-item {
+    color: var(--color-primary);
     display: block;
     line-height: 24px;
     overflow: hidden;
     padding-left: 26px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: var(--color-primary);
+  }
+
+  &__title {
+    color: var(--color-sail-gray-500);
+    cursor: default;
+    padding: 2px 0 0 10px;
   }
 }
