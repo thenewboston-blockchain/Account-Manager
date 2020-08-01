@@ -19,12 +19,14 @@ const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({key, label, stat
         <Icon
           className="LeftSubmenuItemStatus__Icon LeftSubmenuItemStatus__Icon--offline"
           icon={IconType.checkboxBlankCircleOutline}
+          size={8}
         />
       ),
       online: (
         <Icon
           className="LeftSubmenuItemStatus__Icon LeftSubmenuItemStatus__Icon--online"
           icon={IconType.checkboxBlankCircle}
+          size={8}
         />
       ),
     }[status];
