@@ -9,12 +9,12 @@ const sampleData = {
   data: [
     {
       account_number: 'ad1f8845c6a1abb6011a2a434a079a087c460657aad54329a84b406dce8bf314',
-      daily_confirmation_rate: null,
+      daily_confirmation_rate: '-',
       default_transaction_fee: '4.0000000000000000',
       id: 'd99d2349-3ee5-4bd9-a285-0d3e8f8a63b9',
       ip_address: '64.225.47.205',
       node_identifier: '3afdf37573f1a511def0bd85553404b7091a76bcd79cdcebba1310527b167521',
-      port: null,
+      port: '-',
       protocol: 'http',
       root_account_file:
         'https://gist.githubusercontent.com/buckyroberts/519b5cb82a0a5b5d4ae8a2175b722520/raw/9237deb449e27cab93cb89ea3346ecdfc61fe9ea/0.json',
