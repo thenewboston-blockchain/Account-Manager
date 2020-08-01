@@ -1,4 +1,5 @@
 import React, {FC} from 'react';
+import {NavLink} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 
@@ -12,6 +13,9 @@ const TopNav: FC = () => {
         <Icon className="TopNav__icon" icon={IconType.arrowRight} />
       </div>
       <div className="TopNav__container">
+        <NavLink className="TopNav__primary-validator" to="/validator/435622/overview">
+          Primary Validator (8.143.224.25)
+        </NavLink>
         <Icon className="TopNav__icon" icon={IconType.bell} />
       </div>
     </div>

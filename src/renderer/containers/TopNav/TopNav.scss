@@ -6,12 +6,13 @@
   padding: 6px 12px;
 
   &__container {
+    align-items: center;
     color: var(--color-blue-gray-700);
-    cursor: pointer;
     display: flex;
   }
 
   &__icon {
+    cursor: pointer;
     margin: 0 4px;
 
     &:first-of-type {
@@ -20,6 +21,16 @@
 
     &:last-of-type {
       margin-right: 0;
+    }
+  }
+
+  &__primary-validator {
+    color: var(--color-primary);
+    margin-right: 32px;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
     }
   }
 }
