@@ -5,6 +5,11 @@
   line-height: 24px;
   overflow: hidden;
   padding-left: 26px;
+  text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
