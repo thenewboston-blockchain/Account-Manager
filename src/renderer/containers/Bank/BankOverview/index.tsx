@@ -11,7 +11,7 @@ const BankOverview: FC = () => {
         items={[
           {
             key: 'Account Number',
-            value: 'Valida5e12967707909e62b2bb2036c209085a784fabbc3deccefee70052b6181c8ed8tor',
+            value: '5e12967707909e62b2bb2036c209085a784fabbc3deccefee70052b6181c8ed8',
           },
           {
             key: 'IP Address',

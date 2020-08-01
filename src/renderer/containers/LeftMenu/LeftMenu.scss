@@ -2,23 +2,14 @@
   display: flex;
   flex-direction: column;
 
-  a {
-    color: var(--color-secondary);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
+  &__icon {
+    color: var(--color-neutral-700);
+    height: 16px;
+    width: 16px;
   }
 
   .points {
-    margin: 12px 12px 12px 33px;
-
-    &__title {
-      color: var(--color-neutral-600);
-      cursor: default;
-      margin-bottom: 6px;
-    }
+    margin: 12px 12px 12px 36px;
 
     &__amount {
       align-items: center;
@@ -26,6 +17,12 @@
       display: flex;
       font-size: var(--font-size-medium);
       font-weight: 500;
+    }
+
+    &__title {
+      color: var(--color-neutral-600);
+      cursor: default;
+      margin-bottom: 2px;
     }
   }
 }

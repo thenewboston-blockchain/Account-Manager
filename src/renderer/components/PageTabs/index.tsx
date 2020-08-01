@@ -4,19 +4,19 @@ import {NavLink} from 'react-router-dom';
 import './PageTabs.scss';
 
 interface Item {
-  baseUrl: string;
   name: string;
   page: string;
 }
 
 interface ComponentProps {
+  baseUrl: string;
   items: Item[];
 }
 
-const PageTabs: FC<ComponentProps> = ({items}) => {
+const PageTabs: FC<ComponentProps> = ({baseUrl, items}) => {
   return (
     <div className="PageTabs">
-      {items.map(({baseUrl, name, page}) => (
+      {items.map(({name, page}) => (
         <NavLink activeClassName="PageTabs__tab--active" className="PageTabs__tab" to={`${baseUrl}/${page}`}>
           <div className="PageTabs__tab-name">{name}</div>
           <div className="PageTabs__tab-indicator" />

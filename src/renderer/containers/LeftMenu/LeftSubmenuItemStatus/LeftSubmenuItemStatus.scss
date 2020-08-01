@@ -1,0 +1,31 @@
+.LeftSubmenuItemStatus {
+  align-items: center;
+  color: var(--color-primary);
+  display: flex;
+  line-height: 24px;
+  overflow: hidden;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &__Icon {
+    width: 16px;
+
+    &--offline {
+      color: var(--color-sail-gray-300);
+    }
+
+    &--online {
+      color: var(--color-tertiary);
+    }
+  }
+
+  &__label {
+    line-height: 24px;
+    padding-left: 10px;
+  }
+}

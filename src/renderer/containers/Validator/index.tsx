@@ -55,24 +55,21 @@ const Validator: FC = () => {
         trustScore={94.21}
       />
       <PageTabs
+        baseUrl={url}
         items={[
           {
-            baseUrl: url,
             name: 'Overview',
             page: 'overview',
           },
           {
-            baseUrl: url,
             name: 'Accounts',
             page: 'accounts',
           },
           {
-            baseUrl: url,
             name: 'Banks',
             page: 'banks',
           },
           {
-            baseUrl: url,
             name: 'Validators',
             page: 'validators',
           },

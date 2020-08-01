@@ -3,8 +3,12 @@ import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-
 
 import BankAccounts from '@renderer/containers/Bank/BankAccounts';
 import BankBanks from '@renderer/containers/Bank/BankBanks';
+import BankBlocks from '@renderer/containers/Bank/BankBlocks';
+import BankConfirmationBlocks from '@renderer/containers/Bank/BankConfirmationBlocks';
+import BankInvalidBlocks from '@renderer/containers/Bank/BankInvalidBlocks';
 import BankOverview from '@renderer/containers/Bank/BankOverview';
 import BankTransactions from '@renderer/containers/Bank/BankTransactions';
+import BankValidatorConfirmationServices from '@renderer/containers/Bank/BankValidatorConfirmationServices';
 import BankValidators from '@renderer/containers/Bank/BankValidators';
 import DeleteBankModal from '@renderer/containers/Bank/DeleteBankModal';
 import EditBankModal from '@renderer/containers/Bank/EditBankModal';
@@ -48,12 +52,28 @@ const Bank: FC = () => {
         page: 'banks',
       },
       {
+        content: <BankBlocks />,
+        page: 'blocks',
+      },
+      {
+        content: <BankConfirmationBlocks />,
+        page: 'confirmation-blocks',
+      },
+      {
+        content: <BankInvalidBlocks />,
+        page: 'invalid-blocks',
+      },
+      {
         content: <BankOverview />,
         page: 'overview',
       },
       {
         content: <BankTransactions />,
         page: 'transactions',
+      },
+      {
+        content: <BankValidatorConfirmationServices />,
+        page: 'validator-confirmation-services',
       },
       {
         content: <BankValidators />,
@@ -79,31 +99,43 @@ const Bank: FC = () => {
         trustScore={98.34}
       />
       <PageTabs
+        baseUrl={url}
         items={[
           {
-            baseUrl: url,
             name: 'Overview',
             page: 'overview',
           },
           {
-            baseUrl: url,
             name: 'Accounts',
             page: 'accounts',
           },
           {
-            baseUrl: url,
             name: 'Transactions',
             page: 'transactions',
           },
           {
-            baseUrl: url,
+            name: 'Blocks',
+            page: 'blocks',
+          },
+          {
+            name: 'Confirmations',
+            page: 'confirmation-blocks',
+          },
+          {
+            name: 'Invalid Blocks',
+            page: 'invalid-blocks',
+          },
+          {
             name: 'Banks',
             page: 'banks',
           },
           {
-            baseUrl: url,
             name: 'Validators',
             page: 'validators',
+          },
+          {
+            name: 'Confirmation Services',
+            page: 'validator-confirmation-services',
           },
         ]}
       />

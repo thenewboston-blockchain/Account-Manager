@@ -1,7 +1,7 @@
 .Layout {
   display: grid;
   grid-template-columns: var(--left-menu-width) auto;
-  grid-template-rows: fit-content(100px) auto;
+  grid-template-rows: min-content auto;
   height: 100vh;
 
   &__top {
