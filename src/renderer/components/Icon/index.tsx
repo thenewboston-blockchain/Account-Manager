@@ -7,7 +7,6 @@ import noop from 'lodash/noop';
 import AlertIcon from 'mdi-react/AlertIcon';
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon';
 import ArrowRightIcon from 'mdi-react/ArrowRightIcon';
-import BankIcon from 'mdi-react/BankIcon';
 import BellIcon from 'mdi-react/BellIcon';
 import CheckboxBlankCircleIcon from 'mdi-react/CheckboxBlankCircleIcon';
 import CheckboxBlankCircleOutlineIcon from 'mdi-react/CheckboxBlankCircleOutlineIcon';
@@ -26,7 +25,6 @@ export enum IconType {
   alert,
   arrowLeft,
   arrowRight,
-  bank,
   bell,
   checkboxBlankCircle,
   checkboxBlankCircleOutline,
@@ -60,8 +58,6 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled = 
         return <ArrowLeftIcon {...iconProps} />;
       case IconType.arrowRight:
         return <ArrowRightIcon {...iconProps} />;
-      case IconType.bank:
-        return <BankIcon {...iconProps} />;
       case IconType.bell:
         return <BellIcon {...iconProps} />;
       case IconType.checkboxBlankCircle:

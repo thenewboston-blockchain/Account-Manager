@@ -122,11 +122,7 @@ const LeftMenu: FC = () => {
         menuItems={getNetworkItems()}
         title="Network"
       />
-      <LeftSubmenu
-        leftIcon={<Icon className="LeftMenu__icon" icon={IconType.bank} />}
-        menuItems={getActiveBankItems()}
-        title="Active Bank"
-      />
+      <LeftSubmenu menuItems={getActiveBankItems()} title="Active Bank" titleOnly />
       <LeftSubmenu addOnClick={toggleAddAccountModal} menuItems={getAccountItems()} title="Accounts" />
       <LeftSubmenu addOnClick={toggleAddFriendModal} menuItems={getFriendItems()} title="Friends" />
       <LeftSubmenu addOnClick={noop} menuItems={getBankItems()} title="Managed Banks" />
