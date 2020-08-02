@@ -16,9 +16,9 @@ const validators = createSlice({
   } as State,
   name: sliceActionType(NETWORK, VALIDATORS),
   reducers: {
-    set: (state, action: PayloadAction<{node: Node; nodeIdentifier: string}>) => {
-      const {nodeIdentifier, node} = action.payload;
-      state.entities[nodeIdentifier] = node;
+    set: (state, action: PayloadAction<Node>) => {
+      const {node_identifier: nodeIdentifier} = action.payload;
+      state.entities[nodeIdentifier] = action.payload;
     },
   },
 });
