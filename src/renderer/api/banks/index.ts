@@ -4,9 +4,8 @@ import omit from 'lodash/omit';
 
 import {fetchActivePrimaryValidator} from '@renderer/api/validators';
 import {APP, BANKS} from '@renderer/constants/store';
-import {setBank} from '@renderer/store/network/banks';
-
-import {ActiveBank, Node} from '@renderer/types/entities';
+import {setNetworkBank} from '@renderer/store/network/banks';
+import {ActiveBank, NetworkNode} from '@renderer/types/entities';
 import {Loading, RootState} from '@renderer/types/store';
 import {fetchActionType} from '@renderer/utils/store';
 import {formatAddress} from '@renderer/utils/format';
@@ -20,13 +19,13 @@ export const fetchActiveBank = createAsyncThunk<ActiveBank | undefined, string, 
       const response = await axios.get(`${baseUrl}/config`);
       const {primary_validator: primaryValidator} = response.data;
       const activeBankData = omit(response.data, ['primary_validator']) as ActiveBank;
-      const node: Node = {
+      const bank: NetworkNode = {
         ip_address: activeBankData.ip_address,
         node_identifier: activeBankData.node_identifier,
         port: activeBankData.port,
         protocol: activeBankData.protocol,
       };
-      dispatch(setBank(node));
+      dispatch(setNetworkBank(bank));
 
       const primaryValidatorAddress = formatAddress(
         primaryValidator.ip_address,

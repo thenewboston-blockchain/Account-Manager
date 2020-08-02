@@ -4,31 +4,37 @@ import noop from 'lodash/noop';
 
 import {fetchBanks} from '@renderer/api/old/bank';
 import Icon, {IconType} from '@renderer/components/Icon';
-import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
-import LeftSubmenuItemStatus, {LeftSubmenuItemStatusProps} from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
 import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
+import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
+import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import useBooleanState from '@renderer/hooks/useBooleanState';
+import {AppDispatch} from '@renderer/store';
 import {Account, getAccount} from '@renderer/store/old/accounts';
 import {Friend} from '@renderer/store/old/friends';
 import {Validator} from '@renderer/store/old/validators';
-import {Bank} from '@renderer/types/entities';
+import {ActiveBank, ActivePrimaryValidator, Bank} from '@renderer/types/entities';
 import {RootState} from '@renderer/types/store';
 
 import LeftSubmenu from './LeftSubmenu';
 
 import './LeftMenu.scss';
 
-const LeftComponentSelector = ({
+const LeftMenuSelector = ({
+  app: {activeBank, activePrimaryValidator},
   old: {accounts, banks, friends, points, validators},
 }: RootState): {
   accounts: Account[];
+  activeBank: ActiveBank | null;
+  activePrimaryValidator: ActivePrimaryValidator | null;
   banks: Bank[];
   friends: Friend[];
   points: number;
   validators: Validator[];
 } => ({
   accounts,
+  activeBank: activeBank.entities,
+  activePrimaryValidator: activePrimaryValidator.entities,
   banks: banks.entities,
   friends,
   points,
@@ -36,8 +42,10 @@ const LeftComponentSelector = ({
 });
 
 const LeftMenu: FC = () => {
-  const dispatch = useDispatch();
-  const {accounts, banks, friends, points, validators} = useSelector(LeftComponentSelector);
+  const dispatch = useDispatch<AppDispatch>();
+  const {accounts, activeBank, activePrimaryValidator, banks, friends, points, validators} = useSelector(
+    LeftMenuSelector,
+  );
   const [addAccountModalIsOpen, toggleAddAccountModal] = useBooleanState(false);
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
 
@@ -49,62 +57,80 @@ const LeftMenu: FC = () => {
   const getAccountItems = (): ReactNode[] => {
     return accounts
       .map(({accountNumber, nickname}) => ({
+        baseUrl: `/account/${accountNumber}`,
         key: accountNumber,
         label: `${nickname ? `${nickname} - ` : ''}${accountNumber}`,
         to: `/account/${accountNumber}/overview`,
       }))
-      .map(({key, label, to}) => <LeftSubmenuItem key={key} label={label} to={to} />);
+      .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
   };
 
-  const getActiveBankItems = (): ReactNode[] => {
-    const sampleData: LeftSubmenuItemStatusProps[] = [
-      {
-        key: 'active-bank',
-        label: 'Your Bank (223.125.111.178)',
-        status: 'online',
-        to: '/bank/123/overview',
-      },
-    ];
-    return sampleData.map(({key, label, status, to}) => (
-      <LeftSubmenuItemStatus key={key} label={label} status={status} to={to} />
-    ));
+  const getActiveBank = (): ReactNode => {
+    if (!activeBank) return null;
+    return (
+      <LeftSubmenuItemStatus
+        baseUrl={`/bank/${activeBank.node_identifier}`}
+        key="active-bank"
+        label="Your Bank (223.125.111.178)"
+        status="online"
+        to={`/bank/${activeBank.node_identifier}/overview`}
+      />
+    );
   };
 
   const getBankItems = (): ReactNode[] => {
     return banks
       .map(({ip_address: ipAddress, node_identifier: nodeIdentifier}) => ({
+        baseUrl: `/bank/${nodeIdentifier}`,
         key: nodeIdentifier,
         label: ipAddress,
         to: `/bank/${nodeIdentifier}/overview`,
       }))
-      .map(({key, label, to}) => <LeftSubmenuItemStatus key={key} label={label} status="offline" to={to} />);
+      .map(({baseUrl, key, label, to}) => (
+        <LeftSubmenuItemStatus baseUrl={baseUrl} key={key} label={label} status="offline" to={to} />
+      ));
   };
 
   const getFriendItems = (): ReactNode[] => {
     return friends
       .map(({accountNumber, nickname}) => ({
+        baseUrl: `/account/${accountNumber}`,
         key: accountNumber,
         label: `${nickname ? `${nickname} - ` : ''}${accountNumber}`,
         to: `/account/${accountNumber}/overview`,
       }))
-      .map(({key, label, to}) => <LeftSubmenuItem key={key} label={label} to={to} />);
+      .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
   };
 
   const getNetworkItems = (): ReactNode[] => {
+    if (!activePrimaryValidator) return [];
     return [
-      {key: 'Banks', label: `Banks (${banks.length})`, to: '/bank/123456/overview'},
-      {key: 'Validators', label: `Validators (${validators.length})`, to: '/validator/987685/overview'},
-    ].map(({key, label, to}) => <LeftSubmenuItem key={key} label={label} to={to} />);
+      {
+        baseUrl: `/validator/${activePrimaryValidator.node_identifier}/banks`,
+        key: 'Banks',
+        label: 'Banks',
+        to: `/validator/${activePrimaryValidator.node_identifier}/banks`,
+      },
+      {
+        baseUrl: `/validator/${activePrimaryValidator.node_identifier}/validators`,
+        key: 'Validators',
+        label: 'Validators',
+        to: `/validator/${activePrimaryValidator.node_identifier}/validators`,
+      },
+    ].map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
   };
 
   const getValidatorItems = (): ReactNode[] => {
     return validators
       .map(({ip_address: ipAddress, network_identifier: networkIdentifier}) => ({
+        baseUrl: `/validator/${networkIdentifier}`,
         key: ipAddress,
         label: ipAddress,
         to: `/validator/${networkIdentifier}/overview`,
       }))
-      .map(({key, label, to}) => <LeftSubmenuItemStatus key={key} label={label} status="online" to={to} />);
+      .map(({baseUrl, key, label, to}) => (
+        <LeftSubmenuItemStatus baseUrl={baseUrl} key={key} label={label} status="online" to={to} />
+      ));
   };
 
   return (
@@ -118,7 +144,7 @@ const LeftMenu: FC = () => {
         menuItems={getNetworkItems()}
         title="Network"
       />
-      <LeftSubmenu menuItems={getActiveBankItems()} title="Active Bank" titleOnly />
+      <LeftSubmenu menuItems={[getActiveBank()]} title="Active Bank" titleOnly />
       <LeftSubmenu addOnClick={toggleAddAccountModal} menuItems={getAccountItems()} title="Accounts" />
       <LeftSubmenu addOnClick={toggleAddFriendModal} menuItems={getFriendItems()} title="Friends" />
       <LeftSubmenu addOnClick={noop} menuItems={getBankItems()} title="Managed Banks" />

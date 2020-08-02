@@ -1,12 +1,15 @@
-import React, {FC} from 'react';
-import {useDispatch} from 'react-redux';
+import React, {FC, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
 
 import {fetchActiveBank} from '@renderer/api/banks';
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
+import {AppDispatch} from '@renderer/store';
+import {ActiveBank} from '@renderer/types/entities';
 import {SelectOption} from '@renderer/types/forms';
+import {RootState} from '@renderer/types/store';
 import {formatAddress} from '@renderer/utils/format';
 
 import './Connect.scss';
@@ -31,13 +34,22 @@ const validationSchema = Yup.object().shape({
   protocol: Yup.string().required(),
 });
 
+const ConnectSelector = ({
+  app: {activeBank},
+}: RootState): {
+  activeBank: ActiveBank | null;
+} => ({
+  activeBank: activeBank.entities,
+});
+
 const Connect: FC = () => {
-  const dispatch = useDispatch();
+  const {activeBank} = useSelector(ConnectSelector);
+  const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
 
-  const goToMain = (): void => {
-    history.push('/bank/123456/overview');
-  };
+  useEffect(() => {
+    if (activeBank) history.push(`/bank/${activeBank.node_identifier}/overview`);
+  }, [activeBank, history]);
 
   const handleSubmit = async (values: FormValues): Promise<void> => {
     const {ipAddress, port, protocol} = values;
@@ -71,9 +83,6 @@ const Connect: FC = () => {
 
         <FormButton ignoreDirty type="submit">
           Connect
-        </FormButton>
-        <FormButton className="Connect__go" onClick={goToMain}>
-          Go (dev only)
         </FormButton>
       </Form>
     </div>

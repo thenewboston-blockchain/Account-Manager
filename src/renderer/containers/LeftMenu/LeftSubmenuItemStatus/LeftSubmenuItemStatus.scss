@@ -12,6 +12,10 @@
     text-decoration: underline;
   }
 
+  &--active {
+    font-weight: 500;
+  }
+
   &__Icon {
     width: 16px;
 

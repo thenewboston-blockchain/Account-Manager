@@ -7,17 +7,18 @@ import {getCustomClassNames} from '@renderer/utils/components';
 import './PageTable.scss';
 
 interface Header {
-  [key: string]: string;
+  [tableKey: string]: string;
 }
 
-interface Data {
-  id: string;
-  [key: string]: string | number;
+export interface PageTableData {
+  key: string;
+  [tableKey: string]: string | number | null | undefined;
 }
 
-interface PageTableItems {
-  header: Header;
-  data: Data[];
+export interface PageTableItems {
+  orderedKeys: number[];
+  headers: Header;
+  data: PageTableData[];
 }
 
 interface ComponentProps {
@@ -26,16 +27,18 @@ interface ComponentProps {
 }
 
 const PageTable: FC<ComponentProps> = ({className, items}) => {
-  const {header, data} = items;
-  const [expanded, setExpanded] = useState<boolean[]>(data.map(() => false));
+  const {headers, data, orderedKeys} = items;
+  const [expanded, setExpanded] = useState<number[]>([]);
 
   const toggleExpanded = (indexToToggle: number) => (): void => {
-    setExpanded(expanded.map((rowIsExpanded, i) => (i === indexToToggle ? !rowIsExpanded : rowIsExpanded)));
+    setExpanded(
+      expanded.includes(indexToToggle) ? expanded.filter((i) => i !== indexToToggle) : [...expanded, indexToToggle],
+    );
   };
 
-  const renderSampleRows = (): ReactNode => {
+  const renderRows = (): ReactNode => {
     return data.map((item, dataIndex) => {
-      const rowIsExpanded = expanded[dataIndex];
+      const rowIsExpanded = expanded.includes(dataIndex);
 
       return (
         <tr
@@ -44,7 +47,7 @@ const PageTable: FC<ComponentProps> = ({className, items}) => {
             ...getCustomClassNames(className, '__row', true),
             ...getCustomClassNames(className, '__row--expanded', rowIsExpanded),
           })}
-          key={item.id}
+          key={item.key}
         >
           <td>
             <ArrowToggle
@@ -53,8 +56,8 @@ const PageTable: FC<ComponentProps> = ({className, items}) => {
               onClick={toggleExpanded(dataIndex)}
             />
           </td>
-          {Object.keys(header).map((key, headerIndex) => (
-            <td key={headerIndex}>{item[key]}</td>
+          {orderedKeys.map((key) => (
+            <td key={key}>{item[key] || '-'}</td>
           ))}
         </tr>
       );
@@ -66,12 +69,12 @@ const PageTable: FC<ComponentProps> = ({className, items}) => {
       <thead className={clsx('PageTable__thead', {...getCustomClassNames(className, '__thead', true)})}>
         <tr>
           <th />
-          {Object.entries(header).map(([key, value]) => (
-            <td key={key}>{value}</td>
+          {orderedKeys.map((key) => (
+            <td key={key}>{headers[key]}</td>
           ))}
         </tr>
       </thead>
-      <tbody>{renderSampleRows()}</tbody>
+      <tbody>{renderRows()}</tbody>
     </table>
   );
 };

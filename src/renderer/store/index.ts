@@ -4,10 +4,14 @@ import appReducers from './app';
 import networkReducers from './network';
 import oldReducers from './old';
 
-export default configureStore({
+const store = configureStore({
   reducer: {
     app: appReducers,
     network: networkReducers,
     old: oldReducers,
   },
 });
+
+export type AppDispatch = typeof store.dispatch;
+
+export default store;
