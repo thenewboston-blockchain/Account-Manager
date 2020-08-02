@@ -1,3 +1,5 @@
+/* eslint-disable sort-keys */
+
 import React, {FC, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
@@ -54,12 +56,12 @@ const AccountTransactions: FC = () => {
         items={{
           data: bankTransactions,
           header: {
+            sender_account_number: 'Sender Account Number',
+            recipient_account_number: 'Recipient Account Number',
             amount: 'Amount',
             balance_key: 'Balance Key',
-            date_created: 'Date Created',
-            recipient_account_number: 'Recipient Account Number',
-            sender_account_number: 'Sender Account Number',
             signature: 'Signature',
+            date_created: 'Date Created',
           },
         }}
       />
