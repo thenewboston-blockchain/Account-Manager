@@ -27,15 +27,17 @@ interface ComponentProps {
 
 const PageTable: FC<ComponentProps> = ({className, items}) => {
   const {header, data} = items;
-  const [expanded, setExpanded] = useState<boolean[]>(data.map(() => false));
+  const [expanded, setExpanded] = useState<number[]>([]);
 
   const toggleExpanded = (indexToToggle: number) => (): void => {
-    setExpanded(expanded.map((rowIsExpanded, i) => (i === indexToToggle ? !rowIsExpanded : rowIsExpanded)));
+    setExpanded(
+      expanded.includes(indexToToggle) ? expanded.filter((i) => i !== indexToToggle) : [...expanded, indexToToggle],
+    );
   };
 
   const renderRows = (): ReactNode => {
     return data.map((item, dataIndex) => {
-      const rowIsExpanded = expanded[dataIndex];
+      const rowIsExpanded = expanded.includes(dataIndex);
 
       return (
         <tr
@@ -54,7 +56,7 @@ const PageTable: FC<ComponentProps> = ({className, items}) => {
             />
           </td>
           {Object.keys(header).map((key, headerIndex) => (
-            <td key={headerIndex}>{item[key]}</td>
+            <td key={headerIndex}>{item[key] || '-'}</td>
           ))}
         </tr>
       );

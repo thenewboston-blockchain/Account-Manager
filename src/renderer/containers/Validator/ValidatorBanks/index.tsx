@@ -22,7 +22,6 @@ const ValidatorBanks: FC = () => {
       const {data} = await axios.get(`${address}/banks`);
       const tableData = data.map((bank: any) => ({
         ...bank,
-        confirmation_expiration: bank.confirmation_expiration || '-',
         id: bank.node_identifier,
       }));
       setBanks(tableData);
