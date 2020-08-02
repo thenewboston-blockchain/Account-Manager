@@ -1,14 +1,13 @@
 import {configureStore} from '@reduxjs/toolkit';
 
-import oldReducers, {oldPreloadedState} from '@renderer/store/old';
-
-const preloadedState = {
-  old: oldPreloadedState,
-};
+import appReducers from './app';
+import networkReducers from './network';
+import oldReducers from './old';
 
 export default configureStore({
-  preloadedState,
   reducer: {
+    app: appReducers,
+    network: networkReducers,
     old: oldReducers,
   },
 });

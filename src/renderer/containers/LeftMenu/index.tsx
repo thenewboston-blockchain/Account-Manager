@@ -2,7 +2,7 @@ import React, {FC, ReactNode, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import noop from 'lodash/noop';
 
-import {fetchBanks} from '@renderer/api/bank';
+import {fetchBanks} from '@renderer/api/old/bank';
 import Icon, {IconType} from '@renderer/components/Icon';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
 import LeftSubmenuItemStatus, {LeftSubmenuItemStatusProps} from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';

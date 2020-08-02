@@ -1,3 +1,6 @@
-import Bank from '@renderer/types/entities/Bank';
+import ActiveBank from './ActiveBank';
+import ActivePrimaryValidator from './ActivePrimaryValidator';
+import Bank from './Bank';
+import Node from './Node';
 
-export {Bank};
+export {ActiveBank, ActivePrimaryValidator, Bank, Node};

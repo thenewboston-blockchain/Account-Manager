@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {fetchBanks} from '@renderer/api/bank';
+import {fetchBanks} from '@renderer/api/old/bank';
 import {BANKS} from '@renderer/constants/store';
 import {Bank} from '@renderer/types/entities';
 import {Loading, StateSlice} from '@renderer/types/store';
