@@ -19,7 +19,7 @@ import LeftSubmenu from './LeftSubmenu';
 
 import './LeftMenu.scss';
 
-const LeftComponentSelector = ({
+const LeftMenuSelector = ({
   old: {accounts, banks, friends, points, validators},
 }: RootState): {
   accounts: Account[];
@@ -37,7 +37,7 @@ const LeftComponentSelector = ({
 
 const LeftMenu: FC = () => {
   const dispatch = useDispatch();
-  const {accounts, banks, friends, points, validators} = useSelector(LeftComponentSelector);
+  const {accounts, banks, friends, points, validators} = useSelector(LeftMenuSelector);
   const [addAccountModalIsOpen, toggleAddAccountModal] = useBooleanState(false);
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
 
@@ -92,8 +92,8 @@ const LeftMenu: FC = () => {
 
   const getNetworkItems = (): ReactNode[] => {
     return [
-      {key: 'Banks', label: `Banks (${banks.length})`, to: '/bank/123456/overview'},
-      {key: 'Validators', label: `Validators (${validators.length})`, to: '/validator/987685/overview'},
+      {key: 'Banks', label: 'Banks', to: '/bank/123456/overview'},
+      {key: 'Validators', label: 'Validators', to: '/validator/987685/overview'},
     ].map(({key, label, to}) => <LeftSubmenuItem key={key} label={label} to={to} />);
   };
 
