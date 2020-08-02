@@ -1,18 +1,21 @@
 import React, {FC, ReactNode} from 'react';
-import {NavLink} from 'react-router-dom';
+import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 
 import './LeftSubmenuItemStatus.scss';
 
-export interface LeftSubmenuItemStatusProps {
+export interface LeftSubmenuItemStatusProps extends RouteComponentProps {
+  baseUrl: string;
   key: string;
   label: ReactNode;
   status: 'offline' | 'online';
   to: string;
 }
 
-const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({key, label, status, to}) => {
+const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({baseUrl, key, label, location, status, to}) => {
+  const getIsActive = (): boolean => location.pathname.includes(baseUrl);
+
   const renderStatusIcon = (): ReactNode => {
     return {
       offline: (
@@ -33,11 +36,17 @@ const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({key, label, stat
   };
 
   return (
-    <NavLink className="LeftSubmenuItemStatus" key={key} to={to}>
+    <NavLink
+      activeClassName="LeftSubmenuItemStatus--active"
+      className="LeftSubmenuItemStatus"
+      isActive={getIsActive}
+      key={key}
+      to={to}
+    >
       {renderStatusIcon()}
       <span className="LeftSubmenuItemStatus__label">{label}</span>
     </NavLink>
   );
 };
 
-export default LeftSubmenuItemStatus;
+export default withRouter(LeftSubmenuItemStatus);

@@ -1,20 +1,29 @@
 import React, {FC, ReactNode} from 'react';
-import {NavLink} from 'react-router-dom';
+import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom';
 
 import './LeftSubmenuItem.scss';
 
-export interface LeftSubmenuItemProps {
+export interface LeftSubmenuItemProps extends RouteComponentProps {
+  baseUrl: string;
   key: string;
   label: ReactNode;
   to: string;
 }
 
-const LeftSubmenuItem: FC<LeftSubmenuItemProps> = ({key, label, to}) => {
+const LeftSubmenuItem: FC<LeftSubmenuItemProps> = ({baseUrl, key, label, location, to}) => {
+  const getIsActive = (): boolean => location.pathname.includes(baseUrl);
+
   return (
-    <NavLink className="LeftSubmenuItem" key={key} to={to}>
+    <NavLink
+      activeClassName="LeftSubmenuItem--active"
+      className="LeftSubmenuItem"
+      isActive={getIsActive}
+      key={key}
+      to={to}
+    >
       {label}
     </NavLink>
   );
 };
 
-export default LeftSubmenuItem;
+export default withRouter(LeftSubmenuItem);
