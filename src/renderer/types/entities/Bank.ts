@@ -1,13 +1,8 @@
-import {ProtocolType} from '@renderer/types/api';
+import Node from './Node';
 
-export default interface Bank {
+export default interface Bank extends Node {
   account_number: string;
-  ip_address: string;
-  node_identifier: string;
-  port: number | null;
-  protocol: ProtocolType;
   version: string;
   default_transaction_fee: string;
-  trust: string;
-  nickName?: string;
+  node_identifier: string;
 }

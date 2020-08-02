@@ -1,21 +1,23 @@
 import {PayloadAction, SerializedError} from '@reduxjs/toolkit';
 import {Loading, StateSlice} from '@renderer/types/store';
 
-export const createActionType = (sliceName: string): string => `${sliceName}/create`;
+export const createActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/create`;
 
-export const deleteActionType = (sliceName: string): string => `${sliceName}/delete`;
+export const deleteActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/delete`;
 
-export const fetchActionType = (sliceName: string): string => `${sliceName}/fetch`;
+export const fetchActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/fetch`;
 
-export const fetchByIdActionType = (sliceName: string): string => `${sliceName}/fetchById`;
+export const fetchListActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/fetchList`;
 
-export const updateActionType = (sliceName: string): string => `${sliceName}/update`;
+export const updateActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/update`;
 
-type ActionType = PayloadAction<any, string, {arg: void; requestId: string}, never>;
+export const sliceActionType = (...slicePaths: string[]): string => slicePaths.join('/');
+
+type ActionType = PayloadAction<any, string, {arg: any; requestId: string}, never>;
 type RejectedActionType = PayloadAction<
   any,
   string,
-  {arg: void; requestId: string; aborted: boolean; condition: boolean},
+  {arg: any; requestId: string; aborted: boolean; condition: boolean},
   SerializedError
 >;
 type StateType = StateSlice<any>;
@@ -30,7 +32,6 @@ export const pendingReducer = (state: StateType, action: ActionType): void => {
 export const fulfilledReducer = (state: StateType, action: ActionType): void => {
   if (state.loading === Loading.pending && state.currentRequestId === action.meta.requestId) {
     state.loading = Loading.idle;
-    state.entities = action.payload;
     state.currentRequestId = undefined;
   }
 };
@@ -40,5 +41,20 @@ export const rejectedReducer = (state: StateType, action: RejectedActionType): v
     state.loading = Loading.idle;
     state.error = action.error;
     state.currentRequestId = undefined;
+  }
+};
+
+export const setStateReducer = (state: StateType, action: ActionType): void => {
+  if (state.loading === Loading.pending && state.currentRequestId === action.meta.requestId) {
+    state.entities = action.payload;
+    fulfilledReducer(state, action);
+  }
+};
+
+export const setNodeReducer = (state: StateType, action: ActionType): void => {
+  if (state.loading === Loading.pending && state.currentRequestId === action.meta.requestId) {
+    const {node_identifier: nodeIdentifier} = action.payload;
+    state.entities[nodeIdentifier] = action.payload;
+    fulfilledReducer(state, action);
   }
 };
