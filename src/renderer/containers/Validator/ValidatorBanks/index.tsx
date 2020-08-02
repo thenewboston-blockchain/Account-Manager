@@ -26,6 +26,7 @@ const ValidatorBanks: FC = () => {
       }));
       setBanks(tableData);
     };
+
     fetchData();
   }, [networkValidator]);
 
