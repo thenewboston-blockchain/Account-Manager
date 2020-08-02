@@ -3,9 +3,8 @@ import axios from 'axios';
 import omit from 'lodash/omit';
 
 import {APP, VALIDATORS} from '@renderer/constants/store';
-import {setValidator} from '@renderer/store/network/validators';
-
-import {ActivePrimaryValidator, Node} from '@renderer/types/entities';
+import {setNetworkValidator} from '@renderer/store/network/validators';
+import {ActivePrimaryValidator, NetworkNode} from '@renderer/types/entities';
 import {Loading, RootState} from '@renderer/types/store';
 import {fetchActionType} from '@renderer/utils/store';
 
@@ -19,13 +18,13 @@ export const fetchActivePrimaryValidator = createAsyncThunk<
   try {
     const response = await axios.get(`${baseUrl}/config`);
     const activePrimaryValidatorData = omit(response.data, ['primary_validator']) as ActivePrimaryValidator;
-    const node: Node = {
+    const validator: NetworkNode = {
       ip_address: activePrimaryValidatorData.ip_address,
       node_identifier: activePrimaryValidatorData.node_identifier,
       port: activePrimaryValidatorData.port,
       protocol: activePrimaryValidatorData.protocol,
     };
-    dispatch(setValidator(node));
+    dispatch(setNetworkValidator(validator));
 
     return activePrimaryValidatorData;
   } catch (error) {

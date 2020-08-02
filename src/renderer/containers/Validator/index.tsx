@@ -1,4 +1,5 @@
 import React, {FC, ReactNode} from 'react';
+import {useSelector} from 'react-redux';
 import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-dom';
 
 import PageHeader from '@renderer/components/PageHeader';
@@ -9,12 +10,14 @@ import ValidatorBanks from '@renderer/containers/Validator/ValidatorBanks';
 import ValidatorOverview from '@renderer/containers/Validator/ValidatorOverview';
 import ValidatorValidators from '@renderer/containers/Validator/ValidatorValidators';
 import {Button} from '@renderer/components/FormElements';
+import {RootState} from '@renderer/types/store';
 
 import './Validator.scss';
 
 const Validator: FC = () => {
   const {nid} = useParams();
   const {path, url} = useRouteMatch();
+  const validator = useSelector((state: RootState) => state.network.validators.entities[nid]);
 
   const renderRightPageHeaderButtons = (): ReactNode => <Button>Add to Managed Validators</Button>;
 
@@ -51,7 +54,7 @@ const Validator: FC = () => {
     <>
       <PageHeader
         rightContent={renderRightPageHeaderButtons()}
-        title={`Awesome Validator (${nid})`}
+        title={`VALIDATOR NAME HERE (${validator.ip_address})`}
         trustScore={94.21}
       />
       <PageTabs
