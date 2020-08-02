@@ -9,6 +9,7 @@ import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import useBooleanState from '@renderer/hooks/useBooleanState';
+import {AppDispatch} from '@renderer/store';
 import {Account, getAccount} from '@renderer/store/old/accounts';
 import {Friend} from '@renderer/store/old/friends';
 import {Validator} from '@renderer/store/old/validators';
@@ -41,7 +42,7 @@ const LeftMenuSelector = ({
 });
 
 const LeftMenu: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const {accounts, activeBank, activePrimaryValidator, banks, friends, points, validators} = useSelector(
     LeftMenuSelector,
   );

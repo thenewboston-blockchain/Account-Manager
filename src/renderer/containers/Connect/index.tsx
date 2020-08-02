@@ -44,7 +44,7 @@ const ConnectSelector = ({
 
 const Connect: FC = () => {
   const {activeBank} = useSelector(ConnectSelector);
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
 
   useEffect(() => {
