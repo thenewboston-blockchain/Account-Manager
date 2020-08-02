@@ -10,14 +10,14 @@ interface Header {
   [key: string]: string;
 }
 
-interface Data {
+export interface PageTableData {
   id: string;
   [key: string]: string | number;
 }
 
 interface PageTableItems {
   header: Header;
-  data: Data[];
+  data: PageTableData[];
 }
 
 interface ComponentProps {
@@ -33,7 +33,7 @@ const PageTable: FC<ComponentProps> = ({className, items}) => {
     setExpanded(expanded.map((rowIsExpanded, i) => (i === indexToToggle ? !rowIsExpanded : rowIsExpanded)));
   };
 
-  const renderSampleRows = (): ReactNode => {
+  const renderRows = (): ReactNode => {
     return data.map((item, dataIndex) => {
       const rowIsExpanded = expanded[dataIndex];
 
@@ -71,7 +71,7 @@ const PageTable: FC<ComponentProps> = ({className, items}) => {
           ))}
         </tr>
       </thead>
-      <tbody>{renderSampleRows()}</tbody>
+      <tbody>{renderRows()}</tbody>
     </table>
   );
 };
