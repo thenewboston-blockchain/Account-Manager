@@ -11,7 +11,10 @@ export const fetchListActionType = (...slicePaths: string[]): string => `${slice
 
 export const updateActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/update`;
 
+export const sliceActionType = (...slicePaths: string[]): string => slicePaths.join('/');
+
 type ActionType = PayloadAction<any, string, {arg: any; requestId: string}, never>;
+type ActionNodeType = PayloadAction<{node: Node; nodeIdentifier: string}, string, {arg: any; requestId: string}, never>;
 type RejectedActionType = PayloadAction<
   any,
   string,
@@ -39,5 +42,20 @@ export const rejectedReducer = (state: StateType, action: RejectedActionType): v
     state.loading = Loading.idle;
     state.error = action.error;
     state.currentRequestId = undefined;
+  }
+};
+
+export const setStateReducer = (state: StateType, action: ActionType): void => {
+  if (state.loading === Loading.pending && state.currentRequestId === action.meta.requestId) {
+    state.entities = action.payload;
+    fulfilledReducer(state, action);
+  }
+};
+
+export const setNodeReducer = (state: StateType, action: ActionNodeType): void => {
+  if (state.loading === Loading.pending && state.currentRequestId === action.meta.requestId) {
+    const {node, nodeIdentifier} = action.payload;
+    state.entities[nodeIdentifier] = node;
+    fulfilledReducer(state, action);
   }
 };

@@ -4,7 +4,6 @@ import omit from 'lodash/omit';
 
 import {fetchActivePrimaryValidator} from '@renderer/api/validators';
 import {APP, BANKS} from '@renderer/constants/store';
-import {setActiveBank} from '@renderer/store/app/activeBank';
 import {setBank} from '@renderer/store/network/banks';
 
 import ActiveBank from '@renderer/types/entities/ActiveBank';
@@ -12,11 +11,11 @@ import {Loading, RootState} from '@renderer/types/store';
 import {fetchActionType} from '@renderer/utils/store';
 import {formatAddress} from '@renderer/utils/format';
 
-export const fetchActiveBank = createAsyncThunk<void, string, {state: RootState}>(
+export const fetchActiveBank = createAsyncThunk<ActiveBank | undefined, string, {state: RootState}>(
   fetchActionType(APP, BANKS),
   async (baseUrl, {dispatch, getState, rejectWithValue, requestId}) => {
-    // const {currentRequestId, loading} = getState().app.activeBank;
-    // if (loading !== Loading.pending || requestId !== currentRequestId) return;
+    const {currentRequestId, loading} = getState().app.activeBank;
+    if (loading !== Loading.pending || requestId !== currentRequestId) return;
     try {
       const response = await axios.get(`${baseUrl}/config`);
       const {primary_validator: primaryValidator} = response.data;
@@ -27,7 +26,6 @@ export const fetchActiveBank = createAsyncThunk<void, string, {state: RootState}
         port: activeBankData.port,
         protocol: activeBankData.protocol,
       };
-      dispatch(setActiveBank(activeBankData));
       dispatch(setBank({node, nodeIdentifier}));
 
       const primaryValidatorAddress = formatAddress(
@@ -36,6 +34,8 @@ export const fetchActiveBank = createAsyncThunk<void, string, {state: RootState}
         primaryValidator.protocol,
       );
       dispatch(fetchActivePrimaryValidator(primaryValidatorAddress));
+
+      return activeBankData;
     } catch (error) {
       if (!error.response) throw error;
       return rejectWithValue(error.response.data);
