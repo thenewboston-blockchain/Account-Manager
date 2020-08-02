@@ -1,27 +1,35 @@
-/* eslint-disable sort-keys */
-
 import React, {FC} from 'react';
 
-import PageTable from '@renderer/components/PageTable';
+import PageTable, {PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 
-const sampleData = {
+enum TableKeys {
+  id,
+  accountNumber,
+  trust,
+  createdDate,
+  modifiedDate,
+}
+
+const sampleData: PageTableItems = {
   data: [
     {
-      id: 'd99d2349-3ee5-4bd9-a285-0d3e8f8a63b9',
-      account_number: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
-      trust: '0.00',
-      created_date: '2020-07-22T04:04:36.286467Z',
-      modified_date: '2020-07-22T04:04:36.286498Z',
+      key: 'd99d2349-3ee5-4bd9-a285-0d3e8f8a63b9',
+      [TableKeys.accountNumber]: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
+      [TableKeys.createdDate]: '2020-07-22T04:04:36.286467Z',
+      [TableKeys.id]: 'd99d2349-3ee5-4bd9-a285-0d3e8f8a63b9',
+      [TableKeys.modifiedDate]: '2020-07-22T04:04:36.286498Z',
+      [TableKeys.trust]: '0.00',
     },
   ],
-  header: {
-    id: 'ID',
-    account_number: 'Account Number',
-    trust: 'Trust',
-    created_date: 'Created',
-    modified_date: 'Modified',
+  headers: {
+    [TableKeys.accountNumber]: 'Account Number',
+    [TableKeys.createdDate]: 'Created',
+    [TableKeys.id]: 'ID',
+    [TableKeys.modifiedDate]: 'Modified',
+    [TableKeys.trust]: 'Trust',
   },
+  orderedKeys: [TableKeys.id, TableKeys.accountNumber, TableKeys.trust, TableKeys.createdDate, TableKeys.modifiedDate],
 };
 
 const BankAccounts: FC = () => {

@@ -1,5 +1,3 @@
-/* eslint-disable sort-keys */
-
 import React, {FC, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
@@ -10,6 +8,15 @@ import Pagination from '@renderer/components/Pagination';
 import {ActiveBank} from '@renderer/types/entities';
 import {RootState} from '@renderer/types/store';
 import {formatAddress} from '@renderer/utils/format';
+
+enum TableKeys {
+  senderAccountNumber,
+  recipientAccountNumber,
+  amount,
+  balanceKey,
+  signature,
+  dateCreated,
+}
 
 const AccountTransactionsSelector = ({
   app: {activeBank},
@@ -35,15 +42,18 @@ const AccountTransactions: FC = () => {
           account_number: accountNumber,
         },
       });
-      const tableData = data.results.map((bankTransaction: any) => ({
-        amount: bankTransaction.amount,
-        balance_key: bankTransaction.block.balance_key,
-        date_created: bankTransaction.block.created_date,
-        id: bankTransaction.id,
-        recipient_account_number: bankTransaction.recipient,
-        sender_account_number: bankTransaction.block.sender,
-        signature: bankTransaction.block.signature,
-      }));
+      const tableData = data.results.map(
+        (bankTransaction: any) =>
+          ({
+            key: bankTransaction.id,
+            [TableKeys.amount]: bankTransaction.amount,
+            [TableKeys.balanceKey]: bankTransaction.block.balance_key,
+            [TableKeys.dateCreated]: bankTransaction.block.created_date,
+            [TableKeys.recipientAccountNumber]: bankTransaction.recipient,
+            [TableKeys.senderAccountNumber]: bankTransaction.block.sender,
+            [TableKeys.signature]: bankTransaction.block.signature,
+          } as PageTableData),
+      );
       setBankTransactions(tableData);
     };
 
@@ -55,14 +65,22 @@ const AccountTransactions: FC = () => {
       <PageTable
         items={{
           data: bankTransactions,
-          header: {
-            sender_account_number: 'Sender Account Number',
-            recipient_account_number: 'Recipient Account Number',
-            amount: 'Amount',
-            balance_key: 'Balance Key',
-            signature: 'Signature',
-            date_created: 'Date Created',
+          headers: {
+            [TableKeys.amount]: 'Amount',
+            [TableKeys.balanceKey]: 'Balance Key',
+            [TableKeys.dateCreated]: 'Date Created',
+            [TableKeys.recipientAccountNumber]: 'Recipient Account Number',
+            [TableKeys.senderAccountNumber]: 'Sender Account Number',
+            [TableKeys.signature]: 'Signature',
           },
+          orderedKeys: [
+            TableKeys.senderAccountNumber,
+            TableKeys.recipientAccountNumber,
+            TableKeys.amount,
+            TableKeys.balanceKey,
+            TableKeys.signature,
+            TableKeys.dateCreated,
+          ],
         }}
       />
       <Pagination />

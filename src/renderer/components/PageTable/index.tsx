@@ -7,16 +7,17 @@ import {getCustomClassNames} from '@renderer/utils/components';
 import './PageTable.scss';
 
 interface Header {
-  [key: string]: string;
+  [tableKey: string]: string;
 }
 
 export interface PageTableData {
-  id: string;
-  [key: string]: string | number;
+  key: string;
+  [tableKey: string]: string | number | null | undefined;
 }
 
-interface PageTableItems {
-  header: Header;
+export interface PageTableItems {
+  orderedKeys: number[];
+  headers: Header;
   data: PageTableData[];
 }
 
@@ -26,7 +27,7 @@ interface ComponentProps {
 }
 
 const PageTable: FC<ComponentProps> = ({className, items}) => {
-  const {header, data} = items;
+  const {headers, data, orderedKeys} = items;
   const [expanded, setExpanded] = useState<number[]>([]);
 
   const toggleExpanded = (indexToToggle: number) => (): void => {
@@ -46,7 +47,7 @@ const PageTable: FC<ComponentProps> = ({className, items}) => {
             ...getCustomClassNames(className, '__row', true),
             ...getCustomClassNames(className, '__row--expanded', rowIsExpanded),
           })}
-          key={item.id}
+          key={item.key}
         >
           <td>
             <ArrowToggle
@@ -55,8 +56,8 @@ const PageTable: FC<ComponentProps> = ({className, items}) => {
               onClick={toggleExpanded(dataIndex)}
             />
           </td>
-          {Object.keys(header).map((key, headerIndex) => (
-            <td key={headerIndex}>{item[key] || '-'}</td>
+          {orderedKeys.map((key) => (
+            <td key={key}>{item[key] || '-'}</td>
           ))}
         </tr>
       );
@@ -68,8 +69,8 @@ const PageTable: FC<ComponentProps> = ({className, items}) => {
       <thead className={clsx('PageTable__thead', {...getCustomClassNames(className, '__thead', true)})}>
         <tr>
           <th />
-          {Object.entries(header).map(([key, value]) => (
-            <td key={key}>{value}</td>
+          {orderedKeys.map((key) => (
+            <td key={key}>{headers[key]}</td>
           ))}
         </tr>
       </thead>

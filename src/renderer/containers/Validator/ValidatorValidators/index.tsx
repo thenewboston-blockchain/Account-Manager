@@ -1,30 +1,40 @@
-/* eslint-disable sort-keys */
-
 import React, {FC, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
 
-import PageTable, {PageTableData} from '@renderer/components/PageTable';
+import PageTable from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
+import {Validator} from '@renderer/types/entities';
 import {RootState} from '@renderer/types/store';
 import {formatAddress} from '@renderer/utils/format';
+
+enum TableKeys {
+  nodeIdentifier,
+  accountNumber,
+  ipAddress,
+  port,
+  protocol,
+  version,
+  defaultTransactionFee,
+  rootAccountFile,
+  rootAccountFileHash,
+  seedBlockIdentifier,
+  dailyConfirmationRate,
+  trust,
+}
 
 const ValidatorValidators: FC = () => {
   const {nid} = useParams();
   const networkValidator = useSelector((state: RootState) => state.network.validators.entities[nid]);
-  const [validators, setValidators] = useState<PageTableData[]>([]);
+  const [validators, setValidators] = useState<Validator[]>([]);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       const {ip_address: ipAddress, port, protocol} = networkValidator;
       const address = formatAddress(ipAddress, port, protocol);
       const {data} = await axios.get(`${address}/validators`);
-      const tableData = data.map((validator: any) => ({
-        ...validator,
-        id: validator.node_identifier,
-      }));
-      setValidators(tableData);
+      setValidators(data);
     };
 
     fetchData();
@@ -34,21 +44,49 @@ const ValidatorValidators: FC = () => {
     <div className="ValidatorValidators">
       <PageTable
         items={{
-          data: validators,
-          header: {
-            node_identifier: 'NID',
-            account_number: 'Account Number',
-            ip_address: 'IP Address',
-            port: 'Port',
-            protocol: 'Protocol',
-            version: 'Version',
-            default_transaction_fee: 'Transaction Fee',
-            root_account_file: 'Root Account File',
-            root_account_file_hash: 'Root Account File Hash',
-            seed_block_identifier: 'Seed Block',
-            daily_confirmation_rate: 'Daily Confirmation Rate',
-            trust: 'Trust',
+          data: validators.map((validator) => ({
+            key: validator.node_identifier,
+            [TableKeys.accountNumber]: validator.account_number,
+            [TableKeys.dailyConfirmationRate]: validator.daily_confirmation_rate,
+            [TableKeys.defaultTransactionFee]: validator.default_transaction_fee,
+            [TableKeys.ipAddress]: validator.ip_address,
+            [TableKeys.nodeIdentifier]: validator.node_identifier,
+            [TableKeys.port]: validator.port,
+            [TableKeys.protocol]: validator.protocol,
+            [TableKeys.rootAccountFileHash]: validator.root_account_file_hash,
+            [TableKeys.rootAccountFile]: validator.root_account_file,
+            [TableKeys.seedBlockIdentifier]: validator.seed_block_identifier,
+            [TableKeys.trust]: validator.trust,
+            [TableKeys.version]: validator.version,
+          })),
+          headers: {
+            [TableKeys.accountNumber]: 'Account Number',
+            [TableKeys.dailyConfirmationRate]: 'Daily Confirmation Rate',
+            [TableKeys.defaultTransactionFee]: 'Transaction Fee',
+            [TableKeys.ipAddress]: 'IP Address',
+            [TableKeys.nodeIdentifier]: 'NID',
+            [TableKeys.port]: 'Port',
+            [TableKeys.protocol]: 'Protocol',
+            [TableKeys.rootAccountFileHash]: 'Root Account File Hash',
+            [TableKeys.rootAccountFile]: 'Root Account File',
+            [TableKeys.seedBlockIdentifier]: 'Seed Block',
+            [TableKeys.trust]: 'Trust',
+            [TableKeys.version]: 'Version',
           },
+          orderedKeys: [
+            TableKeys.nodeIdentifier,
+            TableKeys.accountNumber,
+            TableKeys.ipAddress,
+            TableKeys.port,
+            TableKeys.protocol,
+            TableKeys.version,
+            TableKeys.defaultTransactionFee,
+            TableKeys.rootAccountFile,
+            TableKeys.rootAccountFileHash,
+            TableKeys.seedBlockIdentifier,
+            TableKeys.dailyConfirmationRate,
+            TableKeys.trust,
+          ],
         }}
       />
       <Pagination />
