@@ -36,10 +36,9 @@ const ValidatorBanks: FC = () => {
         items={{
           data: banks,
           header: {
-            id: 'ID',
+            node_identifier: 'NID',
             account_number: 'Account Number',
             ip_address: 'IP Address',
-            node_identifier: 'NID',
             port: 'Port',
             protocol: 'Protocol',
             version: 'Version',

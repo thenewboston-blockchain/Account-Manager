@@ -31,7 +31,6 @@ const ValidatorAccounts: FC = () => {
         items={{
           data: accounts,
           header: {
-            id: 'ID',
             account_number: 'Account Number',
             balance: 'Balance',
             balance_lock: 'Balance Lock',
