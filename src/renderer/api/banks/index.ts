@@ -13,7 +13,7 @@ import {fetchActionType} from '@renderer/utils/store';
 import {formatAddress} from '@renderer/utils/format';
 
 export const fetchActiveBank = createAsyncThunk<void, string, {state: RootState}>(
-  fetchActionType(`${APP}/${BANKS}`),
+  fetchActionType(APP, BANKS),
   async (baseUrl, {dispatch, getState, rejectWithValue, requestId}) => {
     // const {currentRequestId, loading} = getState().app.activeBank;
     // if (loading !== Loading.pending || requestId !== currentRequestId) return;

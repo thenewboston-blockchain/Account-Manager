@@ -7,7 +7,7 @@ import {Loading, RootState} from '@renderer/types/store';
 import {fetchListActionType} from '@renderer/utils/store';
 
 export const fetchBanks = createAsyncThunk<Bank[], void, {state: RootState}>(
-  fetchListActionType(BANKS),
+  fetchListActionType('OLD', BANKS),
   async (_, {getState, rejectWithValue, requestId}) => {
     const {currentRequestId, loading} = getState().old.banks;
     if (loading !== Loading.pending || requestId !== currentRequestId) return;

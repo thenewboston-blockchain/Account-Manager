@@ -11,7 +11,7 @@ import {Loading, RootState} from '@renderer/types/store';
 import {fetchActionType} from '@renderer/utils/store';
 
 export const fetchActivePrimaryValidator = createAsyncThunk<void, string, {state: RootState}>(
-  fetchActionType(`${APP}/${VALIDATORS}`),
+  fetchActionType(APP, VALIDATORS),
   async (baseUrl, {dispatch, getState, rejectWithValue, requestId}) => {
     // const {currentRequestId, loading} = getState().app.activePrimaryValidator;
     // if (loading !== Loading.pending || requestId !== currentRequestId) return;
