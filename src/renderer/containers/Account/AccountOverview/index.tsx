@@ -1,15 +1,46 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useEffect, useState} from 'react';
+import {useSelector} from 'react-redux';
+import {useParams} from 'react-router-dom';
 
 import DetailPanel from '@renderer/components/DetailPanel';
 import Qr from '@renderer/components/Qr';
+import {ActivePrimaryValidator} from '@renderer/types/entities';
+import {RootState} from '@renderer/types/store';
 
 import './AccountOverview.scss';
+import {formatAddress} from '@renderer/utils/format';
+import axios from 'axios';
+
+const AccountOverviewSelector = ({
+  app: {activePrimaryValidator},
+}: RootState): {
+  activePrimaryValidator: ActivePrimaryValidator | null;
+} => ({
+  activePrimaryValidator: activePrimaryValidator.entities,
+});
 
 const AccountOverview: FC = () => {
+  const {accountNumber} = useParams();
+  const {activePrimaryValidator} = useSelector(AccountOverviewSelector);
+  const [balance, setBalance] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!activePrimaryValidator) return;
+
+    const fetchData = async (): Promise<void> => {
+      const {ip_address: ipAddress, port, protocol} = activePrimaryValidator;
+      const address = formatAddress(ipAddress, port, protocol);
+      const {data} = await axios.get(`${address}/account_balance/${accountNumber}`);
+      setBalance(data.balance);
+    };
+
+    fetchData();
+  }, [accountNumber, activePrimaryValidator]);
+
   const renderAccountNumber = (): ReactNode => (
     <>
-      <div>0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb</div>
-      <Qr className="AccountOverview__qr" text="0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb" />
+      <div>{accountNumber}</div>
+      <Qr className="AccountOverview__qr" text={accountNumber} />
     </>
   );
 
@@ -20,7 +51,7 @@ const AccountOverview: FC = () => {
         items={[
           {
             key: 'Balance',
-            value: '184.35',
+            value: balance || '-',
           },
           {
             key: 'Account Number',
