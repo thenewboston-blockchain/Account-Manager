@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import {createAccount} from '@renderer/store/accounts';
+import {createAccount} from '@renderer/store/old/accounts';
 import {RootState} from '@renderer/types/store';
 
 const initialValues = {
@@ -20,7 +20,7 @@ interface ComponentProps {
 const AddAccountModal: FC<ComponentProps> = ({close}) => {
   const dispatch = useDispatch();
   const nicknames = useSelector(
-    (state: RootState) => state.accounts.map((account) => account.nickname).filter((nickname) => !!nickname),
+    (state: RootState) => state.old.accounts.map((account) => account.nickname).filter((nickname) => !!nickname),
     shallowEqual,
   );
 
