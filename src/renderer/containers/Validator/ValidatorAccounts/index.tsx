@@ -22,6 +22,7 @@ const ValidatorAccounts: FC = () => {
       const {data} = await axios.get(`${address}/accounts`);
       setAccounts(data);
     };
+
     fetchData();
   }, [networkValidator]);
 

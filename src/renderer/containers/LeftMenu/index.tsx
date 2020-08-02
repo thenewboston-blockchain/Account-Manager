@@ -4,10 +4,10 @@ import noop from 'lodash/noop';
 
 import {fetchBanks} from '@renderer/api/old/bank';
 import Icon, {IconType} from '@renderer/components/Icon';
-import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
-import LeftSubmenuItemStatus, {LeftSubmenuItemStatusProps} from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
 import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
+import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
+import LeftSubmenuItemStatus, {LeftSubmenuItemStatusProps} from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import useBooleanState from '@renderer/hooks/useBooleanState';
 import {Account, getAccount} from '@renderer/store/old/accounts';
 import {Friend} from '@renderer/store/old/friends';

@@ -26,6 +26,7 @@ const ValidatorValidators: FC = () => {
       }));
       setValidators(tableData);
     };
+
     fetchData();
   }, [networkValidator]);
 

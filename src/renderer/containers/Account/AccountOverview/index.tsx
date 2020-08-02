@@ -1,15 +1,15 @@
 import React, {FC, ReactNode, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
+import axios from 'axios';
 
 import DetailPanel from '@renderer/components/DetailPanel';
 import Qr from '@renderer/components/Qr';
 import {ActivePrimaryValidator} from '@renderer/types/entities';
 import {RootState} from '@renderer/types/store';
+import {formatAddress} from '@renderer/utils/format';
 
 import './AccountOverview.scss';
-import {formatAddress} from '@renderer/utils/format';
-import axios from 'axios';
 
 const AccountOverviewSelector = ({
   app: {activePrimaryValidator},
