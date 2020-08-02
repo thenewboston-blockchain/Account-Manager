@@ -12,7 +12,7 @@ import useBooleanState from '@renderer/hooks/useBooleanState';
 import {Account, getAccount} from '@renderer/store/old/accounts';
 import {Friend} from '@renderer/store/old/friends';
 import {Validator} from '@renderer/store/old/validators';
-import {Bank} from '@renderer/types/entities';
+import {ActivePrimaryValidator, Bank} from '@renderer/types/entities';
 import {RootState} from '@renderer/types/store';
 
 import LeftSubmenu from './LeftSubmenu';
@@ -20,15 +20,18 @@ import LeftSubmenu from './LeftSubmenu';
 import './LeftMenu.scss';
 
 const LeftMenuSelector = ({
+  app: {activePrimaryValidator},
   old: {accounts, banks, friends, points, validators},
 }: RootState): {
   accounts: Account[];
+  activePrimaryValidator: ActivePrimaryValidator | null;
   banks: Bank[];
   friends: Friend[];
   points: number;
   validators: Validator[];
 } => ({
   accounts,
+  activePrimaryValidator: activePrimaryValidator.entities,
   banks: banks.entities,
   friends,
   points,
@@ -37,7 +40,7 @@ const LeftMenuSelector = ({
 
 const LeftMenu: FC = () => {
   const dispatch = useDispatch();
-  const {accounts, banks, friends, points, validators} = useSelector(LeftMenuSelector);
+  const {accounts, activePrimaryValidator, banks, friends, points, validators} = useSelector(LeftMenuSelector);
   const [addAccountModalIsOpen, toggleAddAccountModal] = useBooleanState(false);
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
 
@@ -91,9 +94,10 @@ const LeftMenu: FC = () => {
   };
 
   const getNetworkItems = (): ReactNode[] => {
+    if (!activePrimaryValidator) return [];
     return [
-      {key: 'Banks', label: 'Banks', to: '/bank/123456/overview'},
-      {key: 'Validators', label: 'Validators', to: '/validator/987685/overview'},
+      {key: 'Banks', label: 'Banks', to: `/validator/${activePrimaryValidator.node_identifier}/banks`},
+      {key: 'Validators', label: 'Validators', to: `/validator/${activePrimaryValidator.node_identifier}/validators`},
     ].map(({key, label, to}) => <LeftSubmenuItem key={key} label={label} to={to} />);
   };
 
