@@ -51,7 +51,9 @@ const Account: FC = () => {
     return (
       <Switch>
         {tabContentRoutes.map(({content, page}) => (
-          <Route path={`${path}/${page}`}>{content}</Route>
+          <Route key={page} path={`${path}/${page}`}>
+            {content}
+          </Route>
         ))}
       </Switch>
     );
