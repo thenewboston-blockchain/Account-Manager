@@ -6,6 +6,4 @@ const pointsSlice = createSlice({
   reducers: {},
 });
 
-export const samplePoints = 25903.36;
-
 export default pointsSlice;
