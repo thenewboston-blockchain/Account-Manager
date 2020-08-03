@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
-import {ActivePrimaryValidator} from '@renderer/types/entities';
+import {SessionPrimaryValidator} from '@renderer/types/entities';
 import {RootState} from '@renderer/types/store';
 
 import './TopNav.scss';
@@ -11,7 +11,7 @@ import './TopNav.scss';
 const TopNavSelector = ({
   app: {activePrimaryValidator},
 }: RootState): {
-  activePrimaryValidator: ActivePrimaryValidator | null;
+  activePrimaryValidator: SessionPrimaryValidator | null;
 } => ({
   activePrimaryValidator: activePrimaryValidator.entities,
 });

@@ -1,4 +1,4 @@
-import Node from './Node';
+import Node from './shared/Node';
 
 export default interface Validator extends Node {
   daily_confirmation_rate: string | null;

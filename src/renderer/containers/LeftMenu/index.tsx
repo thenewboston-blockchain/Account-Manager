@@ -13,7 +13,7 @@ import {AppDispatch} from '@renderer/store';
 import {Account, getAccount} from '@renderer/store/old/accounts';
 import {Friend} from '@renderer/store/old/friends';
 import {Validator} from '@renderer/store/old/validators';
-import {ActiveBank, ActivePrimaryValidator, Bank} from '@renderer/types/entities';
+import {Bank, SessionBank, SessionPrimaryValidator} from '@renderer/types/entities';
 import {RootState} from '@renderer/types/store';
 
 import LeftSubmenu from './LeftSubmenu';
@@ -25,8 +25,8 @@ const LeftMenuSelector = ({
   old: {accounts, banks, friends, points, validators},
 }: RootState): {
   accounts: Account[];
-  activeBank: ActiveBank | null;
-  activePrimaryValidator: ActivePrimaryValidator | null;
+  activeBank: SessionBank | null;
+  activePrimaryValidator: SessionPrimaryValidator | null;
   banks: Bank[];
   friends: Friend[];
   points: number;

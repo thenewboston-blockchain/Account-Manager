@@ -7,7 +7,7 @@ import {fetchActiveBank} from '@renderer/api/banks';
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
 import {AppDispatch} from '@renderer/store';
-import {ActiveBank} from '@renderer/types/entities';
+import {SessionBank} from '@renderer/types/entities';
 import {SelectOption} from '@renderer/types/forms';
 import {RootState} from '@renderer/types/store';
 import {formatAddress} from '@renderer/utils/format';
@@ -37,7 +37,7 @@ const validationSchema = Yup.object().shape({
 const ConnectSelector = ({
   app: {activeBank},
 }: RootState): {
-  activeBank: ActiveBank | null;
+  activeBank: SessionBank | null;
 } => ({
   activeBank: activeBank.entities,
 });

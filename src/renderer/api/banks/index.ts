@@ -5,12 +5,12 @@ import omit from 'lodash/omit';
 import {fetchActivePrimaryValidator} from '@renderer/api/validators';
 import {APP, BANKS} from '@renderer/constants/store';
 import {setNetworkBank} from '@renderer/store/network/banks';
-import {ActiveBank, NetworkNode} from '@renderer/types/entities';
+import {NetworkNode, SessionBank} from '@renderer/types/entities';
 import {Loading, RootState} from '@renderer/types/store';
 import {fetchActionType} from '@renderer/utils/store';
 import {formatAddress} from '@renderer/utils/format';
 
-export const fetchActiveBank = createAsyncThunk<ActiveBank | undefined, string, {state: RootState}>(
+export const fetchActiveBank = createAsyncThunk<SessionBank | undefined, string, {state: RootState}>(
   fetchActionType(APP, BANKS),
   async (baseUrl, {dispatch, getState, rejectWithValue, requestId}) => {
     const {currentRequestId, loading} = getState().app.activeBank;
@@ -18,7 +18,7 @@ export const fetchActiveBank = createAsyncThunk<ActiveBank | undefined, string, 
     try {
       const response = await axios.get(`${baseUrl}/config`);
       const {primary_validator: primaryValidator} = response.data;
-      const activeBankData = omit(response.data, ['primary_validator']) as ActiveBank;
+      const activeBankData = omit(response.data, ['primary_validator']) as SessionBank;
       const bank: NetworkNode = {
         ip_address: activeBankData.ip_address,
         node_identifier: activeBankData.node_identifier,

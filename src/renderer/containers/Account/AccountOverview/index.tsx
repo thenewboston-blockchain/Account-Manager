@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import DetailPanel from '@renderer/components/DetailPanel';
 import Qr from '@renderer/components/Qr';
-import {ActivePrimaryValidator} from '@renderer/types/entities';
+import {SessionPrimaryValidator} from '@renderer/types/entities';
 import {RootState} from '@renderer/types/store';
 import {formatAddress} from '@renderer/utils/format';
 
@@ -14,7 +14,7 @@ import './AccountOverview.scss';
 const AccountOverviewSelector = ({
   app: {activePrimaryValidator},
 }: RootState): {
-  activePrimaryValidator: ActivePrimaryValidator | null;
+  activePrimaryValidator: SessionPrimaryValidator | null;
 } => ({
   activePrimaryValidator: activePrimaryValidator.entities,
 });

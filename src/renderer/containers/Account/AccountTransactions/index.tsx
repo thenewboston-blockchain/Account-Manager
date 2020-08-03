@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import PageTable, {PageTableData} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {ActiveBank} from '@renderer/types/entities';
+import {SessionBank} from '@renderer/types/entities';
 import {RootState} from '@renderer/types/store';
 import {formatAddress} from '@renderer/utils/format';
 
@@ -21,7 +21,7 @@ enum TableKeys {
 const AccountTransactionsSelector = ({
   app: {activeBank},
 }: RootState): {
-  activeBank: ActiveBank | null;
+  activeBank: SessionBank | null;
 } => ({
   activeBank: activeBank.entities,
 });

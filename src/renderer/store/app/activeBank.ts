@@ -2,11 +2,11 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {fetchActiveBank} from '@renderer/api/banks';
 import {ACTIVE_BANK, APP} from '@renderer/constants/store';
-import {ActiveBank} from '@renderer/types/entities';
+import {SessionBank} from '@renderer/types/entities';
 import {Loading, StateSlice} from '@renderer/types/store';
 import {pendingReducer, rejectedReducer, setStateReducer, sliceActionType} from '@renderer/utils/store';
 
-type State = StateSlice<ActiveBank | null>;
+type State = StateSlice<SessionBank | null>;
 
 const activeBank = createSlice({
   extraReducers: (builder) => {
