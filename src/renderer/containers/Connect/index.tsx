@@ -3,21 +3,22 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
 
-import {fetchActiveBank} from '@renderer/api/banks';
+import {setLocalActiveBank} from '@renderer/api/local';
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
 import {AppDispatch} from '@renderer/store';
+import {ProtocolType} from '@renderer/types/api';
 import {ActiveBank} from '@renderer/types/entities';
 import {SelectOption} from '@renderer/types/forms';
 import {RootState} from '@renderer/types/store';
-import {formatAddress} from '@renderer/utils/format';
 
 import './Connect.scss';
 
 const initialValues = {
   ipAddress: '167.99.173.247',
+  nickname: 'My Cool Bank',
   port: '',
-  protocol: 'http',
+  protocol: 'http' as ProtocolType,
 };
 
 type FormValues = typeof initialValues;
@@ -30,6 +31,7 @@ const validationSchema = Yup.object().shape({
   ipAddress: Yup.string()
     .required('This field is required')
     .matches(genericIpAddressRegex, {excludeEmptyString: true, message: 'IPv4 or IPv6 addresses only'}),
+  nickname: Yup.string(),
   port: Yup.number().integer(),
   protocol: Yup.string().required(),
 });
@@ -51,10 +53,15 @@ const Connect: FC = () => {
     if (activeBank) history.push(`/bank/${activeBank.node_identifier}/overview`);
   }, [activeBank, history]);
 
-  const handleSubmit = async (values: FormValues): Promise<void> => {
-    const {ipAddress, port, protocol} = values;
-    const address = formatAddress(ipAddress, port, protocol);
-    await dispatch(fetchActiveBank(address));
+  const handleSubmit = async ({ipAddress, nickname, port, protocol}: FormValues): Promise<void> => {
+    const formattedValues = {
+      ip_address: ipAddress,
+      nickname,
+      port: parseInt(port, 10),
+      protocol,
+    };
+
+    await dispatch(setLocalActiveBank(formattedValues));
   };
 
   return (
@@ -80,6 +87,7 @@ const Connect: FC = () => {
         />
         <FormInput className="Connect__field" label="IP Address" name="ipAddress" required />
         <FormInput className="Connect__field" label="Port" name="port" type="number" />
+        <FormInput className="Connect__field" label="Nickname" name="nickname" />
 
         <FormButton ignoreDirty type="submit">
           Connect
