@@ -2,11 +2,11 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {fetchActivePrimaryValidator} from '@renderer/api/validators';
 import {ACTIVE_PRIMARY_VALIDATOR, APP} from '@renderer/constants/store';
-import {SessionPrimaryValidator} from '@renderer/types/entities';
+import {ActivePrimaryValidator} from '@renderer/types/entities';
 import {Loading, StateSlice} from '@renderer/types/store';
 import {pendingReducer, rejectedReducer, setStateReducer, sliceActionType} from '@renderer/utils/store';
 
-type State = StateSlice<SessionPrimaryValidator | null>;
+type State = StateSlice<ActivePrimaryValidator | null>;
 
 const activePrimaryValidator = createSlice({
   extraReducers: (builder) => {

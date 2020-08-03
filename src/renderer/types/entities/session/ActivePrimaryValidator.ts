@@ -1,7 +1,7 @@
 import {NodeType} from '@renderer/types/api';
 import Node from '../shared/Node';
 
-export default interface SessionPrimaryValidator extends Node {
+export default interface ActivePrimaryValidator extends Node {
   account_number: string;
   node_identifier: string;
   version: string;
