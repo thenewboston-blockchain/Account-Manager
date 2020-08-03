@@ -21,8 +21,8 @@ import LeftSubmenu from './LeftSubmenu';
 import './LeftMenu.scss';
 
 const LeftMenuSelector = ({
-  app: {activeBank, activePrimaryValidator},
   old: {accounts, banks, friends, points, validators},
+  session: {activeBank, activePrimaryValidator},
 }: RootState): {
   accounts: Account[];
   activeBank: ActiveBank | null;

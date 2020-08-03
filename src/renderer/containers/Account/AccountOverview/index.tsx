@@ -12,7 +12,7 @@ import {formatAddress} from '@renderer/utils/format';
 import './AccountOverview.scss';
 
 const AccountOverviewSelector = ({
-  app: {activePrimaryValidator},
+  session: {activePrimaryValidator},
 }: RootState): {
   activePrimaryValidator: ActivePrimaryValidator | null;
 } => ({

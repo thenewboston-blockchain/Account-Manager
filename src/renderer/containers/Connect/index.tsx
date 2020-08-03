@@ -35,7 +35,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const ConnectSelector = ({
-  app: {activeBank},
+  session: {activeBank},
 }: RootState): {
   activeBank: ActiveBank | null;
 } => ({

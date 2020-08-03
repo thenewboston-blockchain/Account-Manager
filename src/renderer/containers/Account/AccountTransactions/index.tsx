@@ -19,7 +19,7 @@ enum TableKeys {
 }
 
 const AccountTransactionsSelector = ({
-  app: {activeBank},
+  session: {activeBank},
 }: RootState): {
   activeBank: ActiveBank | null;
 } => ({

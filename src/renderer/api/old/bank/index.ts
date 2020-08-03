@@ -1,13 +1,11 @@
 import axios from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
-import {BANKS} from '@renderer/constants/store';
 import Bank from '@renderer/types/entities/Bank';
 import {Loading, RootState} from '@renderer/types/store';
-import {fetchListActionType} from '@renderer/utils/store';
 
 export const fetchBanks = createAsyncThunk<Bank[], void, {state: RootState}>(
-  fetchListActionType('OLD', BANKS),
+  'old/Banks',
   async (_, {getState, rejectWithValue, requestId}) => {
     const {currentRequestId, loading} = getState().old.banks;
     if (loading !== Loading.pending || requestId !== currentRequestId) return;

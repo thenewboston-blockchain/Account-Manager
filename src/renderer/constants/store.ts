@@ -1,7 +1,14 @@
-export const APP = 'app';
-export const NETWORK = 'network';
+const APP = 'app';
+const NETWORK = 'network';
+const SESSION = 'session';
 
-export const ACTIVE_BANK = 'activeBank';
-export const ACTIVE_PRIMARY_VALIDATOR = 'activePrimaryValidator';
-export const BANKS = 'banks';
-export const VALIDATORS = 'validators';
+// App
+export const LOCAL_ACTIVE_BANK = `${APP}/localActiveBank`;
+
+// Network
+export const NETWORK_BANKS = `${NETWORK}/banks`;
+export const NETWORK_VALIDATORS = `${NETWORK}/validators`;
+
+// Session
+export const ACTIVE_BANK = `${SESSION}/activeBank`;
+export const ACTIVE_PRIMARY_VALIDATOR = `${SESSION}/activePrimaryValidator`;

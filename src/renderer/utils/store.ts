@@ -1,18 +1,6 @@
 import {PayloadAction, SerializedError} from '@reduxjs/toolkit';
 import {Loading, StateSlice} from '@renderer/types/store';
 
-export const createActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/create`;
-
-export const deleteActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/delete`;
-
-export const fetchActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/fetch`;
-
-export const fetchListActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/fetchList`;
-
-export const updateActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/update`;
-
-export const sliceActionType = (...slicePaths: string[]): string => slicePaths.join('/');
-
 type ActionType = PayloadAction<any, string, {arg: any; requestId: string}, never>;
 type RejectedActionType = PayloadAction<
   any,

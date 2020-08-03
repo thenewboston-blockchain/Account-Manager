@@ -1,6 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {fetchBanks} from '@renderer/api/old/bank';
-import {BANKS} from '@renderer/constants/store';
 import {Bank} from '@renderer/types/entities';
 import {Loading, StateSlice} from '@renderer/types/store';
 import {fulfilledReducer, pendingReducer, rejectedReducer} from '@renderer/utils/store';
@@ -17,7 +16,7 @@ const banksSlice = createSlice({
     error: null,
     loading: Loading.idle,
   } as StateSlice<Bank[]>,
-  name: BANKS,
+  name: 'old/banks',
   reducers: {},
 });
 

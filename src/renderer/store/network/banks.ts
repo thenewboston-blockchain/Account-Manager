@@ -1,9 +1,8 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-import {BANKS, NETWORK} from '@renderer/constants/store';
+import {NETWORK_BANKS} from '@renderer/constants/store';
 import {NetworkNode} from '@renderer/types/entities';
 import {Loading, StateSlice} from '@renderer/types/store';
-import {sliceActionType} from '@renderer/utils/store';
 
 type State = StateSlice<{[nodeIdentifier: string]: NetworkNode}>;
 
@@ -14,7 +13,7 @@ const banks = createSlice({
     error: null,
     loading: Loading.idle,
   } as State,
-  name: sliceActionType(NETWORK, BANKS),
+  name: NETWORK_BANKS,
   reducers: {
     set: (state, action: PayloadAction<NetworkNode>) => {
       const {node_identifier: nodeIdentifier} = action.payload;

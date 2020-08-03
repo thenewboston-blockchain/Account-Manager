@@ -9,7 +9,7 @@ import {RootState} from '@renderer/types/store';
 import './TopNav.scss';
 
 const TopNavSelector = ({
-  app: {activePrimaryValidator},
+  session: {activePrimaryValidator},
 }: RootState): {
   activePrimaryValidator: ActivePrimaryValidator | null;
 } => ({
