@@ -1,20 +1,17 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 import {ACTIVE_BANK} from '@renderer/constants/store';
-import localStore from '@renderer/store/localStore';
 import {ActiveBank} from '@renderer/types/entities';
+import {setLocalAndStateReducer} from '@renderer/utils/store';
 
 const activeBank = createSlice({
   initialState: null as ActiveBank | null,
   name: ACTIVE_BANK,
   reducers: {
-    set: (state, {payload}: PayloadAction<ActiveBank>) => {
-      localStore.set(ACTIVE_BANK, payload);
-      return payload;
-    },
+    setState: setLocalAndStateReducer,
   },
 });
 
-export const {set: setActiveBank} = activeBank.actions;
+export const {setState: setActiveBankState} = activeBank.actions;
 
 export default activeBank;

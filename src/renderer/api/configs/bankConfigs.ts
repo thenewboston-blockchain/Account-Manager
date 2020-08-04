@@ -1,40 +1,36 @@
-import {createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 
 import {fetchValidatorConfig} from '@renderer/api/configs/validatorConfigs';
-import {BANK_CONFIGS} from '@renderer/constants/store';
-import {setActiveBank} from '@renderer/store/app/activeBank';
+import {setActiveBankState} from '@renderer/store/app/activeBank';
+import {setBankConfig} from '@renderer/store/configs/bankConfigs';
 import {BankConfig, Network} from '@renderer/types/entities';
-import {RootState} from '@renderer/types/store';
+import {AppDispatch, RootState} from '@renderer/types/store';
 import {formatAddress} from '@renderer/utils/format';
 
-type Arg = Network & {
+type Args = Network & {
   nickname?: string;
 };
 
-export const fetchBankConfig = createAsyncThunk<BankConfig | undefined, Arg, {state: RootState}>(
-  BANK_CONFIGS,
-  async (data, {dispatch, getState}) => {
-    const baseUrl = formatAddress(data.ip_address, data.port, data.protocol);
-    const {data: responseData} = await axios.get<BankConfig>(`${baseUrl}/config`);
+export const fetchBankConfig = (args: Args) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const baseUrl = formatAddress(args.ip_address, args.port, args.protocol);
+  const {data} = await axios.get<BankConfig>(`${baseUrl}/config`);
 
-    const {node_identifier: nodeIdentifier, primary_validator: primaryValidator} = responseData;
-    if (!getState().app.activeBank) {
-      const activeBankData = {
-        ...data,
-        nickname: data.nickname || '',
-        node_identifier: nodeIdentifier,
-      };
-      dispatch(setActiveBank(activeBankData));
-    }
+  dispatch(setBankConfig(data));
 
-    const primaryValidatorData = {
-      ip_address: primaryValidator.ip_address,
-      port: primaryValidator.port,
-      protocol: primaryValidator.protocol,
+  const {node_identifier: nodeIdentifier, primary_validator: primaryValidator} = data;
+  if (!getState().app.activeBank) {
+    const activeBankData = {
+      ...args,
+      nickname: args.nickname || '',
+      node_identifier: nodeIdentifier,
     };
-    dispatch(fetchValidatorConfig(primaryValidatorData));
+    dispatch(setActiveBankState(activeBankData));
+  }
 
-    return responseData;
-  },
-);
+  const primaryValidatorData = {
+    ip_address: primaryValidator.ip_address,
+    port: primaryValidator.port,
+    protocol: primaryValidator.protocol,
+  };
+  dispatch(fetchValidatorConfig(primaryValidatorData));
+};

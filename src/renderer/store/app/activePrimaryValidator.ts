@@ -8,13 +8,13 @@ const activeBank = createSlice({
   initialState: null as ActivePrimaryValidator | null,
   name: ACTIVE_PRIMARY_VALIDATOR,
   reducers: {
-    set: (state, {payload}: PayloadAction<ActivePrimaryValidator>) => {
+    setState: (state, {payload}: PayloadAction<ActivePrimaryValidator>) => {
       localStore.set(ACTIVE_PRIMARY_VALIDATOR, payload);
       return payload;
     },
   },
 });
 
-export const {set: setActivePrimaryValidator} = activeBank.actions;
+export const {setState: setActivePrimaryValidatorState} = activeBank.actions;
 
 export default activeBank;
