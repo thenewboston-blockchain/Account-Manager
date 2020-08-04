@@ -1,5 +1,5 @@
 import React, {FC, useEffect} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
 
@@ -7,9 +7,9 @@ import {fetchBankConfig} from '@renderer/api/configs/bankConfigs';
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
 import {getActiveBankConfig} from '@renderer/selectors';
-import {useAppDispatch} from '@renderer/store';
 import {ProtocolType} from '@renderer/types/api';
 import {SelectOption} from '@renderer/types/forms';
+import {AppDispatch} from '@renderer/types/store';
 
 import './Connect.scss';
 
@@ -37,7 +37,7 @@ const validationSchema = Yup.object().shape({
 
 const Connect: FC = () => {
   const activeBankConfig = useSelector(getActiveBankConfig);
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
 
   useEffect(() => {

@@ -1,12 +1,11 @@
 import React, {FC, useMemo} from 'react';
-import {shallowEqual, useSelector} from 'react-redux';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import * as Yup from 'yup';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import {useAppDispatch} from '@renderer/store';
 import {createAccount} from '@renderer/store/old/accounts';
-import {RootState} from '@renderer/types/store';
+import {AppDispatch, RootState} from '@renderer/types/store';
 
 const initialValues = {
   nickname: '',
@@ -19,7 +18,7 @@ interface ComponentProps {
 }
 
 const AddAccountModal: FC<ComponentProps> = ({close}) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const nicknames = useSelector(
     (state: RootState) => state.old.accounts.map((account) => account.nickname).filter((nickname) => !!nickname),
     shallowEqual,

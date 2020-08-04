@@ -1,5 +1,5 @@
 import React, {FC, ReactNode, useEffect} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import noop from 'lodash/noop';
 
 import Icon, {IconType} from '@renderer/components/Icon';
@@ -9,9 +9,8 @@ import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import useBooleanState from '@renderer/hooks/useBooleanState';
 import {getActiveBankConfig, getActivePrimaryValidatorConfig} from '@renderer/selectors';
-import {useAppDispatch} from '@renderer/store';
 import {getAccount} from '@renderer/store/old/accounts';
-import {RootState} from '@renderer/types/store';
+import {AppDispatch, RootState} from '@renderer/types/store';
 
 import LeftSubmenu from './LeftSubmenu';
 
@@ -30,7 +29,7 @@ const LeftMenuSelector = (state: RootState) => {
 };
 
 const LeftMenu: FC = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const {accounts, activeBank, activePrimaryValidator, banks, friends, points, validators} = useSelector(
     LeftMenuSelector,
   );
