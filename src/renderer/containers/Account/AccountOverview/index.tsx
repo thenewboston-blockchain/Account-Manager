@@ -5,17 +5,12 @@ import axios from 'axios';
 
 import DetailPanel from '@renderer/components/DetailPanel';
 import Qr from '@renderer/components/Qr';
-import {ActivePrimaryValidator} from '@renderer/types/entities';
 import {RootState} from '@renderer/types/store';
 import {formatAddress} from '@renderer/utils/format';
 
 import './AccountOverview.scss';
 
-const AccountOverviewSelector = ({
-  session: {activePrimaryValidator},
-}: RootState): {
-  activePrimaryValidator: ActivePrimaryValidator | null;
-} => ({
+const AccountOverviewSelector = ({session: {activePrimaryValidator}}: RootState) => ({
   activePrimaryValidator: activePrimaryValidator.entities,
 });
 

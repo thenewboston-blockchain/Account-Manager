@@ -1,5 +1,5 @@
 import React, {FC, ReactNode, useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import noop from 'lodash/noop';
 
 import {fetchBanks} from '@renderer/api/old/bank';
@@ -9,11 +9,8 @@ import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import useBooleanState from '@renderer/hooks/useBooleanState';
-import {AppDispatch} from '@renderer/store';
-import {Account, getAccount} from '@renderer/store/old/accounts';
-import {Friend} from '@renderer/store/old/friends';
-import {Validator} from '@renderer/store/old/validators';
-import {ActiveBank, ActivePrimaryValidator, Bank} from '@renderer/types/entities';
+import {useAppDispatch} from '@renderer/store';
+import {getAccount} from '@renderer/store/old/accounts';
 import {RootState} from '@renderer/types/store';
 
 import LeftSubmenu from './LeftSubmenu';
@@ -23,15 +20,7 @@ import './LeftMenu.scss';
 const LeftMenuSelector = ({
   old: {accounts, banks, friends, points, validators},
   session: {activeBank, activePrimaryValidator},
-}: RootState): {
-  accounts: Account[];
-  activeBank: ActiveBank | null;
-  activePrimaryValidator: ActivePrimaryValidator | null;
-  banks: Bank[];
-  friends: Friend[];
-  points: number;
-  validators: Validator[];
-} => ({
+}: RootState) => ({
   accounts,
   activeBank: activeBank.entities,
   activePrimaryValidator: activePrimaryValidator.entities,
@@ -42,7 +31,7 @@ const LeftMenuSelector = ({
 });
 
 const LeftMenu: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const {accounts, activeBank, activePrimaryValidator, banks, friends, points, validators} = useSelector(
     LeftMenuSelector,
   );
