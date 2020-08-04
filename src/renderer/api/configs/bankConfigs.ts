@@ -7,12 +7,11 @@ import {BankConfig, Network} from '@renderer/types/entities';
 import {AppDispatch, RootState} from '@renderer/types/store';
 import {formatAddress} from '@renderer/utils/format';
 
-type Args = Network & {
-  nickname?: string;
-};
-
-export const fetchBankConfig = (args: Args) => async (dispatch: AppDispatch, getState: () => RootState) => {
-  const baseUrl = formatAddress(args.ip_address, args.port, args.protocol);
+export const fetchBankConfig = (network: Network, nickname = '') => async (
+  dispatch: AppDispatch,
+  getState: () => RootState,
+) => {
+  const baseUrl = formatAddress(network.ip_address, network.port, network.protocol);
   const {data} = await axios.get<BankConfig>(`${baseUrl}/config`);
 
   const {node_identifier: nodeIdentifier, primary_validator: primaryValidator} = data;
@@ -26,8 +25,8 @@ export const fetchBankConfig = (args: Args) => async (dispatch: AppDispatch, get
 
   if (!getState().app.activeBank) {
     const activeBankData = {
-      ...args,
-      nickname: args.nickname || '',
+      ...network,
+      nickname,
       node_identifier: nodeIdentifier,
     };
     dispatch(setActiveBankState(activeBankData));

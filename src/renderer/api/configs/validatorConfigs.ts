@@ -6,16 +6,14 @@ import {Network, ValidatorConfig} from '@renderer/types/entities';
 import {AppDispatch, RootState} from '@renderer/types/store';
 import {formatAddress} from '@renderer/utils/format';
 
-type Args = Network;
-
-export const fetchValidatorConfig = (args: Args) => async (dispatch: AppDispatch, getState: () => RootState) => {
-  const baseUrl = formatAddress(args.ip_address, args.port, args.protocol);
+export const fetchValidatorConfig = (network: Network) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const baseUrl = formatAddress(network.ip_address, network.port, network.protocol);
   const {data} = await axios.get<ValidatorConfig>(`${baseUrl}/config`);
 
   const {node_identifier: nodeIdentifier} = data;
   if (!getState().app.activePrimaryValidator) {
     const activePrimaryValidatorData = {
-      ...args,
+      ...network,
       nickname: '',
       node_identifier: nodeIdentifier,
     };

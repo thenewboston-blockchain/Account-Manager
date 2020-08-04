@@ -48,11 +48,10 @@ const Connect: FC = () => {
     try {
       const bankNetworkData = {
         ip_address: ipAddress,
-        nickname,
         port: parseInt(port, 10),
         protocol,
       };
-      await dispatch(fetchBankConfig(bankNetworkData));
+      await dispatch(fetchBankConfig(bankNetworkData, nickname));
     } catch (error) {
       console.log('error', error);
     }
