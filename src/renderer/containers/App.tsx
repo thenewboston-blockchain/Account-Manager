@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {HashRouter as Router} from 'react-router-dom';
 
 import {fetchBankConfig} from '@renderer/api/configs/bankConfigs';
+import {fetchValidatorConfig} from '@renderer/api/configs/validatorConfigs';
 import Connect from '@renderer/containers/Connect';
 import Layout from '@renderer/containers/Layout';
 import {getActiveBankConfig} from '@renderer/selectors';
@@ -19,7 +20,16 @@ const App: FC = () => {
   useEffect(() => {
     if (activeBank && !activeBankConfig) {
       const fetchData = async (): Promise<void> => {
-        await dispatch(fetchBankConfig(activeBank));
+        const bankConfigData = await dispatch(fetchBankConfig(activeBank));
+        const {primary_validator: primaryValidator} = bankConfigData;
+        const primaryValidatorData = {
+          ip_address: primaryValidator.ip_address,
+          port: primaryValidator.port,
+          protocol: primaryValidator.protocol,
+        };
+        await dispatch(fetchValidatorConfig(primaryValidatorData));
+
+        // Now do I set activePrimaryValidator? What if it doesn't exist? There is no reliability with this flow
         setLoading(false);
       };
       fetchData();

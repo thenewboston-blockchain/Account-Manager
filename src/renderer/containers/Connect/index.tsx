@@ -4,6 +4,9 @@ import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
 
 import {fetchBankConfig} from '@renderer/api/configs/bankConfigs';
+import {fetchValidatorConfig} from '@renderer/api/configs/validatorConfigs';
+import {setActiveBankState} from '@renderer/store/app/activeBank';
+import {setActivePrimaryValidatorState} from '@renderer/store/app/activePrimaryValidator';
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
 import {getActiveBankConfig} from '@renderer/selectors';
@@ -51,7 +54,29 @@ const Connect: FC = () => {
         port: parseInt(port, 10),
         protocol,
       };
-      await dispatch(fetchBankConfig(bankNetworkData, nickname));
+      const bankConfigData = await dispatch(fetchBankConfig(bankNetworkData));
+      const {node_identifier: nodeIdentifier, primary_validator: primaryValidator} = bankConfigData;
+
+      const primaryValidatorData = {
+        ip_address: primaryValidator.ip_address,
+        port: primaryValidator.port,
+        protocol: primaryValidator.protocol,
+      };
+      const validatorConfigData = await dispatch(fetchValidatorConfig(primaryValidatorData));
+
+      const activeBankData = {
+        ...bankNetworkData,
+        nickname,
+        node_identifier: nodeIdentifier,
+      };
+      dispatch(setActiveBankState(activeBankData));
+
+      const activePrimaryValidatorData = {
+        ...primaryValidatorData,
+        nickname: '',
+        node_identifier: validatorConfigData.node_identifier,
+      };
+      dispatch(setActivePrimaryValidatorState(activePrimaryValidatorData));
     } catch (error) {
       console.log('error', error);
     }
