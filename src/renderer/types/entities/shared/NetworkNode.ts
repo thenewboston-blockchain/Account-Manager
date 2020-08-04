@@ -1,8 +1,5 @@
-import {ProtocolType} from '@renderer/types/api';
+import Network from './Network';
 
-export default interface NetworkNode {
-  ip_address: string;
+export default interface NetworkNode extends Network {
   node_identifier: string;
-  port: number | null;
-  protocol: ProtocolType;
 }

@@ -20,10 +20,10 @@ const sampleData: PageTableItems = {
       [TableKeys.validator]: 'ad1f8845c6a1abb6011a2a434a079a087c460657aad54329a84b406dce8bf314',
     },
     {
-      key: '5b45dd48-94e4-4a7a-bbe0-4358024b1c70',
+      key: '5b45dd48-94e4-4a7a-bbe0-4358024b1c71',
       [TableKeys.blockIdentifier]: 'd5356888dc9303e44ce52b1e06c3165a7759b9df1e6a6dfbd33ee1c3df1ab4d1',
       [TableKeys.block]: '8afb-171a41341247-876bc269-3d6c-44a1',
-      [TableKeys.id]: '5b45dd48-94e4-4a7a-bbe0-4358024b1c70',
+      [TableKeys.id]: '5b45dd48-94e4-4a7a-bbe0-4358024b1c71',
       [TableKeys.validator]: 'ad1f8845c6a1abb6011a2a434a079a087c460657aad54329a84b406dce8bf314',
     },
   ],

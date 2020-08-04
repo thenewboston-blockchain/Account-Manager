@@ -1,5 +1,5 @@
 import {NodeType} from '@renderer/types/api';
-import {NetworkNode} from '@renderer/types/entities';
+import NetworkNode from './NetworkNode';
 
 export default interface Node extends NetworkNode {
   account_number: string;

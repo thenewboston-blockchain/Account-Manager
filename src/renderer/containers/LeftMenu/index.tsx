@@ -2,13 +2,13 @@ import React, {FC, ReactNode, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import noop from 'lodash/noop';
 
-import {fetchBanks} from '@renderer/api/old/bank';
 import Icon, {IconType} from '@renderer/components/Icon';
 import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
 import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import useBooleanState from '@renderer/hooks/useBooleanState';
+import {getActiveBankConfig, getActivePrimaryValidatorConfig} from '@renderer/selectors';
 import {useAppDispatch} from '@renderer/store';
 import {getAccount} from '@renderer/store/old/accounts';
 import {RootState} from '@renderer/types/store';
@@ -17,18 +17,17 @@ import LeftSubmenu from './LeftSubmenu';
 
 import './LeftMenu.scss';
 
-const LeftMenuSelector = ({
-  old: {accounts, banks, friends, points, validators},
-  session: {activeBank, activePrimaryValidator},
-}: RootState) => ({
-  accounts,
-  activeBank: activeBank.entities,
-  activePrimaryValidator: activePrimaryValidator.entities,
-  banks: banks.entities,
-  friends,
-  points,
-  validators,
-});
+const LeftMenuSelector = (state: RootState) => {
+  return {
+    accounts: state.old.accounts,
+    activeBank: getActiveBankConfig(state),
+    activePrimaryValidator: getActivePrimaryValidatorConfig(state),
+    banks: state.old.banks,
+    friends: state.old.friends,
+    points: state.old.points,
+    validators: state.old.validators,
+  };
+};
 
 const LeftMenu: FC = () => {
   const dispatch = useAppDispatch();
@@ -40,7 +39,6 @@ const LeftMenu: FC = () => {
 
   useEffect(() => {
     dispatch(getAccount());
-    dispatch(fetchBanks());
   }, [dispatch]);
 
   const getAccountItems = (): ReactNode[] => {

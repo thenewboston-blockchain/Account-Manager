@@ -1,8 +1,7 @@
 import {ProtocolType} from '@renderer/types/api';
 
-export default interface LocalActiveBank {
+export default interface Network {
   ip_address: string;
-  nickname: string;
   port: number | null;
   protocol: ProtocolType;
 }

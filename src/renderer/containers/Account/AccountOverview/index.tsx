@@ -5,18 +5,14 @@ import axios from 'axios';
 
 import DetailPanel from '@renderer/components/DetailPanel';
 import Qr from '@renderer/components/Qr';
-import {RootState} from '@renderer/types/store';
+import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
 import {formatAddress} from '@renderer/utils/format';
 
 import './AccountOverview.scss';
 
-const AccountOverviewSelector = ({session: {activePrimaryValidator}}: RootState) => ({
-  activePrimaryValidator: activePrimaryValidator.entities,
-});
-
 const AccountOverview: FC = () => {
   const {accountNumber} = useParams();
-  const {activePrimaryValidator} = useSelector(AccountOverviewSelector);
+  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
   const [balance, setBalance] = useState<number | null>(null);
 
   useEffect(() => {

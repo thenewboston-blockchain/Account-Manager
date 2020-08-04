@@ -3,13 +3,13 @@ import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
 
-import {setLocalActiveBank} from '@renderer/api/local';
+import {fetchBankConfig} from '@renderer/api/configs/bankConfigs';
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
+import {getActiveBankConfig} from '@renderer/selectors';
 import {useAppDispatch} from '@renderer/store';
 import {ProtocolType} from '@renderer/types/api';
 import {SelectOption} from '@renderer/types/forms';
-import {RootState} from '@renderer/types/store';
 
 import './Connect.scss';
 
@@ -35,28 +35,27 @@ const validationSchema = Yup.object().shape({
   protocol: Yup.string().required(),
 });
 
-const ConnectSelector = ({session: {activeBank}}: RootState) => ({
-  activeBank: activeBank.entities,
-});
-
 const Connect: FC = () => {
-  const {activeBank} = useSelector(ConnectSelector);
+  const activeBankConfig = useSelector(getActiveBankConfig);
   const dispatch = useAppDispatch();
   const history = useHistory();
 
   useEffect(() => {
-    if (activeBank) history.push(`/bank/${activeBank.node_identifier}/overview`);
-  }, [activeBank, history]);
+    if (activeBankConfig) history.push(`/bank/${activeBankConfig.node_identifier}/overview`);
+  }, [activeBankConfig, history]);
 
   const handleSubmit = async ({ipAddress, nickname, port, protocol}: FormValues): Promise<void> => {
-    const formattedValues = {
-      ip_address: ipAddress,
-      nickname,
-      port: parseInt(port, 10),
-      protocol,
-    };
-
-    await dispatch(setLocalActiveBank(formattedValues));
+    try {
+      const bankNetworkData = {
+        ip_address: ipAddress,
+        nickname,
+        port: parseInt(port, 10),
+        protocol,
+      };
+      await dispatch(fetchBankConfig(bankNetworkData));
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   return (
