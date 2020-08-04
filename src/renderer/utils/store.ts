@@ -19,3 +19,5 @@ export const setNodeReducer = (state: Data<any>, action: ActionType): void => {
   const {node_identifier: nodeIdentifier} = action.payload;
   state[nodeIdentifier] = action.payload;
 };
+
+export const unsetStateToNullReducer = () => null;

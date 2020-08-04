@@ -1,14 +1,23 @@
 import React, {FC, ReactNode} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
+import {unsetActiveBankState} from '@renderer/store/app/activeBank';
+import {unsetActivePrimaryValidatorState} from '@renderer/store/app/activePrimaryValidator';
+import {AppDispatch} from '@renderer/types/store';
 
 import './TopNav.scss';
 
 const TopNav: FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
+
+  const handleLogout = (): void => {
+    dispatch(unsetActiveBankState());
+    dispatch(unsetActivePrimaryValidatorState());
+  };
 
   const renderLeft = (): ReactNode => (
     <div className="TopNav__container">
@@ -28,6 +37,7 @@ const TopNav: FC = () => {
           Primary Validator ({`${activePrimaryValidator.ip_address}`})
         </NavLink>
         <Icon className="TopNav__icon" icon={IconType.bell} />
+        <Icon className="TopNav__yoga" onClick={handleLogout} icon={IconType.yoga} />
       </div>
     );
   };

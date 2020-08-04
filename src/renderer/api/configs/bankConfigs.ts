@@ -15,9 +15,15 @@ export const fetchBankConfig = (args: Args) => async (dispatch: AppDispatch, get
   const baseUrl = formatAddress(args.ip_address, args.port, args.protocol);
   const {data} = await axios.get<BankConfig>(`${baseUrl}/config`);
 
-  dispatch(setBankConfig(data));
-
   const {node_identifier: nodeIdentifier, primary_validator: primaryValidator} = data;
+
+  const primaryValidatorData = {
+    ip_address: primaryValidator.ip_address,
+    port: primaryValidator.port,
+    protocol: primaryValidator.protocol,
+  };
+  await dispatch(fetchValidatorConfig(primaryValidatorData));
+
   if (!getState().app.activeBank) {
     const activeBankData = {
       ...args,
@@ -27,10 +33,5 @@ export const fetchBankConfig = (args: Args) => async (dispatch: AppDispatch, get
     dispatch(setActiveBankState(activeBankData));
   }
 
-  const primaryValidatorData = {
-    ip_address: primaryValidator.ip_address,
-    port: primaryValidator.port,
-    protocol: primaryValidator.protocol,
-  };
-  dispatch(fetchValidatorConfig(primaryValidatorData));
+  dispatch(setBankConfig(data));
 };

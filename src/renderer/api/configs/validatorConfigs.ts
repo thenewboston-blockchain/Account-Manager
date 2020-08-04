@@ -12,8 +12,6 @@ export const fetchValidatorConfig = (args: Args) => async (dispatch: AppDispatch
   const baseUrl = formatAddress(args.ip_address, args.port, args.protocol);
   const {data} = await axios.get<ValidatorConfig>(`${baseUrl}/config`);
 
-  dispatch(setValidatorConfig(data));
-
   const {node_identifier: nodeIdentifier} = data;
   if (!getState().app.activePrimaryValidator) {
     const activePrimaryValidatorData = {
@@ -23,4 +21,6 @@ export const fetchValidatorConfig = (args: Args) => async (dispatch: AppDispatch
     };
     dispatch(setActivePrimaryValidatorState(activePrimaryValidatorData));
   }
+
+  dispatch(setValidatorConfig(data));
 };

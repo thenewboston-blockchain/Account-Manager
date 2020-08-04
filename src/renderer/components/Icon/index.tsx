@@ -15,6 +15,7 @@ import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
 import EarthIcon from 'mdi-react/EarthIcon';
 import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
+import YogaIcon from 'mdi-react/YogaIcon';
 
 import {getCustomClassNames} from '@renderer/utils/components';
 import TnbIcon from './TnbIcon';
@@ -34,6 +35,7 @@ export enum IconType {
   play,
   plus,
   tnb,
+  yoga,
 }
 
 interface ComponentProps {
@@ -76,6 +78,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled = 
         return <PlusIcon {...iconProps} />;
       case IconType.tnb:
         return <TnbIcon {...iconProps} />;
+      case IconType.yoga:
+        return <YogaIcon {...iconProps} />;
       default:
         return null;
     }

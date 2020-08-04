@@ -1,17 +1,19 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 import {ACTIVE_BANK} from '@renderer/constants/store';
+import localStore from '@renderer/store/localStore';
 import {ActiveBank} from '@renderer/types/entities';
-import {setLocalAndStateReducer} from '@renderer/utils/store';
+import {getStateName, setLocalAndStateReducer, unsetStateToNullReducer} from '@renderer/utils/store';
 
 const activeBank = createSlice({
-  initialState: null as ActiveBank | null,
+  initialState: (localStore.get(getStateName(ACTIVE_BANK)) || null) as ActiveBank | null,
   name: ACTIVE_BANK,
   reducers: {
     setState: setLocalAndStateReducer,
+    unsetState: unsetStateToNullReducer,
   },
 });
 
-export const {setState: setActiveBankState} = activeBank.actions;
+export const {setState: setActiveBankState, unsetState: unsetActiveBankState} = activeBank.actions;
 
 export default activeBank;
