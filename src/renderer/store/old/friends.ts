@@ -33,11 +33,6 @@ const friendsSlice = createSlice({
   },
 });
 
-export const sampleFriends: Friend[] = [
-  {accountNumber: '044de869fbf337', nickname: 'Amy'},
-  {accountNumber: '4525JLK32E23E', nickname: 'Dave'},
-];
-
 export const {create: createFriend} = friendsSlice.actions;
 
 export default friendsSlice;

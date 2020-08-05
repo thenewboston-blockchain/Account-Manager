@@ -17,7 +17,7 @@ import './Validator.scss';
 const Validator: FC = () => {
   const {nid} = useParams();
   const {path, url} = useRouteMatch();
-  const validator = useSelector((state: RootState) => state.network.validators.entities[nid]);
+  const validator = useSelector((state: RootState) => state.configs.validatorConfigs[nid]);
 
   const renderRightPageHeaderButtons = (): ReactNode => <Button>Add to Managed Validators</Button>;
 

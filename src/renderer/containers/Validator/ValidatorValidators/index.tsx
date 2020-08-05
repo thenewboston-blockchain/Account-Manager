@@ -26,7 +26,7 @@ enum TableKeys {
 
 const ValidatorValidators: FC = () => {
   const {nid} = useParams();
-  const networkValidator = useSelector((state: RootState) => state.network.validators.entities[nid]);
+  const networkValidator = useSelector((state: RootState) => state.configs.validatorConfigs[nid]);
   const [validators, setValidators] = useState<Validator[]>([]);
 
   useEffect(() => {

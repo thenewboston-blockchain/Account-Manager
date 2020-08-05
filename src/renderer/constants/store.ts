@@ -1,7 +1,15 @@
-export const APP = 'app';
-export const NETWORK = 'network';
+const APP = 'app';
+const CONFIGS = 'configs';
+const NETWORK = 'network';
 
-export const ACTIVE_BANK = 'activeBank';
-export const ACTIVE_PRIMARY_VALIDATOR = 'activePrimaryValidator';
-export const BANKS = 'banks';
-export const VALIDATORS = 'validators';
+// App
+export const ACTIVE_BANK = `${APP}/activeBank`;
+export const ACTIVE_PRIMARY_VALIDATOR = `${APP}/activePrimaryValidator`;
+
+// Configs
+export const BANK_CONFIGS = `${CONFIGS}/bankConfigs`;
+export const VALIDATOR_CONFIGS = `${CONFIGS}/validatorConfigs`;
+
+// Network
+export const NETWORK_BANKS = `${NETWORK}/banks`;
+export const NETWORK_VALIDATORS = `${NETWORK}/validators`;

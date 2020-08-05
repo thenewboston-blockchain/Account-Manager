@@ -12,7 +12,7 @@ import './ValidatorOverview.scss';
 
 const ValidatorOverview: FC = () => {
   const {nid} = useParams();
-  const networkValidator = useSelector((state: RootState) => state.network.validators.entities[nid]);
+  const networkValidator = useSelector((state: RootState) => state.configs.validatorConfigs[nid]);
   const [validator, setValidator] = useState<Validator | null>(null);
 
   useEffect(() => {

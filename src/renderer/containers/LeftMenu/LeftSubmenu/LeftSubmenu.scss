@@ -27,6 +27,15 @@
     display: flex;
   }
 
+  &__right {
+    color: var(--color-secondary);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+
   &__title {
     color: var(--color-sail-gray-500);
     cursor: default;

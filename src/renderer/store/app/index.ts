@@ -1,7 +1,9 @@
 import {combineReducers} from '@reduxjs/toolkit';
 
-import activeBank from './activeBank';
-import activePrimaryValidator from './activePrimaryValidator';
+import activeBank, {setActiveBank, unsetActiveBank} from './activeBank';
+import activePrimaryValidator, {setActivePrimaryValidator, unsetActivePrimaryValidator} from './activePrimaryValidator';
+
+export {setActiveBank, setActivePrimaryValidator, unsetActiveBank, unsetActivePrimaryValidator};
 
 export default combineReducers({
   activeBank: activeBank.reducer,

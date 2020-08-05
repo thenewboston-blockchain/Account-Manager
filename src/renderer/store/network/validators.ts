@@ -1,28 +1,11 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
-import {NETWORK, VALIDATORS} from '@renderer/constants/store';
-import {NetworkNode} from '@renderer/types/entities';
-import {Loading, StateSlice} from '@renderer/types/store';
-import {sliceActionType} from '@renderer/utils/store';
-
-type State = StateSlice<{[nodeIdentifier: string]: NetworkNode}>;
+import {NETWORK_VALIDATORS} from '@renderer/constants/store';
 
 const validators = createSlice({
-  initialState: {
-    currentRequestId: undefined,
-    entities: {},
-    error: null,
-    loading: Loading.idle,
-  } as State,
-  name: sliceActionType(NETWORK, VALIDATORS),
-  reducers: {
-    set: (state, action: PayloadAction<NetworkNode>) => {
-      const {node_identifier: nodeIdentifier} = action.payload;
-      state.entities[nodeIdentifier] = action.payload;
-    },
-  },
+  initialState: {},
+  name: NETWORK_VALIDATORS,
+  reducers: {},
 });
-
-export const {set: setNetworkValidator} = validators.actions;
 
 export default validators;

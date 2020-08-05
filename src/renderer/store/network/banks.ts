@@ -1,28 +1,11 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
-import {BANKS, NETWORK} from '@renderer/constants/store';
-import {NetworkNode} from '@renderer/types/entities';
-import {Loading, StateSlice} from '@renderer/types/store';
-import {sliceActionType} from '@renderer/utils/store';
-
-type State = StateSlice<{[nodeIdentifier: string]: NetworkNode}>;
+import {NETWORK_BANKS} from '@renderer/constants/store';
 
 const banks = createSlice({
-  initialState: {
-    currentRequestId: undefined,
-    entities: {},
-    error: null,
-    loading: Loading.idle,
-  } as State,
-  name: sliceActionType(NETWORK, BANKS),
-  reducers: {
-    set: (state, action: PayloadAction<NetworkNode>) => {
-      const {node_identifier: nodeIdentifier} = action.payload;
-      state.entities[nodeIdentifier] = action.payload;
-    },
-  },
+  initialState: {},
+  name: NETWORK_BANKS,
+  reducers: {},
 });
-
-export const {set: setNetworkBank} = banks.actions;
 
 export default banks;

@@ -1,60 +1,30 @@
-import {PayloadAction, SerializedError} from '@reduxjs/toolkit';
-import {Loading, StateSlice} from '@renderer/types/store';
+import {PayloadAction} from '@reduxjs/toolkit';
 
-export const createActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/create`;
+import localStore from '@renderer/store/localStore';
+import {NodeIdentifier} from '@renderer/types/entities';
+import {Data} from '@renderer/types/store';
 
-export const deleteActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/delete`;
+export const getStateName = (actionType: string) => actionType.split('/')[1];
 
-export const fetchActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/fetch`;
+export function setLocalAndStateReducer<T>() {
+  return (state: any, action: PayloadAction<T>) => {
+    const name = getStateName(action.type);
+    localStore.set(name, action.payload);
+    return action.payload;
+  };
+}
 
-export const fetchListActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/fetchList`;
+export function setStateReducer<T>() {
+  return (state: any, action: PayloadAction<T>) => action.payload;
+}
 
-export const updateActionType = (...slicePaths: string[]): string => `${slicePaths.join('/')}/update`;
-
-export const sliceActionType = (...slicePaths: string[]): string => slicePaths.join('/');
-
-type ActionType = PayloadAction<any, string, {arg: any; requestId: string}, never>;
-type RejectedActionType = PayloadAction<
-  any,
-  string,
-  {arg: any; requestId: string; aborted: boolean; condition: boolean},
-  SerializedError
->;
-type StateType = StateSlice<any>;
-
-export const pendingReducer = (state: StateType, action: ActionType): void => {
-  if (state.loading === Loading.idle) {
-    state.loading = Loading.pending;
-    state.currentRequestId = action.meta.requestId;
-  }
-};
-
-export const fulfilledReducer = (state: StateType, action: ActionType): void => {
-  if (state.loading === Loading.pending && state.currentRequestId === action.meta.requestId) {
-    state.loading = Loading.idle;
-    state.currentRequestId = undefined;
-  }
-};
-
-export const rejectedReducer = (state: StateType, action: RejectedActionType): void => {
-  if (state.loading === Loading.pending && state.currentRequestId === action.meta.requestId) {
-    state.loading = Loading.idle;
-    state.error = action.error;
-    state.currentRequestId = undefined;
-  }
-};
-
-export const setStateReducer = (state: StateType, action: ActionType): void => {
-  if (state.loading === Loading.pending && state.currentRequestId === action.meta.requestId) {
-    state.entities = action.payload;
-    fulfilledReducer(state, action);
-  }
-};
-
-export const setNodeReducer = (state: StateType, action: ActionType): void => {
-  if (state.loading === Loading.pending && state.currentRequestId === action.meta.requestId) {
+export function setNodeReducer<T extends NodeIdentifier>() {
+  return (state: Data<any>, action: PayloadAction<T>) => {
     const {node_identifier: nodeIdentifier} = action.payload;
-    state.entities[nodeIdentifier] = action.payload;
-    fulfilledReducer(state, action);
-  }
-};
+    state[nodeIdentifier] = action.payload;
+  };
+}
+
+export function unsetStateToNullReducer() {
+  return () => null;
+}

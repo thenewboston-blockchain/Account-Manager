@@ -2,44 +2,32 @@ import React, {FC, ReactNode, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import noop from 'lodash/noop';
 
-import {fetchBanks} from '@renderer/api/old/bank';
 import Icon, {IconType} from '@renderer/components/Icon';
 import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
 import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import useBooleanState from '@renderer/hooks/useBooleanState';
-import {AppDispatch} from '@renderer/store';
-import {Account, getAccount} from '@renderer/store/old/accounts';
-import {Friend} from '@renderer/store/old/friends';
-import {Validator} from '@renderer/store/old/validators';
-import {ActiveBank, ActivePrimaryValidator, Bank} from '@renderer/types/entities';
-import {RootState} from '@renderer/types/store';
+import {getActiveBankConfig, getActivePrimaryValidatorConfig} from '@renderer/selectors';
+import {unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
+import {getAccount} from '@renderer/store/old/accounts';
+import {AppDispatch, RootState} from '@renderer/types/store';
 
 import LeftSubmenu from './LeftSubmenu';
 
 import './LeftMenu.scss';
 
-const LeftMenuSelector = ({
-  app: {activeBank, activePrimaryValidator},
-  old: {accounts, banks, friends, points, validators},
-}: RootState): {
-  accounts: Account[];
-  activeBank: ActiveBank | null;
-  activePrimaryValidator: ActivePrimaryValidator | null;
-  banks: Bank[];
-  friends: Friend[];
-  points: number;
-  validators: Validator[];
-} => ({
-  accounts,
-  activeBank: activeBank.entities,
-  activePrimaryValidator: activePrimaryValidator.entities,
-  banks: banks.entities,
-  friends,
-  points,
-  validators,
-});
+const LeftMenuSelector = (state: RootState) => {
+  return {
+    accounts: state.old.accounts,
+    activeBank: getActiveBankConfig(state),
+    activePrimaryValidator: getActivePrimaryValidatorConfig(state),
+    banks: state.old.banks,
+    friends: state.old.friends,
+    points: state.old.points,
+    validators: state.old.validators,
+  };
+};
 
 const LeftMenu: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -51,7 +39,6 @@ const LeftMenu: FC = () => {
 
   useEffect(() => {
     dispatch(getAccount());
-    dispatch(fetchBanks());
   }, [dispatch]);
 
   const getAccountItems = (): ReactNode[] => {
@@ -133,6 +120,11 @@ const LeftMenu: FC = () => {
       ));
   };
 
+  const handleChangeBank = () => {
+    dispatch(unsetActivePrimaryValidator());
+    dispatch(unsetActiveBank());
+  };
+
   return (
     <div className="LeftMenu">
       <div className="points">
@@ -144,11 +136,17 @@ const LeftMenu: FC = () => {
         menuItems={getNetworkItems()}
         title="Network"
       />
-      <LeftSubmenu menuItems={[getActiveBank()]} title="Active Bank" titleOnly />
-      <LeftSubmenu addOnClick={toggleAddAccountModal} menuItems={getAccountItems()} title="Accounts" />
-      <LeftSubmenu addOnClick={toggleAddFriendModal} menuItems={getFriendItems()} title="Friends" />
-      <LeftSubmenu addOnClick={noop} menuItems={getBankItems()} title="Managed Banks" />
-      <LeftSubmenu addOnClick={noop} menuItems={getValidatorItems()} title="Managed Validators" />
+      <LeftSubmenu
+        menuItems={[getActiveBank()]}
+        noExpandToggle
+        rightOnClick={handleChangeBank}
+        rightText="Change"
+        title="Active Bank"
+      />
+      <LeftSubmenu menuItems={getAccountItems()} rightOnClick={toggleAddAccountModal} title="Accounts" />
+      <LeftSubmenu menuItems={getFriendItems()} rightOnClick={toggleAddFriendModal} title="Friends" />
+      <LeftSubmenu menuItems={getBankItems()} rightOnClick={noop} title="Managed Banks" />
+      <LeftSubmenu menuItems={getValidatorItems()} rightOnClick={noop} title="Managed Validators" />
       {addAccountModalIsOpen && <AddAccountModal close={toggleAddAccountModal} />}
       {addFriendModalIsOpen && <AddFriendModal close={toggleAddFriendModal} />}
     </div>

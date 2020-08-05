@@ -3,21 +3,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
 
-import {fetchActiveBank} from '@renderer/api/banks';
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
-import {AppDispatch} from '@renderer/store';
-import {ActiveBank} from '@renderer/types/entities';
+import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
+import {getActiveBankConfig} from '@renderer/selectors';
+import {ProtocolType} from '@renderer/types/api';
 import {SelectOption} from '@renderer/types/forms';
-import {RootState} from '@renderer/types/store';
-import {formatAddress} from '@renderer/utils/format';
+import {AppDispatch} from '@renderer/types/store';
 
 import './Connect.scss';
 
 const initialValues = {
   ipAddress: '167.99.173.247',
+  nickname: 'My Cool Bank',
   port: '',
-  protocol: 'http',
+  protocol: 'http' as ProtocolType,
 };
 
 type FormValues = typeof initialValues;
@@ -30,31 +30,31 @@ const validationSchema = Yup.object().shape({
   ipAddress: Yup.string()
     .required('This field is required')
     .matches(genericIpAddressRegex, {excludeEmptyString: true, message: 'IPv4 or IPv6 addresses only'}),
+  nickname: Yup.string(),
   port: Yup.number().integer(),
   protocol: Yup.string().required(),
 });
 
-const ConnectSelector = ({
-  app: {activeBank},
-}: RootState): {
-  activeBank: ActiveBank | null;
-} => ({
-  activeBank: activeBank.entities,
-});
-
 const Connect: FC = () => {
-  const {activeBank} = useSelector(ConnectSelector);
+  const activeBankConfig = useSelector(getActiveBankConfig);
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
 
   useEffect(() => {
-    if (activeBank) history.push(`/bank/${activeBank.node_identifier}/overview`);
-  }, [activeBank, history]);
+    if (activeBankConfig) history.push(`/bank/${activeBankConfig.node_identifier}/overview`);
+  }, [activeBankConfig, history]);
 
-  const handleSubmit = async (values: FormValues): Promise<void> => {
-    const {ipAddress, port, protocol} = values;
-    const address = formatAddress(ipAddress, port, protocol);
-    await dispatch(fetchActiveBank(address));
+  const handleSubmit = async ({ipAddress, nickname, port, protocol}: FormValues): Promise<void> => {
+    try {
+      const bankNetworkData = {
+        ip_address: ipAddress,
+        port: parseInt(port, 10),
+        protocol,
+      };
+      await dispatch(connectAndStoreLocalData(bankNetworkData, nickname));
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   return (
@@ -80,6 +80,7 @@ const Connect: FC = () => {
         />
         <FormInput className="Connect__field" label="IP Address" name="ipAddress" required />
         <FormInput className="Connect__field" label="Port" name="port" type="number" />
+        <FormInput className="Connect__field" label="Nickname" name="nickname" />
 
         <FormButton ignoreDirty type="submit">
           Connect
