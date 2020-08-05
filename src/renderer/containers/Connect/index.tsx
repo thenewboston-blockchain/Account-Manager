@@ -3,9 +3,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
 
-import {fetchBankConfig} from '@renderer/api/configs/bankConfigs';
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
+import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {getActiveBankConfig} from '@renderer/selectors';
 import {ProtocolType} from '@renderer/types/api';
 import {SelectOption} from '@renderer/types/forms';
@@ -51,7 +51,7 @@ const Connect: FC = () => {
         port: parseInt(port, 10),
         protocol,
       };
-      await dispatch(fetchBankConfig(bankNetworkData, nickname));
+      await dispatch(connectAndStoreLocalData(bankNetworkData, nickname));
     } catch (error) {
       console.log('error', error);
     }

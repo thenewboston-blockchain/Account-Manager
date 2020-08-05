@@ -1,7 +1,9 @@
 import {combineReducers} from '@reduxjs/toolkit';
 
-import bankConfigs from './bankConfigs';
-import validatorConfigs from './validatorConfigs';
+import bankConfigs, {setBankConfig} from './bankConfigs';
+import validatorConfigs, {setValidatorConfig} from './validatorConfigs';
+
+export {setBankConfig, setValidatorConfig};
 
 export default combineReducers({
   bankConfigs: bankConfigs.reducer,

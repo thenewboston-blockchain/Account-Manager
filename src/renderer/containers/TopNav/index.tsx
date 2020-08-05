@@ -4,8 +4,7 @@ import {NavLink} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
-import {unsetActiveBankState} from '@renderer/store/app/activeBank';
-import {unsetActivePrimaryValidatorState} from '@renderer/store/app/activePrimaryValidator';
+import {unsetActiveBankState, unsetActivePrimaryValidatorState} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types/store';
 
 import './TopNav.scss';

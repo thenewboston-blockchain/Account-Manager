@@ -3,9 +3,9 @@ import {hot} from 'react-hot-loader/root';
 import {useDispatch, useSelector} from 'react-redux';
 import {HashRouter as Router} from 'react-router-dom';
 
-import {fetchBankConfig} from '@renderer/api/configs/bankConfigs';
 import Connect from '@renderer/containers/Connect';
 import Layout from '@renderer/containers/Layout';
+import {connect} from '@renderer/dispatchers/app';
 import {getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch, RootState} from '@renderer/types/store';
 
@@ -19,7 +19,7 @@ const App: FC = () => {
   useEffect(() => {
     if (activeBank && !activeBankConfig) {
       const fetchData = async (): Promise<void> => {
-        await dispatch(fetchBankConfig(activeBank));
+        await dispatch(connect(activeBank));
         setLoading(false);
       };
       fetchData();
