@@ -1,10 +1,10 @@
 import {setActiveBank, setActivePrimaryValidator} from '@renderer/store/app';
-import {Network} from '@renderer/types/entities';
+import {AddressData} from '@renderer/types/entities';
 import {AppDispatch} from '@renderer/types/store';
 
 import {fetchBankConfig, fetchValidatorConfig} from '../configs';
 
-export const connect = (network: Network) => async (dispatch: AppDispatch) => {
+export const connect = (network: AddressData) => async (dispatch: AppDispatch) => {
   const bankConfig = await dispatch(fetchBankConfig(network));
   const {primary_validator: primaryValidator} = bankConfig;
 
@@ -21,7 +21,9 @@ export const connect = (network: Network) => async (dispatch: AppDispatch) => {
   };
 };
 
-export const connectAndStoreLocalData = (network: Network, bankNickname: string) => async (dispatch: AppDispatch) => {
+export const connectAndStoreLocalData = (network: AddressData, bankNickname: string) => async (
+  dispatch: AppDispatch,
+) => {
   const {bankConfig, validatorConfig} = await dispatch(connect(network));
 
   const activeBankData = {
