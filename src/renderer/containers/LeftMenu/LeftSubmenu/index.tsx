@@ -7,28 +7,45 @@ import useBooleanState from '@renderer/hooks/useBooleanState';
 import './LeftSubmenu.scss';
 
 interface ComponentProps {
-  addOnClick?(): void;
   leftIcon?: ReactNode;
   menuItems: ReactNode[];
+  noExpandToggle?: boolean;
+  rightOnClick?(): void;
+  rightText?: string;
   title: string;
-  titleOnly?: boolean;
 }
 
-const LeftSubmenu: FC<ComponentProps> = ({addOnClick, leftIcon, menuItems, title, titleOnly}) => {
+const LeftSubmenu: FC<ComponentProps> = ({leftIcon, menuItems, noExpandToggle, rightOnClick, rightText, title}) => {
   const [expanded, toggleExpanded] = useBooleanState(true);
 
   const renderHeaderContent = (): ReactNode => {
-    return titleOnly ? (
-      <span className="LeftSubmenu__title LeftSubmenu__title--only">{title}</span>
+    return noExpandToggle ? (
+      <>
+        <span className="LeftSubmenu__title LeftSubmenu__title--only">{title}</span>
+        {rightOnClick ? renderRightSection() : null}
+      </>
     ) : (
       <>
         <div className="LeftSubmenu__left-items">
           {leftIcon || <ArrowToggle expanded={expanded} onClick={toggleExpanded} />}
           <span className="LeftSubmenu__title">{title}</span>
         </div>
-        {addOnClick ? <Icon className="LeftSubmenu__add-icon" icon={IconType.plus} onClick={addOnClick} /> : null}
+        {rightOnClick ? renderRightSection() : null}
       </>
     );
+  };
+
+  const renderRightSection = (): ReactNode => {
+    if (!rightOnClick) return null;
+    if (rightText) {
+      return (
+        <span className="LeftSubmenu__right" onClick={rightOnClick}>
+          {rightText}
+        </span>
+      );
+    }
+
+    return <Icon className="LeftSubmenu__add-icon" icon={IconType.plus} onClick={rightOnClick} />;
   };
 
   return (

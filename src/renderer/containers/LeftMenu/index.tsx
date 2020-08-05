@@ -9,6 +9,7 @@ import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import useBooleanState from '@renderer/hooks/useBooleanState';
 import {getActiveBankConfig, getActivePrimaryValidatorConfig} from '@renderer/selectors';
+import {unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
 import {getAccount} from '@renderer/store/old/accounts';
 import {AppDispatch, RootState} from '@renderer/types/store';
 
@@ -119,6 +120,11 @@ const LeftMenu: FC = () => {
       ));
   };
 
+  const handleChangeBank = () => {
+    dispatch(unsetActivePrimaryValidator());
+    dispatch(unsetActiveBank());
+  };
+
   return (
     <div className="LeftMenu">
       <div className="points">
@@ -130,11 +136,17 @@ const LeftMenu: FC = () => {
         menuItems={getNetworkItems()}
         title="Network"
       />
-      <LeftSubmenu menuItems={[getActiveBank()]} title="Active Bank" titleOnly />
-      <LeftSubmenu addOnClick={toggleAddAccountModal} menuItems={getAccountItems()} title="Accounts" />
-      <LeftSubmenu addOnClick={toggleAddFriendModal} menuItems={getFriendItems()} title="Friends" />
-      <LeftSubmenu addOnClick={noop} menuItems={getBankItems()} title="Managed Banks" />
-      <LeftSubmenu addOnClick={noop} menuItems={getValidatorItems()} title="Managed Validators" />
+      <LeftSubmenu
+        menuItems={[getActiveBank()]}
+        noExpandToggle
+        rightOnClick={handleChangeBank}
+        rightText="Change"
+        title="Active Bank"
+      />
+      <LeftSubmenu menuItems={getAccountItems()} rightOnClick={toggleAddAccountModal} title="Accounts" />
+      <LeftSubmenu menuItems={getFriendItems()} rightOnClick={toggleAddFriendModal} title="Friends" />
+      <LeftSubmenu menuItems={getBankItems()} rightOnClick={noop} title="Managed Banks" />
+      <LeftSubmenu menuItems={getValidatorItems()} rightOnClick={noop} title="Managed Validators" />
       {addAccountModalIsOpen && <AddAccountModal close={toggleAddAccountModal} />}
       {addFriendModalIsOpen && <AddFriendModal close={toggleAddFriendModal} />}
     </div>
