@@ -3,21 +3,27 @@ import {PayloadAction} from '@reduxjs/toolkit';
 import localStore from '@renderer/store/localStore';
 import {Data} from '@renderer/types/store';
 
-type ActionType = PayloadAction<any>;
-
 export const getStateName = (actionType: string) => actionType.split('/')[1];
 
-export const setLocalAndStateReducer = (state: any, action: ActionType) => {
-  const name = getStateName(action.type);
-  localStore.set(name, action.payload);
-  return action.payload;
-};
+export function setLocalAndStateReducer<T>() {
+  return (state: any, action: PayloadAction<T>) => {
+    const name = getStateName(action.type);
+    localStore.set(name, action.payload);
+    return action.payload;
+  };
+}
 
-export const setStateReducer = (state: any, action: ActionType) => action.payload;
+export function setStateReducer<T>() {
+  return (state: any, action: PayloadAction<T>) => action.payload;
+}
 
-export const setNodeReducer = (state: Data<any>, action: ActionType): void => {
-  const {node_identifier: nodeIdentifier} = action.payload;
-  state[nodeIdentifier] = action.payload;
-};
+export function setNodeReducer<T extends {node_identifier: string}>() {
+  return (state: Data<any>, action: PayloadAction<T>) => {
+    const {node_identifier: nodeIdentifier} = action.payload;
+    state[nodeIdentifier] = action.payload;
+  };
+}
 
-export const unsetStateToNullReducer = () => null;
+export function unsetStateToNullReducer() {
+  return () => null;
+}

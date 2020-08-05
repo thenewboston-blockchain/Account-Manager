@@ -9,10 +9,10 @@ const bankConfigs = createSlice({
   initialState: {} as Data<BankConfig>,
   name: BANK_CONFIGS,
   reducers: {
-    set: setNodeReducer,
+    setBankConfig: setNodeReducer<BankConfig>(),
   },
 });
 
-export const {set: setBankConfig} = bankConfigs.actions;
+export const {setBankConfig} = bankConfigs.actions;
 
 export default bankConfigs;

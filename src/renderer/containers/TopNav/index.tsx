@@ -4,7 +4,7 @@ import {NavLink} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
-import {unsetActiveBankState, unsetActivePrimaryValidatorState} from '@renderer/store/app';
+import {unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types/store';
 
 import './TopNav.scss';
@@ -14,8 +14,8 @@ const TopNav: FC = () => {
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
 
   const handleLogout = (): void => {
-    dispatch(unsetActiveBankState());
-    dispatch(unsetActivePrimaryValidatorState());
+    dispatch(unsetActiveBank());
+    dispatch(unsetActivePrimaryValidator());
   };
 
   const renderLeft = (): ReactNode => (

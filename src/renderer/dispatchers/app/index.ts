@@ -1,4 +1,4 @@
-import {setActiveBankState, setActivePrimaryValidatorState} from '@renderer/store/app';
+import {setActiveBank, setActivePrimaryValidator} from '@renderer/store/app';
 import {Network} from '@renderer/types/entities';
 import {AppDispatch} from '@renderer/types/store';
 
@@ -31,7 +31,7 @@ export const connectAndStoreLocalData = (network: Network, bankNickname: string)
     port: bankConfig.port,
     protocol: bankConfig.protocol,
   };
-  dispatch(setActiveBankState(activeBankData));
+  dispatch(setActiveBank(activeBankData));
 
   const activePrimaryValidatorData = {
     ip_address: validatorConfig.ip_address,
@@ -40,5 +40,5 @@ export const connectAndStoreLocalData = (network: Network, bankNickname: string)
     port: validatorConfig.port,
     protocol: validatorConfig.protocol,
   };
-  dispatch(setActivePrimaryValidatorState(activePrimaryValidatorData));
+  dispatch(setActivePrimaryValidator(activePrimaryValidatorData));
 };

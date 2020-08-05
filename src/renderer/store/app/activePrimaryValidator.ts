@@ -5,18 +5,15 @@ import localStore from '@renderer/store/localStore';
 import {ActivePrimaryValidator} from '@renderer/types/entities';
 import {getStateName, setLocalAndStateReducer, unsetStateToNullReducer} from '@renderer/utils/store';
 
-const activeBank = createSlice({
+const activePrimaryValidator = createSlice({
   initialState: (localStore.get(getStateName(ACTIVE_PRIMARY_VALIDATOR)) || null) as ActivePrimaryValidator | null,
   name: ACTIVE_PRIMARY_VALIDATOR,
   reducers: {
-    setState: setLocalAndStateReducer,
-    unsetState: unsetStateToNullReducer,
+    setActivePrimaryValidator: setLocalAndStateReducer<ActivePrimaryValidator>(),
+    unsetActivePrimaryValidator: unsetStateToNullReducer(),
   },
 });
 
-export const {
-  setState: setActivePrimaryValidatorState,
-  unsetState: unsetActivePrimaryValidatorState,
-} = activeBank.actions;
+export const {setActivePrimaryValidator, unsetActivePrimaryValidator} = activePrimaryValidator.actions;
 
-export default activeBank;
+export default activePrimaryValidator;

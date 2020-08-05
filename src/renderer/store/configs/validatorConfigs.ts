@@ -9,10 +9,10 @@ const validatorConfigs = createSlice({
   initialState: {} as Data<ValidatorConfig>,
   name: VALIDATOR_CONFIGS,
   reducers: {
-    set: setNodeReducer,
+    setValidatorConfig: setNodeReducer<ValidatorConfig>(),
   },
 });
 
-export const {set: setValidatorConfig} = validatorConfigs.actions;
+export const {setValidatorConfig} = validatorConfigs.actions;
 
 export default validatorConfigs;

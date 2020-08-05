@@ -9,11 +9,11 @@ const activeBank = createSlice({
   initialState: (localStore.get(getStateName(ACTIVE_BANK)) || null) as ActiveBank | null,
   name: ACTIVE_BANK,
   reducers: {
-    setState: setLocalAndStateReducer,
-    unsetState: unsetStateToNullReducer,
+    setActiveBank: setLocalAndStateReducer<ActiveBank>(),
+    unsetActiveBank: unsetStateToNullReducer(),
   },
 });
 
-export const {setState: setActiveBankState, unsetState: unsetActiveBankState} = activeBank.actions;
+export const {setActiveBank, unsetActiveBank} = activeBank.actions;
 
 export default activeBank;
