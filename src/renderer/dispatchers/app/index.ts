@@ -21,7 +21,7 @@ export const connect = (network: Network) => async (dispatch: AppDispatch) => {
   };
 };
 
-export const connectAndStoreLocalData = (network: Network, bankNickname = '') => async (dispatch: AppDispatch) => {
+export const connectAndStoreLocalData = (network: Network, bankNickname: string) => async (dispatch: AppDispatch) => {
   const {bankConfig, validatorConfig} = await dispatch(connect(network));
 
   const activeBankData = {
