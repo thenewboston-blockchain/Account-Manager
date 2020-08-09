@@ -137,7 +137,6 @@
     "mdi-react": "^7.3.0",
     "normalize.css": "^8.0.1",
     "qrcode": "^1.4.4",
-    "re-reselect": "^4.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hot-loader": "^4.12.21",
