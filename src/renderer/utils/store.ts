@@ -4,7 +4,7 @@ import localStore from '@renderer/store/localStore';
 import {NodeIdentifier} from '@renderer/types/entities';
 import {DataWithError} from '@renderer/types/store';
 
-type PayloadActionWithAddress<T> = PayloadAction<{address: string; data: T}>;
+type PayloadActionWithAddress<T = undefined> = PayloadAction<{address: string; data?: T}>;
 type PayloadActionErrorWithAddress = PayloadAction<{address: string; error: any}>;
 
 export const getStateName = (actionType: string) => actionType.split('/')[1];
@@ -53,6 +53,12 @@ export function setErrorReducer() {
     }
     state[address].error = error;
     state[address].data = null;
+  };
+}
+
+export function unsetDataReducer() {
+  return (state: DataWithError<any>, {payload: {address}}: PayloadActionWithAddress) => {
+    delete state[address];
   };
 }
 

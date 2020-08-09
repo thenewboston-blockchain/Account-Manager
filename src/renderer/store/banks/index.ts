@@ -1,11 +1,13 @@
 import {combineReducers} from '@reduxjs/toolkit';
 
-import {CONFIGS} from '@renderer/constants/store';
+import {ACCOUNTS, CONFIGS} from '@renderer/constants/store';
+import bankAccounts, {setBankAccounts, setBankAccountsError, unsetBankAccounts} from './bankAccounts';
 import bankConfigs, {setBankConfig, setBankConfigError} from './bankConfigs';
 
-export {setBankConfig, setBankConfigError};
+export {setBankAccounts, setBankAccountsError, setBankConfig, setBankConfigError, unsetBankAccounts};
 
 const bankReducers = combineReducers({
+  [ACCOUNTS]: bankAccounts.reducer,
   [CONFIGS]: bankConfigs.reducer,
 });
 

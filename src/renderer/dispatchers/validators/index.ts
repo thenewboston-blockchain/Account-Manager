@@ -1,9 +1,28 @@
 import axios from 'axios';
 
-import {setValidatorConfig, setValidatorConfigError} from '@renderer/store/validators';
-import {ValidatorConfig} from '@renderer/types/entities';
+import {
+  setValidatorAccounts,
+  setValidatorAccountsError,
+  setValidatorConfig,
+  setValidatorConfigError,
+} from '@renderer/store/validators';
+import {NodeAccount, ValidatorConfig} from '@renderer/types/entities';
 import {AppDispatch} from '@renderer/types/store';
 import {NodeType} from '@renderer/types/api';
+
+export const fetchValidatorAccounts = (address: string) => async (dispatch: AppDispatch) => {
+  try {
+    const {data} = await axios.get<NodeAccount[]>(`${address}/accounts`);
+
+    dispatch(setValidatorAccounts({address, data}));
+    return data;
+  } catch (error) {
+    if (!error.response) {
+      throw error;
+    }
+    dispatch(setValidatorAccountsError({address, error: error.response.data}));
+  }
+};
 
 export const fetchValidatorConfig = (address: string) => async (dispatch: AppDispatch) => {
   try {

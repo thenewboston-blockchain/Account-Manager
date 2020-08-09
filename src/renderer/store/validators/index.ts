@@ -1,11 +1,23 @@
 import {combineReducers} from '@reduxjs/toolkit';
 
-import {CONFIGS} from '@renderer/constants/store';
+import {ACCOUNTS, CONFIGS} from '@renderer/constants/store';
+import validatorAccounts, {
+  setValidatorAccounts,
+  setValidatorAccountsError,
+  unsetValidatorAccounts,
+} from './validatorAccounts';
 import validatorConfigs, {setValidatorConfig, setValidatorConfigError} from './validatorConfigs';
 
-export {setValidatorConfig, setValidatorConfigError};
+export {
+  setValidatorAccounts,
+  setValidatorAccountsError,
+  setValidatorConfig,
+  setValidatorConfigError,
+  unsetValidatorAccounts,
+};
 
 const validatorReducers = combineReducers({
+  [ACCOUNTS]: validatorAccounts.reducer,
   [CONFIGS]: validatorConfigs.reducer,
 });
 

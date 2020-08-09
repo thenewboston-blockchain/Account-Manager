@@ -11,7 +11,7 @@ import {AppDispatch} from '@renderer/types/store';
 import './BankOverview.scss';
 
 const BankOverview: FC = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const bankAddress = useAddress();
   const dispatch = useDispatch<AppDispatch>();
   const bankConfigs = useSelector(getBankConfigs);

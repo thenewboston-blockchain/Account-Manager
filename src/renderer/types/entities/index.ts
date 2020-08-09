@@ -17,6 +17,15 @@ export interface NodeIdentifier {
 
 export type NodeAddressData = AddressData & NodeIdentifier;
 
+export interface Id {
+  id: string;
+}
+
+export interface CreatedModified {
+  created_date: string;
+  modified_date: string;
+}
+
 export interface AppNodeAddressData extends NodeAddressData {
   nickname: string;
 }
@@ -46,4 +55,9 @@ export interface ValidatorConfig extends NetworkValidator {
 
 export interface PrimaryValidatorConfig extends NetworkValidator {
   node_type: NodeType.primaryValidator;
+}
+
+export interface NodeAccount extends Id, CreatedModified {
+  account_number: string;
+  trust: string;
 }
