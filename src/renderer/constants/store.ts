@@ -1,6 +1,7 @@
 const APP = 'app';
-export const BANKS = 'banks';
-export const VALIDATORS = 'validators';
+const BANKS = 'banks';
+const VALIDATORS = 'validators';
+
 export const CONFIGS = 'configs';
 
 // App
