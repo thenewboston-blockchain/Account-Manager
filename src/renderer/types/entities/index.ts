@@ -34,6 +34,7 @@ export interface NetworkNode extends NodeAddressData {
   account_number: string;
   default_transaction_fee: string;
   node_type: NodeType;
+  trust: string;
   version: string;
 }
 
@@ -60,4 +61,32 @@ export interface PrimaryValidatorConfig extends NetworkValidator {
 export interface NodeAccount extends Id, CreatedModified {
   account_number: string;
   trust: string;
+}
+
+export interface NodeBlock extends Id, CreatedModified {
+  balance_key: string;
+  sender: string;
+  signature: string;
+}
+
+export interface NodeBankTransaction extends Id {
+  block: NodeBlock;
+  amount: string;
+  recipient: string;
+}
+
+export interface NodeConfirmationBlock {
+  message: any;
+  node_identifier: string;
+  signature: string;
+}
+
+export interface NodeInvalidBlock {
+  node_identifier: string;
+}
+
+export interface NodeValidatorConfirmationService extends Id, CreatedModified {
+  end: string;
+  start: string;
+  validator: string;
 }

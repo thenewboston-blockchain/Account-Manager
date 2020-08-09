@@ -1,8 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 import {BANK_ACCOUNTS} from '@renderer/constants/store';
-import {DataWithError} from '@renderer/types/store';
 import {NodeAccount} from '@renderer/types/entities';
+import {DataWithError} from '@renderer/types/store';
 import {setDataReducer, setErrorReducer, unsetDataReducer} from '@renderer/utils/store';
 
 const bankAccounts = createSlice({
