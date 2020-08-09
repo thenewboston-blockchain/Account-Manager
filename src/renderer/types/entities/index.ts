@@ -40,6 +40,10 @@ export interface BankConfig extends NetworkNode {
   primary_validator: PrimaryValidatorConfig;
 }
 
+export interface ValidatorConfig extends NetworkValidator {
+  node_type: NodeType.primaryValidator | NodeType.confirmationValidator;
+}
+
 export interface PrimaryValidatorConfig extends NetworkValidator {
   node_type: NodeType.primaryValidator;
 }

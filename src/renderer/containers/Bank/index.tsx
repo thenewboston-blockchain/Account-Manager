@@ -23,7 +23,7 @@ import useBooleanState from '@renderer/hooks/useBooleanState';
 import './Bank.scss';
 
 const Bank: FC = () => {
-  const {nid} = useParams();
+  const {ipAddress} = useParams();
   const {path, url} = useRouteMatch();
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
@@ -97,7 +97,7 @@ const Bank: FC = () => {
       <PageHeader
         dropdownMenuOptions={dropdownMenuOptions}
         rightContent={renderRightPageHeaderButtons()}
-        title={`Digital Ocean Bank (${nid})`}
+        title={`Digital Ocean Bank (${ipAddress})`}
         trustScore={98.34}
       />
       <PageTabs

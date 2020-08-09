@@ -6,7 +6,7 @@ import axios from 'axios';
 import PageTable, {PageTableData} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {getActiveBankConfig} from '@renderer/selectors';
-import {formatAddress} from '@renderer/utils/format';
+import {formatAddress} from '@renderer/utils/address';
 
 enum TableKeys {
   senderAccountNumber,
