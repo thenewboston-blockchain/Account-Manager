@@ -8,10 +8,16 @@ import {DictWithDataAndError, DictWithError, DictWithPaginatedResultsAndError} f
 interface Address {
   address: string;
 }
+interface Error {
+  error: any;
+}
 type PayloadActionWithAddress = PayloadAction<Address>;
 type PayloadActionWithDataAddress<T = undefined> = PayloadAction<Address & {data?: T}>;
 type PaginatedPayloadActionWithAddress<T = undefined> = PayloadAction<PaginatedResults<T> & Address>;
-type PayloadActionErrorWithAddress = PayloadAction<Address & {error: any}>;
+type PayloadActionErrorWithAddress = PayloadAction<Error & Address>;
+
+export type SetResults<T> = (payload: PaginatedResults<T> & Address) => PayloadAction<PaginatedResults<T> & Address>;
+export type SetError = (payload: Address & Error) => PayloadAction<Address & Error>;
 
 export const getStateName = (actionType: string) => actionType.split('/')[1];
 
