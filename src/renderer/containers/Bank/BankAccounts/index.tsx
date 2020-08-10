@@ -7,8 +7,8 @@ import Pagination from '@renderer/components/Pagination';
 import {fetchBankAccounts} from '@renderer/dispatchers/banks';
 import useAddress from '@renderer/hooks/useAddress';
 import {getBankAccounts} from '@renderer/selectors';
-import {AppDispatch} from '@renderer/types/store';
 import {unsetBankAccounts} from '@renderer/store/banks';
+import {AppDispatch} from '@renderer/types/store';
 
 enum TableKeys {
   id,
@@ -41,13 +41,13 @@ const BankAccounts: FC = () => {
 
   const bankAccountsTableData = useMemo<PageTableData[]>(
     () =>
-      bankAccounts?.results.map((bankAccount) => ({
-        key: bankAccount.account_number,
-        [TableKeys.accountNumber]: bankAccount.account_number,
-        [TableKeys.createdDate]: bankAccount.created_date,
-        [TableKeys.id]: bankAccount.id,
-        [TableKeys.modifiedDate]: bankAccount.modified_date,
-        [TableKeys.trust]: bankAccount.trust,
+      bankAccounts?.results.map((account) => ({
+        key: account.account_number,
+        [TableKeys.accountNumber]: account.account_number,
+        [TableKeys.createdDate]: account.created_date,
+        [TableKeys.id]: account.id,
+        [TableKeys.modifiedDate]: account.modified_date,
+        [TableKeys.trust]: account.trust,
       })) || [],
     [bankAccounts],
   );

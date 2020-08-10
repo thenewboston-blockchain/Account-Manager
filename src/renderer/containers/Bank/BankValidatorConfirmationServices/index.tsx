@@ -1,7 +1,14 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useMemo, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 
-import PageTable, {PageTableItems} from '@renderer/components/PageTable';
+import {Loader} from '@renderer/components/FormElements';
+import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
+import {fetchBankValidatorConfirmationServices} from '@renderer/dispatchers/banks';
+import useAddress from '@renderer/hooks/useAddress';
+import {getBankValidatorConfirmationServices} from '@renderer/selectors';
+import {unsetBankValidatorConfirmationServices} from '@renderer/store/banks';
+import {AppDispatch} from '@renderer/types/store';
 
 enum TableKeys {
   createdDate,
@@ -12,50 +19,74 @@ enum TableKeys {
   validator,
 }
 
-const sampleData: PageTableItems = {
-  data: [
-    {
-      key: 'be9fbc3b-d4df-43d5-9bea-9882a6dd27f6',
-      [TableKeys.createdDate]: '2020-07-09T22:10:35.312956Z',
-      [TableKeys.end]: '2020-08-09T22:10:24Z',
-      [TableKeys.id]: 'be9fbc3b-d4df-43d5-9bea-9882a6dd27f6',
-      [TableKeys.modifiedDate]: '2020-07-09T22:10:37.393578Z',
-      [TableKeys.start]: '2020-07-09T22:10:25Z',
-      [TableKeys.validator]: '51461a75-dd8d-4133-81f4-543a3b054149',
-    },
-    {
-      key: 'e2055637-67ff-4479-aec6-a8095d513862',
-      [TableKeys.createdDate]: '2020-07-09T22:10:35.312956Z',
-      [TableKeys.end]: '2020-08-09T22:10:24Z',
-      [TableKeys.id]: 'e2055637-67ff-4479-aec6-a8095d513862',
-      [TableKeys.modifiedDate]: '2020-07-09T22:10:37.393578Z',
-      [TableKeys.start]: '2020-07-09T22:10:25Z',
-      [TableKeys.validator]: '10308b02-d577-484e-953c-0a2bdb5e3d83',
-    },
-  ],
-  headers: {
-    [TableKeys.createdDate]: 'Created',
-    [TableKeys.end]: 'End',
-    [TableKeys.id]: 'ID',
-    [TableKeys.modifiedDate]: 'Modified',
-    [TableKeys.start]: 'Start',
-    [TableKeys.validator]: 'Validator',
-  },
-  orderedKeys: [
-    TableKeys.createdDate,
-    TableKeys.end,
-    TableKeys.id,
-    TableKeys.modifiedDate,
-    TableKeys.start,
-    TableKeys.validator,
-  ],
-};
-
 const BankValidatorConfirmationServices: FC = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const bankAddress = useAddress();
+  const dispatch = useDispatch<AppDispatch>();
+  const bankValidatorConfirmationServicesObject = useSelector(getBankValidatorConfirmationServices);
+  const bankValidatorConfirmationServices = bankValidatorConfirmationServicesObject[bankAddress];
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      setLoading(true);
+      await dispatch(fetchBankValidatorConfirmationServices(bankAddress));
+      setLoading(false);
+    };
+
+    fetchData();
+
+    return () => {
+      dispatch(unsetBankValidatorConfirmationServices({address: bankAddress}));
+    };
+  }, [bankAddress, dispatch]);
+
+  const bankValidatorConfirmationServicesTableData = useMemo<PageTableData[]>(
+    () =>
+      bankValidatorConfirmationServices?.results.map((validatorConfirmationService) => ({
+        key: validatorConfirmationService.id,
+        [TableKeys.createdDate]: validatorConfirmationService.created_date,
+        [TableKeys.end]: validatorConfirmationService.end,
+        [TableKeys.id]: validatorConfirmationService.id,
+        [TableKeys.modifiedDate]: validatorConfirmationService.modified_date,
+        [TableKeys.start]: validatorConfirmationService.start,
+        [TableKeys.validator]: validatorConfirmationService.validator,
+      })) || [],
+    [bankValidatorConfirmationServices],
+  );
+
+  const pageTableItems = useMemo<PageTableItems>(
+    () => ({
+      data: bankValidatorConfirmationServicesTableData,
+      headers: {
+        [TableKeys.createdDate]: 'Created',
+        [TableKeys.end]: 'End',
+        [TableKeys.id]: 'ID',
+        [TableKeys.modifiedDate]: 'Modified',
+        [TableKeys.start]: 'Start',
+        [TableKeys.validator]: 'Validator',
+      },
+      orderedKeys: [
+        TableKeys.createdDate,
+        TableKeys.end,
+        TableKeys.id,
+        TableKeys.modifiedDate,
+        TableKeys.start,
+        TableKeys.validator,
+      ],
+    }),
+    [bankValidatorConfirmationServicesTableData],
+  );
+
   return (
     <div className="BankValidatorConfirmationServices">
-      <PageTable items={sampleData} />
-      <Pagination />
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <PageTable items={pageTableItems} />
+          <Pagination />
+        </>
+      )}
     </div>
   );
 };

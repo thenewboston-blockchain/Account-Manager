@@ -14,6 +14,7 @@ export const getBankConfigs = (state: RootState) => state.banks.configs;
 export const getBankConfirmationBlocks = (state: RootState) => state.banks.confirmationBlocks;
 export const getBankInvalidBlocks = (state: RootState) => state.banks.invalidBlocks;
 export const getBankValidatorConfirmationServices = (state: RootState) => state.banks.validatorConfirmationServices;
+export const getBankValidators = (state: RootState) => state.banks.validators;
 
 export const getValidatorAccounts = (state: RootState) => state.validators.accounts;
 export const getValidatorBanks = (state: RootState) => state.validators.banks;
@@ -24,6 +25,7 @@ export const getValidatorConfirmationBlocks = (state: RootState) => state.valida
 export const getValidatorInvalidBlocks = (state: RootState) => state.validators.invalidBlocks;
 export const getValidatorValidatorConfirmationServices = (state: RootState) =>
   state.validators.validatorConfirmationServices;
+export const getValidatorValidators = (state: RootState) => state.validators.validators;
 
 export const getActiveBankConfig = createSelector([getActiveBank, getBankConfigs], (activeBank, bankConfigs) => {
   if (!activeBank) return null;
