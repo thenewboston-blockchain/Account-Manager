@@ -3,16 +3,16 @@ export const BANKS = 'banks';
 export const VALIDATORS = 'validators';
 
 export const ACCOUNTS = 'accounts';
-export const BANK_TRANSACTIONS = 'bankTransactions';
+export const BANK_TRANSACTIONS = 'bank_transactions';
 export const BLOCKS = 'blocks';
 export const CONFIGS = 'configs';
-export const CONFIRMATION_BLOCKS = 'confirmationBlocks';
-export const INVALID_BLOCKS = 'invalidBlocks';
-export const VALIDATOR_CONFIRMATION_SERVICES = 'validatorConfirmationServices';
+export const CONFIRMATION_BLOCKS = 'confirmation_blocks';
+export const INVALID_BLOCKS = 'invalid_blocks';
+export const VALIDATOR_CONFIRMATION_SERVICES = 'validator_confirmation_services';
 
 // App
-export const ACTIVE_BANK = `${APP}/activeBank`;
-export const ACTIVE_PRIMARY_VALIDATOR = `${APP}/activePrimaryValidator`;
+export const ACTIVE_BANK = `${APP}/active_bank`;
+export const ACTIVE_PRIMARY_VALIDATOR = `${APP}/active_primary_validator`;
 
 // Banks
 export const BANK_ACCOUNTS = `${BANKS}/${ACCOUNTS}`;
