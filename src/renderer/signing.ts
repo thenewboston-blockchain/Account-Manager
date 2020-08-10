@@ -15,7 +15,7 @@ export const createAccount = () => {
 
 export const signMessage = (message: string, secretKey: Uint8Array) => {
   const encoder = new TextEncoder();
-  const encodedData = encoder.encode('Hey');
+  const encodedData = encoder.encode(message);
   const signatureArray = sign(encodedData, secretKey);
   const signature = Buffer.from(signatureArray).toString('hex');
   return signature.substring(0, 128);
