@@ -8,7 +8,7 @@ export const BLOCKS = 'blocks';
 export const CONFIGS = 'configs';
 export const CONFIRMATION_BLOCKS = 'confirmationBlocks';
 export const INVALID_BLOCKS = 'invalidBlocks';
-export const VALIDATOR_CONFIRMATION_SERVICES = 'confirmationServices';
+export const VALIDATOR_CONFIRMATION_SERVICES = 'validatorConfirmationServices';
 
 // App
 export const ACTIVE_BANK = `${APP}/activeBank`;
