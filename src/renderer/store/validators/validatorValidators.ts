@@ -2,15 +2,15 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {VALIDATOR_VALIDATORS} from '@renderer/constants/store';
 import {NetworkValidator} from '@renderer/types/entities';
-import {DataWithError} from '@renderer/types/store';
-import {setDataReducer, setErrorReducer, unsetDataReducer} from '@renderer/utils/store';
+import {DictWithPaginatedResultsAndError} from '@renderer/types/store';
+import {unsetDataReducer, setPaginatedResultReducer, setPaginatedResultErrorReducer} from '@renderer/utils/store';
 
 const validatorValidators = createSlice({
-  initialState: {} as DataWithError<NetworkValidator[]>,
+  initialState: {} as DictWithPaginatedResultsAndError<NetworkValidator>,
   name: VALIDATOR_VALIDATORS,
   reducers: {
-    setValidatorValidators: setDataReducer<NetworkValidator[]>(),
-    setValidatorValidatorsError: setErrorReducer(),
+    setValidatorValidators: setPaginatedResultReducer<NetworkValidator>(),
+    setValidatorValidatorsError: setPaginatedResultErrorReducer(),
     unsetValidatorValidators: unsetDataReducer(),
   },
 });

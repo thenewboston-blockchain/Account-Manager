@@ -6,8 +6,8 @@ export enum NodeType {
 
 export type ProtocolType = 'http' | 'https';
 
-export interface PaginatedResult<T> {
-  count: number;
+export interface PaginatedResults<T> {
+  count: number | null;
   next: string | null;
   previous: string | null;
   results: T[];

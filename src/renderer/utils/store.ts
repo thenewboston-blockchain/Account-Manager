@@ -1,11 +1,17 @@
 import {PayloadAction} from '@reduxjs/toolkit';
 
 import localStore from '@renderer/store/localStore';
+import {PaginatedResults} from '@renderer/types/api';
 import {NodeIdentifier} from '@renderer/types/entities';
-import {DataWithError} from '@renderer/types/store';
+import {DictWithDataAndError, DictWithError, DictWithPaginatedResultsAndError} from '@renderer/types/store';
 
-type PayloadActionWithAddress<T = undefined> = PayloadAction<{address: string; data?: T}>;
-type PayloadActionErrorWithAddress = PayloadAction<{address: string; error: any}>;
+interface Address {
+  address: string;
+}
+type PayloadActionWithAddress = PayloadAction<Address>;
+type PayloadActionWithDataAddress<T = undefined> = PayloadAction<Address & {data?: T}>;
+type PaginatedPayloadActionWithAddress<T = undefined> = PayloadAction<PaginatedResults<T> & Address>;
+type PayloadActionErrorWithAddress = PayloadAction<Address & {error: any}>;
 
 export const getStateName = (actionType: string) => actionType.split('/')[1];
 
@@ -29,7 +35,7 @@ export function setNodeReducer<T extends NodeIdentifier>() {
 }
 
 export function setDataReducer<T>() {
-  return (state: DataWithError<any>, {payload: {address, data}}: PayloadActionWithAddress<T>) => {
+  return (state: DictWithDataAndError<any>, {payload: {address, data}}: PayloadActionWithDataAddress<T>) => {
     if (!state[address]) {
       state[address] = {
         data,
@@ -42,8 +48,8 @@ export function setDataReducer<T>() {
   };
 }
 
-export function setErrorReducer() {
-  return (state: DataWithError<any>, {payload: {address, error}}: PayloadActionErrorWithAddress) => {
+export function setDataErrorReducer() {
+  return (state: DictWithDataAndError<any>, {payload: {address, error}}: PayloadActionErrorWithAddress) => {
     if (!state[address]) {
       state[address] = {
         data: null,
@@ -56,8 +62,51 @@ export function setErrorReducer() {
   };
 }
 
+export function setPaginatedResultReducer<T>() {
+  return (
+    state: DictWithPaginatedResultsAndError<any>,
+    {payload: {address, count, next, previous, results}}: PaginatedPayloadActionWithAddress<T>,
+  ) => {
+    if (!state[address]) {
+      state[address] = {
+        count,
+        error: null,
+        next,
+        previous,
+        results,
+      };
+      return;
+    }
+    state[address].error = null;
+    state[address].count = count;
+    state[address].next = next;
+    state[address].previous = previous;
+    state[address].results = results;
+  };
+}
+
+export function setPaginatedResultErrorReducer() {
+  return (state: DictWithPaginatedResultsAndError<any>, {payload: {address, error}}: PayloadActionErrorWithAddress) => {
+    if (!state[address]) {
+      state[address] = {
+        count: null,
+        error,
+        next: null,
+        previous: null,
+        results: [],
+      };
+      return;
+    }
+    state[address].error = error;
+    state[address].count = null;
+    state[address].next = null;
+    state[address].previous = null;
+    state[address].results = [];
+  };
+}
+
 export function unsetDataReducer() {
-  return (state: DataWithError<any>, {payload: {address}}: PayloadActionWithAddress) => {
+  return (state: DictWithError, {payload: {address}}: PayloadActionWithAddress) => {
     delete state[address];
   };
 }

@@ -2,15 +2,15 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {BANK_ACCOUNTS} from '@renderer/constants/store';
 import {NodeAccount} from '@renderer/types/entities';
-import {DataWithError} from '@renderer/types/store';
-import {setDataReducer, setErrorReducer, unsetDataReducer} from '@renderer/utils/store';
+import {DictWithPaginatedResultsAndError} from '@renderer/types/store';
+import {unsetDataReducer, setPaginatedResultReducer, setPaginatedResultErrorReducer} from '@renderer/utils/store';
 
 const bankAccounts = createSlice({
-  initialState: {} as DataWithError<NodeAccount[]>,
+  initialState: {} as DictWithPaginatedResultsAndError<NodeAccount>,
   name: BANK_ACCOUNTS,
   reducers: {
-    setBankAccounts: setDataReducer<NodeAccount[]>(),
-    setBankAccountsError: setErrorReducer(),
+    setBankAccounts: setPaginatedResultReducer<NodeAccount>(),
+    setBankAccountsError: setPaginatedResultErrorReducer(),
     unsetBankAccounts: unsetDataReducer(),
   },
 });

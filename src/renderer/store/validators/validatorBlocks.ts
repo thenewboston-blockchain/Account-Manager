@@ -2,15 +2,15 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {VALIDATOR_BLOCKS} from '@renderer/constants/store';
 import {NodeBlock} from '@renderer/types/entities';
-import {DataWithError} from '@renderer/types/store';
-import {setDataReducer, setErrorReducer, unsetDataReducer} from '@renderer/utils/store';
+import {DictWithPaginatedResultsAndError} from '@renderer/types/store';
+import {unsetDataReducer, setPaginatedResultReducer, setPaginatedResultErrorReducer} from '@renderer/utils/store';
 
 const validatorBlocks = createSlice({
-  initialState: {} as DataWithError<NodeBlock[]>,
+  initialState: {} as DictWithPaginatedResultsAndError<NodeBlock>,
   name: VALIDATOR_BLOCKS,
   reducers: {
-    setValidatorBlocks: setDataReducer<NodeBlock[]>(),
-    setValidatorBlocksError: setErrorReducer(),
+    setValidatorBlocks: setPaginatedResultReducer<NodeBlock>(),
+    setValidatorBlocksError: setPaginatedResultErrorReducer(),
     unsetValidatorBlocks: unsetDataReducer(),
   },
 });

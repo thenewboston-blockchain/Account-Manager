@@ -2,15 +2,15 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants/store';
 import {NodeValidatorConfirmationService} from '@renderer/types/entities';
-import {DataWithError} from '@renderer/types/store';
-import {setDataReducer, setErrorReducer, unsetDataReducer} from '@renderer/utils/store';
+import {DictWithPaginatedResultsAndError} from '@renderer/types/store';
+import {unsetDataReducer, setPaginatedResultReducer, setPaginatedResultErrorReducer} from '@renderer/utils/store';
 
 const bankValidatorConfirmationServices = createSlice({
-  initialState: {} as DataWithError<NodeValidatorConfirmationService[]>,
+  initialState: {} as DictWithPaginatedResultsAndError<NodeValidatorConfirmationService>,
   name: BANK_VALIDATOR_CONFIRMATION_SERVICES,
   reducers: {
-    setBankValidatorConfirmationServices: setDataReducer<NodeValidatorConfirmationService[]>(),
-    setBankValidatorConfirmationServicesError: setErrorReducer(),
+    setBankValidatorConfirmationServices: setPaginatedResultReducer<NodeValidatorConfirmationService>(),
+    setBankValidatorConfirmationServicesError: setPaginatedResultErrorReducer(),
     unsetBankValidatorConfirmationServices: unsetDataReducer(),
   },
 });

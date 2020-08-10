@@ -6,16 +6,16 @@ import {
   setValidatorConfig,
   setValidatorConfigError,
 } from '@renderer/store/validators';
+import {NodeType, PaginatedResults} from '@renderer/types/api';
 import {NodeAccount, ValidatorConfig} from '@renderer/types/entities';
 import {AppDispatch} from '@renderer/types/store';
-import {NodeType} from '@renderer/types/api';
 
 export const fetchValidatorAccounts = (address: string) => async (dispatch: AppDispatch) => {
   try {
-    const {data} = await axios.get<NodeAccount[]>(`${address}/accounts`);
+    const {data} = await axios.get<PaginatedResults<NodeAccount>>(`${address}/accounts`);
 
-    dispatch(setValidatorAccounts({address, data}));
-    return data;
+    dispatch(setValidatorAccounts({address, ...data}));
+    return data.results;
   } catch (error) {
     if (!error.response) {
       throw error;

@@ -41,7 +41,7 @@ const BankAccounts: FC = () => {
 
   const bankAccountsTableData = useMemo<PageTableData[]>(
     () =>
-      bankAccounts?.data.map((bankAccount) => ({
+      bankAccounts?.results.map((bankAccount) => ({
         key: bankAccount.account_number,
         [TableKeys.accountNumber]: bankAccount.account_number,
         [TableKeys.createdDate]: bankAccount.created_date,

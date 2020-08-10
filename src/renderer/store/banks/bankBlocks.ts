@@ -2,15 +2,15 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {BANK_BLOCKS} from '@renderer/constants/store';
 import {NodeBlock} from '@renderer/types/entities';
-import {DataWithError} from '@renderer/types/store';
-import {setDataReducer, setErrorReducer, unsetDataReducer} from '@renderer/utils/store';
+import {DictWithPaginatedResultsAndError} from '@renderer/types/store';
+import {unsetDataReducer, setPaginatedResultReducer, setPaginatedResultErrorReducer} from '@renderer/utils/store';
 
 const bankBlocks = createSlice({
-  initialState: {} as DataWithError<NodeBlock[]>,
+  initialState: {} as DictWithPaginatedResultsAndError<NodeBlock>,
   name: BANK_BLOCKS,
   reducers: {
-    setBankBlocks: setDataReducer<NodeBlock[]>(),
-    setBankBlocksError: setErrorReducer(),
+    setBankBlocks: setPaginatedResultReducer<NodeBlock>(),
+    setBankBlocksError: setPaginatedResultErrorReducer(),
     unsetBankBlocks: unsetDataReducer(),
   },
 });
