@@ -10,7 +10,7 @@ import 'typeface-roboto';
 import 'normalize.css';
 import './styles/main.scss';
 
-let payload = JSON.stringify({
+const payload = JSON.stringify({
   balance_key: '6cb8f4fe23c57a1c169e5a193c59ad9f21bbe5a54d69c44a4522f4644bf5b2a2',
   txs: [
     {
@@ -27,7 +27,6 @@ let payload = JSON.stringify({
     },
   ],
 });
-payload = payload.replace(/:/g, ': ').replace(/,/g, ', ');
 console.error(payload);
 
 const {publicKeyHex, secretKey, secretKeyHex} = createAccount();
