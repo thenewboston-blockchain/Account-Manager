@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants';
 import {DictWithPaginatedResultsAndError, ValidatorConfirmationService} from '@renderer/types';
-import {unsetDataReducer, setPaginatedResultReducer, setPaginatedResultErrorReducer} from '@renderer/utils/store';
+import {setPaginatedResultErrorReducer, setPaginatedResultReducer, unsetDataReducer} from '@renderer/utils/store';
 
 const bankValidatorConfirmationServices = createSlice({
   initialState: {} as DictWithPaginatedResultsAndError<ValidatorConfirmationService>,

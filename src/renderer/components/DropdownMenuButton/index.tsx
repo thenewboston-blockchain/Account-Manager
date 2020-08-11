@@ -1,4 +1,4 @@
-import React, {CSSProperties, FC, ReactNode, KeyboardEvent, useCallback, useEffect, useRef, useState} from 'react';
+import React, {CSSProperties, FC, KeyboardEvent, ReactNode, useCallback, useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import noop from 'lodash/noop';

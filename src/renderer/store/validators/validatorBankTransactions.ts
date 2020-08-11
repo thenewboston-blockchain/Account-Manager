@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {VALIDATOR_BANK_TRANSACTIONS} from '@renderer/constants';
 import {BankTransaction, DictWithPaginatedResultsAndError} from '@renderer/types';
-import {unsetDataReducer, setPaginatedResultReducer, setPaginatedResultErrorReducer} from '@renderer/utils/store';
+import {setPaginatedResultErrorReducer, setPaginatedResultReducer, unsetDataReducer} from '@renderer/utils/store';
 
 const validatorBankTransactions = createSlice({
   initialState: {} as DictWithPaginatedResultsAndError<BankTransaction>,

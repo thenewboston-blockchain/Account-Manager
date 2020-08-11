@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {VALIDATOR_BLOCKS} from '@renderer/constants';
 import {BlockResponse, DictWithPaginatedResultsAndError} from '@renderer/types';
-import {unsetDataReducer, setPaginatedResultReducer, setPaginatedResultErrorReducer} from '@renderer/utils/store';
+import {setPaginatedResultErrorReducer, setPaginatedResultReducer, unsetDataReducer} from '@renderer/utils/store';
 
 const validatorBlocks = createSlice({
   initialState: {} as DictWithPaginatedResultsAndError<BlockResponse>,

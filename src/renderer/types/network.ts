@@ -6,7 +6,7 @@ export interface AddressData {
   protocol: ProtocolType;
 }
 
-export interface BankConfig extends NetworkNode {
+export interface BankConfig extends Node {
   node_type: NodeType.bank;
   primary_validator: PrimaryValidatorConfig;
 }
@@ -15,6 +15,13 @@ export interface BankTransaction extends Id {
   block: BlockResponse;
   amount: string;
   recipient: string;
+}
+
+export interface BaseValidator extends Node {
+  root_account_file: string;
+  root_account_file_hash: string;
+  seed_block_identifier: string;
+  daily_confirmation_rate: string | null;
 }
 
 interface BlockMessage {
@@ -56,19 +63,12 @@ export interface InvalidBlock extends Id, CreatedModified {
   primary_validator: string;
 }
 
-export interface NetworkNode extends AddressData, NodeIdentifier {
+export interface Node extends AddressData, NodeIdentifier {
   account_number: string;
   default_transaction_fee: string;
   node_type: NodeType;
   trust: string;
   version: string;
-}
-
-export interface NetworkValidator extends NetworkNode {
-  root_account_file: string;
-  root_account_file_hash: string;
-  seed_block_identifier: string;
-  daily_confirmation_rate: string | null;
 }
 
 export interface NodeIdentifier {
@@ -82,7 +82,7 @@ export interface PaginatedResults<T> {
   results: T[];
 }
 
-export interface PrimaryValidatorConfig extends NetworkValidator {
+export interface PrimaryValidatorConfig extends BaseValidator {
   node_type: NodeType.primaryValidator;
 }
 
@@ -97,7 +97,7 @@ interface UpdatedBalance {
   balance_lock?: string;
 }
 
-export interface ValidatorConfig extends NetworkValidator {
+export interface ValidatorConfig extends BaseValidator {
   node_type: NodeType.primaryValidator | NodeType.confirmationValidator;
 }
 
