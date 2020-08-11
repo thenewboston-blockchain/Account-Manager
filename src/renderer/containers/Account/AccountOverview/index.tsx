@@ -6,7 +6,7 @@ import axios from 'axios';
 import DetailPanel from '@renderer/components/DetailPanel';
 import Qr from '@renderer/components/Qr';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
-import {formatAddress} from '@renderer/utils/format';
+import {formatAddress} from '@renderer/utils/address';
 
 import './AccountOverview.scss';
 

@@ -7,8 +7,7 @@ import {Form, FormButton, FormButtonProps} from '@renderer/components/FormCompon
 import Icon, {IconType} from '@renderer/components/Icon';
 import Loader from '@renderer/components/FormElements/Loader';
 
-import {GenericFormValues} from '@renderer/types/forms';
-import {GenericFunction} from '@renderer/types/generic';
+import {GenericFormValues, GenericFunction} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';
 
 import './Modal.scss';

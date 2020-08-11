@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {sign} from 'tweetnacl';
 import localStore from '@renderer/store/localStore';
-import {Data} from '@renderer/types/store';
+import {Dict} from '@renderer/types';
 
 export interface Account {
   accountNumber: string;
@@ -35,7 +35,7 @@ const accountsSlice = createSlice({
     },
     get: {
       prepare: () => {
-        const accountsFromStore = localStore.get('accounts') as Data<Account>;
+        const accountsFromStore = localStore.get('accounts') as Dict<Account>;
         const accountsArray = Object.entries(accountsFromStore).map(([accountNumber, {nickname}]) => ({
           accountNumber,
           nickname,

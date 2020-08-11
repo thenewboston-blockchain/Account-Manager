@@ -1,13 +1,10 @@
 import React, {FC, useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
-import {useParams} from 'react-router-dom';
 import axios from 'axios';
 
 import PageTable from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {Account} from '@renderer/types/entities';
-import {RootState} from '@renderer/types/store';
-import {formatAddress} from '@renderer/utils/format';
+import {OldAccount} from '@renderer/types';
+import {formatAddress} from '@renderer/utils/address';
 
 enum TableKeys {
   accountNumber,
@@ -16,9 +13,8 @@ enum TableKeys {
 }
 
 const ValidatorAccounts: FC = () => {
-  const {nid} = useParams();
-  const networkValidator = useSelector((state: RootState) => state.configs.validatorConfigs[nid]);
-  const [accounts, setAccounts] = useState<Account[]>([]);
+  const networkValidator = null as any;
+  const [accounts, setAccounts] = useState<OldAccount[]>([]);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {

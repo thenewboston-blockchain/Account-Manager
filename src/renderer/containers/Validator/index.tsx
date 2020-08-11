@@ -1,6 +1,5 @@
 import React, {FC, ReactNode} from 'react';
-import {useSelector} from 'react-redux';
-import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-dom';
+import {Route, Switch, useRouteMatch, withRouter} from 'react-router-dom';
 
 import {Button} from '@renderer/components/FormElements';
 import PageHeader from '@renderer/components/PageHeader';
@@ -10,14 +9,12 @@ import ValidatorAccounts from '@renderer/containers/Validator/ValidatorAccounts'
 import ValidatorBanks from '@renderer/containers/Validator/ValidatorBanks';
 import ValidatorOverview from '@renderer/containers/Validator/ValidatorOverview';
 import ValidatorValidators from '@renderer/containers/Validator/ValidatorValidators';
-import {RootState} from '@renderer/types/store';
 
 import './Validator.scss';
 
 const Validator: FC = () => {
-  const {nid} = useParams();
   const {path, url} = useRouteMatch();
-  const validator = useSelector((state: RootState) => state.configs.validatorConfigs[nid]);
+  const validator = null as any;
 
   const renderRightPageHeaderButtons = (): ReactNode => <Button>Add to Managed Validators</Button>;
 
