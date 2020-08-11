@@ -1,11 +1,12 @@
 import {AppNodeAddressData, OldAccount, OldBank, OldValidator} from './app';
 import {NodeType, ProtocolType} from './constants';
-import {BankAccount, BankConfirmationBlock} from './banks';
 import {BaseFormComponentProps, GenericFormValues, SelectOption} from './forms';
 import {GenericFunction, GenericVoidFunction} from './generic';
 import {
   AddressData,
+  BankAccount,
   BankConfig,
+  BankConfirmationBlock,
   BankTransaction,
   BaseValidator,
   BlockResponse,
@@ -14,7 +15,9 @@ import {
   NodeIdentifier,
   PaginatedResults,
   PrimaryValidatorConfig,
+  ValidatorAccount,
   ValidatorConfig,
+  ValidatorConfirmationBlock,
   ValidatorConfirmationService,
 } from './network';
 import {
@@ -25,7 +28,6 @@ import {
   DictWithPaginatedResultsAndError,
   RootState,
 } from './store';
-import {ValidatorAccount, ValidatorConfirmationBlock} from './validators';
 
 export {
   AddressData,

@@ -6,9 +6,20 @@ export interface AddressData {
   protocol: ProtocolType;
 }
 
+export interface BankAccount extends Id, CreatedModified {
+  account_number: string;
+  trust: string;
+}
+
 export interface BankConfig extends Node {
   node_type: NodeType.bank;
   primary_validator: PrimaryValidatorConfig;
+}
+
+export interface BankConfirmationBlock extends Id, CreatedModified {
+  block_identifier: string;
+  block: string;
+  validator: string;
 }
 
 export interface BankTransaction extends Id {
@@ -97,8 +108,20 @@ interface UpdatedBalance {
   balance_lock?: string;
 }
 
+export interface ValidatorAccount extends Id {
+  account_number: string;
+  balance: string;
+  balance_lock: string;
+}
+
 export interface ValidatorConfig extends BaseValidator {
   node_type: NodeType.primaryValidator | NodeType.confirmationValidator;
+}
+
+export interface ValidatorConfirmationBlock {
+  message: ConfirmationBlockMessage;
+  node_identifier: string;
+  signature: string;
 }
 
 export interface ValidatorConfirmationService extends Id, CreatedModified {
