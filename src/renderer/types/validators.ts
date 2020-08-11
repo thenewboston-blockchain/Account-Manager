@@ -1,4 +1,4 @@
-import {ConfirmationBlockMessage, Id} from './api';
+import {ConfirmationBlockMessage, Id} from './network';
 
 export interface ValidatorAccount extends Id {
   account_number: string;

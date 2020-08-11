@@ -1,5 +1,5 @@
 import store from '@renderer/store';
-import {PaginatedResults} from './api';
+import {PaginatedResults} from './network';
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

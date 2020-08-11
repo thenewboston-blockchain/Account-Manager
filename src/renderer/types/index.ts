@@ -1,19 +1,22 @@
-import {AddressData, NodeIdentifier, NodeType, ProtocolType, PaginatedResults} from './api';
 import {AppNodeAddressData, OldAccount, OldBank, OldValidator} from './app';
+import {NodeType, ProtocolType} from './constants';
 import {BankAccount, BankConfirmationBlock} from './banks';
 import {BaseFormComponentProps, GenericFormValues, SelectOption} from './forms';
 import {GenericFunction, GenericVoidFunction} from './generic';
 import {
+  AddressData,
   BankConfig,
   BankTransaction,
   BlockResponse,
   InvalidBlock,
   NetworkNode,
   NetworkValidator,
+  NodeIdentifier,
+  PaginatedResults,
   PrimaryValidatorConfig,
   ValidatorConfig,
   ValidatorConfirmationService,
-} from './shared';
+} from './network';
 import {
   AppDispatch,
   Dict,

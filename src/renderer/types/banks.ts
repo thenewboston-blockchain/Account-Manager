@@ -1,4 +1,4 @@
-import {CreatedModified, Id} from './api';
+import {CreatedModified, Id} from './network';
 
 export interface BankAccount extends Id, CreatedModified {
   account_number: string;

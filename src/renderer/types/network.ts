@@ -1,4 +1,10 @@
-import {CreatedModified, Id, NodeAddressData, NodeType} from './api';
+import {NodeType, ProtocolType} from './constants';
+
+export interface AddressData {
+  ip_address: string;
+  port: number | null;
+  protocol: ProtocolType;
+}
 
 export interface BankConfig extends NetworkNode {
   node_type: NodeType.bank;
@@ -11,10 +17,36 @@ export interface BankTransaction extends Id {
   recipient: string;
 }
 
+interface BlockMessage {
+  balance_key: string;
+  txs: Tx[];
+}
+
+interface BlockRequest {
+  account_number: string;
+  message: BlockMessage;
+  signature: string;
+}
+
 export interface BlockResponse extends Id, CreatedModified {
   balance_key: string;
   sender: string;
   signature: string;
+}
+
+export interface ConfirmationBlockMessage {
+  block: BlockRequest;
+  block_identifier: string;
+  updated_balances: UpdatedBalance[];
+}
+
+export interface CreatedModified {
+  created_date: string;
+  modified_date: string;
+}
+
+export interface Id {
+  id: string;
 }
 
 export interface InvalidBlock extends Id, CreatedModified {
@@ -24,7 +56,7 @@ export interface InvalidBlock extends Id, CreatedModified {
   primary_validator: string;
 }
 
-export interface NetworkNode extends NodeAddressData {
+export interface NetworkNode extends AddressData, NodeIdentifier {
   account_number: string;
   default_transaction_fee: string;
   node_type: NodeType;
@@ -39,8 +71,30 @@ export interface NetworkValidator extends NetworkNode {
   daily_confirmation_rate: string | null;
 }
 
+export interface NodeIdentifier {
+  node_identifier: string;
+}
+
+export interface PaginatedResults<T> {
+  count: number | null;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
 export interface PrimaryValidatorConfig extends NetworkValidator {
   node_type: NodeType.primaryValidator;
+}
+
+interface Tx {
+  amount: string;
+  recipient: string;
+}
+
+interface UpdatedBalance {
+  account_number: string;
+  balance: string;
+  balance_lock?: string;
 }
 
 export interface ValidatorConfig extends NetworkValidator {
