@@ -1,15 +1,14 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {VALIDATOR_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants/store';
-import {NodeValidatorConfirmationService} from '@renderer/types/entities';
-import {DictWithPaginatedResultsAndError} from '@renderer/types/store';
+import {VALIDATOR_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants';
+import {DictWithPaginatedResultsAndError, ValidatorConfirmationService} from '@renderer/types';
 import {unsetDataReducer, setPaginatedResultReducer, setPaginatedResultErrorReducer} from '@renderer/utils/store';
 
 const validatorValidatorConfirmationServices = createSlice({
-  initialState: {} as DictWithPaginatedResultsAndError<NodeValidatorConfirmationService>,
+  initialState: {} as DictWithPaginatedResultsAndError<ValidatorConfirmationService>,
   name: VALIDATOR_VALIDATOR_CONFIRMATION_SERVICES,
   reducers: {
-    setValidatorValidatorConfirmationServices: setPaginatedResultReducer<NodeValidatorConfirmationService>(),
+    setValidatorValidatorConfirmationServices: setPaginatedResultReducer<ValidatorConfirmationService>(),
     setValidatorValidatorConfirmationServicesError: setPaginatedResultErrorReducer(),
     unsetValidatorValidatorConfirmationServices: unsetDataReducer(),
   },

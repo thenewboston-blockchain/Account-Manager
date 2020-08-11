@@ -7,7 +7,7 @@ import Connect from '@renderer/containers/Connect';
 import Layout from '@renderer/containers/Layout';
 import {connect} from '@renderer/dispatchers/app';
 import {getActiveBank, getActiveBankConfig} from '@renderer/selectors';
-import {AppDispatch} from '@renderer/types/store';
+import {AppDispatch} from '@renderer/types';
 
 const App: FC = () => {
   const dispatch = useDispatch<AppDispatch>();

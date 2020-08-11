@@ -1,15 +1,14 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {VALIDATOR_ACCOUNTS} from '@renderer/constants/store';
-import {NodeAccount} from '@renderer/types/entities';
-import {DictWithPaginatedResultsAndError} from '@renderer/types/store';
+import {VALIDATOR_ACCOUNTS} from '@renderer/constants';
+import {DictWithPaginatedResultsAndError, ValidatorAccount} from '@renderer/types';
 import {unsetDataReducer, setPaginatedResultReducer, setPaginatedResultErrorReducer} from '@renderer/utils/store';
 
 const validatorAccounts = createSlice({
-  initialState: {} as DictWithPaginatedResultsAndError<NodeAccount>,
+  initialState: {} as DictWithPaginatedResultsAndError<ValidatorAccount>,
   name: VALIDATOR_ACCOUNTS,
   reducers: {
-    setValidatorAccounts: setPaginatedResultReducer<NodeAccount>(),
+    setValidatorAccounts: setPaginatedResultReducer<ValidatorAccount>(),
     setValidatorAccountsError: setPaginatedResultErrorReducer(),
     unsetValidatorAccounts: unsetDataReducer(),
   },

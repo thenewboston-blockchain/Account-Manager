@@ -7,11 +7,11 @@ import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
 import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
-import useBooleanState from '@renderer/hooks/useBooleanState';
+import {useBooleanState} from '@renderer/hooks';
 import {getActiveBank, getActiveBankConfig, getActivePrimaryValidatorConfig} from '@renderer/selectors';
 import {unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
 import {getAccount} from '@renderer/store/old/accounts';
-import {AppDispatch, RootState} from '@renderer/types/store';
+import {AppDispatch, RootState} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
 
 import LeftSubmenu from './LeftSubmenu';

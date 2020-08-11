@@ -1,6 +1,6 @@
 import {useMemo} from 'react';
 import useFormContext from '@renderer/hooks/useFormContext';
-import {SelectOption} from '@renderer/types/forms';
+import {SelectOption} from '@renderer/types';
 
 interface UseFormSelectOutput {
   error: boolean;

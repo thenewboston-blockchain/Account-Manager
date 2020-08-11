@@ -5,10 +5,10 @@ import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {fetchBankBankTransactions} from '@renderer/dispatchers/banks';
-import useAddress from '@renderer/hooks/useAddress';
+import {useAddress} from '@renderer/hooks';
 import {getBankBankTransactions} from '@renderer/selectors';
 import {unsetBankBankTransactions} from '@renderer/store/banks';
-import {AppDispatch} from '@renderer/types/store';
+import {AppDispatch} from '@renderer/types';
 
 enum TableKeys {
   id,
@@ -39,16 +39,15 @@ const BankTransactions: FC = () => {
     };
   }, [bankAddress, dispatch]);
 
-  // TODO
   const bankBankTransactionsTableData = useMemo<PageTableData[]>(
     () =>
       bankBankTransactions?.results.map((bankTransaction) => ({
         key: bankTransaction.id,
         [TableKeys.amount]: bankTransaction.amount,
-        [TableKeys.block]: bankTransaction.block?.id || '',
+        [TableKeys.block]: bankTransaction.block.id,
         [TableKeys.id]: bankTransaction.id,
         [TableKeys.recipient]: bankTransaction.recipient,
-        [TableKeys.sender]: bankTransaction.block?.sender || '',
+        [TableKeys.sender]: bankTransaction.block.sender,
       })) || [],
     [bankBankTransactions],
   );

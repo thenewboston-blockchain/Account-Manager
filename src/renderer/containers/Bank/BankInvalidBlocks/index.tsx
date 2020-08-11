@@ -5,10 +5,10 @@ import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {fetchBankInvalidBlocks} from '@renderer/dispatchers/banks';
-import useAddress from '@renderer/hooks/useAddress';
+import {useAddress} from '@renderer/hooks';
 import {getBankInvalidBlocks} from '@renderer/selectors';
 import {unsetBankInvalidBlocks} from '@renderer/store/banks';
-import {AppDispatch} from '@renderer/types/store';
+import {AppDispatch} from '@renderer/types';
 
 enum TableKeys {
   id,
@@ -38,15 +38,14 @@ const BankInvalidBlocks: FC = () => {
     };
   }, [bankAddress, dispatch]);
 
-  // TODO
   const bankInvalidBlockTableData = useMemo<PageTableData[]>(
     () =>
       bankInvalidBlocks?.results.map((invalidBlock) => ({
-        key: invalidBlock.node_identifier,
-        [TableKeys.blockIdentifier]: invalidBlock.node_identifier,
-        [TableKeys.block]: '',
-        [TableKeys.id]: '',
-        [TableKeys.validator]: '',
+        key: invalidBlock.block_identifier,
+        [TableKeys.blockIdentifier]: invalidBlock.block_identifier,
+        [TableKeys.block]: invalidBlock.block,
+        [TableKeys.id]: invalidBlock.id,
+        [TableKeys.validator]: invalidBlock.primary_validator,
       })) || [],
     [bankInvalidBlocks],
   );

@@ -1,4 +1,4 @@
-import {AddressData} from '@renderer/types/entities';
+import {AddressData} from '@renderer/types';
 
 export const formatAddress = (ipAddress: string, port: number | string | null, protocol: string): string => {
   const portNumber = Number(port);

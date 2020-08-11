@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import PageTable from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {Validator} from '@renderer/types/entities';
+import {OldValidator} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
 
 enum TableKeys {
@@ -23,7 +23,7 @@ enum TableKeys {
 
 const ValidatorValidators: FC = () => {
   const networkValidator = null as any;
-  const [validators, setValidators] = useState<Validator[]>([]);
+  const [validators, setValidators] = useState<OldValidator[]>([]);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {

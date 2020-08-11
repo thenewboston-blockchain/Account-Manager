@@ -9,7 +9,7 @@ import {
   INVALID_BLOCKS,
   VALIDATOR_CONFIRMATION_SERVICES,
   VALIDATORS,
-} from '@renderer/constants/store';
+} from '@renderer/constants';
 import {
   setBankAccounts,
   setBankAccountsError,
@@ -30,23 +30,23 @@ import {
   setBankValidators,
   setBankValidatorsError,
 } from '@renderer/store/banks';
-import {NodeType} from '@renderer/types/api';
 import {
+  AppDispatch,
+  BankAccount,
   BankConfig,
+  BankConfirmationBlock,
+  BankTransaction,
+  BlockResponse,
+  InvalidBlock,
   NetworkNode,
   NetworkValidator,
-  NodeAccount,
-  NodeBankTransaction,
-  NodeBlock,
-  NodeConfirmationBlock,
-  NodeInvalidBlock,
-  NodeValidatorConfirmationService,
-} from '@renderer/types/entities';
-import {AppDispatch} from '@renderer/types/store';
+  NodeType,
+  ValidatorConfirmationService,
+} from '@renderer/types';
 import {fetchPaginatedResults} from '@renderer/utils/api';
 
 export const fetchBankAccounts = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NodeAccount>(address, ACCOUNTS, dispatch, setBankAccounts, setBankAccountsError);
+  return fetchPaginatedResults<BankAccount>(address, ACCOUNTS, dispatch, setBankAccounts, setBankAccountsError);
 };
 
 export const fetchBankBanks = (address: string) => async (dispatch: AppDispatch) => {
@@ -54,7 +54,7 @@ export const fetchBankBanks = (address: string) => async (dispatch: AppDispatch)
 };
 
 export const fetchBankBankTransactions = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NodeBankTransaction>(
+  return fetchPaginatedResults<BankTransaction>(
     address,
     BANK_TRANSACTIONS,
     dispatch,
@@ -64,7 +64,7 @@ export const fetchBankBankTransactions = (address: string) => async (dispatch: A
 };
 
 export const fetchBankBlocks = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NodeBlock>(address, BLOCKS, dispatch, setBankBlocks, setBankBlocksError);
+  return fetchPaginatedResults<BlockResponse>(address, BLOCKS, dispatch, setBankBlocks, setBankBlocksError);
 };
 
 export const fetchBankConfig = (address: string) => async (dispatch: AppDispatch) => {
@@ -87,7 +87,7 @@ export const fetchBankConfig = (address: string) => async (dispatch: AppDispatch
 };
 
 export const fetchBankConfirmationBlocks = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NodeConfirmationBlock>(
+  return fetchPaginatedResults<BankConfirmationBlock>(
     address,
     CONFIRMATION_BLOCKS,
     dispatch,
@@ -97,7 +97,7 @@ export const fetchBankConfirmationBlocks = (address: string) => async (dispatch:
 };
 
 export const fetchBankInvalidBlocks = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NodeInvalidBlock>(
+  return fetchPaginatedResults<InvalidBlock>(
     address,
     INVALID_BLOCKS,
     dispatch,
@@ -107,7 +107,7 @@ export const fetchBankInvalidBlocks = (address: string) => async (dispatch: AppD
 };
 
 export const fetchBankValidatorConfirmationServices = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NodeValidatorConfirmationService>(
+  return fetchPaginatedResults<ValidatorConfirmationService>(
     address,
     VALIDATOR_CONFIRMATION_SERVICES,
     dispatch,

@@ -1,15 +1,14 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {BANK_INVALID_BLOCKS} from '@renderer/constants/store';
-import {NodeInvalidBlock} from '@renderer/types/entities';
-import {DictWithPaginatedResultsAndError} from '@renderer/types/store';
+import {BANK_INVALID_BLOCKS} from '@renderer/constants';
+import {DictWithPaginatedResultsAndError, InvalidBlock} from '@renderer/types';
 import {unsetDataReducer, setPaginatedResultReducer, setPaginatedResultErrorReducer} from '@renderer/utils/store';
 
 const bankInvalidBlocks = createSlice({
-  initialState: {} as DictWithPaginatedResultsAndError<NodeInvalidBlock>,
+  initialState: {} as DictWithPaginatedResultsAndError<InvalidBlock>,
   name: BANK_INVALID_BLOCKS,
   reducers: {
-    setBankInvalidBlocks: setPaginatedResultReducer<NodeInvalidBlock>(),
+    setBankInvalidBlocks: setPaginatedResultReducer<InvalidBlock>(),
     setBankInvalidBlocksError: setPaginatedResultErrorReducer(),
     unsetBankInvalidBlocks: unsetDataReducer(),
   },

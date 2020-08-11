@@ -4,9 +4,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import DetailPanel from '@renderer/components/DetailPanel';
 import {Loader} from '@renderer/components/FormElements';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
-import useAddress from '@renderer/hooks/useAddress';
+import {useAddress} from '@renderer/hooks';
 import {getBankConfigs} from '@renderer/selectors';
-import {AppDispatch} from '@renderer/types/store';
+import {AppDispatch} from '@renderer/types';
 
 import './BankOverview.scss';
 

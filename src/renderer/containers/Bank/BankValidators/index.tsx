@@ -5,10 +5,10 @@ import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {fetchBankValidators} from '@renderer/dispatchers/banks';
-import useAddress from '@renderer/hooks/useAddress';
+import {useAddress} from '@renderer/hooks';
 import {getBankValidators} from '@renderer/selectors';
 import {unsetBankValidators} from '@renderer/store/banks';
-import {AppDispatch} from '@renderer/types/store';
+import {AppDispatch} from '@renderer/types';
 
 enum TableKeys {
   accountNumber,

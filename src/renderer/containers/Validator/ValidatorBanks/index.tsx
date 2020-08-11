@@ -3,8 +3,8 @@ import axios from 'axios';
 
 import PageTable from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
+import {OldBank} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
-import {Bank} from '@renderer/types/entities';
 
 enum TableKeys {
   nodeIdentifier,
@@ -20,7 +20,7 @@ enum TableKeys {
 
 const ValidatorBanks: FC = () => {
   const networkValidator = null as any;
-  const [banks, setBanks] = useState<Bank[]>([]);
+  const [banks, setBanks] = useState<OldBank[]>([]);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {

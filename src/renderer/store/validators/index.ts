@@ -10,7 +10,7 @@ import {
   INVALID_BLOCKS,
   VALIDATOR_CONFIRMATION_SERVICES,
   VALIDATORS,
-} from '@renderer/constants/store';
+} from '@renderer/constants';
 import validatorAccounts, {
   setValidatorAccounts,
   setValidatorAccountsError,

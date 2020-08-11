@@ -1,5 +1,5 @@
 import store from '@renderer/store';
-import {PaginatedResults} from '@renderer/types/api';
+import {PaginatedResults} from './api';
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
@@ -8,7 +8,7 @@ export interface Dict<T> {
   [key: string]: T;
 }
 
-export interface Error {
+interface Error {
   error: string | null;
 }
 

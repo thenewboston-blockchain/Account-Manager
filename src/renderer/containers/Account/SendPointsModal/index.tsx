@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import {FormButton, FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
-import {SelectOption} from '@renderer/types/forms';
+import {SelectOption} from '@renderer/types';
 
 import './SendPointsModal.scss';
 import Icon, {IconType} from '@renderer/components/Icon';

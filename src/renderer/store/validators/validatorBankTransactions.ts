@@ -1,15 +1,14 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {VALIDATOR_BANK_TRANSACTIONS} from '@renderer/constants/store';
-import {NodeBankTransaction} from '@renderer/types/entities';
-import {DictWithPaginatedResultsAndError} from '@renderer/types/store';
+import {VALIDATOR_BANK_TRANSACTIONS} from '@renderer/constants';
+import {BankTransaction, DictWithPaginatedResultsAndError} from '@renderer/types';
 import {unsetDataReducer, setPaginatedResultReducer, setPaginatedResultErrorReducer} from '@renderer/utils/store';
 
 const validatorBankTransactions = createSlice({
-  initialState: {} as DictWithPaginatedResultsAndError<NodeBankTransaction>,
+  initialState: {} as DictWithPaginatedResultsAndError<BankTransaction>,
   name: VALIDATOR_BANK_TRANSACTIONS,
   reducers: {
-    setValidatorBankTransactions: setPaginatedResultReducer<NodeBankTransaction>(),
+    setValidatorBankTransactions: setPaginatedResultReducer<BankTransaction>(),
     setValidatorBankTransactionsError: setPaginatedResultErrorReducer(),
     unsetValidatorBankTransactions: unsetDataReducer(),
   },

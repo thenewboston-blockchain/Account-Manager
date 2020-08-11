@@ -8,7 +8,7 @@ import {
   INVALID_BLOCKS,
   VALIDATOR_CONFIRMATION_SERVICES,
   VALIDATORS,
-} from '@renderer/constants/store';
+} from '@renderer/constants';
 import {
   setValidatorAccounts,
   setValidatorAccountsError,
@@ -27,22 +27,22 @@ import {
   setValidatorValidators,
   setValidatorValidatorsError,
 } from '@renderer/store/validators';
-import {NodeType} from '@renderer/types/api';
 import {
+  AppDispatch,
+  BankTransaction,
+  InvalidBlock,
   NetworkNode,
   NetworkValidator,
-  NodeAccount,
-  NodeBankTransaction,
-  NodeConfirmationBlock,
-  NodeInvalidBlock,
-  NodeValidatorConfirmationService,
+  NodeType,
+  ValidatorAccount,
   ValidatorConfig,
-} from '@renderer/types/entities';
-import {AppDispatch} from '@renderer/types/store';
+  ValidatorConfirmationBlock,
+  ValidatorConfirmationService,
+} from '@renderer/types';
 import {fetchPaginatedResults} from '@renderer/utils/api';
 
 export const fetchValidatorAccounts = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NodeAccount>(
+  return fetchPaginatedResults<ValidatorAccount>(
     address,
     ACCOUNTS,
     dispatch,
@@ -56,7 +56,7 @@ export const fetchValidatorBanks = (address: string) => async (dispatch: AppDisp
 };
 
 export const fetchValidatorBankTransactions = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NodeBankTransaction>(
+  return fetchPaginatedResults<BankTransaction>(
     address,
     BANK_TRANSACTIONS,
     dispatch,
@@ -85,7 +85,7 @@ export const fetchValidatorConfig = (address: string) => async (dispatch: AppDis
 };
 
 export const fetchValidatorConfirmationBlocks = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NodeConfirmationBlock>(
+  return fetchPaginatedResults<ValidatorConfirmationBlock>(
     address,
     CONFIRMATION_BLOCKS,
     dispatch,
@@ -95,7 +95,7 @@ export const fetchValidatorConfirmationBlocks = (address: string) => async (disp
 };
 
 export const fetchValidatorInvalidBlocks = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NodeInvalidBlock>(
+  return fetchPaginatedResults<InvalidBlock>(
     address,
     INVALID_BLOCKS,
     dispatch,
@@ -105,7 +105,7 @@ export const fetchValidatorInvalidBlocks = (address: string) => async (dispatch:
 };
 
 export const fetchValidatorValidatorConfirmationServices = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NodeValidatorConfirmationService>(
+  return fetchPaginatedResults<ValidatorConfirmationService>(
     address,
     VALIDATOR_CONFIRMATION_SERVICES,
     dispatch,

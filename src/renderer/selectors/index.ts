@@ -1,6 +1,6 @@
 import {createSelector} from '@reduxjs/toolkit';
 
-import {RootState} from '@renderer/types/store';
+import {RootState} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 
 export const getActiveBank = (state: RootState) => state.app.activeBank;

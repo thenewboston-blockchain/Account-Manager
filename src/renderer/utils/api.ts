@@ -1,6 +1,5 @@
 import axios from 'axios';
-import {PaginatedResults} from '@renderer/types/api';
-import {AppDispatch} from '@renderer/types/store';
+import {AppDispatch, PaginatedResults} from '@renderer/types';
 import {SetError, SetResults} from '@renderer/utils/store';
 
 export async function fetchPaginatedResults<T>(

@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import noop from 'lodash/noop';
 
 import Icon, {IconType} from '@renderer/components/Icon';
-import useBooleanState from '@renderer/hooks/useBooleanState';
-import {GenericVoidFunction} from '@renderer/types/generic';
+import {useBooleanState} from '@renderer/hooks';
+import {GenericVoidFunction} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';
 
 import './DropdownMenuButton.scss';

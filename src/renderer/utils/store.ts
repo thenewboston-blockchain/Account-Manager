@@ -1,9 +1,13 @@
 import {PayloadAction} from '@reduxjs/toolkit';
 
 import localStore from '@renderer/store/localStore';
-import {PaginatedResults} from '@renderer/types/api';
-import {NodeIdentifier} from '@renderer/types/entities';
-import {DictWithDataAndError, DictWithError, DictWithPaginatedResultsAndError} from '@renderer/types/store';
+import {
+  DictWithDataAndError,
+  DictWithError,
+  DictWithPaginatedResultsAndError,
+  NodeIdentifier,
+  PaginatedResults,
+} from '@renderer/types';
 
 interface Address {
   address: string;

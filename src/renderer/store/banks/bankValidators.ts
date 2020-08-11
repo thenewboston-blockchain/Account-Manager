@@ -1,8 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {BANK_VALIDATORS} from '@renderer/constants/store';
-import {NetworkValidator} from '@renderer/types/entities';
-import {DictWithPaginatedResultsAndError} from '@renderer/types/store';
+import {BANK_VALIDATORS} from '@renderer/constants';
+import {DictWithPaginatedResultsAndError, NetworkValidator} from '@renderer/types';
 import {unsetDataReducer, setPaginatedResultReducer, setPaginatedResultErrorReducer} from '@renderer/utils/store';
 
 const bankValidators = createSlice({

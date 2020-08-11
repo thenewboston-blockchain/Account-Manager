@@ -1,6 +1,5 @@
 import {setActiveBank, setActivePrimaryValidator} from '@renderer/store/app';
-import {AddressData} from '@renderer/types/entities';
-import {AppDispatch} from '@renderer/types/store';
+import {AddressData, AppDispatch} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 
 import {fetchBankConfig} from '../banks';

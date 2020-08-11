@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Form as FormikForm, Formik} from 'formik';
-import {GenericFormValues} from '@renderer/types/forms';
+import {GenericFormValues} from '@renderer/types';
 
 interface ComponentProps {
   className?: string;

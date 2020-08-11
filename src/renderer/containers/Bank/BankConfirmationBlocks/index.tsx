@@ -5,10 +5,10 @@ import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {fetchBankConfirmationBlocks} from '@renderer/dispatchers/banks';
-import useAddress from '@renderer/hooks/useAddress';
+import {useAddress} from '@renderer/hooks';
 import {getBankConfirmationBlocks} from '@renderer/selectors';
 import {unsetBankConfirmationBlocks} from '@renderer/store/banks';
-import {AppDispatch} from '@renderer/types/store';
+import {AppDispatch} from '@renderer/types';
 
 enum TableKeys {
   id,
@@ -38,15 +38,14 @@ const BankConfirmationBlocks: FC = () => {
     };
   }, [bankAddress, dispatch]);
 
-  // TODO: Block id and validator
   const bankConfirmationBlocksTableData = useMemo<PageTableData[]>(
     () =>
       bankConfirmationBlocks?.results.map((confirmationBlock) => ({
-        key: confirmationBlock.node_identifier,
-        [TableKeys.blockIdentifier]: confirmationBlock.node_identifier,
-        [TableKeys.block]: '',
-        [TableKeys.id]: '',
-        [TableKeys.validator]: '',
+        key: confirmationBlock.id,
+        [TableKeys.blockIdentifier]: confirmationBlock.block_identifier,
+        [TableKeys.block]: confirmationBlock.block,
+        [TableKeys.id]: confirmationBlock.id,
+        [TableKeys.validator]: confirmationBlock.validator,
       })) || [],
     [bankConfirmationBlocks],
   );

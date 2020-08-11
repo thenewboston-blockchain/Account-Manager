@@ -10,7 +10,7 @@ import {
   INVALID_BLOCKS,
   VALIDATOR_CONFIRMATION_SERVICES,
   VALIDATORS,
-} from '@renderer/constants/store';
+} from '@renderer/constants';
 import bankAccounts, {setBankAccounts, setBankAccountsError, unsetBankAccounts} from './bankAccounts';
 import bankBanks, {setBankBanks, setBankBanksError, unsetBankBanks} from './bankBanks';
 import bankBankTransactions, {
