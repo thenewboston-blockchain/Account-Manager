@@ -36,10 +36,10 @@ import {
   BankConfig,
   BankConfirmationBlock,
   BankTransaction,
+  BaseValidator,
   BlockResponse,
   InvalidBlock,
-  NetworkNode,
-  NetworkValidator,
+  Node,
   NodeType,
   ValidatorConfirmationService,
 } from '@renderer/types';
@@ -50,7 +50,7 @@ export const fetchBankAccounts = (address: string) => async (dispatch: AppDispat
 };
 
 export const fetchBankBanks = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NetworkNode>(address, BANKS, dispatch, setBankBanks, setBankBanksError);
+  return fetchPaginatedResults<Node>(address, BANKS, dispatch, setBankBanks, setBankBanksError);
 };
 
 export const fetchBankBankTransactions = (address: string) => async (dispatch: AppDispatch) => {
@@ -117,11 +117,5 @@ export const fetchBankValidatorConfirmationServices = (address: string) => async
 };
 
 export const fetchBankValidators = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NetworkValidator>(
-    address,
-    VALIDATORS,
-    dispatch,
-    setBankValidators,
-    setBankValidatorsError,
-  );
+  return fetchPaginatedResults<BaseValidator>(address, VALIDATORS, dispatch, setBankValidators, setBankValidatorsError);
 };

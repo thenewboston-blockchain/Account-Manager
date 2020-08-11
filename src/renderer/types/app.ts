@@ -1,6 +1,7 @@
-import {NodeAddressData, NodeType, ProtocolType} from './api';
+import {NodeType, ProtocolType} from './constants';
+import {AddressData, NodeIdentifier} from './network';
 
-export interface AppNodeAddressData extends NodeAddressData {
+export interface AppNodeAddressData extends AddressData, NodeIdentifier {
   nickname: string;
 }
 

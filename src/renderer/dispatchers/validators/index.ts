@@ -30,9 +30,9 @@ import {
 import {
   AppDispatch,
   BankTransaction,
+  BaseValidator,
   InvalidBlock,
-  NetworkNode,
-  NetworkValidator,
+  Node,
   NodeType,
   ValidatorAccount,
   ValidatorConfig,
@@ -52,7 +52,7 @@ export const fetchValidatorAccounts = (address: string) => async (dispatch: AppD
 };
 
 export const fetchValidatorBanks = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NetworkNode>(address, BANKS, dispatch, setValidatorBanks, setValidatorBanksError);
+  return fetchPaginatedResults<Node>(address, BANKS, dispatch, setValidatorBanks, setValidatorBanksError);
 };
 
 export const fetchValidatorBankTransactions = (address: string) => async (dispatch: AppDispatch) => {
@@ -115,7 +115,7 @@ export const fetchValidatorValidatorConfirmationServices = (address: string) => 
 };
 
 export const fetchValidatorValidators = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<NetworkValidator>(
+  return fetchPaginatedResults<BaseValidator>(
     address,
     VALIDATORS,
     dispatch,

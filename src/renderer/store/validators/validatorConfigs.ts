@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {VALIDATOR_CONFIGS} from '@renderer/constants';
 import {DictWithDataAndError, ValidatorConfig} from '@renderer/types';
-import {setDataReducer, setDataErrorReducer} from '@renderer/utils/store';
+import {setDataErrorReducer, setDataReducer} from '@renderer/utils/store';
 
 const validatorConfigs = createSlice({
   initialState: {} as DictWithDataAndError<ValidatorConfig>,

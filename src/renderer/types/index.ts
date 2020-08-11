@@ -1,19 +1,22 @@
-import {AddressData, NodeIdentifier, NodeType, ProtocolType, PaginatedResults} from './api';
 import {AppNodeAddressData, OldAccount, OldBank, OldValidator} from './app';
+import {NodeType, ProtocolType} from './constants';
 import {BankAccount, BankConfirmationBlock} from './banks';
 import {BaseFormComponentProps, GenericFormValues, SelectOption} from './forms';
 import {GenericFunction, GenericVoidFunction} from './generic';
 import {
+  AddressData,
   BankConfig,
   BankTransaction,
+  BaseValidator,
   BlockResponse,
   InvalidBlock,
-  NetworkNode,
-  NetworkValidator,
+  Node,
+  NodeIdentifier,
+  PaginatedResults,
   PrimaryValidatorConfig,
   ValidatorConfig,
   ValidatorConfirmationService,
-} from './shared';
+} from './network';
 import {
   AppDispatch,
   Dict,
@@ -33,6 +36,7 @@ export {
   BankConfirmationBlock,
   BankTransaction,
   BaseFormComponentProps,
+  BaseValidator,
   BlockResponse,
   Dict,
   DictWithDataAndError,
@@ -42,20 +46,19 @@ export {
   GenericFunction,
   GenericVoidFunction,
   InvalidBlock,
-  NetworkNode,
-  NetworkValidator,
+  Node,
   NodeIdentifier,
   NodeType,
   OldAccount,
   OldBank,
   OldValidator,
+  PaginatedResults,
   PrimaryValidatorConfig,
   ProtocolType,
-  PaginatedResults,
   RootState,
   SelectOption,
   ValidatorAccount,
   ValidatorConfig,
-  ValidatorConfirmationService,
   ValidatorConfirmationBlock,
+  ValidatorConfirmationService,
 };

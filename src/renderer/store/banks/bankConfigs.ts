@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 import {BANK_CONFIGS} from '@renderer/constants';
 import {BankConfig, DictWithDataAndError} from '@renderer/types';
-import {setDataReducer, setDataErrorReducer} from '@renderer/utils/store';
+import {setDataErrorReducer, setDataReducer} from '@renderer/utils/store';
 
 const bankConfigs = createSlice({
   initialState: {} as DictWithDataAndError<BankConfig>,

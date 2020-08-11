@@ -3,7 +3,7 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
 
-import {Select, BaseSelectProps} from '@renderer/components/FormElements';
+import {BaseSelectProps, Select} from '@renderer/components/FormElements';
 import useFormSelect from '@renderer/hooks/useFormSelect';
 import {BaseFormComponentProps} from '@renderer/types';
 import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
