@@ -5,29 +5,6 @@ export const createAccount = () => {
   return keyPairObject(keyPair);
 };
 
-// def generate_block(*, account_number, balance_lock, signing_key, transactions):
-// """
-// Generate block
-// """
-//
-// message = {
-//   'balance_key': balance_lock,
-//   'txs': sorted(transactions, key=itemgetter('recipient'))
-// }
-//
-// signature = generate_signature(
-//   message=sort_and_encode(message),
-//   signing_key=signing_key
-// )
-//
-// block = {
-//   'account_number': encode_verify_key(verify_key=account_number),
-//   'message': message,
-//   'signature': signature
-// }
-//
-// return block
-
 export const generateBlock = (
   accountNumber: string,
   balanceLock: string,

@@ -26,13 +26,11 @@ const txs = [
   },
 ];
 
-const fetchData = async (): Promise<void> => {
+const createBlock = async (): Promise<void> => {
   const signingKeyHex = 'e0ba29c1c493d01a5f665db55a4bd77caa140cf9722d0ed367ce4183230d2e02';
   const balanceLock = 'ca6c8944fea472ad41523d77e413a2c464cbc0338be1fc3377e286c7d0c0e602';
-
   const {publicKeyHex, secretKey} = keyPairFromSigningKeyHex(signingKeyHex);
   const block = generateBlock(publicKeyHex, balanceLock, secretKey, txs);
-
   const response = await axios.post('http://167.99.173.247/blocks', block, {
     headers: {
       'Content-Type': 'application/json',
@@ -41,7 +39,7 @@ const fetchData = async (): Promise<void> => {
   console.error(response);
 };
 
-fetchData();
+createBlock();
 
 ReactDOM.render(
   <Provider store={store}>
