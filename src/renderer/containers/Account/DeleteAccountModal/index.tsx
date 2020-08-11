@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
-import useBooleanState from '@renderer/hooks/useBooleanState';
+import {useBooleanState} from '@renderer/hooks';
 
 import './DeleteAccountModal.scss';
 

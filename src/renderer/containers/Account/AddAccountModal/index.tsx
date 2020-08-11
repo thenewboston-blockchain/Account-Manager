@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import {createAccount} from '@renderer/store/old/accounts';
-import {AppDispatch, RootState} from '@renderer/types/store';
+import {AppDispatch, RootState} from '@renderer/types';
 
 const initialValues = {
   nickname: '',

@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import {FormInput, FormTextArea} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import {createFriend} from '@renderer/store/old/friends';
-import {AppDispatch} from '@renderer/types/store';
+import {AppDispatch} from '@renderer/types';
 
 import './AddFriendModal.scss';
 

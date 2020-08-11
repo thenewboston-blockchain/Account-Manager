@@ -7,9 +7,7 @@ import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/Form
 import Logo from '@renderer/components/Logo';
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {getActiveBankConfig} from '@renderer/selectors';
-import {ProtocolType} from '@renderer/types/api';
-import {SelectOption} from '@renderer/types/forms';
-import {AppDispatch} from '@renderer/types/store';
+import {AppDispatch, ProtocolType, SelectOption} from '@renderer/types';
 
 import './Connect.scss';
 

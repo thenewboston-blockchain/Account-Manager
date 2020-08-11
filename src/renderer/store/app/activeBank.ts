@@ -1,8 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {ACTIVE_BANK} from '@renderer/constants/store';
+import {ACTIVE_BANK} from '@renderer/constants';
 import localStore from '@renderer/store/localStore';
-import {AppNodeAddressData} from '@renderer/types/entities';
+import {AppNodeAddressData} from '@renderer/types';
 import {getStateName, setLocalAndStateReducer, unsetStateToNullReducer} from '@renderer/utils/store';
 
 const activeBank = createSlice({

@@ -5,7 +5,9 @@ import activePrimaryValidator, {setActivePrimaryValidator, unsetActivePrimaryVal
 
 export {setActiveBank, setActivePrimaryValidator, unsetActiveBank, unsetActivePrimaryValidator};
 
-export default combineReducers({
+const appReducers = combineReducers({
   activeBank: activeBank.reducer,
   activePrimaryValidator: activePrimaryValidator.reducer,
 });
+
+export default appReducers;

@@ -1,19 +1,15 @@
 import React, {FC, ReactNode, useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
-import {useParams} from 'react-router-dom';
 import axios from 'axios';
 
 import DetailPanel from '@renderer/components/DetailPanel';
-import {Validator} from '@renderer/types/entities';
-import {RootState} from '@renderer/types/store';
-import {formatAddress} from '@renderer/utils/format';
+import {OldValidator} from '@renderer/types';
+import {formatAddress} from '@renderer/utils/address';
 
 import './ValidatorOverview.scss';
 
 const ValidatorOverview: FC = () => {
-  const {nid} = useParams();
-  const networkValidator = useSelector((state: RootState) => state.configs.validatorConfigs[nid]);
-  const [validator, setValidator] = useState<Validator | null>(null);
+  const networkValidator = null as any;
+  const [validator, setValidator] = useState<OldValidator | null>(null);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {

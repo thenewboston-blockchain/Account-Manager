@@ -5,7 +5,7 @@ import {FormatOptionLabelMeta} from 'react-select';
 import clsx from 'clsx';
 
 import {BaseSelectProps, Select} from '@renderer/components/FormElements';
-import {SelectOption} from '@renderer/types/forms';
+import {SelectOption} from '@renderer/types';
 
 import './SelectDetailed.scss';
 

@@ -1,19 +1,20 @@
 import {setActiveBank, setActivePrimaryValidator} from '@renderer/store/app';
-import {AddressData} from '@renderer/types/entities';
-import {AppDispatch} from '@renderer/types/store';
+import {AddressData, AppDispatch} from '@renderer/types';
+import {formatAddressFromNode} from '@renderer/utils/address';
 
-import {fetchBankConfig, fetchValidatorConfig} from '../configs';
+import {fetchBankConfig} from '../banks';
+import {fetchValidatorConfig} from '../validators';
 
 export const connect = (network: AddressData) => async (dispatch: AppDispatch) => {
-  const bankConfig = await dispatch(fetchBankConfig(network));
+  const address = formatAddressFromNode(network);
+  const bankConfig = await dispatch(fetchBankConfig(address));
+  if (!bankConfig) return;
+
   const {primary_validator: primaryValidator} = bankConfig;
 
-  const primaryValidatorNetwork = {
-    ip_address: primaryValidator.ip_address,
-    port: primaryValidator.port,
-    protocol: primaryValidator.protocol,
-  };
-  const validatorConfig = await dispatch(fetchValidatorConfig(primaryValidatorNetwork));
+  const primaryValidatorAddress = formatAddressFromNode(primaryValidator);
+  const validatorConfig = await dispatch(fetchValidatorConfig(primaryValidatorAddress));
+  if (!validatorConfig) return;
 
   return {
     bankConfig,
@@ -24,7 +25,9 @@ export const connect = (network: AddressData) => async (dispatch: AppDispatch) =
 export const connectAndStoreLocalData = (network: AddressData, bankNickname: string) => async (
   dispatch: AppDispatch,
 ) => {
-  const {bankConfig, validatorConfig} = await dispatch(connect(network));
+  const connectResponse = await dispatch(connect(network));
+  if (!connectResponse) return;
+  const {bankConfig, validatorConfig} = connectResponse;
 
   const activeBankData = {
     ip_address: bankConfig.ip_address,

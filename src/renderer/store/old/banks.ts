@@ -1,8 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {Bank} from '@renderer/types/entities';
+import {OldBank} from '@renderer/types';
 
 const banksSlice = createSlice({
-  initialState: [] as Bank[],
+  initialState: [] as OldBank[],
   name: 'old/banks',
   reducers: {},
 });
