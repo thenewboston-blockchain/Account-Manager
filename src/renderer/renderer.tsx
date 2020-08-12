@@ -6,7 +6,7 @@ import axios from 'axios';
 import App from '@renderer/containers/App';
 import store from '@renderer/store';
 
-import {generateBlock, keyPairFromSigningKeyHex} from './signing';
+import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import 'typeface-roboto';
 import 'normalize.css';
 import './styles/main.scss';
@@ -29,7 +29,7 @@ const txs = [
 const createBlock = async (): Promise<void> => {
   const signingKeyHex = 'e0ba29c1c493d01a5f665db55a4bd77caa140cf9722d0ed367ce4183230d2e02';
   const balanceLock = 'ca6c8944fea472ad41523d77e413a2c464cbc0338be1fc3377e286c7d0c0e602';
-  const {publicKeyHex, secretKey} = keyPairFromSigningKeyHex(signingKeyHex);
+  const {publicKeyHex, secretKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
   const block = generateBlock(publicKeyHex, balanceLock, secretKey, txs);
   const response = await axios.post('http://167.99.173.247/blocks', block, {
     headers: {
