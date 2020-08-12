@@ -4,7 +4,7 @@ import orderBy from 'lodash/orderBy';
 import {Tx} from '@renderer/types';
 
 export const generateBlock = (
-  accountNumber: string,
+  accountNumberHex: string,
   balanceLock: string,
   signingKey: Uint8Array,
   transactions: Tx[],
@@ -15,30 +15,30 @@ export const generateBlock = (
   };
   const strMessage: string = JSON.stringify(message);
   const block = {
-    account_number: accountNumber,
+    account_number: accountNumberHex,
     message,
     signature: generateSignature(strMessage, signingKey),
   };
   return JSON.stringify(block);
 };
 
-export const generateSignature = (message: string, secretKey: Uint8Array) => {
+export const generateSignature = (message: string, signingKey: Uint8Array) => {
   const encoder = new TextEncoder();
   const encodedData = encoder.encode(message);
-  const signatureArray = sign(encodedData, secretKey);
+  const signatureArray = sign(encodedData, signingKey);
   const signature = Buffer.from(signatureArray).toString('hex');
   return signature.substring(0, 128);
 };
 
 export const getKeyPairDetails = (keyPair: SignKeyPair) => {
-  const {publicKey, secretKey} = keyPair;
-  const publicKeyHex = Buffer.from(publicKey).toString('hex');
-  const secretKeyHex = Buffer.from(secretKey).toString('hex');
+  const {publicKey: accountNumber, secretKey: signingKey} = keyPair;
+  const accountNumberHex = Buffer.from(accountNumber).toString('hex');
+  const signingKeyHex = Buffer.from(signingKey).toString('hex');
   return {
-    publicKey,
-    publicKeyHex,
-    secretKey,
-    secretKeyHex: secretKeyHex.replace(publicKeyHex, ''),
+    accountNumber,
+    accountNumberHex,
+    signingKey,
+    signingKeyHex: signingKeyHex.replace(accountNumberHex, ''),
   };
 };
 

@@ -64,7 +64,7 @@ const Account: FC = () => {
       <PageHeader
         dropdownMenuOptions={dropdownMenuOptions}
         rightContent={renderRightPageHeaderButtons()}
-        title={`Donations (${accountNumber})`}
+        title={'Donations' || accountNumber}
       />
       <PageTabs
         baseUrl={url}

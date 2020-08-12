@@ -29,9 +29,9 @@ const txs: Tx[] = [
 
 const createBlock = async (): Promise<void> => {
   const signingKeyHex = '4e5804d995d5ab84afb85154d7645c73c8fedb80723a262787c2428e59051b58';
-  const {publicKeyHex, secretKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
+  const {accountNumberHex, signingKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
   const balanceLock = 'c88d1b0d55f430b66ad603993b76d7e9bd147b7209e13b2bb548fb680905dc8d';
-  const block = generateBlock(publicKeyHex, balanceLock, secretKey, txs);
+  const block = generateBlock(accountNumberHex, balanceLock, signingKey, txs);
   const response = await axios.post('http://167.99.173.247/blocks', block, {
     headers: {
       'Content-Type': 'application/json',

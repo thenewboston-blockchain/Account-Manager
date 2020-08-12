@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {sign} from 'tweetnacl';
+
 import localStore from '@renderer/store/localStore';
 import {Dict} from '@renderer/types';
 
@@ -13,18 +13,18 @@ const accountsSlice = createSlice({
   name: 'accounts',
   reducers: {
     create: {
-      prepare: (nickname = '') => {
+      prepare: (accountNumberHex, nickname, signingKeyHex) => {
         const accounts = localStore.get('accounts') as Account[];
-        const {publicKey, secretKey} = sign.keyPair();
-        const publicKeyHex = Buffer.from(publicKey).toString('hex');
-        const secretKeyHex = Buffer.from(secretKey).toString('hex').slice(64);
         localStore.set('accounts', {
           ...accounts,
-          [publicKeyHex]: {nickname: nickname || '', secretKey: secretKeyHex},
+          [accountNumberHex]: {
+            nickname: nickname || '',
+            secretKey: signingKeyHex,
+          },
         });
         return {
           payload: {
-            accountNumber: publicKeyHex,
+            accountNumber: accountNumberHex,
             nickname: nickname || '',
           },
         };
