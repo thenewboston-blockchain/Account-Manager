@@ -4,6 +4,7 @@ import {NavLink} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
+import {formatPathFromNode} from '@renderer/utils/address';
 
 import './TopNav.scss';
 
@@ -23,7 +24,7 @@ const TopNav: FC = () => {
       <div className="TopNav__container">
         <NavLink
           className="TopNav__primary-validator"
-          to={`/validator/${activePrimaryValidator.node_identifier}/overview`}
+          to={`/validator/${formatPathFromNode(activePrimaryValidator)}/overview`}
         >
           Primary Validator ({`${activePrimaryValidator.ip_address}`})
         </NavLink>

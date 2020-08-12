@@ -18,9 +18,9 @@ enum TableKeys {
 
 const BankAccounts: FC = () => {
   const loading = useNetworkDataFetcher(BANK_ACCOUNTS);
-  const bankAddress = useAddress();
+  const address = useAddress();
   const bankAccountsObject = useSelector(getBankAccounts);
-  const bankAccounts = bankAccountsObject[bankAddress];
+  const bankAccounts = bankAccountsObject[address];
 
   const bankAccountsTableData = useMemo<PageTableData[]>(
     () =>

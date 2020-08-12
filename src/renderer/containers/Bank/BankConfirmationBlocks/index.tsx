@@ -17,9 +17,9 @@ enum TableKeys {
 
 const BankConfirmationBlocks: FC = () => {
   const loading = useNetworkDataFetcher(BANK_CONFIRMATION_BLOCKS);
-  const bankAddress = useAddress();
+  const address = useAddress();
   const bankConfirmationBlocksObject = useSelector(getBankConfirmationBlocks);
-  const bankConfirmationBlocks = bankConfirmationBlocksObject[bankAddress];
+  const bankConfirmationBlocks = bankConfirmationBlocksObject[address];
 
   const bankConfirmationBlocksTableData = useMemo<PageTableData[]>(
     () =>

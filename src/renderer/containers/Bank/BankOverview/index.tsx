@@ -11,9 +11,9 @@ import './BankOverview.scss';
 
 const BankOverview: FC = () => {
   const loading = useNetworkDataFetcher(BANK_CONFIGS);
-  const bankAddress = useAddress();
+  const address = useAddress();
   const bankConfigs = useSelector(getBankConfigs);
-  const bankConfig = bankConfigs[bankAddress];
+  const bankConfig = bankConfigs[address];
 
   return (
     <div className="BankOverview">

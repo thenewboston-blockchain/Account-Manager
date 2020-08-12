@@ -1,10 +1,12 @@
-import React, {FC, useEffect, useState} from 'react';
-import axios from 'axios';
+import React, {FC, useMemo} from 'react';
+import {useSelector} from 'react-redux';
 
-import PageTable from '@renderer/components/PageTable';
+import {Loader} from '@renderer/components/FormElements';
+import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {OldAccount} from '@renderer/types';
-import {formatAddress} from '@renderer/utils/address';
+import {VALIDATOR_ACCOUNTS} from '@renderer/constants';
+import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
+import {getValidatorAccounts} from '@renderer/selectors';
 
 enum TableKeys {
   accountNumber,
@@ -13,39 +15,45 @@ enum TableKeys {
 }
 
 const ValidatorAccounts: FC = () => {
-  const networkValidator = null as any;
-  const [accounts, setAccounts] = useState<OldAccount[]>([]);
+  const loading = useNetworkDataFetcher(VALIDATOR_ACCOUNTS);
+  const address = useAddress();
+  const validatorAccountsObject = useSelector(getValidatorAccounts);
+  const validatorAccounts = validatorAccountsObject[address];
 
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      const {ip_address: ipAddress, port, protocol} = networkValidator;
-      const address = formatAddress(ipAddress, port, protocol);
-      const {data} = await axios.get(`${address}/accounts`);
-      setAccounts(data);
-    };
+  const validatorAccountsTableData = useMemo<PageTableData[]>(
+    () =>
+      validatorAccounts?.results.map((account) => ({
+        key: account.id,
+        [TableKeys.accountNumber]: account.account_number,
+        [TableKeys.balanceLock]: account.balance_lock,
+        [TableKeys.balance]: account.balance,
+      })) || [],
+    [validatorAccounts],
+  );
 
-    fetchData();
-  }, [networkValidator]);
+  const pageTableItems = useMemo<PageTableItems>(
+    () => ({
+      data: validatorAccountsTableData,
+      headers: {
+        [TableKeys.accountNumber]: 'Account Number',
+        [TableKeys.balanceLock]: 'Balance Lock',
+        [TableKeys.balance]: 'Balance',
+      },
+      orderedKeys: [TableKeys.accountNumber, TableKeys.balance, TableKeys.balanceLock],
+    }),
+    [validatorAccountsTableData],
+  );
 
   return (
     <div className="ValidatorAccounts">
-      <PageTable
-        items={{
-          data: accounts.map((account) => ({
-            key: account.account_number,
-            [TableKeys.accountNumber]: account.account_number,
-            [TableKeys.balanceLock]: account.balance_lock,
-            [TableKeys.balance]: account.balance,
-          })),
-          headers: {
-            [TableKeys.accountNumber]: 'Account Number',
-            [TableKeys.balanceLock]: 'Balance Lock',
-            [TableKeys.balance]: 'Balance',
-          },
-          orderedKeys: [TableKeys.accountNumber, TableKeys.balance, TableKeys.balanceLock],
-        }}
-      />
-      <Pagination />
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <PageTable items={pageTableItems} />
+          <Pagination />
+        </>
+      )}
     </div>
   );
 };

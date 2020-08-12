@@ -19,9 +19,9 @@ enum TableKeys {
 
 const BankValidatorConfirmationServices: FC = () => {
   const loading = useNetworkDataFetcher(BANK_VALIDATOR_CONFIRMATION_SERVICES);
-  const bankAddress = useAddress();
+  const address = useAddress();
   const bankValidatorConfirmationServicesObject = useSelector(getBankValidatorConfirmationServices);
-  const bankValidatorConfirmationServices = bankValidatorConfirmationServicesObject[bankAddress];
+  const bankValidatorConfirmationServices = bankValidatorConfirmationServicesObject[address];
 
   const bankValidatorConfirmationServicesTableData = useMemo<PageTableData[]>(
     () =>

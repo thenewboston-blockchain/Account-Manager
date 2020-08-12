@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
+
 import {
   BANK_ACCOUNTS,
   BANK_BANKS,
@@ -12,13 +13,8 @@ import {
   BANK_VALIDATOR_CONFIRMATION_SERVICES,
   VALIDATOR_ACCOUNTS,
   VALIDATOR_BANKS,
-  VALIDATOR_BANK_TRANSACTIONS,
-  VALIDATOR_BLOCKS,
   VALIDATOR_CONFIGS,
-  VALIDATOR_CONFIRMATION_BLOCKS,
-  VALIDATOR_INVALID_BLOCKS,
   VALIDATOR_VALIDATORS,
-  VALIDATOR_VALIDATOR_CONFIRMATION_SERVICES,
 } from '@renderer/constants';
 import {
   fetchBankAccounts,
@@ -34,12 +30,7 @@ import {
 import {
   fetchValidatorAccounts,
   fetchValidatorBanks,
-  fetchValidatorBankTransactions,
-  fetchValidatorBlocks,
   fetchValidatorConfig,
-  fetchValidatorConfirmationBlocks,
-  fetchValidatorInvalidBlocks,
-  fetchValidatorValidatorConfirmationServices,
   fetchValidatorValidators,
 } from '@renderer/dispatchers/validators';
 import {
@@ -52,21 +43,12 @@ import {
   unsetBankValidatorConfirmationServices,
   unsetBankValidators,
 } from '@renderer/store/banks';
-import {
-  unsetValidatorAccounts,
-  unsetValidatorBanks,
-  unsetValidatorBankTransactions,
-  unsetValidatorBlocks,
-  unsetValidatorConfirmationBlocks,
-  unsetValidatorInvalidBlocks,
-  unsetValidatorValidatorConfirmationServices,
-  unsetValidatorValidators,
-} from '@renderer/store/validators';
+import {unsetValidatorAccounts, unsetValidatorBanks, unsetValidatorValidators} from '@renderer/store/validators';
 import {AppDispatch} from '@renderer/types';
 
 import useAddress from './useAddress';
 
-const getDispatcherFromType = (type: string) => {
+const getDispatcherFromType = (type: string): ((address: string) => (dispatch: AppDispatch) => Promise<any>) => {
   switch (type) {
     case BANK_ACCOUNTS:
       return fetchBankAccounts;
@@ -90,20 +72,10 @@ const getDispatcherFromType = (type: string) => {
       return fetchValidatorAccounts;
     case VALIDATOR_BANKS:
       return fetchValidatorBanks;
-    case VALIDATOR_BANK_TRANSACTIONS:
-      return fetchValidatorBankTransactions;
-    case VALIDATOR_BLOCKS:
-      return fetchValidatorBlocks;
     case VALIDATOR_CONFIGS:
       return fetchValidatorConfig;
-    case VALIDATOR_CONFIRMATION_BLOCKS:
-      return fetchValidatorConfirmationBlocks;
-    case VALIDATOR_INVALID_BLOCKS:
-      return fetchValidatorInvalidBlocks;
     case VALIDATOR_VALIDATORS:
       return fetchValidatorValidators;
-    case VALIDATOR_VALIDATOR_CONFIRMATION_SERVICES:
-      return fetchValidatorValidatorConfirmationServices;
     default:
       throw new Error();
   }
@@ -119,8 +91,6 @@ const getUnsetActionCreatorFromType = (type: string) => {
       return unsetBankBankTransactions;
     case BANK_BLOCKS:
       return unsetBankBlocks;
-    // case BANK_CONFIGS:
-    //   return unsetBankC;
     case BANK_CONFIRMATION_BLOCKS:
       return unsetBankConfirmationBlocks;
     case BANK_INVALID_BLOCKS:
@@ -133,20 +103,8 @@ const getUnsetActionCreatorFromType = (type: string) => {
       return unsetValidatorAccounts;
     case VALIDATOR_BANKS:
       return unsetValidatorBanks;
-    case VALIDATOR_BANK_TRANSACTIONS:
-      return unsetValidatorBankTransactions;
-    case VALIDATOR_BLOCKS:
-      return unsetValidatorBlocks;
-    // case VALIDATOR_CONFIGS:
-    //   return ;
-    case VALIDATOR_CONFIRMATION_BLOCKS:
-      return unsetValidatorConfirmationBlocks;
-    case VALIDATOR_INVALID_BLOCKS:
-      return unsetValidatorInvalidBlocks;
     case VALIDATOR_VALIDATORS:
       return unsetValidatorValidators;
-    case VALIDATOR_VALIDATOR_CONFIRMATION_SERVICES:
-      return unsetValidatorValidatorConfirmationServices;
     default:
       throw new Error();
   }

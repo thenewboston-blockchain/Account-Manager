@@ -1,14 +1,14 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 import {VALIDATOR_BANKS} from '@renderer/constants';
-import {DictWithPaginatedResultsAndError, Node} from '@renderer/types';
+import {DictWithPaginatedResultsAndError, ValidatorBank} from '@renderer/types';
 import {setPaginatedResultErrorReducer, setPaginatedResultReducer, unsetDataReducer} from '@renderer/utils/store';
 
 const validatorBanks = createSlice({
-  initialState: {} as DictWithPaginatedResultsAndError<Node>,
+  initialState: {} as DictWithPaginatedResultsAndError<ValidatorBank>,
   name: VALIDATOR_BANKS,
   reducers: {
-    setValidatorBanks: setPaginatedResultReducer<Node>(),
+    setValidatorBanks: setPaginatedResultReducer<ValidatorBank>(),
     setValidatorBanksError: setPaginatedResultErrorReducer(),
     unsetValidatorBanks: unsetDataReducer(),
   },

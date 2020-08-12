@@ -25,9 +25,9 @@ enum TableKeys {
 
 const BankValidators: FC = () => {
   const loading = useNetworkDataFetcher(BANK_VALIDATORS);
-  const bankAddress = useAddress();
+  const address = useAddress();
   const bankValidatorsObject = useSelector(getBankValidators);
-  const bankValidators = bankValidatorsObject[bankAddress];
+  const bankValidators = bankValidatorsObject[address];
 
   const bankValidatorsTableData = useMemo<PageTableData[]>(
     () =>
