@@ -30,7 +30,7 @@ export const Layout: FC = () => {
           <Route path="/friend">
             <Friend />
           </Route>
-          <Route path="/validator/:nid">
+          <Route path="/validator/:protocol/:ipAddress/:port">
             <Validator />
           </Route>
         </Switch>

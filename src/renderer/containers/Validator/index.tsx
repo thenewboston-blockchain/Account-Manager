@@ -1,5 +1,5 @@
 import React, {FC, ReactNode} from 'react';
-import {Route, Switch, useRouteMatch, withRouter} from 'react-router-dom';
+import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-dom';
 
 import {Button} from '@renderer/components/FormElements';
 import PageHeader from '@renderer/components/PageHeader';
@@ -13,8 +13,8 @@ import ValidatorValidators from '@renderer/containers/Validator/ValidatorValidat
 import './Validator.scss';
 
 const Validator: FC = () => {
+  const {ipAddress} = useParams();
   const {path, url} = useRouteMatch();
-  const validator = null as any;
 
   const renderRightPageHeaderButtons = (): ReactNode => <Button>Add to Managed Validators</Button>;
 
@@ -41,7 +41,9 @@ const Validator: FC = () => {
     return (
       <Switch>
         {tabContentRoutes.map(({content, page}) => (
-          <Route path={`${path}/${page}`}>{content}</Route>
+          <Route key={page} path={`${path}/${page}`}>
+            {content}
+          </Route>
         ))}
       </Switch>
     );
@@ -51,7 +53,7 @@ const Validator: FC = () => {
     <>
       <PageHeader
         rightContent={renderRightPageHeaderButtons()}
-        title={`VALIDATOR NAME HERE (${validator.ip_address})`}
+        title={`VALIDATOR NAME HERE (${ipAddress})`}
         trustScore={94.21}
       />
       <PageTabs

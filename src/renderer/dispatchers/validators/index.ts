@@ -1,44 +1,17 @@
 import axios from 'axios';
 
-import {
-  ACCOUNTS,
-  BANK_TRANSACTIONS,
-  BANKS,
-  CONFIRMATION_BLOCKS,
-  INVALID_BLOCKS,
-  VALIDATOR_CONFIRMATION_SERVICES,
-  VALIDATORS,
-} from '@renderer/constants';
+import {ACCOUNTS, BANKS, VALIDATORS} from '@renderer/constants';
 import {
   setValidatorAccounts,
   setValidatorAccountsError,
   setValidatorBanks,
   setValidatorBanksError,
-  setValidatorBankTransactions,
-  setValidatorBankTransactionsError,
   setValidatorConfig,
   setValidatorConfigError,
-  setValidatorConfirmationBlocks,
-  setValidatorConfirmationBlocksError,
-  setValidatorInvalidBlocks,
-  setValidatorInvalidBlocksError,
-  setValidatorValidatorConfirmationServices,
-  setValidatorValidatorConfirmationServicesError,
   setValidatorValidators,
   setValidatorValidatorsError,
 } from '@renderer/store/validators';
-import {
-  AppDispatch,
-  BankTransaction,
-  BaseValidator,
-  InvalidBlock,
-  Node,
-  NodeType,
-  ValidatorAccount,
-  ValidatorConfig,
-  ValidatorConfirmationBlock,
-  ValidatorConfirmationService,
-} from '@renderer/types';
+import {AppDispatch, BaseValidator, NodeType, ValidatorAccount, ValidatorBank, ValidatorConfig} from '@renderer/types';
 import {fetchPaginatedResults} from '@renderer/utils/api';
 
 export const fetchValidatorAccounts = (address: string) => async (dispatch: AppDispatch) => {
@@ -52,17 +25,7 @@ export const fetchValidatorAccounts = (address: string) => async (dispatch: AppD
 };
 
 export const fetchValidatorBanks = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<Node>(address, BANKS, dispatch, setValidatorBanks, setValidatorBanksError);
-};
-
-export const fetchValidatorBankTransactions = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<BankTransaction>(
-    address,
-    BANK_TRANSACTIONS,
-    dispatch,
-    setValidatorBankTransactions,
-    setValidatorBankTransactionsError,
-  );
+  return fetchPaginatedResults<ValidatorBank>(address, BANKS, dispatch, setValidatorBanks, setValidatorBanksError);
 };
 
 export const fetchValidatorConfig = (address: string) => async (dispatch: AppDispatch) => {
@@ -82,36 +45,6 @@ export const fetchValidatorConfig = (address: string) => async (dispatch: AppDis
     }
     dispatch(setValidatorConfigError({address, error: error.response.data}));
   }
-};
-
-export const fetchValidatorConfirmationBlocks = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<ValidatorConfirmationBlock>(
-    address,
-    CONFIRMATION_BLOCKS,
-    dispatch,
-    setValidatorConfirmationBlocks,
-    setValidatorConfirmationBlocksError,
-  );
-};
-
-export const fetchValidatorInvalidBlocks = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<InvalidBlock>(
-    address,
-    INVALID_BLOCKS,
-    dispatch,
-    setValidatorInvalidBlocks,
-    setValidatorInvalidBlocksError,
-  );
-};
-
-export const fetchValidatorValidatorConfirmationServices = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<ValidatorConfirmationService>(
-    address,
-    VALIDATOR_CONFIRMATION_SERVICES,
-    dispatch,
-    setValidatorValidatorConfirmationServices,
-    setValidatorValidatorConfirmationServicesError,
-  );
 };
 
 export const fetchValidatorValidators = (address: string) => async (dispatch: AppDispatch) => {

@@ -1,31 +1,19 @@
-import React, {FC, useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, {FC} from 'react';
+import {useSelector} from 'react-redux';
 
 import DetailPanel from '@renderer/components/DetailPanel';
 import {Loader} from '@renderer/components/FormElements';
-import {fetchBankConfig} from '@renderer/dispatchers/banks';
-import {useAddress} from '@renderer/hooks';
+import {BANK_CONFIGS} from '@renderer/constants';
+import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
 import {getBankConfigs} from '@renderer/selectors';
-import {AppDispatch} from '@renderer/types';
 
 import './BankOverview.scss';
 
 const BankOverview: FC = () => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const bankAddress = useAddress();
-  const dispatch = useDispatch<AppDispatch>();
+  const loading = useNetworkDataFetcher(BANK_CONFIGS);
+  const address = useAddress();
   const bankConfigs = useSelector(getBankConfigs);
-  const bankConfig = bankConfigs[bankAddress];
-
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      setLoading(true);
-      await dispatch(fetchBankConfig(bankAddress));
-      setLoading(false);
-    };
-
-    fetchData();
-  }, [bankAddress, dispatch]);
+  const bankConfig = bankConfigs[address];
 
   return (
     <div className="BankOverview">
