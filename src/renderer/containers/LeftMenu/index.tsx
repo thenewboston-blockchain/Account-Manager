@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import noop from 'lodash/noop';
 
 import Icon, {IconType} from '@renderer/components/Icon';
-import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
+import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
@@ -43,8 +43,8 @@ const LeftMenu: FC = () => {
     points,
     validators,
   } = useSelector(LeftMenuSelector);
-  const [addAccountModalIsOpen, toggleAddAccountModal] = useBooleanState(false);
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
+  const [createAccountModalIsOpen, toggleCreateAccountModal] = useBooleanState(false);
 
   useEffect(() => {
     dispatch(getAccount());
@@ -154,12 +154,12 @@ const LeftMenu: FC = () => {
         rightText="Change"
         title="Active Bank"
       />
-      <LeftSubmenu menuItems={getAccountItems()} rightOnClick={toggleAddAccountModal} title="Accounts" />
+      <LeftSubmenu menuItems={getAccountItems()} rightOnClick={toggleCreateAccountModal} title="Accounts" />
       <LeftSubmenu menuItems={getFriendMenuItems()} rightOnClick={toggleAddFriendModal} title="Friends" />
       <LeftSubmenu menuItems={getBankMenuItems()} rightOnClick={noop} title="Managed Banks" />
       <LeftSubmenu menuItems={getValidatorMenuItems()} rightOnClick={noop} title="Managed Validators" />
-      {addAccountModalIsOpen && <AddAccountModal close={toggleAddAccountModal} />}
       {addFriendModalIsOpen && <AddFriendModal close={toggleAddFriendModal} />}
+      {createAccountModalIsOpen && <CreateAccountModal close={toggleCreateAccountModal} />}
     </div>
   );
 };

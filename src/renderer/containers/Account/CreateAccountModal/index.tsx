@@ -17,7 +17,7 @@ interface ComponentProps {
   close(): void;
 }
 
-const AddAccountModal: FC<ComponentProps> = ({close}) => {
+const CreateAccountModal: FC<ComponentProps> = ({close}) => {
   const dispatch = useDispatch<AppDispatch>();
   const nicknames = useSelector(
     (state: RootState) => state.old.accounts.map((account) => account.nickname).filter((nickname) => !!nickname),
@@ -52,4 +52,4 @@ const AddAccountModal: FC<ComponentProps> = ({close}) => {
   );
 };
 
-export default AddAccountModal;
+export default CreateAccountModal;
