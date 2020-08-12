@@ -1,14 +1,12 @@
-import React, {FC, useEffect, useMemo, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, {FC, useMemo} from 'react';
+import {useSelector} from 'react-redux';
 
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {fetchBankValidators} from '@renderer/dispatchers/banks';
-import {useAddress} from '@renderer/hooks';
+import {BANK_VALIDATORS} from '@renderer/constants';
+import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
 import {getBankValidators} from '@renderer/selectors';
-import {unsetBankValidators} from '@renderer/store/banks';
-import {AppDispatch} from '@renderer/types';
 
 enum TableKeys {
   accountNumber,
@@ -26,25 +24,10 @@ enum TableKeys {
 }
 
 const BankValidators: FC = () => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const bankAddress = useAddress();
-  const dispatch = useDispatch<AppDispatch>();
+  const loading = useNetworkDataFetcher(BANK_VALIDATORS);
+  const address = useAddress();
   const bankValidatorsObject = useSelector(getBankValidators);
-  const bankValidators = bankValidatorsObject[bankAddress];
-
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      setLoading(true);
-      await dispatch(fetchBankValidators(bankAddress));
-      setLoading(false);
-    };
-
-    fetchData();
-
-    return () => {
-      dispatch(unsetBankValidators({address: bankAddress}));
-    };
-  }, [bankAddress, dispatch]);
+  const bankValidators = bankValidatorsObject[address];
 
   const bankValidatorsTableData = useMemo<PageTableData[]>(
     () =>

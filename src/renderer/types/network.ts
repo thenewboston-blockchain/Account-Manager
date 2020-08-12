@@ -114,6 +114,10 @@ export interface ValidatorAccount extends Id {
   balance_lock: string;
 }
 
+export interface ValidatorBank extends Node {
+  confirmation_expiration: string | null;
+}
+
 export interface ValidatorConfig extends BaseValidator {
   node_type: NodeType.primaryValidator | NodeType.confirmationValidator;
 }
