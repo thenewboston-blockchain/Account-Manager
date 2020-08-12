@@ -1,14 +1,12 @@
-import React, {FC, useEffect, useMemo, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, {FC, useMemo} from 'react';
+import {useSelector} from 'react-redux';
 
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {fetchBankConfirmationBlocks} from '@renderer/dispatchers/banks';
-import {useAddress} from '@renderer/hooks';
+import {BANK_CONFIRMATION_BLOCKS} from '@renderer/constants';
+import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
 import {getBankConfirmationBlocks} from '@renderer/selectors';
-import {unsetBankConfirmationBlocks} from '@renderer/store/banks';
-import {AppDispatch} from '@renderer/types';
 
 enum TableKeys {
   id,
@@ -18,25 +16,10 @@ enum TableKeys {
 }
 
 const BankConfirmationBlocks: FC = () => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const loading = useNetworkDataFetcher(BANK_CONFIRMATION_BLOCKS);
   const bankAddress = useAddress();
-  const dispatch = useDispatch<AppDispatch>();
   const bankConfirmationBlocksObject = useSelector(getBankConfirmationBlocks);
   const bankConfirmationBlocks = bankConfirmationBlocksObject[bankAddress];
-
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      setLoading(true);
-      await dispatch(fetchBankConfirmationBlocks(bankAddress));
-      setLoading(false);
-    };
-
-    fetchData();
-
-    return () => {
-      dispatch(unsetBankConfirmationBlocks({address: bankAddress}));
-    };
-  }, [bankAddress, dispatch]);
 
   const bankConfirmationBlocksTableData = useMemo<PageTableData[]>(
     () =>

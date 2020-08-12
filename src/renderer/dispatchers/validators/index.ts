@@ -4,6 +4,7 @@ import {
   ACCOUNTS,
   BANK_TRANSACTIONS,
   BANKS,
+  BLOCKS,
   CONFIRMATION_BLOCKS,
   INVALID_BLOCKS,
   VALIDATOR_CONFIRMATION_SERVICES,
@@ -16,6 +17,8 @@ import {
   setValidatorBanksError,
   setValidatorBankTransactions,
   setValidatorBankTransactionsError,
+  setValidatorBlocks,
+  setValidatorBlocksError,
   setValidatorConfig,
   setValidatorConfigError,
   setValidatorConfirmationBlocks,
@@ -31,6 +34,7 @@ import {
   AppDispatch,
   BankTransaction,
   BaseValidator,
+  BlockResponse,
   InvalidBlock,
   Node,
   NodeType,
@@ -63,6 +67,10 @@ export const fetchValidatorBankTransactions = (address: string) => async (dispat
     setValidatorBankTransactions,
     setValidatorBankTransactionsError,
   );
+};
+
+export const fetchValidatorBlocks = (address: string) => async (dispatch: AppDispatch) => {
+  return fetchPaginatedResults<BlockResponse>(address, BLOCKS, dispatch, setValidatorBlocks, setValidatorBlocksError);
 };
 
 export const fetchValidatorConfig = (address: string) => async (dispatch: AppDispatch) => {

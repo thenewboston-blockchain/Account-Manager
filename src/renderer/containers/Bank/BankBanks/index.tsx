@@ -1,14 +1,12 @@
-import React, {FC, useEffect, useMemo, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, {FC, useMemo} from 'react';
+import {useSelector} from 'react-redux';
 
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {fetchBankBanks} from '@renderer/dispatchers/banks';
-import {useAddress} from '@renderer/hooks';
+import {BANK_BANKS} from '@renderer/constants';
+import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
 import {getBankBanks} from '@renderer/selectors';
-import {unsetBankBanks} from '@renderer/store/banks';
-import {AppDispatch} from '@renderer/types';
 
 enum TableKeys {
   nodeIdentifier,
@@ -22,25 +20,10 @@ enum TableKeys {
 }
 
 const BankBanks: FC = () => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const loading = useNetworkDataFetcher(BANK_BANKS);
   const bankAddress = useAddress();
-  const dispatch = useDispatch<AppDispatch>();
   const bankBanksObject = useSelector(getBankBanks);
   const bankBanks = bankBanksObject[bankAddress];
-
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      setLoading(true);
-      await dispatch(fetchBankBanks(bankAddress));
-      setLoading(false);
-    };
-
-    fetchData();
-
-    return () => {
-      dispatch(unsetBankBanks({address: bankAddress}));
-    };
-  }, [bankAddress, dispatch]);
 
   const bankBanksTableData = useMemo<PageTableData[]>(
     () =>
