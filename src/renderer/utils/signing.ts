@@ -1,14 +1,17 @@
 import {sign, SignKeyPair} from 'tweetnacl';
+import orderBy from 'lodash/orderBy';
+
+import {Tx} from '@renderer/types';
 
 export const generateBlock = (
   accountNumber: string,
   balanceLock: string,
   signingKey: Uint8Array,
-  transactions: any[],
+  transactions: Tx[],
 ) => {
   const message = {
     balance_key: balanceLock,
-    txs: transactions,
+    txs: orderBy(transactions, ['recipient']),
   };
   const strMessage: string = JSON.stringify(message);
   const block = {
