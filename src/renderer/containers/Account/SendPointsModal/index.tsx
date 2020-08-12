@@ -90,7 +90,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
             <tr>
               <td>Account Balance</td>
               <td>
-                <span className="SendPointsModal__acc-balance">0.00</span>
+                <span className="SendPointsModal__account-balance">0.00</span>
               </td>
             </tr>
             <tr>
