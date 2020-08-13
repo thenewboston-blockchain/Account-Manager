@@ -2,7 +2,7 @@ import useAddress from './useAddress';
 import useBooleanState from './useBooleanState';
 import useFormContext from './useFormContext';
 import useFormSelect from './useFormSelect';
-import useNetworkDataFetcher from './useNetworkDataFetcher';
+import useNetworkConfigFetcher from './useNetworkConfigFetcher';
 import usePaginatedNetworkDataFetcher from './usePaginatedNetworkDataFetcher';
 
 export {
@@ -10,6 +10,6 @@ export {
   useBooleanState,
   useFormContext,
   useFormSelect,
-  useNetworkDataFetcher,
+  useNetworkConfigFetcher,
   usePaginatedNetworkDataFetcher,
 };

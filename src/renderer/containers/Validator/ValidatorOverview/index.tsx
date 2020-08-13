@@ -1,58 +1,54 @@
 import React, {FC} from 'react';
-import {useSelector} from 'react-redux';
 
 import DetailPanel from '@renderer/components/DetailPanel';
 import {Loader} from '@renderer/components/FormElements';
 import {VALIDATOR_CONFIGS} from '@renderer/constants';
-import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
-import {getValidatorConfigs} from '@renderer/selectors';
+import {useNetworkConfigFetcher} from '@renderer/hooks';
+import {ValidatorConfig} from '@renderer/types';
 
 import './ValidatorOverview.scss';
 
 const ValidatorOverview: FC = () => {
-  const loading = useNetworkDataFetcher(VALIDATOR_CONFIGS);
-  const address = useAddress();
-  const validatorConfigs = useSelector(getValidatorConfigs);
-  const validatorConfig = validatorConfigs[address];
+  const {data: validatorConfig, loading} = useNetworkConfigFetcher<ValidatorConfig>(VALIDATOR_CONFIGS);
 
   return (
     <div className="ValidatorOverview">
-      {loading ? (
+      {loading || !validatorConfig ? (
         <Loader />
       ) : (
         <DetailPanel
           items={[
             {
               key: 'Account Number',
-              value: validatorConfig.data.account_number,
+              value: validatorConfig.account_number,
             },
             {
               key: 'IP Address',
-              value: validatorConfig.data.ip_address,
+              value: validatorConfig.ip_address,
             },
             {
               key: 'Network ID',
-              value: validatorConfig.data.node_identifier,
+              value: validatorConfig.node_identifier,
             },
             {
               key: 'Port',
-              value: validatorConfig.data.port || '-',
+              value: validatorConfig.port || '-',
             },
             {
               key: 'Protocol',
-              value: validatorConfig.data.protocol,
+              value: validatorConfig.protocol,
             },
             {
               key: 'Version',
-              value: validatorConfig.data.version,
+              value: validatorConfig.version,
             },
             {
               key: 'Transaction Fee',
-              value: validatorConfig.data.default_transaction_fee,
+              value: validatorConfig.default_transaction_fee,
             },
             {
               key: 'Node Type',
-              value: validatorConfig.data.node_type,
+              value: validatorConfig.node_type,
             },
           ]}
           title="Validator Information"
