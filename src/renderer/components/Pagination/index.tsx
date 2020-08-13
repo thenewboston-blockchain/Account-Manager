@@ -15,7 +15,7 @@ interface ComponentProps {
 }
 
 const Pagination: FC<ComponentProps> = ({className, currentPage, setPage, totalPages}) => {
-  const nextIsDisabled = useMemo(() => currentPage === totalPages, [currentPage, totalPages]);
+  const nextIsDisabled = useMemo(() => currentPage >= totalPages, [currentPage, totalPages]);
   const prevIsDisabled = useMemo(() => currentPage === 1, [currentPage]);
 
   const renderPages = (): ReactNode => {
@@ -23,7 +23,7 @@ const Pagination: FC<ComponentProps> = ({className, currentPage, setPage, totalP
 
     const pagesToRender: ReactNode[] = [];
 
-    for (let i = firstPageToShow; i <= Math.min(firstPageToShow + MAX_PAGES_TO_SHOW - 1, totalPages); i += 1) {
+    for (let i = firstPageToShow; i <= Math.min(firstPageToShow + MAX_PAGES_TO_SHOW - 1, totalPages || 1); i += 1) {
       const isCurrentPage = i === currentPage;
       pagesToRender.push(
         <span
