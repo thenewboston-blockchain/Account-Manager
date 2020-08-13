@@ -1,12 +1,11 @@
 import React, {FC, useMemo} from 'react';
-import {useSelector} from 'react-redux';
 
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {BANK_ACCOUNTS} from '@renderer/constants';
-import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
-import {getBankAccounts} from '@renderer/selectors';
+import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {BankAccount} from '@renderer/types';
 
 enum TableKeys {
   id,
@@ -17,10 +16,7 @@ enum TableKeys {
 }
 
 const BankAccounts: FC = () => {
-  const loading = useNetworkDataFetcher(BANK_ACCOUNTS);
-  const address = useAddress();
-  const bankAccountsObject = useSelector(getBankAccounts);
-  const bankAccounts = bankAccountsObject[address];
+  const {data: bankAccounts, loading} = usePaginatedNetworkDataFetcher<BankAccount>(BANK_ACCOUNTS);
 
   const bankAccountsTableData = useMemo<PageTableData[]>(
     () =>

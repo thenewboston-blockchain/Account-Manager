@@ -63,6 +63,10 @@ export interface CreatedModified {
   modified_date: string;
 }
 
+export interface Error {
+  error: string | null;
+}
+
 export interface Id {
   id: string;
 }
@@ -86,12 +90,19 @@ export interface NodeIdentifier {
   node_identifier: string;
 }
 
+export interface PaginatedQueryParams {
+  limit?: number;
+  offset?: number;
+}
+
 export interface PaginatedResults<T> {
-  count: number | null;
+  count: number;
   next: string | null;
   previous: string | null;
   results: T[];
 }
+
+export type PaginatedResultsWithError<T> = PaginatedResults<T> & Error;
 
 export interface PrimaryValidatorConfig extends BaseValidator {
   node_type: NodeType.primaryValidator;
