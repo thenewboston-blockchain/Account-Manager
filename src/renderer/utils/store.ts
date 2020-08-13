@@ -25,6 +25,15 @@ export type SetError = (payload: Address & Error) => PayloadAction<Address & Err
 
 export const getStateName = (actionType: string) => actionType.split('/')[1];
 
+export function setLocalAndStateArrayReducer<T>() {
+  return (state: any, action: PayloadAction<T>) => {
+    const name = getStateName(action.type);
+    const localArray = localStore.get(name) || [];
+    localStore.set(name, [...localArray, action.payload]);
+    state.push(action.payload);
+  };
+}
+
 export function setLocalAndStateReducer<T>() {
   return (state: any, action: PayloadAction<T>) => {
     const name = getStateName(action.type);

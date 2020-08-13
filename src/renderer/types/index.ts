@@ -1,4 +1,4 @@
-import {AppNodeAddressData, OldAccount, OldBank, OldValidator} from './app';
+import {AppNodeAddressData, OldAccount, OldBank, OldValidator, ManagedAccount} from './app';
 import {NodeType, ProtocolType} from './constants';
 import {BaseFormComponentProps, GenericFormValues, SelectOption} from './forms';
 import {GenericFunction, GenericVoidFunction} from './generic';
@@ -50,6 +50,7 @@ export {
   GenericFunction,
   GenericVoidFunction,
   InvalidBlock,
+  ManagedAccount,
   Node,
   NodeIdentifier,
   NodeType,

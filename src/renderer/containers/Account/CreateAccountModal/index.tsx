@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import {createAccount} from '@renderer/store/old/accounts';
+import {setManagedAccount} from '@renderer/store/app';
 import {AppDispatch, RootState} from '@renderer/types';
 import {generateAccount} from '@renderer/utils/accounts';
 
@@ -30,7 +30,14 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
 
   const handleSubmit = ({nickname}: FormValues): void => {
     const {accountNumberHex, signingKeyHex} = generateAccount();
-    dispatch(createAccount(accountNumberHex, nickname, signingKeyHex));
+    dispatch(
+      setManagedAccount({
+        account_number: accountNumberHex,
+        balance: '',
+        nickname,
+        signing_key: signingKeyHex,
+      }),
+    );
     history.push(`/account/${accountNumberHex}/overview`);
     close();
   };

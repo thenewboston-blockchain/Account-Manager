@@ -5,6 +5,13 @@ export interface AppNodeAddressData extends AddressData, NodeIdentifier {
   nickname: string;
 }
 
+export interface ManagedAccount {
+  account_number: string;
+  balance: string;
+  nickname: string;
+  signing_key: string;
+}
+
 export interface OldAccount {
   account_number: string;
   balance: string;

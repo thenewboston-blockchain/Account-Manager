@@ -13,6 +13,7 @@ export const VALIDATOR_CONFIRMATION_SERVICES = 'validator_confirmation_services'
 // App
 export const ACTIVE_BANK = `${APP}/active_bank`;
 export const ACTIVE_PRIMARY_VALIDATOR = `${APP}/active_primary_validator`;
+export const MANAGED_ACCOUNTS = `${APP}/managed_accounts`;
 
 // Banks
 export const BANK_ACCOUNTS = `${BANKS}/${ACCOUNTS}`;
