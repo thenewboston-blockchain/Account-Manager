@@ -2,6 +2,7 @@ import React, {FC, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
+import noop from 'lodash/noop';
 
 import PageTable, {PageTableData} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
@@ -74,7 +75,7 @@ const AccountTransactions: FC = () => {
           ],
         }}
       />
-      <Pagination />
+      <Pagination currentPage={1} setPage={() => noop} totalPages={1} />
     </div>
   );
 };

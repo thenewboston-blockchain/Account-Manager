@@ -16,11 +16,13 @@ enum TableKeys {
 }
 
 const BankAccounts: FC = () => {
-  const {data: bankAccounts, loading} = usePaginatedNetworkDataFetcher<BankAccount>(BANK_ACCOUNTS);
+  const {currentPage, loading, results: bankAccounts, setPage, totalPages} = usePaginatedNetworkDataFetcher<
+    BankAccount
+  >(BANK_ACCOUNTS);
 
   const bankAccountsTableData = useMemo<PageTableData[]>(
     () =>
-      bankAccounts?.results.map((account) => ({
+      bankAccounts.map((account) => ({
         key: account.account_number,
         [TableKeys.accountNumber]: account.account_number,
         [TableKeys.createdDate]: account.created_date,
@@ -59,7 +61,7 @@ const BankAccounts: FC = () => {
       ) : (
         <>
           <PageTable items={pageTableItems} />
-          <Pagination />
+          <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
         </>
       )}
     </div>

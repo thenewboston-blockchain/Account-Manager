@@ -1,6 +1,7 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
+import {PAGINATED_RESULTS_LIMIT} from '@renderer/config';
 import {
   BANK_ACCOUNTS,
   BANK_BANKS,
@@ -51,14 +52,7 @@ import {
   unsetBankValidators,
 } from '@renderer/store/banks';
 import {unsetValidatorAccounts, unsetValidatorBanks, unsetValidatorValidators} from '@renderer/store/validators';
-import {
-  AppDispatch,
-  DictWithPaginatedResultsAndError,
-  PaginatedQueryParams,
-  PaginatedResultsWithError,
-  RootState,
-} from '@renderer/types';
-import {parseQueryParams} from '@renderer/utils/address';
+import {AppDispatch, DictWithPaginatedResultsAndError, PaginatedQueryParams, RootState} from '@renderer/types';
 
 import useAddress from './useAddress';
 
@@ -156,24 +150,33 @@ const getUnsetActionCreatorFromType = (type: string) => {
 function usePaginatedNetworkDataFetcher<T>(
   type: string,
 ): {
-  // currentPage: number;
-  data: PaginatedResultsWithError<T>;
-  fetchNextResults: () => void;
-  fetchPreviousResults: () => void;
+  currentPage: number;
+  error: string | null;
   loading: boolean;
-  // totalPages: number;
+  results: T[];
+  setPage(page: number): () => void;
+  totalPages: number;
 } {
-  // const [currentPage, setCurrentPage] = useState<boolean>(true);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
-  const [queryParams, setQueryParams] = useState<PaginatedQueryParams>({});
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
   const paginatedResultsDataObject = useSelector(getSelectorFromType<T>(type));
   const paginatedResultsData = paginatedResultsDataObject[address];
 
+  const totalPages = useMemo<number>(() => {
+    if (!paginatedResultsData) return 1;
+
+    return Math.ceil(paginatedResultsData.count / PAGINATED_RESULTS_LIMIT);
+  }, [paginatedResultsData]);
+
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       setLoading(true);
+      const queryParams: PaginatedQueryParams = {
+        limit: PAGINATED_RESULTS_LIMIT,
+        offset: (currentPage - 1) * PAGINATED_RESULTS_LIMIT,
+      };
       await dispatch(getDispatcherFromType(type)(address, queryParams));
       setLoading(false);
     };
@@ -185,29 +188,22 @@ function usePaginatedNetworkDataFetcher<T>(
         dispatch(getUnsetActionCreatorFromType(type)({address}));
       }
     };
-  }, [address, dispatch, queryParams, type]);
+  }, [address, currentPage, dispatch, type]);
 
-  const fetchNextResults = (): void => {
-    if (!paginatedResultsData?.next) return;
-
-    setQueryParams(parseQueryParams(paginatedResultsData.next) as PaginatedQueryParams);
+  const setPage = (page: number) => (): void => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
   };
 
-  const fetchPreviousResults = (): void => {
-    if (!paginatedResultsData?.previous) return;
-
-    setQueryParams(parseQueryParams(paginatedResultsData.previous) as PaginatedQueryParams);
+  return {
+    currentPage,
+    error: paginatedResultsData?.error || null,
+    loading,
+    results: paginatedResultsData?.results || [],
+    setPage,
+    totalPages,
   };
-
-  // const totalPages = useMemo<number>(() => {
-  //   if (!paginatedResultsData?.count) {
-  //     return 1;
-  //   }
-  //
-  //   return Math.floor(paginatedResultsData.count);
-  // }, [paginatedResultsData]);
-
-  return {data: paginatedResultsData, fetchNextResults, fetchPreviousResults, loading};
 }
 
 export default usePaginatedNetworkDataFetcher;

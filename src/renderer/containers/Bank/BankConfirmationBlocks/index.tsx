@@ -1,12 +1,11 @@
 import React, {FC, useMemo} from 'react';
-import {useSelector} from 'react-redux';
 
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {BANK_CONFIRMATION_BLOCKS} from '@renderer/constants';
-import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
-import {getBankConfirmationBlocks} from '@renderer/selectors';
+import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {BankConfirmationBlock} from '@renderer/types';
 
 enum TableKeys {
   id,
@@ -16,14 +15,13 @@ enum TableKeys {
 }
 
 const BankConfirmationBlocks: FC = () => {
-  const loading = useNetworkDataFetcher(BANK_CONFIRMATION_BLOCKS);
-  const address = useAddress();
-  const bankConfirmationBlocksObject = useSelector(getBankConfirmationBlocks);
-  const bankConfirmationBlocks = bankConfirmationBlocksObject[address];
+  const {currentPage, loading, results: bankConfirmationBlocks, setPage, totalPages} = usePaginatedNetworkDataFetcher<
+    BankConfirmationBlock
+  >(BANK_CONFIRMATION_BLOCKS);
 
   const bankConfirmationBlocksTableData = useMemo<PageTableData[]>(
     () =>
-      bankConfirmationBlocks?.results.map((confirmationBlock) => ({
+      bankConfirmationBlocks.map((confirmationBlock) => ({
         key: confirmationBlock.id,
         [TableKeys.blockIdentifier]: confirmationBlock.block_identifier,
         [TableKeys.block]: confirmationBlock.block,
@@ -54,7 +52,7 @@ const BankConfirmationBlocks: FC = () => {
       ) : (
         <>
           <PageTable items={pageTableItems} />
-          <Pagination />
+          <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
         </>
       )}
     </div>

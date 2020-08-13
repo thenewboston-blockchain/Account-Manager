@@ -1,12 +1,11 @@
 import React, {FC, useMemo} from 'react';
-import {useSelector} from 'react-redux';
 
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {VALIDATOR_BANKS} from '@renderer/constants';
-import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
-import {getValidatorBanks} from '@renderer/selectors';
+import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {ValidatorBank} from '@renderer/types';
 
 enum TableKeys {
   nodeIdentifier,
@@ -21,14 +20,13 @@ enum TableKeys {
 }
 
 const ValidatorBanks: FC = () => {
-  const loading = useNetworkDataFetcher(VALIDATOR_BANKS);
-  const address = useAddress();
-  const validatorBanksObject = useSelector(getValidatorBanks);
-  const validatorBanks = validatorBanksObject[address];
+  const {currentPage, loading, results: validatorBanks, setPage, totalPages} = usePaginatedNetworkDataFetcher<
+    ValidatorBank
+  >(VALIDATOR_BANKS);
 
   const validatorAccountsTableData = useMemo<PageTableData[]>(
     () =>
-      validatorBanks?.results.map((bank) => ({
+      validatorBanks.map((bank) => ({
         key: bank.node_identifier,
         [TableKeys.accountNumber]: bank.account_number,
         [TableKeys.confirmationExpiration]: bank.confirmation_expiration,
@@ -79,7 +77,7 @@ const ValidatorBanks: FC = () => {
       ) : (
         <>
           <PageTable items={pageTableItems} />
-          <Pagination />
+          <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
         </>
       )}
     </div>

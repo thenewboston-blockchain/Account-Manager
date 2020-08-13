@@ -1,12 +1,11 @@
 import React, {FC, useMemo} from 'react';
-import {useSelector} from 'react-redux';
 
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
-import Pagination from '@renderer/components/Pagination';
 import {VALIDATOR_VALIDATORS} from '@renderer/constants';
-import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
-import {getValidatorValidators} from '@renderer/selectors';
+import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {BaseValidator} from '@renderer/types';
+import Pagination from '@renderer/components/Pagination';
 
 enum TableKeys {
   nodeIdentifier,
@@ -24,14 +23,13 @@ enum TableKeys {
 }
 
 const ValidatorValidators: FC = () => {
-  const loading = useNetworkDataFetcher(VALIDATOR_VALIDATORS);
-  const address = useAddress();
-  const validatorValidatorsObject = useSelector(getValidatorValidators);
-  const validatorValidators = validatorValidatorsObject[address];
+  const {currentPage, loading, results: validatorValidators, setPage, totalPages} = usePaginatedNetworkDataFetcher<
+    BaseValidator
+  >(VALIDATOR_VALIDATORS);
 
   const validatorValidatorsTableData = useMemo<PageTableData[]>(
     () =>
-      validatorValidators?.results.map((validator) => ({
+      validatorValidators.map((validator) => ({
         key: validator.node_identifier,
         [TableKeys.accountNumber]: validator.account_number,
         [TableKeys.dailyConfirmationRate]: validator.daily_confirmation_rate,
@@ -91,7 +89,7 @@ const ValidatorValidators: FC = () => {
       ) : (
         <>
           <PageTable items={pageTableItems} />
-          <Pagination />
+          <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
         </>
       )}
     </div>
