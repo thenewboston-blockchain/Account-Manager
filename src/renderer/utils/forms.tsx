@@ -28,3 +28,13 @@ export const renderFormLabel = (
       {required ? <RequiredAsterisk /> : null}
     </label>
   ) : null;
+
+export const renderFormLabelInline = (name: string, classNames: string | undefined, label?: string): ReactNode =>
+  label ? (
+    <label
+      className={clsx('FormFieldInlineComponent__label', {...getCustomClassNames(classNames, '__label', true)})}
+      htmlFor={name}
+    >
+      {label}
+    </label>
+  ) : null;

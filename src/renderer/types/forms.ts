@@ -5,6 +5,11 @@ export type BaseFormComponentProps<T> = Omit<T, 'name' | 'onBlur' | 'onChange' |
   required?: boolean;
 };
 
+export type BaseFormInlineComponentProps<T> = Omit<T, 'name' | 'onBlur' | 'value'> & {
+  label: string;
+  name: string;
+};
+
 export interface GenericFormValues {
   [fieldName: string]: boolean | string;
 }

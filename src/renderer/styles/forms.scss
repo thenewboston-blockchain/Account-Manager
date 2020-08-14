@@ -44,3 +44,18 @@ textarea {
     height: 14px;
   }
 }
+
+.FormFieldInlineComponent {
+  align-items: center;
+  display: flex;
+  margin-bottom: 10px;
+
+  &__label {
+    display: inline-block;
+  }
+
+  .FormFieldInline {
+    display: inline-block;
+    margin-right: 8px;
+  }
+}
