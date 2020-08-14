@@ -2,6 +2,7 @@ import {PayloadAction} from '@reduxjs/toolkit';
 
 import localStore from '@renderer/store/localStore';
 import {
+  AccountNumber,
   DictWithDataAndError,
   DictWithError,
   DictWithPaginatedResultsAndError,
@@ -28,8 +29,8 @@ export type SetError = (payload: Address & Error) => PayloadAction<Address & Err
 
 export const getStateName = (actionType: string) => actionType.split('/')[1];
 
-export function setAccountLocalAndStateReducer() {
-  return (state: any, {payload}: PayloadAction<ManagedAccount | ManagedFriend>) => {
+export function setAccountLocalAndStateReducer<T extends AccountNumber>() {
+  return (state: any, {payload}: PayloadAction<T>) => {
     const {account_number: accountNumber} = payload;
     const account = state[accountNumber];
     state[accountNumber] = account ? {account, ...payload} : payload;
@@ -86,7 +87,7 @@ export function setDataErrorReducer() {
 
 export function setPaginatedResultReducer<T>() {
   return (
-    state: DictWithPaginatedResultsAndError<any>,
+    state: DictWithPaginatedResultsAndError<T>,
     {payload: {address, count, next, previous, results}}: PaginatedPayloadActionWithAddress<T>,
   ) => {
     if (!state[address]) {

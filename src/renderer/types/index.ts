@@ -3,6 +3,7 @@ import {NodeType, ProtocolType} from './constants';
 import {BaseFormComponentProps, GenericFormValues, SelectOption} from './forms';
 import {GenericFunction, GenericVoidFunction} from './generic';
 import {
+  AccountNumber,
   AddressData,
   BankAccount,
   BankConfig,
@@ -34,6 +35,7 @@ import {
 } from './store';
 
 export {
+  AccountNumber,
   AddressData,
   AppDispatch,
   AppNodeAddressData,

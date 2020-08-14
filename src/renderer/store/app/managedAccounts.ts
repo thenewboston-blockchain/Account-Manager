@@ -9,7 +9,7 @@ const managedAccounts = createSlice({
   initialState: (localStore.get(getStateName(MANAGED_ACCOUNTS)) || {}) as Dict<ManagedAccount>,
   name: MANAGED_ACCOUNTS,
   reducers: {
-    setManagedAccount: setAccountLocalAndStateReducer(),
+    setManagedAccount: setAccountLocalAndStateReducer<ManagedAccount>(),
     unsetManagedAccount: unsetAccountLocalAndStateReducer(),
   },
 });
