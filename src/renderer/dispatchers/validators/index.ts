@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import {defaultPaginatedQueryParam} from '@renderer/config';
 import {ACCOUNTS, BANKS, VALIDATORS} from '@renderer/constants';
 import {
   setValidatorAccounts,
@@ -11,21 +12,43 @@ import {
   setValidatorValidators,
   setValidatorValidatorsError,
 } from '@renderer/store/validators';
-import {AppDispatch, BaseValidator, NodeType, ValidatorAccount, ValidatorBank, ValidatorConfig} from '@renderer/types';
+import {
+  AppDispatch,
+  BaseValidator,
+  NodeType,
+  PaginatedQueryParams,
+  ValidatorAccount,
+  ValidatorBank,
+  ValidatorConfig,
+} from '@renderer/types';
 import {fetchPaginatedResults} from '@renderer/utils/api';
 
-export const fetchValidatorAccounts = (address: string) => async (dispatch: AppDispatch) => {
+export const fetchValidatorAccounts = (
+  address: string,
+  params: PaginatedQueryParams = defaultPaginatedQueryParam,
+) => async (dispatch: AppDispatch) => {
   return fetchPaginatedResults<ValidatorAccount>(
     address,
     ACCOUNTS,
+    params,
     dispatch,
     setValidatorAccounts,
     setValidatorAccountsError,
   );
 };
 
-export const fetchValidatorBanks = (address: string) => async (dispatch: AppDispatch) => {
-  return fetchPaginatedResults<ValidatorBank>(address, BANKS, dispatch, setValidatorBanks, setValidatorBanksError);
+export const fetchValidatorBanks = (
+  address: string,
+  params: PaginatedQueryParams = defaultPaginatedQueryParam,
+) => async (dispatch: AppDispatch) => {
+  return fetchPaginatedResults<ValidatorBank>(
+    address,
+    BANKS,
+    params,
+    dispatch,
+    setValidatorBanks,
+    setValidatorBanksError,
+  );
 };
 
 export const fetchValidatorConfig = (address: string) => async (dispatch: AppDispatch) => {
@@ -47,10 +70,14 @@ export const fetchValidatorConfig = (address: string) => async (dispatch: AppDis
   }
 };
 
-export const fetchValidatorValidators = (address: string) => async (dispatch: AppDispatch) => {
+export const fetchValidatorValidators = (
+  address: string,
+  params: PaginatedQueryParams = defaultPaginatedQueryParam,
+) => async (dispatch: AppDispatch) => {
   return fetchPaginatedResults<BaseValidator>(
     address,
     VALIDATORS,
+    params,
     dispatch,
     setValidatorValidators,
     setValidatorValidatorsError,

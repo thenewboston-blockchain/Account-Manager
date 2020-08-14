@@ -1,12 +1,11 @@
 import React, {FC, useMemo} from 'react';
-import {useSelector} from 'react-redux';
 
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {VALIDATOR_ACCOUNTS} from '@renderer/constants';
-import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
-import {getValidatorAccounts} from '@renderer/selectors';
+import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {ValidatorAccount} from '@renderer/types';
 
 enum TableKeys {
   accountNumber,
@@ -15,14 +14,13 @@ enum TableKeys {
 }
 
 const ValidatorAccounts: FC = () => {
-  const loading = useNetworkDataFetcher(VALIDATOR_ACCOUNTS);
-  const address = useAddress();
-  const validatorAccountsObject = useSelector(getValidatorAccounts);
-  const validatorAccounts = validatorAccountsObject[address];
+  const {currentPage, loading, results: validatorAccounts, setPage, totalPages} = usePaginatedNetworkDataFetcher<
+    ValidatorAccount
+  >(VALIDATOR_ACCOUNTS);
 
   const validatorAccountsTableData = useMemo<PageTableData[]>(
     () =>
-      validatorAccounts?.results.map((account) => ({
+      validatorAccounts.map((account) => ({
         key: account.id,
         [TableKeys.accountNumber]: account.account_number,
         [TableKeys.balanceLock]: account.balance_lock,
@@ -51,7 +49,7 @@ const ValidatorAccounts: FC = () => {
       ) : (
         <>
           <PageTable items={pageTableItems} />
-          <Pagination />
+          <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
         </>
       )}
     </div>

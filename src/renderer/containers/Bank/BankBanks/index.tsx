@@ -1,12 +1,11 @@
 import React, {FC, useMemo} from 'react';
-import {useSelector} from 'react-redux';
 
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {BANK_BANKS} from '@renderer/constants';
-import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
-import {getBankBanks} from '@renderer/selectors';
+import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {Node} from '@renderer/types';
 
 enum TableKeys {
   nodeIdentifier,
@@ -20,14 +19,13 @@ enum TableKeys {
 }
 
 const BankBanks: FC = () => {
-  const loading = useNetworkDataFetcher(BANK_BANKS);
-  const address = useAddress();
-  const bankBanksObject = useSelector(getBankBanks);
-  const bankBanks = bankBanksObject[address];
+  const {currentPage, loading, results: bankBanks, setPage, totalPages} = usePaginatedNetworkDataFetcher<Node>(
+    BANK_BANKS,
+  );
 
   const bankBanksTableData = useMemo<PageTableData[]>(
     () =>
-      bankBanks?.results.map((bank) => ({
+      bankBanks.map((bank) => ({
         key: bank.node_identifier,
         [TableKeys.accountNumber]: bank.account_number,
         [TableKeys.defaultTransactionFee]: bank.default_transaction_fee,
@@ -75,7 +73,7 @@ const BankBanks: FC = () => {
       ) : (
         <>
           <PageTable items={pageTableItems} />
-          <Pagination />
+          <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
         </>
       )}
     </div>
