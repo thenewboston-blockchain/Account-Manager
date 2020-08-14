@@ -17,7 +17,7 @@ interface ComponentProps {
 }
 
 const DeleteAccountModal: FC<ComponentProps> = ({accountNumber, toggleDeleteModal}) => {
-  const activeBankConfig = useSelector(getActiveBankConfig);
+  const activeBankConfig = useSelector(getActiveBankConfig)!;
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
   const managedAccounts = useSelector(getManagedAccounts);
@@ -25,12 +25,7 @@ const DeleteAccountModal: FC<ComponentProps> = ({accountNumber, toggleDeleteModa
   const handleSubmit = async (): Promise<void> => {
     const account = managedAccounts[accountNumber];
     dispatch(unsetManagedAccount(account));
-
-    if (activeBankConfig) {
-      history.push(`/banks/${formatPathFromNode(activeBankConfig)}/overview`);
-    } else {
-      toggleDeleteModal();
-    }
+    history.push(`/banks/${formatPathFromNode(activeBankConfig)}/overview`);
   };
 
   return (
