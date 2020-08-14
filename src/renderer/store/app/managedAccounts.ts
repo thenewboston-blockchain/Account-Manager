@@ -1,15 +1,20 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 import {MANAGED_ACCOUNTS} from '@renderer/constants';
 import localStore from '@renderer/store/localStore';
-import {ManagedAccount} from '@renderer/types';
-import {getStateName, setLocalAndStateArrayReducer} from '@renderer/utils/store';
+import {Dict, ManagedAccount} from '@renderer/types';
+import {getStateName} from '@renderer/utils/store';
 
 const managedAccounts = createSlice({
-  initialState: (localStore.get(getStateName(MANAGED_ACCOUNTS)) || []) as ManagedAccount | [],
+  initialState: (localStore.get(getStateName(MANAGED_ACCOUNTS)) || {}) as Dict<ManagedAccount> | {},
   name: MANAGED_ACCOUNTS,
   reducers: {
-    setManagedAccount: setLocalAndStateArrayReducer<ManagedAccount>(),
+    setManagedAccount: (state: any, action: PayloadAction<ManagedAccount>) => {
+      const {account_number: accountNumber} = action.payload;
+      const account = state[accountNumber];
+      state[accountNumber] = account ? {account, ...action.payload} : action.payload;
+      localStore.set(getStateName(MANAGED_ACCOUNTS), state);
+    },
   },
 });
 
