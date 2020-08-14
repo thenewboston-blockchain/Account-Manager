@@ -1,12 +1,16 @@
 import {NodeType, ProtocolType} from './constants';
 
+export interface AccountNumber {
+  account_number: string;
+}
+
 export interface AddressData {
   ip_address: string;
   port: number | null;
   protocol: ProtocolType;
 }
 
-export interface BankAccount extends Id, CreatedModified {
+export interface BankAccount extends AccountNumber, CreatedModified, Id {
   account_number: string;
   trust: string;
 }
@@ -16,7 +20,7 @@ export interface BankConfig extends Node {
   primary_validator: PrimaryValidatorConfig;
 }
 
-export interface BankConfirmationBlock extends Id, CreatedModified {
+export interface BankConfirmationBlock extends CreatedModified, Id {
   block_identifier: string;
   block: string;
   validator: string;
@@ -46,7 +50,7 @@ interface BlockRequest {
   signature: string;
 }
 
-export interface BlockResponse extends Id, CreatedModified {
+export interface BlockResponse extends CreatedModified, Id {
   balance_key: string;
   sender: string;
   signature: string;
@@ -71,15 +75,14 @@ export interface Id {
   id: string;
 }
 
-export interface InvalidBlock extends Id, CreatedModified {
+export interface InvalidBlock extends CreatedModified, Id {
   block_identifier: string;
   block: string;
   confirmation_validator: string;
   primary_validator: string;
 }
 
-export interface Node extends AddressData, NodeIdentifier {
-  account_number: string;
+export interface Node extends AccountNumber, AddressData, NodeIdentifier {
   default_transaction_fee: string;
   node_type: NodeType;
   trust: string;
@@ -113,14 +116,12 @@ export interface Tx {
   recipient: string;
 }
 
-interface UpdatedBalance {
-  account_number: string;
+interface UpdatedBalance extends AccountNumber {
   balance: string;
   balance_lock?: string;
 }
 
-export interface ValidatorAccount extends Id {
-  account_number: string;
+export interface ValidatorAccount extends AccountNumber, Id {
   balance: string;
   balance_lock: string;
 }
