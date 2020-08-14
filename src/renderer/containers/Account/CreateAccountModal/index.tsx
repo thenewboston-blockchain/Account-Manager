@@ -29,7 +29,20 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
   const managedAccounts = useSelector(getManagedAccounts);
-  const nicknames = useMemo(() => Object.values(managedAccounts).filter(({nickname}) => !!nickname), [managedAccounts]);
+  const managedAccountNicknames = useMemo(
+    () =>
+      Object.values(managedAccounts)
+        .filter(({nickname}) => !!nickname)
+        .map(({nickname}) => nickname),
+    [managedAccounts],
+  );
+  const managedAccountSigningKeys = useMemo(
+    () =>
+      Object.values(managedAccounts)
+        .filter(({signing_key}) => !!signing_key)
+        .map(({signing_key}) => signing_key),
+    [managedAccounts],
+  );
   const [createNewAccount, toggleCreateNewAccount] = useBooleanState(true);
 
   const handleSubmit = ({nickname, signingKey}: FormValues): void => {
@@ -55,17 +68,18 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
     const SIGNING_KEY_REQUIRED_ERROR = 'Signing key is required';
 
     return Yup.object().shape({
-      nickname: Yup.string().notOneOf(nicknames, 'That nickname is already taken'),
+      nickname: Yup.string().notOneOf(managedAccountNicknames, 'That nickname is already taken'),
       ...(createNewAccount
         ? {}
         : {
             signingKey: Yup.string()
               .min(64, SIGNING_KEY_LENGTH_ERROR)
               .max(64, SIGNING_KEY_LENGTH_ERROR)
+              .notOneOf(managedAccountSigningKeys, 'That account already exists')
               .required(SIGNING_KEY_REQUIRED_ERROR),
           }),
     });
-  }, [createNewAccount, nicknames]);
+  }, [createNewAccount, managedAccountNicknames, managedAccountSigningKeys]);
 
   return (
     <Modal
