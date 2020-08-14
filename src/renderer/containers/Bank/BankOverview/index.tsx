@@ -1,58 +1,54 @@
 import React, {FC} from 'react';
-import {useSelector} from 'react-redux';
 
 import DetailPanel from '@renderer/components/DetailPanel';
 import {Loader} from '@renderer/components/FormElements';
 import {BANK_CONFIGS} from '@renderer/constants';
-import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
-import {getBankConfigs} from '@renderer/selectors';
+import {useNetworkConfigFetcher} from '@renderer/hooks';
+import {BankConfig} from '@renderer/types';
 
 import './BankOverview.scss';
 
 const BankOverview: FC = () => {
-  const loading = useNetworkDataFetcher(BANK_CONFIGS);
-  const address = useAddress();
-  const bankConfigs = useSelector(getBankConfigs);
-  const bankConfig = bankConfigs[address];
+  const {data: bankConfig, loading} = useNetworkConfigFetcher<BankConfig>(BANK_CONFIGS);
 
   return (
     <div className="BankOverview">
-      {loading ? (
+      {loading || !bankConfig ? (
         <Loader />
       ) : (
         <DetailPanel
           items={[
             {
               key: 'Account Number',
-              value: bankConfig.data.account_number,
+              value: bankConfig.account_number,
             },
             {
               key: 'IP Address',
-              value: bankConfig.data.ip_address,
+              value: bankConfig.ip_address,
             },
             {
               key: 'Network ID',
-              value: bankConfig.data.node_identifier,
+              value: bankConfig.node_identifier,
             },
             {
               key: 'Port',
-              value: bankConfig.data.port,
+              value: bankConfig.port,
             },
             {
               key: 'Protocol',
-              value: bankConfig.data.protocol,
+              value: bankConfig.protocol,
             },
             {
               key: 'Version',
-              value: bankConfig.data.version,
+              value: bankConfig.version,
             },
             {
               key: 'Transaction Fee',
-              value: bankConfig.data.default_transaction_fee,
+              value: bankConfig.default_transaction_fee,
             },
             {
               key: 'Node Type',
-              value: bankConfig.data.node_type,
+              value: bankConfig.node_type,
             },
           ]}
           title="Bank Information"

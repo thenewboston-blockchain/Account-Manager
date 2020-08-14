@@ -1,12 +1,11 @@
 import React, {FC, useMemo} from 'react';
-import {useSelector} from 'react-redux';
 
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {BANK_BLOCKS} from '@renderer/constants';
-import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
-import {getBankBlocks} from '@renderer/selectors';
+import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {BlockResponse} from '@renderer/types';
 
 enum TableKeys {
   id,
@@ -18,14 +17,13 @@ enum TableKeys {
 }
 
 const BankBlocks: FC = () => {
-  const loading = useNetworkDataFetcher(BANK_BLOCKS);
-  const address = useAddress();
-  const bankBlocksObject = useSelector(getBankBlocks);
-  const bankBlocks = bankBlocksObject[address];
+  const {currentPage, loading, results: bankBlocks, setPage, totalPages} = usePaginatedNetworkDataFetcher<
+    BlockResponse
+  >(BANK_BLOCKS);
 
   const bankBlocksTableData = useMemo<PageTableData[]>(
     () =>
-      bankBlocks?.results.map((block) => ({
+      bankBlocks.map((block) => ({
         key: block.id,
         [TableKeys.balanceKey]: block.balance_key,
         [TableKeys.createdDate]: block.created_date,
@@ -67,7 +65,7 @@ const BankBlocks: FC = () => {
       ) : (
         <>
           <PageTable items={pageTableItems} />
-          <Pagination />
+          <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
         </>
       )}
     </div>

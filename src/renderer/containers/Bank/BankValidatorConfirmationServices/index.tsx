@@ -1,12 +1,11 @@
 import React, {FC, useMemo} from 'react';
-import {useSelector} from 'react-redux';
 
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants';
-import {useAddress, useNetworkDataFetcher} from '@renderer/hooks';
-import {getBankValidatorConfirmationServices} from '@renderer/selectors';
+import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {ValidatorConfirmationService} from '@renderer/types';
 
 enum TableKeys {
   createdDate,
@@ -18,14 +17,17 @@ enum TableKeys {
 }
 
 const BankValidatorConfirmationServices: FC = () => {
-  const loading = useNetworkDataFetcher(BANK_VALIDATOR_CONFIRMATION_SERVICES);
-  const address = useAddress();
-  const bankValidatorConfirmationServicesObject = useSelector(getBankValidatorConfirmationServices);
-  const bankValidatorConfirmationServices = bankValidatorConfirmationServicesObject[address];
+  const {
+    currentPage,
+    loading,
+    results: bankValidatorConfirmationServices,
+    setPage,
+    totalPages,
+  } = usePaginatedNetworkDataFetcher<ValidatorConfirmationService>(BANK_VALIDATOR_CONFIRMATION_SERVICES);
 
   const bankValidatorConfirmationServicesTableData = useMemo<PageTableData[]>(
     () =>
-      bankValidatorConfirmationServices?.results.map((validatorConfirmationService) => ({
+      bankValidatorConfirmationServices.map((validatorConfirmationService) => ({
         key: validatorConfirmationService.id,
         [TableKeys.createdDate]: validatorConfirmationService.created_date,
         [TableKeys.end]: validatorConfirmationService.end,
@@ -67,7 +69,7 @@ const BankValidatorConfirmationServices: FC = () => {
       ) : (
         <>
           <PageTable items={pageTableItems} />
-          <Pagination />
+          <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
         </>
       )}
     </div>

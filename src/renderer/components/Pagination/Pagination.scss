@@ -4,11 +4,23 @@
   justify-content: center;
   padding-bottom: 24px;
 
-  &__next-button,
-  &__page,
-  &__prev-button {
+  &__button {
     color: var(--color-secondary);
-    text-decoration: none;
+    cursor: pointer;
+
+    &--disabled {
+      color: var(--color-neutral-400);
+      cursor: default;
+    }
+
+    &--active {
+      color: var(--color-neutral-900);
+      cursor: default;
+    }
+
+    &:hover:not(&--disabled):not(&--active) {
+      text-decoration: underline;
+    }
   }
 
   &__next-button {
@@ -17,10 +29,6 @@
 
   &__page {
     padding: 0 3px;
-
-    &--active {
-      color: var(--color-neutral-900);
-    }
   }
 
   &__prev-button {
