@@ -1,4 +1,5 @@
 import React, {FC, ReactNode} from 'react';
+import {useSelector} from 'react-redux';
 import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
 import noop from 'lodash/noop';
 
@@ -10,8 +11,8 @@ import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-
 import {useBooleanState} from '@renderer/hooks';
+import {getManagedAccounts} from '@renderer/selectors';
 
 import SendPointsModal from './SendPointsModal';
 
@@ -22,6 +23,8 @@ const Account: FC = () => {
   const {path, url} = useRouteMatch();
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
+  const managedAccounts = useSelector(getManagedAccounts);
+  const account = managedAccounts[accountNumber];
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
@@ -64,7 +67,7 @@ const Account: FC = () => {
       <PageHeader
         dropdownMenuOptions={dropdownMenuOptions}
         rightContent={renderRightPageHeaderButtons()}
-        title={'Donations' || accountNumber}
+        title={account.nickname || accountNumber}
       />
       <PageTabs
         baseUrl={url}

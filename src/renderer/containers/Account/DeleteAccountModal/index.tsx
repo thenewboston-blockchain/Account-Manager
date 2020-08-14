@@ -4,9 +4,8 @@ import {useHistory} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
-import {useBooleanState} from '@renderer/hooks';
-import {unsetManagedAccount} from '@renderer/store/app';
 import {getActiveBankConfig, getManagedAccounts} from '@renderer/selectors';
+import {unsetManagedAccount} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
 
@@ -22,13 +21,11 @@ const DeleteAccountModal: FC<ComponentProps> = ({accountNumber, toggleDeleteModa
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
   const managedAccounts = useSelector(getManagedAccounts);
-  const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
 
   const handleSubmit = async (): Promise<void> => {
-    setSubmittingDeleteModalTrue();
     const account = managedAccounts[accountNumber];
     dispatch(unsetManagedAccount(account));
-    setSubmittingDeleteModalFalse();
+
     if (activeBankConfig) {
       history.push(`/banks/${formatPathFromNode(activeBankConfig)}/overview`);
     } else {
@@ -49,7 +46,6 @@ const DeleteAccountModal: FC<ComponentProps> = ({accountNumber, toggleDeleteModa
       }
       onSubmit={handleSubmit}
       submitButton="Yes"
-      submitting={submittingDeleteModal}
     >
       <>
         <span className="DeleteAccountModal__warning-span">Warning: </span> If you delete your account, you will lose

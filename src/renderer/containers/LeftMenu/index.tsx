@@ -60,7 +60,7 @@ const LeftMenu: FC = () => {
       .map(({account_number, nickname}: ManagedAccount) => ({
         baseUrl: `/account/${account_number}`,
         key: account_number,
-        label: `${nickname ? `${nickname} - ` : ''}${account_number}`,
+        label: nickname || account_number,
         to: `/account/${account_number}/overview`,
       }))
       .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
@@ -99,7 +99,7 @@ const LeftMenu: FC = () => {
       .map(({accountNumber, nickname}) => ({
         baseUrl: `/account/${accountNumber}`,
         key: accountNumber,
-        label: `${nickname ? `${nickname} - ` : ''}${accountNumber}`,
+        label: nickname || accountNumber,
         to: `/account/${accountNumber}/overview`,
       }))
       .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
