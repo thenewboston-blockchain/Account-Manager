@@ -5,9 +5,12 @@ import {
   DictWithDataAndError,
   DictWithError,
   DictWithPaginatedResultsAndError,
+  ManagedAccount,
+  ManagedFriend,
   NodeIdentifier,
   PaginatedResults,
 } from '@renderer/types';
+import {MANAGED_ACCOUNTS} from '@renderer/constants';
 
 interface Address {
   address: string;
@@ -24,6 +27,15 @@ export type SetResults<T> = (payload: PaginatedResults<T> & Address) => PayloadA
 export type SetError = (payload: Address & Error) => PayloadAction<Address & Error>;
 
 export const getStateName = (actionType: string) => actionType.split('/')[1];
+
+export function setAccountLocalAndStateReducer() {
+  return (state: any, {payload}: PayloadAction<ManagedAccount | ManagedFriend>) => {
+    const {account_number: accountNumber} = payload;
+    const account = state[accountNumber];
+    state[accountNumber] = account ? {account, ...payload} : payload;
+    localStore.set(getStateName(MANAGED_ACCOUNTS), state);
+  };
+}
 
 export function setLocalAndStateReducer<T>() {
   return (state: any, action: PayloadAction<T>) => {
@@ -118,6 +130,13 @@ export function setPaginatedResultErrorReducer() {
 export function unsetDataReducer() {
   return (state: DictWithError, {payload: {address}}: PayloadActionWithAddress) => {
     delete state[address];
+  };
+}
+
+export function unsetAccountLocalAndStateReducer() {
+  return (state: any, {payload: {account_number: accountNumber}}: PayloadAction<ManagedAccount | ManagedFriend>) => {
+    delete state[accountNumber];
+    localStore.set(getStateName(MANAGED_ACCOUNTS), state);
   };
 }
 

@@ -12,6 +12,11 @@ export interface ManagedAccount {
   signing_key: string;
 }
 
+export interface ManagedFriend {
+  account_number: string;
+  nickname: string;
+}
+
 export interface OldBank {
   account_number: string;
   confirmation_expiration?: string | null;
