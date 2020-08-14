@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import noop from 'lodash/noop';
 
 import {getCustomClassNames} from '@renderer/utils/components';
-import './Radio.scss';
 
 export interface BaseRadioProps {
   checked: boolean;
