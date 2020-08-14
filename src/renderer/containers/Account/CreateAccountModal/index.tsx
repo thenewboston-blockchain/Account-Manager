@@ -53,7 +53,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
   return (
     <Modal
       close={close}
-      header="Create Account"
+      header="Create/Add Account"
       ignoreDirty
       initialValues={initialValues}
       onSubmit={handleSubmit}
