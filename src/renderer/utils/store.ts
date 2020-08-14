@@ -99,7 +99,7 @@ export function setPaginatedResultErrorReducer() {
   return (state: DictWithPaginatedResultsAndError<any>, {payload: {address, error}}: PayloadActionErrorWithAddress) => {
     if (!state[address]) {
       state[address] = {
-        count: null,
+        count: 0,
         error,
         next: null,
         previous: null,
@@ -107,8 +107,8 @@ export function setPaginatedResultErrorReducer() {
       };
       return;
     }
+    state[address].count = 0;
     state[address].error = error;
-    state[address].count = null;
     state[address].next = null;
     state[address].previous = null;
     state[address].results = [];
