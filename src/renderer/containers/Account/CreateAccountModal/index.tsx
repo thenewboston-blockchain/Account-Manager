@@ -24,7 +24,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
   const managedAccounts = useSelector(getManagedAccounts);
-  const nicknames = Object.values(managedAccounts).filter(({nickname}) => !!nickname);
+  const nicknames = useMemo(() => Object.values(managedAccounts).filter(({nickname}) => !!nickname), [managedAccounts]);
 
   const handleSubmit = ({nickname}: FormValues): void => {
     const {accountNumberHex, signingKeyHex} = generateAccount();
