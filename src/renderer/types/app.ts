@@ -12,13 +12,6 @@ export interface ManagedAccount {
   signing_key: string;
 }
 
-export interface OldAccount {
-  account_number: string;
-  balance: string;
-  balance_lock: string;
-  id: string;
-}
-
 export interface OldBank {
   account_number: string;
   confirmation_expiration?: string | null;
