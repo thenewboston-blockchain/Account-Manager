@@ -1,20 +1,23 @@
 import React, {FC} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import {useBooleanState} from '@renderer/hooks';
 import {unsetManagedAccount} from '@renderer/store/app';
+import {getManagedAccounts} from '@renderer/selectors';
 import {AppDispatch} from '@renderer/types';
 
 import './DeleteAccountModal.scss';
 
 interface ComponentProps {
+  accountNumber: string;
   toggleDeleteModal(): void;
 }
 
-const DeleteAccountModal: FC<ComponentProps> = ({toggleDeleteModal}) => {
+const DeleteAccountModal: FC<ComponentProps> = ({accountNumber, toggleDeleteModal}) => {
   const dispatch = useDispatch<AppDispatch>();
+  const managedAccount = useSelector(getManagedAccounts);
   const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
 
   const handleSubmit = async (): Promise<void> => {

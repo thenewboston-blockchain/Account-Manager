@@ -85,7 +85,7 @@ const Account: FC = () => {
   return (
     <div className="Account">
       <PageLayout content={renderTabContent()} top={renderTop()} />
-      {deleteModalIsOpen && <DeleteAccountModal toggleDeleteModal={toggleDeleteModal} />}
+      {deleteModalIsOpen && <DeleteAccountModal accountNumber={accountNumber} toggleDeleteModal={toggleDeleteModal} />}
       {sendPointsModalIsOpen && <SendPointsModal close={toggleSendPointsModal} />}
     </div>
   );
