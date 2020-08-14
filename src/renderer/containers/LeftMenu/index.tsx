@@ -3,15 +3,19 @@ import {useDispatch, useSelector} from 'react-redux';
 import noop from 'lodash/noop';
 
 import Icon, {IconType} from '@renderer/components/Icon';
-import AddAccountModal from '@renderer/containers/Account/AddAccountModal';
+import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import {useBooleanState} from '@renderer/hooks';
-import {getActiveBank, getActiveBankConfig, getActivePrimaryValidatorConfig} from '@renderer/selectors';
+import {
+  getActiveBank,
+  getActiveBankConfig,
+  getActivePrimaryValidatorConfig,
+  getManagedAccounts,
+} from '@renderer/selectors';
 import {unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
-import {getAccount} from '@renderer/store/old/accounts';
-import {AppDispatch, RootState} from '@renderer/types';
+import {AppDispatch, ManagedAccount, RootState} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
 
 import LeftSubmenu from './LeftSubmenu';
@@ -20,12 +24,12 @@ import './LeftMenu.scss';
 
 const LeftMenuSelector = (state: RootState) => {
   return {
-    accounts: state.old.accounts,
     activeBank: getActiveBankConfig(state),
     activeBankNickname: getActiveBank(state)?.nickname,
     activePrimaryValidator: getActivePrimaryValidatorConfig(state),
     banks: state.old.banks,
     friends: state.old.friends,
+    managedAccounts: getManagedAccounts(state),
     points: state.old.points,
     validators: state.old.validators,
   };
@@ -34,29 +38,25 @@ const LeftMenuSelector = (state: RootState) => {
 const LeftMenu: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
-    accounts,
     activeBank,
     activeBankNickname,
     activePrimaryValidator,
     banks,
     friends,
+    managedAccounts,
     points,
     validators,
   } = useSelector(LeftMenuSelector);
-  const [addAccountModalIsOpen, toggleAddAccountModal] = useBooleanState(false);
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
-
-  useEffect(() => {
-    dispatch(getAccount());
-  }, [dispatch]);
+  const [createAccountModalIsOpen, toggleCreateAccountModal] = useBooleanState(false);
 
   const getAccountItems = (): ReactNode[] => {
-    return accounts
-      .map(({accountNumber, nickname}) => ({
-        baseUrl: `/account/${accountNumber}`,
-        key: accountNumber,
-        label: `${nickname ? `${nickname} - ` : ''}${accountNumber}`,
-        to: `/account/${accountNumber}/overview`,
+    return Object.values(managedAccounts)
+      .map(({account_number, nickname}: ManagedAccount) => ({
+        baseUrl: `/account/${account_number}`,
+        key: account_number,
+        label: nickname || account_number,
+        to: `/account/${account_number}/overview`,
       }))
       .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
   };
@@ -94,7 +94,7 @@ const LeftMenu: FC = () => {
       .map(({accountNumber, nickname}) => ({
         baseUrl: `/account/${accountNumber}`,
         key: accountNumber,
-        label: `${nickname ? `${nickname} - ` : ''}${accountNumber}`,
+        label: nickname || accountNumber,
         to: `/account/${accountNumber}/overview`,
       }))
       .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
@@ -154,12 +154,12 @@ const LeftMenu: FC = () => {
         rightText="Change"
         title="Active Bank"
       />
-      <LeftSubmenu menuItems={getAccountItems()} rightOnClick={toggleAddAccountModal} title="Accounts" />
+      <LeftSubmenu menuItems={getAccountItems()} rightOnClick={toggleCreateAccountModal} title="Accounts" />
       <LeftSubmenu menuItems={getFriendMenuItems()} rightOnClick={toggleAddFriendModal} title="Friends" />
       <LeftSubmenu menuItems={getBankMenuItems()} rightOnClick={noop} title="Managed Banks" />
       <LeftSubmenu menuItems={getValidatorMenuItems()} rightOnClick={noop} title="Managed Validators" />
-      {addAccountModalIsOpen && <AddAccountModal close={toggleAddAccountModal} />}
       {addFriendModalIsOpen && <AddFriendModal close={toggleAddFriendModal} />}
+      {createAccountModalIsOpen && <CreateAccountModal close={toggleCreateAccountModal} />}
     </div>
   );
 };

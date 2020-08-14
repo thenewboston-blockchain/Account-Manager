@@ -1,16 +1,25 @@
 .SendPointsModal {
   width: 384px;
 
-  &__select {
-    margin-bottom: 3px;
+  &__account-balance {
+    color: var(--color-neutral-500);
   }
 
-  &__acc-balance {
-    color: var(--color-neutral-500);
+  &__default-submit {
+    display: flex;
+    height: 35.5px;
   }
 
   &__points-input {
     margin-left: -7px;
+  }
+
+  &__select {
+    margin-bottom: 3px;
+  }
+
+  &__submit-icon {
+    margin-left: 6px;
   }
 
   &__table {
@@ -33,14 +42,5 @@
     td {
       border-top-width: 3px;
     }
-  }
-
-  &__default-submit {
-    display: flex;
-    height: 35.5px;
-  }
-
-  &__submit-icon {
-    margin-left: 6px;
   }
 }

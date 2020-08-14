@@ -1,24 +1,31 @@
 import React, {FC} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
-import {useBooleanState} from '@renderer/hooks';
+import {getActiveBankConfig, getManagedAccounts} from '@renderer/selectors';
+import {unsetManagedAccount} from '@renderer/store/app';
+import {AppDispatch} from '@renderer/types';
+import {formatPathFromNode} from '@renderer/utils/address';
 
 import './DeleteAccountModal.scss';
 
 interface ComponentProps {
+  accountNumber: string;
   toggleDeleteModal(): void;
 }
 
-const DeleteAccountModal: FC<ComponentProps> = ({toggleDeleteModal}) => {
-  const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
+const DeleteAccountModal: FC<ComponentProps> = ({accountNumber, toggleDeleteModal}) => {
+  const activeBankConfig = useSelector(getActiveBankConfig)!;
+  const dispatch = useDispatch<AppDispatch>();
+  const history = useHistory();
+  const managedAccounts = useSelector(getManagedAccounts);
 
   const handleSubmit = async (): Promise<void> => {
-    setSubmittingDeleteModalTrue();
-    setTimeout(() => {
-      setSubmittingDeleteModalFalse();
-      toggleDeleteModal();
-    }, 1000);
+    const account = managedAccounts[accountNumber];
+    dispatch(unsetManagedAccount(account));
+    history.push(`/banks/${formatPathFromNode(activeBankConfig)}/overview`);
   };
 
   return (
@@ -34,7 +41,6 @@ const DeleteAccountModal: FC<ComponentProps> = ({toggleDeleteModal}) => {
       }
       onSubmit={handleSubmit}
       submitButton="Yes"
-      submitting={submittingDeleteModal}
     >
       <>
         <span className="DeleteAccountModal__warning-span">Warning: </span> If you delete your account, you will lose

@@ -108,8 +108,8 @@ export interface PrimaryValidatorConfig extends BaseValidator {
   node_type: NodeType.primaryValidator;
 }
 
-interface Tx {
-  amount: string;
+export interface Tx {
+  amount: number | string;
   recipient: string;
 }
 
