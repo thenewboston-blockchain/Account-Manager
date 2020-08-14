@@ -6,7 +6,7 @@ import {Dict, ManagedAccount} from '@renderer/types';
 import {getStateName, setAccountLocalAndStateReducer, unsetAccountLocalAndStateReducer} from '@renderer/utils/store';
 
 const managedAccounts = createSlice({
-  initialState: (localStore.get(getStateName(MANAGED_ACCOUNTS)) || {}) as Dict<ManagedAccount> | {},
+  initialState: (localStore.get(getStateName(MANAGED_ACCOUNTS)) || {}) as Dict<ManagedAccount>,
   name: MANAGED_ACCOUNTS,
   reducers: {
     setManagedAccount: setAccountLocalAndStateReducer(),

@@ -8,10 +8,15 @@ import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import {useBooleanState} from '@renderer/hooks';
-import {getActiveBank, getActiveBankConfig, getActivePrimaryValidatorConfig} from '@renderer/selectors';
+import {
+  getActiveBank,
+  getActiveBankConfig,
+  getActivePrimaryValidatorConfig,
+  getManagedAccounts,
+} from '@renderer/selectors';
 import {unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
 import {getAccount} from '@renderer/store/old/accounts';
-import {AppDispatch, RootState} from '@renderer/types';
+import {AppDispatch, ManagedAccount, RootState} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
 
 import LeftSubmenu from './LeftSubmenu';
@@ -20,12 +25,12 @@ import './LeftMenu.scss';
 
 const LeftMenuSelector = (state: RootState) => {
   return {
-    accounts: state.old.accounts,
     activeBank: getActiveBankConfig(state),
     activeBankNickname: getActiveBank(state)?.nickname,
     activePrimaryValidator: getActivePrimaryValidatorConfig(state),
     banks: state.old.banks,
     friends: state.old.friends,
+    managedAccounts: getManagedAccounts(state),
     points: state.old.points,
     validators: state.old.validators,
   };
@@ -34,12 +39,12 @@ const LeftMenuSelector = (state: RootState) => {
 const LeftMenu: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
-    accounts,
     activeBank,
     activeBankNickname,
     activePrimaryValidator,
     banks,
     friends,
+    managedAccounts,
     points,
     validators,
   } = useSelector(LeftMenuSelector);
@@ -51,12 +56,12 @@ const LeftMenu: FC = () => {
   }, [dispatch]);
 
   const getAccountItems = (): ReactNode[] => {
-    return accounts
-      .map(({accountNumber, nickname}) => ({
-        baseUrl: `/account/${accountNumber}`,
-        key: accountNumber,
-        label: `${nickname ? `${nickname} - ` : ''}${accountNumber}`,
-        to: `/account/${accountNumber}/overview`,
+    return Object.values(managedAccounts)
+      .map(({account_number, nickname}: ManagedAccount) => ({
+        baseUrl: `/account/${account_number}`,
+        key: account_number,
+        label: `${nickname ? `${nickname} - ` : ''}${account_number}`,
+        to: `/account/${account_number}/overview`,
       }))
       .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
   };

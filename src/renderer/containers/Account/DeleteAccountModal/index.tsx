@@ -1,12 +1,14 @@
 import React, {FC} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import {useBooleanState} from '@renderer/hooks';
 import {unsetManagedAccount} from '@renderer/store/app';
-import {getManagedAccounts} from '@renderer/selectors';
+import {getActiveBankConfig, getManagedAccounts} from '@renderer/selectors';
 import {AppDispatch} from '@renderer/types';
+import {formatPathFromNode} from '@renderer/utils/address';
 
 import './DeleteAccountModal.scss';
 
@@ -16,22 +18,22 @@ interface ComponentProps {
 }
 
 const DeleteAccountModal: FC<ComponentProps> = ({accountNumber, toggleDeleteModal}) => {
+  const activeBankConfig = useSelector(getActiveBankConfig);
   const dispatch = useDispatch<AppDispatch>();
-  const managedAccount = useSelector(getManagedAccounts);
+  const history = useHistory();
+  const managedAccounts = useSelector(getManagedAccounts);
   const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
 
   const handleSubmit = async (): Promise<void> => {
     setSubmittingDeleteModalTrue();
-    dispatch(
-      unsetManagedAccount({
-        account_number: 'd5bf1ce33cbc075ad2f7bd39f174edb81bc82620ec8204e2f731661c81845a6a',
-        balance: '',
-        nickname: 'tunafish',
-        signing_key: 'c198c0361032578282de2fa850088439153cab8d869e7aab74d5a61c3c4905d0',
-      }),
-    );
+    const account = managedAccounts[accountNumber];
+    dispatch(unsetManagedAccount(account));
     setSubmittingDeleteModalFalse();
-    toggleDeleteModal();
+    if (activeBankConfig) {
+      history.push(`/banks/${formatPathFromNode(activeBankConfig)}/overview`);
+    } else {
+      toggleDeleteModal();
+    }
   };
 
   return (
