@@ -15,7 +15,6 @@ import {
   getManagedAccounts,
 } from '@renderer/selectors';
 import {unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
-import {getAccount} from '@renderer/store/old/accounts';
 import {AppDispatch, ManagedAccount, RootState} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
 
@@ -50,10 +49,6 @@ const LeftMenu: FC = () => {
   } = useSelector(LeftMenuSelector);
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
   const [createAccountModalIsOpen, toggleCreateAccountModal] = useBooleanState(false);
-
-  useEffect(() => {
-    dispatch(getAccount());
-  }, [dispatch]);
 
   const getAccountItems = (): ReactNode[] => {
     return Object.values(managedAccounts)

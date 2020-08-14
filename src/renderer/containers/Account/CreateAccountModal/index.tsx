@@ -1,12 +1,13 @@
 import React, {FC, useMemo} from 'react';
-import {shallowEqual, useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
+import {getManagedAccounts} from '@renderer/selectors';
 import {setManagedAccount} from '@renderer/store/app';
-import {AppDispatch, RootState} from '@renderer/types';
+import {AppDispatch} from '@renderer/types';
 import {generateAccount} from '@renderer/utils/accounts';
 
 const initialValues = {
@@ -22,11 +23,8 @@ interface ComponentProps {
 const CreateAccountModal: FC<ComponentProps> = ({close}) => {
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
-
-  const nicknames = useSelector(
-    (state: RootState) => state.old.accounts.map((account) => account.nickname).filter((nickname) => !!nickname),
-    shallowEqual,
-  );
+  const managedAccounts = useSelector(getManagedAccounts);
+  const nicknames = Object.values(managedAccounts).filter(({nickname}) => !!nickname);
 
   const handleSubmit = ({nickname}: FormValues): void => {
     const {accountNumberHex, signingKeyHex} = generateAccount();
