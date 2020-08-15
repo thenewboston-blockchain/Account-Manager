@@ -1,6 +1,6 @@
 import {AppNodeAddressData, ManagedAccount, ManagedFriend, OldBank, OldValidator} from './app';
 import {NodeType, ProtocolType} from './constants';
-import {BaseFormComponentProps, BaseFormInlineComponentProps, GenericFormValues, SelectOption} from './forms';
+import {BaseFormComponentProps, BaseFormInlineComponentProps, GenericFormValues, InputOption} from './forms';
 import {GenericFunction, GenericVoidFunction} from './generic';
 import {
   AccountNumber,
@@ -68,7 +68,7 @@ export {
   PrimaryValidatorConfig,
   ProtocolType,
   RootState,
-  SelectOption,
+  InputOption,
   Tx,
   ValidatorAccount,
   ValidatorBank,

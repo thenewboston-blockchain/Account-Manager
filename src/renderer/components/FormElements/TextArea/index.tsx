@@ -17,7 +17,7 @@ export interface BaseInputProps {
 
 const InputTextArea: FC<BaseInputProps> = ({
   className,
-  disabled,
+  disabled = false,
   error = false,
   name,
   onBlur,

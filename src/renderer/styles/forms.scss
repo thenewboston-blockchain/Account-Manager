@@ -34,6 +34,23 @@ textarea {
 
   .FormField {
     width: 100%;
+
+    &__option {
+      align-items: center;
+      display: flex;
+    }
+
+    &__option-input {
+      margin-right: 8px;
+    }
+
+    &__option-label {
+      cursor: pointer;
+
+      &--disabled {
+        cursor: default;
+      }
+    }
   }
 
   &__error-message {
@@ -42,20 +59,5 @@ textarea {
     font-size: var(--font-size-small);
     margin: 3px 0 6px;
     height: 14px;
-  }
-}
-
-.FormFieldInlineComponent {
-  align-items: center;
-  display: flex;
-  margin-bottom: 10px;
-
-  &__label {
-    display: inline-block;
-  }
-
-  .FormFieldInline {
-    display: inline-block;
-    margin-right: 8px;
   }
 }

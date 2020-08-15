@@ -3,20 +3,20 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import * as Yup from 'yup';
 
-import {FormInput, FormRadio, FormTextArea} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import {useBooleanState} from '@renderer/hooks';
 import {getManagedAccounts} from '@renderer/selectors';
 import {setManagedAccount} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
 import {generateAccount} from '@renderer/utils/accounts';
 import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 
+import CreateAccountModalFields from './CreateAccountModalFields';
 import './CreateAccountModal.scss';
 
 const initialValues = {
   nickname: '',
   signingKey: '',
+  type: 'create',
 };
 
 type FormValues = typeof initialValues;
@@ -43,12 +43,10 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
         .map(({signing_key}) => signing_key),
     [managedAccounts],
   );
-  const [createNewAccount, toggleCreateNewAccount] = useBooleanState(true);
 
-  const handleSubmit = ({nickname, signingKey}: FormValues): void => {
-    const {accountNumberHex, signingKeyHex} = createNewAccount
-      ? generateAccount()
-      : getKeyPairFromSigningKeyHex(signingKey);
+  const handleSubmit = ({nickname, signingKey, type}: FormValues): void => {
+    const {accountNumberHex, signingKeyHex} =
+      type === 'create' ? generateAccount() : getKeyPairFromSigningKeyHex(signingKey);
 
     dispatch(
       setManagedAccount({
@@ -69,17 +67,17 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
 
     return Yup.object().shape({
       nickname: Yup.string().notOneOf(managedAccountNicknames, 'That nickname is already taken'),
-      ...(createNewAccount
-        ? {}
-        : {
-            signingKey: Yup.string()
-              .min(64, SIGNING_KEY_LENGTH_ERROR)
-              .max(64, SIGNING_KEY_LENGTH_ERROR)
-              .notOneOf(managedAccountSigningKeys, 'That account already exists')
-              .required(SIGNING_KEY_REQUIRED_ERROR),
-          }),
+      signingKey: Yup.string().when('type', {
+        is: 'create',
+        otherwise: Yup.string()
+          .length(64, SIGNING_KEY_LENGTH_ERROR)
+          .notOneOf(managedAccountSigningKeys, 'That account already exists')
+          .required(SIGNING_KEY_REQUIRED_ERROR),
+        then: Yup.string(),
+      }),
+      type: Yup.string(),
     });
-  }, [createNewAccount, managedAccountNicknames, managedAccountSigningKeys]);
+  }, [managedAccountNicknames, managedAccountSigningKeys]);
 
   return (
     <Modal
@@ -92,22 +90,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
       submitButton="Create"
       validationSchema={validationSchema}
     >
-      <div className="CreateAccountModal__radio-container">
-        <FormRadio
-          checked={createNewAccount}
-          label="Create New Account"
-          name="create"
-          onChange={toggleCreateNewAccount}
-        />
-        <FormRadio
-          checked={!createNewAccount}
-          label="Add Existing Account"
-          name="add"
-          onChange={toggleCreateNewAccount}
-        />
-      </div>
-      <FormInput label="Nickname" name="nickname" />
-      {!createNewAccount && <FormTextArea label="Signing Key" name="signingKey" required />}
+      <CreateAccountModalFields />
     </Modal>
   );
 };

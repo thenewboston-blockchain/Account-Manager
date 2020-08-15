@@ -13,7 +13,8 @@ type ComponentProps = BaseFormComponentProps<BaseInputProps>;
 
 const FormInput: FC<ComponentProps> = ({hideError = false, label, required, ...baseInputProps}) => {
   const {className, name} = baseInputProps;
-  const {error} = useFormContext(name);
+  const {errors, touched} = useFormContext();
+  const error = !!errors[name] && !!touched[name];
 
   return (
     <div className={clsx('FormInput FormFieldComponent', className)}>

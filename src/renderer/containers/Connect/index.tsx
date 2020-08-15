@@ -7,7 +7,7 @@ import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/Form
 import Logo from '@renderer/components/Logo';
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {getActiveBankConfig} from '@renderer/selectors';
-import {AppDispatch, ProtocolType, SelectOption} from '@renderer/types';
+import {AppDispatch, ProtocolType, InputOption} from '@renderer/types';
 
 import './Connect.scss';
 
@@ -20,7 +20,7 @@ const initialValues = {
 
 type FormValues = typeof initialValues;
 
-const protocolOptions: SelectOption[] = [{value: 'http'}, {value: 'https'}];
+const protocolOptions: InputOption[] = [{value: 'http'}, {value: 'https'}];
 
 const genericIpAddressRegex = /([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(\d{1,3}\.){3}\d{1,3}/;
 

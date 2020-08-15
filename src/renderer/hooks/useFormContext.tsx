@@ -1,20 +1,25 @@
-import {useFormikContext} from 'formik';
+import {FormikErrors, FormikTouched, useFormikContext} from 'formik';
 
-interface UseFormContextOutput {
-  error: boolean;
-  setFieldTouched(field: string, isTouched?: boolean, shouldValidate?: boolean): void;
-  setFieldValue(field: string, value: any, shouldValidate?: boolean): void;
-  values: any;
+interface Values {
+  [field: string]: any;
 }
 
-const useFormContext = (name: string): UseFormContextOutput => {
-  const {errors, setFieldTouched, setFieldValue, touched, values} = useFormikContext<{[name: string]: string}>();
-  const error = !!errors[name] && !!touched[name];
+interface UseFormContextOutput {
+  errors: FormikErrors<Values>;
+  setFieldTouched(field: string, isTouched?: boolean, shouldValidate?: boolean): void;
+  setFieldValue(field: string, value: any, shouldValidate?: boolean): void;
+  touched: FormikTouched<Values>;
+  values: Values;
+}
+
+const useFormContext = (): UseFormContextOutput => {
+  const {errors, setFieldTouched, setFieldValue, touched, values} = useFormikContext<Values>();
 
   return {
-    error,
+    errors,
     setFieldTouched,
     setFieldValue,
+    touched,
     values,
   };
 };

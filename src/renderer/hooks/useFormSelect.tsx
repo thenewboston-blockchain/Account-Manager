@@ -1,16 +1,17 @@
 import {useMemo} from 'react';
 import useFormContext from '@renderer/hooks/useFormContext';
-import {SelectOption} from '@renderer/types';
+import {InputOption} from '@renderer/types';
 
 interface UseFormSelectOutput {
   error: boolean;
   handleBlur(): void;
-  handleChange(option: SelectOption): void;
-  selectedOption: SelectOption | null;
+  handleChange(option: InputOption): void;
+  selectedOption: InputOption | null;
 }
 
-const useFormSelect = (name: string, options: SelectOption[]): UseFormSelectOutput => {
-  const {error, setFieldTouched, setFieldValue, values} = useFormContext(name);
+const useFormSelect = (name: string, options: InputOption[]): UseFormSelectOutput => {
+  const {errors, setFieldTouched, setFieldValue, touched, values} = useFormContext();
+  const error = !!errors[name] && !!touched[name];
 
   const selectedOption = useMemo(() => {
     const value = values[name];
@@ -21,7 +22,7 @@ const useFormSelect = (name: string, options: SelectOption[]): UseFormSelectOutp
     setFieldTouched(name, true);
   };
 
-  const handleChange = (option: SelectOption): void => {
+  const handleChange = (option: InputOption): void => {
     setFieldValue(name, option.value);
   };
 
