@@ -34,8 +34,8 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
   const managedAccounts = useSelector(getManagedAccounts);
 
-  const createBlock = async (txs: Tx[]): Promise<void> => {
-    const signingKeyHex = '4e5804d995d5ab84afb85154d7645c73c8fedb80723a262787c2428e59051b58';
+  const createBlock = async (recipientAccountNumber: string, senderAccountNumber: string, txs: Tx[]): Promise<void> => {
+    const {signing_key: signingKeyHex} = managedAccounts[senderAccountNumber];
     const {accountNumberHex, signingKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
     const balanceLock = 'c88d1b0d55f430b66ad603993b76d7e9bd147b7209e13b2bb548fb680905dc8d';
     const block = generateBlock(accountNumberHex, balanceLock, signingKey, txs);
@@ -48,7 +48,6 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
   };
 
   const handleSubmit = async ({points, recipientAccountNumber, senderAccountNumber}: FormValues): Promise<void> => {
-    console.log(senderAccountNumber, points, recipientAccountNumber);
     const txs: Tx[] = [
       {
         amount: points,
@@ -63,7 +62,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
         recipient: activePrimaryValidatorConfig.account_number,
       },
     ];
-    await createBlock(txs);
+    await createBlock(recipientAccountNumber, senderAccountNumber, txs);
   };
 
   const renderFooter = (): ReactNode => {
