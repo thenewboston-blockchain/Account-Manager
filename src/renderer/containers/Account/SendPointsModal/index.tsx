@@ -1,4 +1,7 @@
+/* eslint-disable func-names */
+
 import React, {FC, ReactNode} from 'react';
+import {useSelector} from 'react-redux';
 import * as Yup from 'yup';
 import axios from 'axios';
 
@@ -6,7 +9,8 @@ import {FormButton, FormInput, FormSelectDetailed} from '@renderer/components/Fo
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
-import {InputOption, Tx} from '@renderer/types';
+import {getManagedAccounts} from '@renderer/selectors';
+import {Tx} from '@renderer/types';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 
 import './SendPointsModal.scss';
@@ -18,27 +22,20 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  fromAccount: Yup.string().required('This field is required'),
+  fromAccount: Yup.string()
+    .required('This field is required')
+    .test('accounts-match', 'Sender and recipient can not match', function (value) {
+      return value !== this.parent.toAccount;
+    }),
   points: Yup.number().moreThan(0, 'Must be greater than 0').required('This field is required'),
-  toAccount: Yup.string().required('This field is required'),
+  toAccount: Yup.string()
+    .required('This field is required')
+    .test('accounts-match', 'Sender and recipient can not match', function (value) {
+      return value !== this.parent.fromAccount;
+    }),
 });
 
 type FormValues = typeof initialValues;
-
-const accountFromSelectFieldOptions: InputOption[] = [
-  '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
-  '2cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdq',
-  '4cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdw',
-  '3cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acde',
-  '5cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdr',
-  '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
-].map((acc) => ({label: 'Amy', value: acc}));
-
-const accountToSelectFieldOptions: InputOption[] = [
-  '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
-  '2cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdq',
-  '4cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdw',
-].map((acc) => ({label: 'Amy', value: acc}));
 
 interface ComponentProps {
   close(): void;
@@ -60,6 +57,8 @@ const txs: Tx[] = [
 ];
 
 const SendPointsModal: FC<ComponentProps> = ({close}) => {
+  const managedAccounts = useSelector(getManagedAccounts);
+
   const createBlock = async (): Promise<void> => {
     const signingKeyHex = '4e5804d995d5ab84afb85154d7645c73c8fedb80723a262787c2428e59051b58';
     const {accountNumberHex, signingKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
@@ -71,6 +70,20 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
       },
     });
     console.error(response);
+  };
+
+  const getFromOptions = () => {
+    return Object.values(managedAccounts).map(({account_number, nickname}) => ({
+      label: nickname,
+      value: account_number,
+    }));
+  };
+
+  const getToOptions = () => {
+    return Object.values(managedAccounts).map(({account_number, nickname}) => ({
+      label: nickname,
+      value: account_number,
+    }));
   };
 
   const handleSubmit = ({points}: FormValues): void => {
@@ -100,61 +113,59 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
-      <>
-        <FormSelectDetailed
-          className="SendPointsModal__select"
-          required
-          label="From: Account"
-          options={accountFromSelectFieldOptions}
-          name="fromAccount"
-        />
-        <FormSelectDetailed
-          className="SendPointsModal__select"
-          required
-          label="To: Friend"
-          options={accountToSelectFieldOptions}
-          name="toAccount"
-        />
-        <table className="SendPointsModal__table">
-          <tbody>
-            <tr>
-              <td>Account Balance</td>
-              <td>
-                <span className="SendPointsModal__account-balance">0.00</span>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Points
-                <RequiredAsterisk />
-              </td>
-              <td>
-                <FormInput
-                  className="SendPointsModal__points-input"
-                  hideError
-                  name="points"
-                  placeholder="0.00"
-                  type="number"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>Bank Registration Fee</td>
-              <td>0.01</td>
-            </tr>
-            <tr>
-              <td>Validator Tx Fee</td>
-              <td>0.02</td>
-            </tr>
-            <tr className="SendPointsModal__total-tr">
-              <td>TOTAL Tx</td>
-              <td>
-                <b>0.00</b>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </>
+      <FormSelectDetailed
+        className="SendPointsModal__select"
+        required
+        label="From"
+        options={getFromOptions()}
+        name="fromAccount"
+      />
+      <FormSelectDetailed
+        className="SendPointsModal__select"
+        required
+        label="To"
+        options={getToOptions()}
+        name="toAccount"
+      />
+      <table className="SendPointsModal__table">
+        <tbody>
+          <tr>
+            <td>Account Balance</td>
+            <td>
+              <span className="SendPointsModal__account-balance">0.00</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Points
+              <RequiredAsterisk />
+            </td>
+            <td>
+              <FormInput
+                className="SendPointsModal__points-input"
+                hideError
+                name="points"
+                placeholder="0.00"
+                type="number"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Bank Registration Fee</td>
+            <td>0.01</td>
+          </tr>
+          <tr>
+            <td>Validator Tx Fee</td>
+            <td>0.02</td>
+          </tr>
+          <tr className="SendPointsModal__total-tr">
+            <td>Total</td>
+            <td>
+              <b>0.00</b>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </Modal>
   );
 };
