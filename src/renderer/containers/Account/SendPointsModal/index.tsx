@@ -11,6 +11,7 @@ import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
 import {Tx} from '@renderer/types';
+import {formatAddress} from '@renderer/utils/address';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {calculateTotalCost} from '@renderer/utils/transactions';
 
@@ -30,14 +31,14 @@ interface ComponentProps {
 }
 
 const SendPointsModal: FC<ComponentProps> = ({close}) => {
-  const activeBankConfig = useSelector(getActiveBankConfig)!;
-  const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
+  const activeBank = useSelector(getActiveBankConfig)!;
+  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
   const managedAccounts = useSelector(getManagedAccounts);
 
   const createBlock = async (recipientAccountNumber: string, senderAccountNumber: string, txs: Tx[]): Promise<void> => {
     const {signing_key: signingKeyHex} = managedAccounts[senderAccountNumber];
     const {accountNumberHex, signingKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
-    const balanceLock = 'c88d1b0d55f430b66ad603993b76d7e9bd147b7209e13b2bb548fb680905dc8d';
+    const balanceLock = await fetchAccountBalanceLock(senderAccountNumber);
     const block = generateBlock(accountNumberHex, balanceLock, signingKey, txs);
     const response = await axios.post('http://167.99.173.247/blocks', block, {
       headers: {
@@ -47,6 +48,15 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
     console.error(response);
   };
 
+  const fetchAccountBalanceLock = async (accountNumber: string): Promise<string> => {
+    const {ip_address: ipAddress, port, protocol} = activePrimaryValidator;
+    const address = formatAddress(ipAddress, port, protocol);
+    const {
+      data: {balance_lock: balanceLock},
+    } = await axios.get(`${address}/account_balance_lock/${accountNumber}`);
+    return balanceLock;
+  };
+
   const handleSubmit = async ({points, recipientAccountNumber, senderAccountNumber}: FormValues): Promise<void> => {
     const txs: Tx[] = [
       {
@@ -54,15 +64,16 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
         recipient: recipientAccountNumber,
       },
       {
-        amount: activeBankConfig.default_transaction_fee,
-        recipient: activeBankConfig.account_number,
+        amount: activeBank.default_transaction_fee,
+        recipient: activeBank.account_number,
       },
       {
-        amount: activePrimaryValidatorConfig.default_transaction_fee,
-        recipient: activePrimaryValidatorConfig.account_number,
+        amount: activePrimaryValidator.default_transaction_fee,
+        recipient: activePrimaryValidator.account_number,
       },
     ];
     await createBlock(recipientAccountNumber, senderAccountNumber, txs);
+    close();
   };
 
   const renderFooter = (): ReactNode => {
@@ -87,9 +98,9 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
           if (!this.parent.senderAccountNumber) return true;
           const {balance} = managedAccounts[this.parent.senderAccountNumber];
           const totalCost = calculateTotalCost({
-            bankTxFee: activeBankConfig.default_transaction_fee,
+            bankTxFee: activeBank.default_transaction_fee,
             points: value,
-            validatorTxFee: activePrimaryValidatorConfig.default_transaction_fee,
+            validatorTxFee: activePrimaryValidator.default_transaction_fee,
           });
           return totalCost <= parseFloat(balance);
         }),
@@ -104,7 +115,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
           return value !== this.parent.recipientAccountNumber;
         }),
     });
-  }, [activeBankConfig, activePrimaryValidatorConfig, managedAccounts]);
+  }, [activeBank, activePrimaryValidator, managedAccounts]);
 
   return (
     <Modal
