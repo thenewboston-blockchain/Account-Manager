@@ -18,7 +18,8 @@ type ComponentProps = BaseFormComponentProps<BaseRadioGroupProps>;
 
 const FormRadioGroup: FC<ComponentProps> = ({hideError = false, label, options, required, ...baseRadioProps}) => {
   const {className, name} = baseRadioProps;
-  const {setFieldTouched, setFieldValue, values} = useFormContext();
+  const {errors, setFieldTouched, setFieldValue, touched, values} = useFormContext();
+  const error = !!errors[name] && !!touched[name];
 
   const selectedOption = useMemo(() => {
     const value = values[name];
@@ -34,12 +35,14 @@ const FormRadioGroup: FC<ComponentProps> = ({hideError = false, label, options, 
     <div className={clsx('FormRadioGroup FormFieldComponent', className)}>
       {renderFormLabel(name, className, label, required)}
       {options.map((option) => {
+        const selected = selectedOption?.value === option.value;
         return (
           <div className="FormField__option" key={option.value}>
             <Radio
-              checked={selectedOption?.value === option.value}
+              checked={selected}
               className={clsx('FormField__option-input', {...getCustomClassNames(className, '__option-input', true)})}
               disabled={option.disabled}
+              error={error && selected}
               onClick={handleClick(option.value)}
               value={option.value}
             />
