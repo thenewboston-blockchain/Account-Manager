@@ -19,32 +19,32 @@ const SendPointsModalFields: FC<ComponentProps> = ({managedAccounts}) => {
   const activeBankConfig = useSelector(getActiveBankConfig)!;
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
   const invalidAmountError = errors.points === INVALID_AMOUNT_ERROR;
-  const matchError = errors.fromAccountNumber === MATCH_ERROR || errors.toAccountNumber === MATCH_ERROR;
+  const matchError = errors.senderAccountNumber === MATCH_ERROR || errors.recipientAccountNumber === MATCH_ERROR;
 
-  const getFromOptions = () => {
-    const {toAccountNumber} = values;
+  const getRecipientOptions = () => {
+    const {senderAccountNumber} = values;
     return Object.values(managedAccounts)
-      .filter(({account_number}) => account_number !== toAccountNumber)
+      .filter(({account_number}) => account_number !== senderAccountNumber)
       .map(({account_number, nickname}) => ({
         label: nickname,
         value: account_number,
       }));
   };
 
-  const getToOptions = () => {
-    const {fromAccountNumber} = values;
+  const getSenderOptions = () => {
+    const {recipientAccountNumber} = values;
     return Object.values(managedAccounts)
-      .filter(({account_number}) => account_number !== fromAccountNumber)
+      .filter(({account_number}) => account_number !== recipientAccountNumber)
       .map(({account_number, nickname}) => ({
         label: nickname,
         value: account_number,
       }));
   };
 
-  const renderFromAccountBalance = (): string => {
-    const {fromAccountNumber} = values;
-    if (!fromAccountNumber) return '-';
-    const {balance} = managedAccounts[fromAccountNumber];
+  const renderSenderAccountBalance = (): string => {
+    const {senderAccountNumber} = values;
+    if (!senderAccountNumber) return '-';
+    const {balance} = managedAccounts[senderAccountNumber];
     return balance || '0.00';
   };
 
@@ -66,23 +66,23 @@ const SendPointsModalFields: FC<ComponentProps> = ({managedAccounts}) => {
         hideError={matchError}
         required
         label="From"
-        options={getFromOptions()}
-        name="fromAccountNumber"
+        options={getSenderOptions()}
+        name="senderAccountNumber"
       />
       <FormSelectDetailed
         className="SendPointsModal__select"
         hideError={matchError}
         required
         label="To"
-        options={getToOptions()}
-        name="toAccountNumber"
+        options={getRecipientOptions()}
+        name="recipientAccountNumber"
       />
       <table className="SendPointsModal__table">
         <tbody>
           <tr>
             <td>Account Balance</td>
             <td>
-              <span className="SendPointsModal__account-balance">{renderFromAccountBalance()}</span>
+              <span className="SendPointsModal__account-balance">{renderSenderAccountBalance()}</span>
             </td>
           </tr>
           <tr>

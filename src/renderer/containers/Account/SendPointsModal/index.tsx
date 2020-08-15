@@ -9,7 +9,7 @@ import axios from 'axios';
 import {FormButton} from '@renderer/components/FormComponents';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
-import {getManagedAccounts} from '@renderer/selectors';
+import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
 import {Tx} from '@renderer/types';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 
@@ -17,9 +17,9 @@ import SendPointsModalFields, {INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendPo
 import './SendPointsModal.scss';
 
 const initialValues = {
-  fromAccountNumber: '',
   points: '0.00',
-  toAccountNumber: '',
+  recipientAccountNumber: '',
+  senderAccountNumber: '',
 };
 
 type FormValues = typeof initialValues;
@@ -28,25 +28,12 @@ interface ComponentProps {
   close(): void;
 }
 
-const txs: Tx[] = [
-  {
-    amount: 5.5,
-    recipient: '484b3176c63d5f37d808404af1a12c4b9649cd6f6769f35bdf5a816133623fbc',
-  },
-  {
-    amount: 1,
-    recipient: '5e12967707909e62b2bb2036c209085a784fabbc3deccefee70052b6181c8ed8',
-  },
-  {
-    amount: 4,
-    recipient: 'ad1f8845c6a1abb6011a2a434a079a087c460657aad54329a84b406dce8bf314',
-  },
-];
-
 const SendPointsModal: FC<ComponentProps> = ({close}) => {
+  const activeBankConfig = useSelector(getActiveBankConfig)!;
+  const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
   const managedAccounts = useSelector(getManagedAccounts);
 
-  const createBlock = async (): Promise<void> => {
+  const createBlock = async (txs: Tx[]): Promise<void> => {
     const signingKeyHex = '4e5804d995d5ab84afb85154d7645c73c8fedb80723a262787c2428e59051b58';
     const {accountNumberHex, signingKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
     const balanceLock = 'c88d1b0d55f430b66ad603993b76d7e9bd147b7209e13b2bb548fb680905dc8d';
@@ -59,8 +46,23 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
     console.error(response);
   };
 
-  const handleSubmit = ({points}: FormValues): void => {
-    console.log(points);
+  const handleSubmit = async ({points, recipientAccountNumber, senderAccountNumber}: FormValues): Promise<void> => {
+    console.log(senderAccountNumber, points, recipientAccountNumber);
+    const txs: Tx[] = [
+      {
+        amount: points,
+        recipient: recipientAccountNumber,
+      },
+      {
+        amount: activeBankConfig.default_transaction_fee,
+        recipient: activeBankConfig.account_number,
+      },
+      {
+        amount: activePrimaryValidatorConfig.default_transaction_fee,
+        recipient: activePrimaryValidatorConfig.account_number,
+      },
+    ];
+    await createBlock(txs);
   };
 
   const renderFooter = (): ReactNode => {
@@ -78,23 +80,23 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
 
   const validationSchema = useMemo(() => {
     return Yup.object().shape({
-      fromAccountNumber: Yup.string()
-        .required('This field is required')
-        .test('accounts-match', MATCH_ERROR, function (value) {
-          return value !== this.parent.toAccountNumber;
-        }),
       points: Yup.number()
         .moreThan(0, 'Must be greater than 0')
         .required('This field is required')
         .test('invalid-amount', INVALID_AMOUNT_ERROR, function (value) {
-          if (!this.parent.fromAccountNumber) return true;
-          const {balance} = managedAccounts[this.parent.fromAccountNumber];
+          if (!this.parent.senderAccountNumber) return true;
+          const {balance} = managedAccounts[this.parent.senderAccountNumber];
           return value < balance;
         }),
-      toAccountNumber: Yup.string()
+      recipientAccountNumber: Yup.string()
         .required('This field is required')
         .test('accounts-match', MATCH_ERROR, function (value) {
-          return value !== this.parent.fromAccountNumber;
+          return value !== this.parent.senderAccountNumber;
+        }),
+      senderAccountNumber: Yup.string()
+        .required('This field is required')
+        .test('accounts-match', MATCH_ERROR, function (value) {
+          return value !== this.parent.recipientAccountNumber;
         }),
     });
   }, [managedAccounts]);
