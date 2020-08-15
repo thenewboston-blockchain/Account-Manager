@@ -1,8 +1,9 @@
 import Form from './Form';
 import FormButton, {FormButtonProps} from './FormButton';
 import FormInput from './FormInput';
-import FormTextArea from './FormTextArea';
+import FormRadioGroup from './FormRadioGroup';
 import FormSelect from './FormSelect';
 import FormSelectDetailed from './FormSelectDetailed';
+import FormTextArea from './FormTextArea';
 
-export {Form, FormButton, FormButtonProps, FormInput, FormTextArea, FormSelect, FormSelectDetailed};
+export {Form, FormButton, FormButtonProps, FormInput, FormRadioGroup, FormSelect, FormSelectDetailed, FormTextArea};

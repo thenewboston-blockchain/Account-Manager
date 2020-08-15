@@ -31,7 +31,7 @@ const AccountOverview: FC = () => {
   const renderAccountNumber = (): ReactNode => (
     <>
       <div>{accountNumber}</div>
-      <Qr className="AccountOverview__qr" text={accountNumber} />
+      <Qr className="AccountOverview__qr" text={accountNumber} width={120} />
     </>
   );
 
@@ -42,7 +42,7 @@ const AccountOverview: FC = () => {
         items={[
           {
             key: 'Balance',
-            value: balance || '-',
+            value: balance || '0',
           },
           {
             key: 'Account Number',
@@ -50,7 +50,7 @@ const AccountOverview: FC = () => {
           },
           {
             key: 'Signing Key',
-            value: '**************************',
+            value: '****************************************************************',
           },
         ]}
         title="Account Info"

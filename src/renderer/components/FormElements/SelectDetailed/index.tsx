@@ -5,13 +5,13 @@ import {FormatOptionLabelMeta} from 'react-select';
 import clsx from 'clsx';
 
 import {BaseSelectProps, Select} from '@renderer/components/FormElements';
-import {SelectOption} from '@renderer/types';
+import {InputOption} from '@renderer/types';
 
 import './SelectDetailed.scss';
 
 const VALUE_LENGTH = 64;
 
-const filterOption = ({label, value}: SelectOption, rawInput: string): boolean => {
+const filterOption = ({label, value}: InputOption, rawInput: string): boolean => {
   const rawInputLowercase = rawInput.toLocaleLowerCase();
   return (
     value.toLocaleLowerCase().includes(rawInputLowercase) ||
@@ -22,7 +22,7 @@ const filterOption = ({label, value}: SelectOption, rawInput: string): boolean =
 const formatOptionValue = (value: string): string =>
   `${value.slice(0, VALUE_LENGTH / 2)}\n${value.slice(VALUE_LENGTH / 2)}`;
 
-const formatOptionLabel = ({value, label}: SelectOption, {context}: FormatOptionLabelMeta<SelectOption>): ReactNode => {
+const formatOptionLabel = ({value, label}: InputOption, {context}: FormatOptionLabelMeta<InputOption>): ReactNode => {
   if (context === 'value') {
     return formatOptionValue(value);
   }

@@ -1,0 +1,19 @@
+.Radio {
+  color: var(--color-neutral-700);
+  cursor: pointer;
+  display: inline-block;
+  transition: color 0.1s;
+
+  &--disabled {
+    color: var(--color-neutral-400);
+    cursor: default;
+  }
+
+  &--error {
+    color: var(--color-danger);
+  }
+
+  &__input {
+    display: none;
+  }
+}

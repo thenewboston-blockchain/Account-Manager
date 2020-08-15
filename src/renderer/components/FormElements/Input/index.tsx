@@ -18,7 +18,7 @@ export interface BaseInputProps {
 
 const Input: FC<BaseInputProps> = ({
   className,
-  disabled,
+  disabled = false,
   error = false,
   name,
   onBlur,
