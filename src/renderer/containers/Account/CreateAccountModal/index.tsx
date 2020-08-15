@@ -107,15 +107,15 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
           name="add"
           onChange={toggleCreateNewAccount}
         />
-        <FormRadioGroup
-          label="Test"
-          options={[
-            {label: 'Create New Account', value: 'create'},
-            {label: 'Add Existing Account', value: 'add'},
-          ]}
-          name="test"
-        />
       </div>
+      <FormRadioGroup
+        label="Test"
+        options={[
+          {label: 'Create New Account', value: 'create'},
+          {label: 'Add Existing Account', value: 'add'},
+        ]}
+        name="test"
+      />
       <FormInput label="Nickname" name="nickname" />
       {!createNewAccount && <FormTextArea label="Signing Key" name="signingKey" required />}
     </Modal>
