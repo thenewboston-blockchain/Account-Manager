@@ -12,6 +12,7 @@ import Modal from '@renderer/components/Modal';
 import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
 import {Tx} from '@renderer/types';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
+import {calculateTotalCost} from '@renderer/utils/transactions';
 
 import SendPointsModalFields, {INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendPointsModalFields';
 import './SendPointsModal.scss';
@@ -86,7 +87,12 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
         .test('invalid-amount', INVALID_AMOUNT_ERROR, function (value) {
           if (!this.parent.senderAccountNumber) return true;
           const {balance} = managedAccounts[this.parent.senderAccountNumber];
-          return value < balance;
+          const totalCost = calculateTotalCost({
+            bankTxFee: activeBankConfig.default_transaction_fee,
+            points: value,
+            validatorTxFee: activePrimaryValidatorConfig.default_transaction_fee,
+          });
+          return totalCost <= parseFloat(balance);
         }),
       recipientAccountNumber: Yup.string()
         .required('This field is required')
@@ -99,7 +105,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
           return value !== this.parent.recipientAccountNumber;
         }),
     });
-  }, [managedAccounts]);
+  }, [activeBankConfig, activePrimaryValidatorConfig, managedAccounts]);
 
   return (
     <Modal

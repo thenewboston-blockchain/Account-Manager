@@ -101,11 +101,11 @@ const SendPointsModalFields: FC<ComponentProps> = ({managedAccounts}) => {
             </td>
           </tr>
           <tr>
-            <td>Bank Registration Fee</td>
+            <td>Bank Fee</td>
             <td>{activeBankConfig.default_transaction_fee}</td>
           </tr>
           <tr>
-            <td>Validator Tx Fee</td>
+            <td>Validator Fee</td>
             <td>{activePrimaryValidatorConfig.default_transaction_fee}</td>
           </tr>
           <tr className="SendPointsModal__total-tr">

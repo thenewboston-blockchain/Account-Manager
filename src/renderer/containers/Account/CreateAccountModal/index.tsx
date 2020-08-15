@@ -1,13 +1,15 @@
 import React, {FC, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
+import axios from 'axios';
 import * as Yup from 'yup';
 
 import Modal from '@renderer/components/Modal';
-import {getManagedAccounts} from '@renderer/selectors';
+import {getActivePrimaryValidator, getManagedAccounts} from '@renderer/selectors';
 import {setManagedAccount} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
 import {generateAccount} from '@renderer/utils/accounts';
+import {formatAddress} from '@renderer/utils/address';
 import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 
 import CreateAccountModalFields from './CreateAccountModalFields';
@@ -26,9 +28,11 @@ interface ComponentProps {
 }
 
 const CreateAccountModal: FC<ComponentProps> = ({close}) => {
+  const activePrimaryValidator = useSelector(getActivePrimaryValidator)!;
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
   const managedAccounts = useSelector(getManagedAccounts);
+
   const managedAccountNicknames = useMemo(
     () =>
       Object.values(managedAccounts)
@@ -36,6 +40,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
         .map(({nickname}) => nickname),
     [managedAccounts],
   );
+
   const managedAccountSigningKeys = useMemo(
     () =>
       Object.values(managedAccounts)
@@ -44,20 +49,47 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
     [managedAccounts],
   );
 
-  const handleSubmit = ({nickname, signingKey, type}: FormValues): void => {
-    const {accountNumberHex, signingKeyHex} =
-      type === 'create' ? generateAccount() : getKeyPairFromSigningKeyHex(signingKey);
+  const fetchAccountBalance = async (accountNumber: string) => {
+    try {
+      const {ip_address: ipAddress, port, protocol} = activePrimaryValidator;
+      const address = formatAddress(ipAddress, port, protocol);
+      const {data} = await axios.get(`${address}/account_balance/${accountNumber}`);
+      return data;
+    } catch (error) {
+      if (!error.response) {
+        throw error;
+      }
+    }
+  };
+
+  const handleSubmit = async ({nickname, signingKey, type}: FormValues): Promise<void> => {
+    let [accountNumberStr, balanceStr, signingKeyStr] = ['', '0', ''];
+
+    if (type === 'add') {
+      const {accountNumberHex, signingKeyHex} = getKeyPairFromSigningKeyHex(signingKey);
+      accountNumberStr = accountNumberHex;
+      signingKeyStr = signingKeyHex;
+
+      const {balance} = await fetchAccountBalance(accountNumberStr);
+      balanceStr = balance;
+    }
+
+    if (type === 'create') {
+      const {accountNumberHex, signingKeyHex} = generateAccount();
+      accountNumberStr = accountNumberHex;
+      signingKeyStr = signingKeyHex;
+    }
 
     dispatch(
       setManagedAccount({
-        account_number: accountNumberHex,
-        balance: '',
+        account_number: accountNumberStr,
+        balance: balanceStr,
         nickname,
-        signing_key: signingKeyHex,
+        signing_key: signingKeyStr,
       }),
     );
 
-    history.push(`/account/${accountNumberHex}/overview`);
+    history.push(`/account/${accountNumberStr}/overview`);
     close();
   };
 
