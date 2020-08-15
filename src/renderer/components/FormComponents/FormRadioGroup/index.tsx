@@ -18,7 +18,7 @@ type ComponentProps = BaseFormComponentProps<BaseRadioGroupProps>;
 
 const FormRadioGroup: FC<ComponentProps> = ({hideError = false, label, options, required, ...baseRadioProps}) => {
   const {className, name} = baseRadioProps;
-  const {setFieldTouched, setFieldValue, values} = useFormContext(name);
+  const {setFieldTouched, setFieldValue, values} = useFormContext();
 
   const selectedOption = useMemo(() => {
     const value = values[name];

@@ -10,7 +10,8 @@ interface UseFormSelectOutput {
 }
 
 const useFormSelect = (name: string, options: InputOption[]): UseFormSelectOutput => {
-  const {error, setFieldTouched, setFieldValue, values} = useFormContext(name);
+  const {errors, setFieldTouched, setFieldValue, touched, values} = useFormContext();
+  const error = !!errors[name] && !!touched[name];
 
   const selectedOption = useMemo(() => {
     const value = values[name];
