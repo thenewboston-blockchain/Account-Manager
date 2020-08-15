@@ -1,6 +1,7 @@
 /* eslint-disable func-names */
+/* eslint-disable react/no-this-in-sfc */
 
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -12,28 +13,14 @@ import {getManagedAccounts} from '@renderer/selectors';
 import {Tx} from '@renderer/types';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 
-import SendPointsModalFields, {MATCH_ERROR} from './SendPointsModalFields';
+import SendPointsModalFields, {INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendPointsModalFields';
 import './SendPointsModal.scss';
 
 const initialValues = {
-  fromAccount: '',
+  fromAccountNumber: '',
   points: '0.00',
-  toAccount: '',
+  toAccountNumber: '',
 };
-
-const validationSchema = Yup.object().shape({
-  fromAccount: Yup.string()
-    .required('This field is required')
-    .test('accounts-match', MATCH_ERROR, function (value) {
-      return value !== this.parent.toAccount;
-    }),
-  points: Yup.number().moreThan(0, 'Must be greater than 0').required('This field is required'),
-  toAccount: Yup.string()
-    .required('This field is required')
-    .test('accounts-match', MATCH_ERROR, function (value) {
-      return value !== this.parent.fromAccount;
-    }),
-});
 
 type FormValues = typeof initialValues;
 
@@ -88,6 +75,29 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
       </>
     );
   };
+
+  const validationSchema = useMemo(() => {
+    return Yup.object().shape({
+      fromAccountNumber: Yup.string()
+        .required('This field is required')
+        .test('accounts-match', MATCH_ERROR, function (value) {
+          return value !== this.parent.toAccountNumber;
+        }),
+      points: Yup.number()
+        .moreThan(0, 'Must be greater than 0')
+        .required('This field is required')
+        .test('invalid-amount', INVALID_AMOUNT_ERROR, function (value) {
+          if (!this.parent.fromAccountNumber) return true;
+          const {balance} = managedAccounts[this.parent.fromAccountNumber];
+          return value < balance;
+        }),
+      toAccountNumber: Yup.string()
+        .required('This field is required')
+        .test('accounts-match', MATCH_ERROR, function (value) {
+          return value !== this.parent.fromAccountNumber;
+        }),
+    });
+  }, [managedAccounts]);
 
   return (
     <Modal

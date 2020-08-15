@@ -4,6 +4,7 @@ import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import {useFormContext} from '@renderer/hooks';
 import {Dict, ManagedAccount} from '@renderer/types';
 
+export const INVALID_AMOUNT_ERROR = 'Invalid amount';
 export const MATCH_ERROR = 'Sender and recipient can not match';
 
 interface ComponentProps {
@@ -11,8 +12,9 @@ interface ComponentProps {
 }
 
 const SendPointsModalFields: FC<ComponentProps> = ({managedAccounts}) => {
-  const {errors} = useFormContext();
-  const matchError = errors.fromAccount === MATCH_ERROR || errors.toAccount === MATCH_ERROR;
+  const {errors, values} = useFormContext();
+  const invalidAmountError = errors.points === INVALID_AMOUNT_ERROR;
+  const matchError = errors.fromAccountNumber === MATCH_ERROR || errors.toAccountNumber === MATCH_ERROR;
 
   const getFromOptions = () => {
     return Object.values(managedAccounts).map(({account_number, nickname}) => ({
@@ -28,8 +30,16 @@ const SendPointsModalFields: FC<ComponentProps> = ({managedAccounts}) => {
     }));
   };
 
+  const renderFromAccountBalance = (): string => {
+    const {fromAccountNumber} = values;
+    if (!fromAccountNumber) return '-';
+    const {balance} = managedAccounts[fromAccountNumber];
+    return balance || '0.00';
+  };
+
   return (
     <>
+      {invalidAmountError ? <span>{INVALID_AMOUNT_ERROR}</span> : null}
       {matchError ? <span>{MATCH_ERROR}</span> : null}
       <FormSelectDetailed
         className="SendPointsModal__select"
@@ -37,7 +47,7 @@ const SendPointsModalFields: FC<ComponentProps> = ({managedAccounts}) => {
         required
         label="From"
         options={getFromOptions()}
-        name="fromAccount"
+        name="fromAccountNumber"
       />
       <FormSelectDetailed
         className="SendPointsModal__select"
@@ -45,14 +55,14 @@ const SendPointsModalFields: FC<ComponentProps> = ({managedAccounts}) => {
         required
         label="To"
         options={getToOptions()}
-        name="toAccount"
+        name="toAccountNumber"
       />
       <table className="SendPointsModal__table">
         <tbody>
           <tr>
             <td>Account Balance</td>
             <td>
-              <span className="SendPointsModal__account-balance">0.00</span>
+              <span className="SendPointsModal__account-balance">{renderFromAccountBalance()}</span>
             </td>
           </tr>
           <tr>
