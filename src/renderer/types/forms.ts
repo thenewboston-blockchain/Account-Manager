@@ -14,7 +14,7 @@ export interface GenericFormValues {
   [fieldName: string]: boolean | string;
 }
 
-export interface SelectOption {
+export interface InputOption {
   disabled?: boolean;
   label?: string;
   value: string;

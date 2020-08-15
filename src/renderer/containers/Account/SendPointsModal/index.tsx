@@ -6,7 +6,7 @@ import {FormButton, FormInput, FormSelectDetailed} from '@renderer/components/Fo
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
-import {SelectOption, Tx} from '@renderer/types';
+import {InputOption, Tx} from '@renderer/types';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 
 import './SendPointsModal.scss';
@@ -25,7 +25,7 @@ const validationSchema = Yup.object().shape({
 
 type FormValues = typeof initialValues;
 
-const accountFromSelectFieldOptions: SelectOption[] = [
+const accountFromSelectFieldOptions: InputOption[] = [
   '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
   '2cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdq',
   '4cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdw',
@@ -34,7 +34,7 @@ const accountFromSelectFieldOptions: SelectOption[] = [
   '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
 ].map((acc) => ({label: 'Amy', value: acc}));
 
-const accountToSelectFieldOptions: SelectOption[] = [
+const accountToSelectFieldOptions: InputOption[] = [
   '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
   '2cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdq',
   '4cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdw',

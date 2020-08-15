@@ -13,10 +13,12 @@ import {generateAccount} from '@renderer/utils/accounts';
 import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 
 import './CreateAccountModal.scss';
+import FormRadioGroup from '@renderer/components/FormComponents/FormRadioGroup';
 
 const initialValues = {
   nickname: '',
   signingKey: '',
+  test: '',
 };
 
 type FormValues = typeof initialValues;
@@ -104,6 +106,14 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
           label="Add Existing Account"
           name="add"
           onChange={toggleCreateNewAccount}
+        />
+        <FormRadioGroup
+          label="Test"
+          options={[
+            {label: 'Create New Account', value: 'create'},
+            {label: 'Add Existing Account', value: 'add'},
+          ]}
+          name="test"
         />
       </div>
       <FormInput label="Nickname" name="nickname" />

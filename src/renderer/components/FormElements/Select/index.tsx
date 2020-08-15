@@ -3,7 +3,7 @@ import ReactSelect, {ActionMeta, FocusEventHandler, FormatOptionLabelMeta} from 
 import {ValueType} from 'react-select/src/types';
 import clsx from 'clsx';
 
-import {SelectOption} from '@renderer/types';
+import {InputOption} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';
 
 import './Select.scss';
@@ -15,20 +15,20 @@ export interface BaseSelectProps {
   isSearchable?: boolean;
   name?: string;
   onBlur?: FocusEventHandler;
-  onChange?(value: ValueType<SelectOption>, actionMeta?: ActionMeta<SelectOption>): void;
-  options: SelectOption[];
+  onChange?(value: ValueType<InputOption>, actionMeta?: ActionMeta<InputOption>): void;
+  options: InputOption[];
   placeholder?: string;
-  value?: SelectOption | null;
+  value?: InputOption | null;
 }
 
 interface ComponentProps extends BaseSelectProps {
-  filterOption?(option: SelectOption, rawInput: string): boolean;
-  formatOptionLabel?(option: SelectOption, labelMeta: FormatOptionLabelMeta<SelectOption>): ReactNode;
+  filterOption?(option: InputOption, rawInput: string): boolean;
+  formatOptionLabel?(option: InputOption, labelMeta: FormatOptionLabelMeta<InputOption>): ReactNode;
 }
 
 const Select: FC<ComponentProps> = ({
   className,
-  disabled,
+  disabled = false,
   error = false,
   filterOption,
   formatOptionLabel,
@@ -50,7 +50,7 @@ const Select: FC<ComponentProps> = ({
     [options],
   );
 
-  const getOptionLabel = ({label, value: valueParam}: SelectOption): string => label || valueParam;
+  const getOptionLabel = ({label, value: valueParam}: InputOption): string => label || valueParam;
 
   return (
     <ReactSelect

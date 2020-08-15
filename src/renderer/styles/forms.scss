@@ -34,6 +34,23 @@ textarea {
 
   .FormField {
     width: 100%;
+
+    &__option {
+      align-items: center;
+      display: flex;
+    }
+
+    &__option-input {
+      margin-right: 8px;
+    }
+
+    &__option-label {
+      cursor: pointer;
+
+      &--disabled {
+        cursor: default;
+      }
+    }
   }
 
   &__error-message {
