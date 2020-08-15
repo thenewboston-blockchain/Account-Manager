@@ -25,9 +25,9 @@ const FormRadioGroup: FC<ComponentProps> = ({hideError = false, label, options, 
     return options.find((option) => option.value === value) || null;
   }, [name, options, values]);
 
-  const handleClick = (value: string) => (): void => {
+  const handleClick = (value: string) => async (): Promise<void> => {
+    setFieldTouched(name, true, false);
     setFieldValue(name, value);
-    setFieldTouched(name, true);
   };
 
   return (
