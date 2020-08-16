@@ -12,11 +12,10 @@ import {getActiveBank, getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch} from '@renderer/types';
 
 const App: FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const activeBank = useSelector(getActiveBank);
   const activeBankConfig = useSelector(getActiveBankConfig);
-
-  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (activeBank && !activeBankConfig) {
