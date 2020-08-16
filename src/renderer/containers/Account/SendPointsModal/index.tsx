@@ -39,13 +39,15 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
     const {signing_key: signingKeyHex} = managedAccounts[senderAccountNumber];
     const {accountNumberHex, signingKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
     const balanceLock = await fetchAccountBalanceLock(senderAccountNumber);
+
+    const {ip_address: ipAddress, port, protocol} = activeBank;
+    const address = formatAddress(ipAddress, port, protocol);
     const block = generateBlock(accountNumberHex, balanceLock, signingKey, txs);
-    const response = await axios.post('http://167.99.173.247/blocks', block, {
+    await axios.post(`${address}/blocks`, block, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    console.error(response);
   };
 
   const fetchAccountBalanceLock = async (accountNumber: string): Promise<string> => {
@@ -72,8 +74,13 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
         recipient: activePrimaryValidator.account_number,
       },
     ];
-    await createBlock(recipientAccountNumber, senderAccountNumber, txs);
-    close();
+
+    try {
+      await createBlock(recipientAccountNumber, senderAccountNumber, txs);
+      close();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const renderFooter = (): ReactNode => {

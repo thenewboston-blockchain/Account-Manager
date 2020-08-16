@@ -50,28 +50,26 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
   );
 
   const fetchAccountBalance = async (accountNumber: string) => {
-    try {
-      const {ip_address: ipAddress, port, protocol} = activePrimaryValidator;
-      const address = formatAddress(ipAddress, port, protocol);
-      const {data} = await axios.get(`${address}/account_balance/${accountNumber}`);
-      return data;
-    } catch (error) {
-      if (!error.response) {
-        throw error;
-      }
-    }
+    const {ip_address: ipAddress, port, protocol} = activePrimaryValidator;
+    const address = formatAddress(ipAddress, port, protocol);
+    const {data} = await axios.get(`${address}/account_balance/${accountNumber}`);
+    return data;
   };
 
   const handleSubmit = async ({nickname, signingKey, type}: FormValues): Promise<void> => {
     let [accountNumberStr, balanceStr, signingKeyStr] = ['', '0', ''];
 
     if (type === 'add') {
-      const {accountNumberHex, signingKeyHex} = getKeyPairFromSigningKeyHex(signingKey);
-      accountNumberStr = accountNumberHex;
-      signingKeyStr = signingKeyHex;
-
-      const {balance} = await fetchAccountBalance(accountNumberStr);
-      balanceStr = balance;
+      try {
+        const {accountNumberHex, signingKeyHex} = getKeyPairFromSigningKeyHex(signingKey);
+        accountNumberStr = accountNumberHex;
+        signingKeyStr = signingKeyHex;
+        const {balance} = await fetchAccountBalance(accountNumberStr);
+        balanceStr = balance;
+      } catch (error) {
+        console.error(error);
+        return;
+      }
     }
 
     if (type === 'create') {
