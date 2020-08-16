@@ -79,22 +79,32 @@ export const fetchBankBlocks = (address: string, params: PaginatedQueryParams = 
   return fetchPaginatedResults<BlockResponse>(address, BLOCKS, params, dispatch, setBankBlocks, setBankBlocksError);
 };
 
-export const fetchBankConfig = (address: string) => async (dispatch: AppDispatch) => {
+export const fetchBankConfig = (address: string) => async (
+  dispatch: AppDispatch,
+): Promise<{address: string; data?: BankConfig; error?: any}> => {
   try {
     const {data} = await axios.get<BankConfig>(`${address}/config`);
 
     if (data.node_type !== NodeType.bank) {
-      dispatch(setBankConfigError({address, error: 'Node not a bank'}));
-      return;
+      const errorObject = {address, error: 'Node not a bank'};
+      dispatch(setBankConfigError(errorObject));
+      return errorObject;
     }
 
     dispatch(setBankConfig({address, data}));
-    return data;
+    return {address, data};
   } catch (error) {
-    if (!error.response) {
-      throw error;
+    if (error.message) {
+      const errorObject = {address, error: error.message};
+      dispatch(setBankConfigError(errorObject));
+      return errorObject;
     }
-    dispatch(setBankConfigError({address, error: error.response.data}));
+    if (error.response) {
+      const errorObject = {address, error: error.response.data};
+      dispatch(setBankConfigError(errorObject));
+      return errorObject;
+    }
+    throw error;
   }
 };
 
