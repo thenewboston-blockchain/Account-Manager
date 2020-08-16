@@ -30,6 +30,10 @@ const Account: FC = () => {
   const account = managedAccounts[accountNumber];
 
   if (!account) {
+    // TODO: Users should still be able to browse accounts, even if they aren't in their managed/friends account
+    // TODO: since they can get to various account by clicking account links in tables
+    // TODO: Logic below was from deleting a managed account, but we really don't even need to redirect
+    // TODO: since user can just stay on same page
     history.push(`/banks/${formatPathFromNode(activeBankConfig)}/overview`);
     return null;
   }
