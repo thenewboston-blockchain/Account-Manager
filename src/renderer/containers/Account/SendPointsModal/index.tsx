@@ -108,16 +108,18 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
   };
 
   const validationSchema = useMemo(() => {
+    const senderAccountNumberRef = yup.ref('senderAccountNumber');
+
     return yup.object().shape({
       points: yup
         .number()
         .required('Points is a required field')
         .moreThan(0, 'Points must be greater than 0')
-        .callbackWithRef(yup.ref('senderAccountNumber'), checkPointsWithBalance, INVALID_AMOUNT_ERROR),
+        .callbackWithRef(senderAccountNumberRef, checkPointsWithBalance, INVALID_AMOUNT_ERROR),
       recipientAccountNumber: yup
         .string()
         .required('This field is required')
-        .notEqualTo(yup.ref('senderAccountNumber'), MATCH_ERROR),
+        .notEqualTo(senderAccountNumberRef, MATCH_ERROR),
       senderAccountNumber: yup.string().required('This field is required'),
     });
   }, [checkPointsWithBalance]);
