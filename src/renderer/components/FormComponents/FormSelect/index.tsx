@@ -25,7 +25,7 @@ const FormSelect: FC<ComponentProps> = ({hideError = false, label, required, ...
         onChange={handleChange}
         value={selectedOption}
       />
-      {hideError ? null : renderFormError(name, className)}
+      {renderFormError(name, className, hideError)}
     </div>
   );
 };

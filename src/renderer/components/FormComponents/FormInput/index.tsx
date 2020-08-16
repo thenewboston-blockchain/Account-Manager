@@ -20,7 +20,7 @@ const FormInput: FC<ComponentProps> = ({hideError = false, label, required, ...b
     <div className={clsx('FormInput FormFieldComponent', className)}>
       {renderFormLabel(name, className, label, required)}
       <Field {...baseInputProps} as={Input} className="FormField" error={error} required={required} />
-      {hideError ? null : renderFormError(name, className)}
+      {renderFormError(name, className, hideError)}
     </div>
   );
 };

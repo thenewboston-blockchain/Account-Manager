@@ -20,7 +20,7 @@ const FormTextArea: FC<ComponentProps> = ({hideError = false, label, required, .
     <div className={clsx('FormTextArea FormFieldComponent', className)}>
       {renderFormLabel(name, className, label, required)}
       <Field {...baseInputProps} as={TextArea} className="FormField" error={error} required={required} />
-      {hideError ? null : renderFormError(name, className)}
+      {renderFormError(name, className, hideError)}
     </div>
   );
 };
