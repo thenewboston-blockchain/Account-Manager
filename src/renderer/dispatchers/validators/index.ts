@@ -51,22 +51,32 @@ export const fetchValidatorBanks = (
   );
 };
 
-export const fetchValidatorConfig = (address: string) => async (dispatch: AppDispatch) => {
+export const fetchValidatorConfig = (address: string) => async (
+  dispatch: AppDispatch,
+): Promise<{address: string; data?: ValidatorConfig; error?: any}> => {
   try {
     const {data} = await axios.get<ValidatorConfig>(`${address}/config`);
 
     if (data.node_type !== NodeType.primaryValidator && data.node_type !== NodeType.confirmationValidator) {
-      dispatch(setValidatorConfigError({address, error: 'Node not a validator'}));
-      return;
+      const errorObject = {address, error: 'Node not a bank'};
+      dispatch(setValidatorConfigError(errorObject));
+      return errorObject;
     }
 
     dispatch(setValidatorConfig({address, data}));
-    return data;
+    return {address, data};
   } catch (error) {
-    if (!error.response) {
-      throw error;
+    if (error.message) {
+      const errorObject = {address, error: error.message};
+      dispatch(setValidatorConfigError(errorObject));
+      return errorObject;
     }
-    dispatch(setValidatorConfigError({address, error: error.response.data}));
+    if (error.response) {
+      const errorObject = {address, error: error.response.data};
+      dispatch(setValidatorConfigError(errorObject));
+      return errorObject;
+    }
+    throw error;
   }
 };
 

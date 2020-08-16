@@ -1,6 +1,7 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
+import {toast} from 'react-toastify';
 import * as Yup from 'yup';
 
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
@@ -34,6 +35,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const Connect: FC = () => {
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const activeBankConfig = useSelector(getActiveBankConfig);
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
@@ -44,14 +46,20 @@ const Connect: FC = () => {
 
   const handleSubmit = async ({ipAddress, nickname, port, protocol}: FormValues): Promise<void> => {
     try {
+      setSubmitting(true);
       const bankNetworkData = {
         ip_address: ipAddress,
         port: parseInt(port, 10),
         protocol,
       };
-      await dispatch(connectAndStoreLocalData(bankNetworkData, nickname));
+      const response = await dispatch(connectAndStoreLocalData(bankNetworkData, nickname));
+      if (response?.error) {
+        toast.error(response.error);
+      }
     } catch (error) {
-      console.log('error', error);
+      toast.error('An Error Occurred');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -80,9 +88,10 @@ const Connect: FC = () => {
         <FormInput className="Connect__field" label="Port" name="port" type="number" />
         <FormInput className="Connect__field" label="Nickname" name="nickname" />
 
-        <FormButton ignoreDirty type="submit">
+        <FormButton ignoreDirty submitting={submitting} type="submit">
           Connect
         </FormButton>
+        <FormButton onClick={() => toast.error('Wow so easy!')}>Toast</FormButton>
       </Form>
     </div>
   );
