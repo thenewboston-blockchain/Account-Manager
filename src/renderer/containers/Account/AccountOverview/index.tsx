@@ -42,7 +42,7 @@ const AccountOverview: FC = () => {
         items={[
           {
             key: 'Balance',
-            value: balance || '0',
+            value: <span className="AccountOverview__balance">{balance || '0'}</span>,
           },
           {
             key: 'Account Number',
