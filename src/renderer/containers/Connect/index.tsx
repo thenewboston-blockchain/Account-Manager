@@ -57,7 +57,7 @@ const Connect: FC = () => {
         toast.error(response.error);
       }
     } catch (error) {
-      toast.error('An Error Occurred');
+      toast.error('An error occurred');
     } finally {
       setSubmitting(false);
     }
