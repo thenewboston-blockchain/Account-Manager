@@ -2,6 +2,8 @@ import React, {FC, ReactNode, useEffect, useState} from 'react';
 import {hot} from 'react-hot-loader/root';
 import {useDispatch, useSelector} from 'react-redux';
 import {HashRouter as Router} from 'react-router-dom';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Connect from '@renderer/containers/Connect';
 import Layout from '@renderer/containers/Layout';
@@ -32,7 +34,22 @@ const App: FC = () => {
     return <Layout />;
   };
 
-  return <Router>{renderComponent()}</Router>;
+  return (
+    <Router>
+      {renderComponent()}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </Router>
+  );
 };
 
 export default hot((): JSX.Element => <App />);

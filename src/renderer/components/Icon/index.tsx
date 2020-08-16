@@ -13,6 +13,7 @@ import CheckboxBlankCircleOutlineIcon from 'mdi-react/CheckboxBlankCircleOutline
 import CloseIcon from 'mdi-react/CloseIcon';
 import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
 import EarthIcon from 'mdi-react/EarthIcon';
+import LoadingIcon from 'mdi-react/LoadingIcon';
 import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
 import RadioboxBlankIcon from 'mdi-react/RadioboxBlankIcon';
@@ -33,6 +34,7 @@ export enum IconType {
   close,
   dotsVertical,
   earth,
+  loading,
   play,
   plus,
   radioboxBlank,
@@ -74,6 +76,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled = 
         return <DotsVerticalIcon {...iconProps} />;
       case IconType.earth:
         return <EarthIcon {...iconProps} />;
+      case IconType.loading:
+        return <LoadingIcon {...iconProps} />;
       case IconType.play:
         return <PlayIcon {...iconProps} />;
       case IconType.plus:
