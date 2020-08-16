@@ -6,9 +6,6 @@ function equalTo(ref: any, message?: string) {
     exclusive: false,
     message: message || `Must be the same as ${ref.path}`,
     name: 'equalTo',
-    params: {
-      reference: ref.path,
-    },
     test(value: any) {
       if (!value) return true;
       return value === this.resolve(ref);
@@ -16,14 +13,11 @@ function equalTo(ref: any, message?: string) {
   });
 }
 
-function notEqualTo(ref: any, message: string) {
+function notEqualTo(ref: any, message?: string) {
   return yup.mixed().test({
     exclusive: false,
     message: message || `Can not be the same as ${ref.path}`,
     name: 'notEqualTo',
-    params: {
-      reference: ref.path,
-    },
     test(value: any) {
       if (!value) return true;
       return value !== this.resolve(ref);
@@ -31,6 +25,22 @@ function notEqualTo(ref: any, message: string) {
   });
 }
 
+function callbackWithRef(ref: any, cb: (thisValue: any, refValue: any) => boolean, message: string) {
+  return yup.mixed().test({
+    exclusive: false,
+    message,
+    name: 'callbackWithRef',
+    test(value: any) {
+      if (!value) return true;
+      return cb(value, this.resolve(ref));
+    },
+  });
+}
+
+yup.addMethod(yup.number, 'callbackWithRef', callbackWithRef);
+yup.addMethod(yup.number, 'equalTo', equalTo);
+yup.addMethod(yup.number, 'notEqualTo', notEqualTo);
+yup.addMethod(yup.string, 'callbackWithRef', callbackWithRef);
 yup.addMethod(yup.string, 'equalTo', equalTo);
 yup.addMethod(yup.string, 'notEqualTo', notEqualTo);
 

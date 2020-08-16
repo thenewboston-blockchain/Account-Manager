@@ -1,7 +1,4 @@
-/* eslint-disable func-names */
-/* eslint-disable react/no-this-in-sfc */
-
-import React, {FC, ReactNode, useMemo} from 'react';
+import React, {FC, ReactNode, useCallback, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
 
@@ -19,7 +16,7 @@ import SendPointsModalFields, {INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendPo
 import './SendPointsModal.scss';
 
 const initialValues = {
-  points: '0.00',
+  points: '',
   recipientAccountNumber: '',
   senderAccountNumber: '',
 };
@@ -34,6 +31,20 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
   const activeBank = useSelector(getActiveBankConfig)!;
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
   const managedAccounts = useSelector(getManagedAccounts);
+
+  const checkPointsWithBalance = useCallback(
+    (points: number, accountNumber: string): boolean => {
+      if (!accountNumber) return true;
+      const {balance} = managedAccounts[accountNumber];
+      const totalCost = calculateTotalCost({
+        bankTxFee: activeBank.default_transaction_fee,
+        points,
+        validatorTxFee: activePrimaryValidator.default_transaction_fee,
+      });
+      return totalCost <= parseFloat(balance);
+    },
+    [activeBank.default_transaction_fee, activePrimaryValidator.default_transaction_fee, managedAccounts],
+  );
 
   const createBlock = async (recipientAccountNumber: string, senderAccountNumber: string, txs: Tx[]): Promise<void> => {
     const {signing_key: signingKeyHex} = managedAccounts[senderAccountNumber];
@@ -100,25 +111,16 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
     return yup.object().shape({
       points: yup
         .number()
-        .moreThan(0, 'Must be greater than 0')
         .required('This field is required')
-        .test('invalid-amount', INVALID_AMOUNT_ERROR, function (value) {
-          if (!this.parent.senderAccountNumber) return true;
-          const {balance} = managedAccounts[this.parent.senderAccountNumber];
-          const totalCost = calculateTotalCost({
-            bankTxFee: activeBank.default_transaction_fee,
-            points: value,
-            validatorTxFee: activePrimaryValidator.default_transaction_fee,
-          });
-          return totalCost <= parseFloat(balance);
-        }),
+        .moreThan(0, 'Must be greater than 0')
+        .callbackWithRef(yup.ref('senderAccountNumber'), checkPointsWithBalance, INVALID_AMOUNT_ERROR),
       recipientAccountNumber: yup
         .string()
         .required('This field is required')
         .notEqualTo(yup.ref('senderAccountNumber'), MATCH_ERROR),
       senderAccountNumber: yup.string().required('This field is required'),
     });
-  }, [activeBank, activePrimaryValidator, managedAccounts]);
+  }, [checkPointsWithBalance]);
 
   return (
     <Modal
