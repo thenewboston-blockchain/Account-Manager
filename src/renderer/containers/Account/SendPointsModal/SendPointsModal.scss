@@ -13,6 +13,10 @@
   &__error {
     color: var(--color-danger);
     display: block;
+
+    &:last-of-type {
+      margin-bottom: 6px;
+    }
   }
 
   &__points-input {

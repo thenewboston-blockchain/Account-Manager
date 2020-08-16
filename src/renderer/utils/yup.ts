@@ -37,11 +37,8 @@ function callbackWithRef(ref: any, cb: (thisValue: any, refValue: any) => boolea
   });
 }
 
-yup.addMethod(yup.number, 'callbackWithRef', callbackWithRef);
-yup.addMethod(yup.number, 'equalTo', equalTo);
-yup.addMethod(yup.number, 'notEqualTo', notEqualTo);
-yup.addMethod(yup.string, 'callbackWithRef', callbackWithRef);
-yup.addMethod(yup.string, 'equalTo', equalTo);
-yup.addMethod(yup.string, 'notEqualTo', notEqualTo);
+yup.addMethod(yup.mixed, 'callbackWithRef', callbackWithRef);
+yup.addMethod(yup.mixed, 'equalTo', equalTo);
+yup.addMethod(yup.mixed, 'notEqualTo', notEqualTo);
 
 export default yup;

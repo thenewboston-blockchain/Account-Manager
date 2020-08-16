@@ -11,15 +11,12 @@ export const INVALID_AMOUNT_ERROR = 'Invalid amount';
 export const MATCH_ERROR = 'Sender and recipient can not match';
 
 const SendPointsModalFields: FC = () => {
-  const {errors, isValid, values} = useFormContext();
+  const {errors, touched, values} = useFormContext();
   const activeBankConfig = useSelector(getActiveBankConfig)!;
   const managedAccounts = useSelector(getManagedAccounts);
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
 
-  console.log('ERRORS', errors);
-  console.log('IS VALID', isValid);
-
-  const invalidAmountError = errors.points === INVALID_AMOUNT_ERROR;
+  const pointsError = touched.points ? errors.points : '';
   const matchError = errors.recipientAccountNumber === MATCH_ERROR;
 
   const managedAccountOptions = useMemo<InputOption[]>(
@@ -50,7 +47,7 @@ const SendPointsModalFields: FC = () => {
   return (
     <>
       {matchError ? <span className="SendPointsModal__error">{MATCH_ERROR}</span> : null}
-      {invalidAmountError ? <span className="SendPointsModal__error">{INVALID_AMOUNT_ERROR}</span> : null}
+      {pointsError ? <span className="SendPointsModal__error">{pointsError}</span> : null}
       <FormSelectDetailed
         className="SendPointsModal__select"
         required

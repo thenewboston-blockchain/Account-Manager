@@ -111,8 +111,8 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
     return yup.object().shape({
       points: yup
         .number()
-        .required('This field is required')
-        .moreThan(0, 'Must be greater than 0')
+        .required('Points is a required field')
+        .moreThan(0, 'Points must be greater than 0')
         .callbackWithRef(yup.ref('senderAccountNumber'), checkPointsWithBalance, INVALID_AMOUNT_ERROR),
       recipientAccountNumber: yup
         .string()
