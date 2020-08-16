@@ -1,0 +1,37 @@
+import * as yup from 'yup';
+
+// https://github.com/jaredpalmer/formik/issues/90
+function equalTo(ref: any, message?: string) {
+  return yup.mixed().test({
+    exclusive: false,
+    message: message || `Must be the same as ${ref.path}`,
+    name: 'equalTo',
+    params: {
+      reference: ref.path,
+    },
+    test(value: any) {
+      if (!value) return true;
+      return value === this.resolve(ref);
+    },
+  });
+}
+
+function notEqualTo(ref: any, message: string) {
+  return yup.mixed().test({
+    exclusive: false,
+    message: message || `Can not be the same as ${ref.path}`,
+    name: 'notEqualTo',
+    params: {
+      reference: ref.path,
+    },
+    test(value: any) {
+      if (!value) return true;
+      return value !== this.resolve(ref);
+    },
+  });
+}
+
+yup.addMethod(yup.string, 'equalTo', equalTo);
+yup.addMethod(yup.string, 'notEqualTo', notEqualTo);
+
+export default yup;

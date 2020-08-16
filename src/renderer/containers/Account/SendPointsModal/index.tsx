@@ -3,7 +3,6 @@
 
 import React, {FC, ReactNode, useMemo} from 'react';
 import {useSelector} from 'react-redux';
-import * as Yup from 'yup';
 import axios from 'axios';
 
 import {FormButton} from '@renderer/components/FormComponents';
@@ -14,6 +13,7 @@ import {Tx} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {calculateTotalCost} from '@renderer/utils/transactions';
+import yup from '@renderer/utils/yup';
 
 import SendPointsModalFields, {INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendPointsModalFields';
 import './SendPointsModal.scss';
@@ -97,8 +97,9 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
   };
 
   const validationSchema = useMemo(() => {
-    return Yup.object().shape({
-      points: Yup.number()
+    return yup.object().shape({
+      points: yup
+        .number()
         .moreThan(0, 'Must be greater than 0')
         .required('This field is required')
         .test('invalid-amount', INVALID_AMOUNT_ERROR, function (value) {
@@ -111,16 +112,11 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
           });
           return totalCost <= parseFloat(balance);
         }),
-      recipientAccountNumber: Yup.string()
+      recipientAccountNumber: yup
+        .string()
         .required('This field is required')
-        .test('accounts-match', MATCH_ERROR, function (value) {
-          return value !== this.parent.senderAccountNumber;
-        }),
-      senderAccountNumber: Yup.string()
-        .required('This field is required')
-        .test('accounts-match', MATCH_ERROR, function (value) {
-          return value !== this.parent.recipientAccountNumber;
-        }),
+        .notEqualTo(yup.ref('senderAccountNumber'), MATCH_ERROR),
+      senderAccountNumber: yup.string().required('This field is required'),
     });
   }, [activeBank, activePrimaryValidator, managedAccounts]);
 
@@ -134,7 +130,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
-      <SendPointsModalFields managedAccounts={managedAccounts} />
+      <SendPointsModalFields />
     </Modal>
   );
 };

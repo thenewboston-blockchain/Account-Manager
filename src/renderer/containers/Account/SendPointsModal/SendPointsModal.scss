@@ -10,6 +10,11 @@
     height: 35.5px;
   }
 
+  &__error {
+    color: var(--color-danger);
+    display: block;
+  }
+
   &__points-input {
     margin-left: -7px;
   }
