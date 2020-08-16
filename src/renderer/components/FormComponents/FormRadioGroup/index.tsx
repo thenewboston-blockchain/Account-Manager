@@ -59,7 +59,7 @@ const FormRadioGroup: FC<ComponentProps> = ({hideError = false, label, options, 
           </div>
         );
       })}
-      {hideError ? null : renderFormError(name, className)}
+      {renderFormError(name, className, hideError)}
     </div>
   );
 };

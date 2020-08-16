@@ -5,13 +5,11 @@ import {ErrorMessage} from 'formik';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import {getCustomClassNames} from '@renderer/utils/components';
 
-export const renderFormEmptyError = () => <span className="FormFieldComponent__error-message" />;
-
-export const renderFormError = (name: string, classNames: string | undefined): ReactNode => (
+export const renderFormError = (name: string, classNames: string | undefined, hideError = false): ReactNode => (
   <span
     className={clsx('FormFieldComponent__error-message', {...getCustomClassNames(classNames, '__error-message', true)})}
   >
-    <ErrorMessage name={name} />
+    {hideError ? null : <ErrorMessage name={name} />}
   </span>
 );
 

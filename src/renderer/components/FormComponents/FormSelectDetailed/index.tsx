@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import {BaseSelectProps, SelectDetailed} from '@renderer/components/FormElements';
 import useFormSelect from '@renderer/hooks/useFormSelect';
 import {BaseFormComponentProps} from '@renderer/types';
-import {renderFormEmptyError, renderFormError, renderFormLabel} from '@renderer/utils/forms';
+import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
 
 type ComponentProps = BaseFormComponentProps<BaseSelectProps>;
 
@@ -25,7 +25,7 @@ const FormSelectDetailed: FC<ComponentProps> = ({hideError = false, label, requi
         onChange={handleChange}
         value={selectedOption}
       />
-      {hideError ? renderFormEmptyError() : renderFormError(name, className)}
+      {renderFormError(name, className, hideError)}
     </div>
   );
 };
