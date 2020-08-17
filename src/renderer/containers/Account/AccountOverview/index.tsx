@@ -21,7 +21,7 @@ const AccountOverview: FC = () => {
     const fetchData = async (): Promise<void> => {
       const {ip_address: ipAddress, port, protocol} = activePrimaryValidator;
       const address = formatAddress(ipAddress, port, protocol);
-      const {data} = await axios.get(`${address}/account_balance/${accountNumber}`);
+      const {data} = await axios.get(`${address}/accounts/${accountNumber}/balance`);
       setBalance(data.balance);
     };
 
