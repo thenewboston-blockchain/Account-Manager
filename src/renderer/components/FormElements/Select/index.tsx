@@ -16,10 +16,11 @@ export interface BaseSelectProps {
   creatable?: boolean;
   disabled?: boolean;
   error?: boolean;
+  isClearable?: boolean;
   isSearchable?: boolean;
   name?: string;
   onBlur?: FocusEventHandler;
-  onChange?(value: ValueType<InputOption>, actionMeta?: ActionMeta<InputOption>): void;
+  onChange?(value?: ValueType<InputOption>, actionMeta?: ActionMeta<InputOption>): void;
   options: InputOption[];
   placeholder?: string;
   value?: InputOption | null;
@@ -37,6 +38,7 @@ const Select: FC<ComponentProps> = ({
   error = false,
   filterOption,
   formatOptionLabel,
+  isClearable = false,
   isSearchable = true,
   name,
   onBlur,
@@ -67,16 +69,24 @@ const Select: FC<ComponentProps> = ({
       filterOption,
       formatOptionLabel,
       getOptionLabel,
+      isClearable,
       isDisabled: disabled,
       isSearchable,
       menuPortalTarget: document.getElementById('dropdown-root'),
       name,
       onBlur,
       onChange,
+      onKeyDown: handleKeyDown,
       options: formattedOptions,
       placeholder,
       value,
     };
+  };
+
+  const handleKeyDown = (e: any) => {
+    if (!e.target.value && e.key === 'Backspace') {
+      onChange?.();
+    }
   };
 
   return creatable ? <ReactSelectCreatable {...getSharedSelectProps()} /> : <ReactSelect {...getSharedSelectProps()} />;

@@ -24,8 +24,12 @@ const useFormSelect = (name: string, options: InputOption[]): UseFormSelectOutpu
     setFieldTouched(name, true);
   };
 
-  const handleChange = (option: InputOption): void => {
-    setFieldValue(name, option.value);
+  const handleChange = (option?: InputOption): void => {
+    if (!option) {
+      setFieldValue(name, '');
+    } else {
+      setFieldValue(name, option.value);
+    }
   };
 
   return {
