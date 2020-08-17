@@ -57,6 +57,7 @@ const SendPointsModalFields: FC = () => {
       />
       <FormSelectDetailed
         className="SendPointsModal__select"
+        creatable
         hideErrorText={matchError}
         required
         label="To"

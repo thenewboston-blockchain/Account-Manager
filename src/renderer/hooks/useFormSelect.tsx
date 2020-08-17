@@ -15,7 +15,9 @@ const useFormSelect = (name: string, options: InputOption[]): UseFormSelectOutpu
 
   const selectedOption = useMemo(() => {
     const value = values[name];
-    return options.find((option) => option.value === value) || null;
+    if (!value) return null;
+
+    return options.find((option) => option.value === value) || {label: value, value};
   }, [name, options, values]);
 
   const handleBlur = (): void => {

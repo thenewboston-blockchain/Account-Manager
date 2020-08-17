@@ -119,6 +119,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
       recipientAccountNumber: yup
         .string()
         .notEqualTo(senderAccountNumberRef, MATCH_ERROR)
+        .length(64, 'Account Number must be 64 characters long')
         .required('This field is required'),
       senderAccountNumber: yup.string().required('This field is required'),
     });
