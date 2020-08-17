@@ -8,4 +8,10 @@
   &__qr {
     margin-top: 6px;
   }
+
+  &__signing-key-toggle {
+    color: var(--color-secondary);
+    cursor: pointer;
+    margin-left: 12px;
+  }
 }
