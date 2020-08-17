@@ -77,7 +77,7 @@ const AccountOverview: FC = () => {
 
   const renderSigningKeyDisplay = () => {
     const {signing_key: signingKey} = managedAccount;
-    return signingKeyVisible ? signingKey : '****************************************************************';
+    return signingKeyVisible ? signingKey : '*'.repeat(64);
   };
 
   const renderSigningKeyToggle = () => {
