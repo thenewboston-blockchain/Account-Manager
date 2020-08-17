@@ -1,6 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 import {useSelector} from 'react-redux';
-import {Route, Switch, useHistory, useParams, useRouteMatch} from 'react-router-dom';
+import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
 import noop from 'lodash/noop';
 
 import AccountOverview from '@renderer/containers/Account/AccountOverview';
@@ -12,8 +12,7 @@ import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {useBooleanState} from '@renderer/hooks';
-import {getActiveBankConfig, getManagedAccounts} from '@renderer/selectors';
-import {formatPathFromNode} from '@renderer/utils/address';
+import {getManagedAccounts} from '@renderer/selectors';
 
 import SendPointsModal from './SendPointsModal';
 
@@ -24,19 +23,8 @@ const Account: FC = () => {
   const {path, url} = useRouteMatch();
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
-  const activeBankConfig = useSelector(getActiveBankConfig)!;
-  const history = useHistory();
   const managedAccounts = useSelector(getManagedAccounts);
-  const account = managedAccounts[accountNumber];
-
-  if (!account) {
-    // TODO: Users should still be able to browse accounts, even if they aren't in their managed/friends account
-    // TODO: since they can get to various account by clicking account links in tables
-    // TODO: Logic below was from deleting a managed account, but we really don't even need to redirect
-    // TODO: since user can just stay on same page
-    history.push(`/banks/${formatPathFromNode(activeBankConfig)}/overview`);
-    return null;
-  }
+  const managedAccount = managedAccounts[accountNumber];
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
@@ -79,7 +67,7 @@ const Account: FC = () => {
       <PageHeader
         dropdownMenuOptions={dropdownMenuOptions}
         rightContent={renderRightPageHeaderButtons()}
-        title={account.nickname || accountNumber}
+        title={managedAccount?.nickname || accountNumber}
       />
       <PageTabs
         baseUrl={url}
@@ -100,7 +88,7 @@ const Account: FC = () => {
   return (
     <div className="Account">
       <PageLayout content={renderTabContent()} top={renderTop()} />
-      {deleteModalIsOpen && <DeleteAccountModal accountNumber={accountNumber} toggleDeleteModal={toggleDeleteModal} />}
+      {deleteModalIsOpen && <DeleteAccountModal accountNumber={accountNumber} close={toggleDeleteModal} />}
       {sendPointsModalIsOpen && <SendPointsModal close={toggleSendPointsModal} />}
     </div>
   );
