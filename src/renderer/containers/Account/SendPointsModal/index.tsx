@@ -34,7 +34,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
 
   const checkPointsWithBalance = useCallback(
     (points: number, accountNumber: string): boolean => {
-      if (!accountNumber) return true;
+      if (!accountNumber || !points) return true;
       const {balance} = managedAccounts[accountNumber];
       const totalCost = calculateTotalCost({
         bankTxFee: activeBank.default_transaction_fee,
@@ -113,13 +113,13 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
     return yup.object().shape({
       points: yup
         .number()
-        .required('Points is a required field')
+        .callbackWithRef(senderAccountNumberRef, checkPointsWithBalance, INVALID_AMOUNT_ERROR)
         .moreThan(0, 'Points must be greater than 0')
-        .callbackWithRef(senderAccountNumberRef, checkPointsWithBalance, INVALID_AMOUNT_ERROR),
+        .required('Points is a required field'),
       recipientAccountNumber: yup
         .string()
-        .required('This field is required')
-        .notEqualTo(senderAccountNumberRef, MATCH_ERROR),
+        .notEqualTo(senderAccountNumberRef, MATCH_ERROR)
+        .required('This field is required'),
       senderAccountNumber: yup.string().required('This field is required'),
     });
   }, [checkPointsWithBalance]);

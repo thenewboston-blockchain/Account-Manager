@@ -2,7 +2,7 @@ import * as yup from 'yup';
 
 // https://github.com/jaredpalmer/formik/issues/90
 function equalTo(ref: any, message?: string) {
-  return yup.mixed().test({
+  return yup.string().test({
     exclusive: false,
     message: message || `Must be the same as ${ref.path}`,
     name: 'equalTo',
@@ -14,7 +14,7 @@ function equalTo(ref: any, message?: string) {
 }
 
 function notEqualTo(ref: any, message?: string) {
-  return yup.mixed().test({
+  return yup.string().test({
     exclusive: false,
     message: message || `Can not be the same as ${ref.path}`,
     name: 'notEqualTo',
@@ -26,7 +26,7 @@ function notEqualTo(ref: any, message?: string) {
 }
 
 function callbackWithRef(ref: any, cb: (thisValue: any, refValue: any) => boolean, message: string) {
-  return yup.mixed().test({
+  return yup.number().test({
     exclusive: false,
     message,
     name: 'callbackWithRef',
@@ -37,8 +37,8 @@ function callbackWithRef(ref: any, cb: (thisValue: any, refValue: any) => boolea
   });
 }
 
-yup.addMethod(yup.mixed, 'callbackWithRef', callbackWithRef);
-yup.addMethod(yup.mixed, 'equalTo', equalTo);
-yup.addMethod(yup.mixed, 'notEqualTo', notEqualTo);
+yup.addMethod(yup.number, 'callbackWithRef', callbackWithRef);
+yup.addMethod(yup.string, 'equalTo', equalTo);
+yup.addMethod(yup.string, 'notEqualTo', notEqualTo);
 
 export default yup;
