@@ -1,5 +1,8 @@
+/* eslint-disable react/jsx-props-no-spreading */
+
 import React, {FC, ReactNode, useMemo} from 'react';
 import ReactSelect, {ActionMeta, FocusEventHandler, FormatOptionLabelMeta} from 'react-select';
+import ReactSelectCreatable from 'react-select/creatable';
 import {ValueType} from 'react-select/src/types';
 import clsx from 'clsx';
 
@@ -10,6 +13,7 @@ import './Select.scss';
 
 export interface BaseSelectProps {
   className?: string;
+  creatable?: boolean;
   disabled?: boolean;
   error?: boolean;
   isSearchable?: boolean;
@@ -28,6 +32,7 @@ interface ComponentProps extends BaseSelectProps {
 
 const Select: FC<ComponentProps> = ({
   className,
+  creatable = false,
   disabled = false,
   error = false,
   filterOption,
@@ -52,27 +57,29 @@ const Select: FC<ComponentProps> = ({
 
   const getOptionLabel = ({label, value: valueParam}: InputOption): string => label || valueParam;
 
-  return (
-    <ReactSelect
-      className={clsx('Select', className, {
+  const getSharedSelectProps = () => {
+    return {
+      className: clsx('Select', className, {
         'Select--error': error,
         ...getCustomClassNames(className, '--error', error),
-      })}
-      classNamePrefix="Select"
-      filterOption={filterOption}
-      formatOptionLabel={formatOptionLabel}
-      getOptionLabel={getOptionLabel}
-      isDisabled={disabled}
-      isSearchable={isSearchable}
-      menuPortalTarget={document.getElementById('dropdown-root')}
-      name={name}
-      onBlur={onBlur}
-      onChange={onChange}
-      options={formattedOptions}
-      placeholder={placeholder}
-      value={value}
-    />
-  );
+      }),
+      classNamePrefix: 'Select',
+      filterOption,
+      formatOptionLabel,
+      getOptionLabel,
+      isDisabled: disabled,
+      isSearchable,
+      menuPortalTarget: document.getElementById('dropdown-root'),
+      name,
+      onBlur,
+      onChange,
+      options: formattedOptions,
+      placeholder,
+      value,
+    };
+  };
+
+  return creatable ? <ReactSelectCreatable {...getSharedSelectProps()} /> : <ReactSelect {...getSharedSelectProps()} />;
 };
 
 export default Select;
