@@ -15,15 +15,14 @@ const AccountOverview: FC = () => {
   const {accountNumber} = useParams();
   const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [signingKeyVisible, toggleSigningKeyVisible] = useBooleanState(false);
+  const [signingKeyVisible, toggleSigningKeyVisible, , setSigningKeyVisibleFalse] = useBooleanState(false);
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
   const managedAccounts = useSelector(getManagedAccounts);
   const managedAccount = managedAccounts[accountNumber];
 
   useEffect(() => {
-    if (signingKeyVisible) toggleSigningKeyVisible();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accountNumber]);
+    setSigningKeyVisibleFalse();
+  }, [accountNumber, setSigningKeyVisibleFalse]);
 
   useEffect(() => {
     if (!activePrimaryValidator) return;
