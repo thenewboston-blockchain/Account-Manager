@@ -1,5 +1,6 @@
 import React, {FC, useMemo} from 'react';
 
+import AccountNumberLink from '@renderer/components/AccountNumberLink';
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
@@ -31,7 +32,7 @@ const BankValidators: FC = () => {
     () =>
       bankValidators.map((validator) => ({
         key: validator.node_identifier,
-        [TableKeys.accountNumber]: validator.account_number,
+        [TableKeys.accountNumber]: <AccountNumberLink accountNumber={validator.account_number} />,
         [TableKeys.dailyConfirmationRate]: validator.daily_confirmation_rate,
         [TableKeys.defaultTransactionFee]: validator.default_transaction_fee,
         [TableKeys.ipAddress]: validator.ip_address,

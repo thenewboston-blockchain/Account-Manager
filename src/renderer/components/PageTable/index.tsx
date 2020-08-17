@@ -12,7 +12,7 @@ interface Header {
 
 export interface PageTableData {
   key: string;
-  [tableKey: string]: string | number | null | undefined;
+  [tableKey: string]: ReactNode;
 }
 
 export interface PageTableItems {

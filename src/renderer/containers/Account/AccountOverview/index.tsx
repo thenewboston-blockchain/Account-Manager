@@ -32,7 +32,7 @@ const AccountOverview: FC = () => {
       const address = formatAddress(ipAddress, port, protocol);
 
       setLoading(true);
-      const {data} = await axios.get(`${address}/account_balance/${accountNumber}`);
+      const {data} = await axios.get(`${address}/accounts/${accountNumber}/balance`);
       setBalance(data.balance);
       setLoading(false);
     };
@@ -65,6 +65,13 @@ const AccountOverview: FC = () => {
     return items;
   };
 
+  const renderAccountNumber = (): ReactNode => (
+    <>
+      <div>{loading ? '-' : accountNumber}</div>
+      <Qr className="AccountOverview__qr" text={accountNumber} width={120} />
+    </>
+  );
+
   const renderSigningKey = () => {
     if (!managedAccount) return null;
     return (
@@ -88,13 +95,6 @@ const AccountOverview: FC = () => {
       </span>
     );
   };
-
-  const renderAccountNumber = (): ReactNode => (
-    <>
-      <div>{loading ? '-' : accountNumber}</div>
-      <Qr className="AccountOverview__qr" text={accountNumber} width={120} />
-    </>
-  );
 
   return (
     <div className="AccountOverview">
