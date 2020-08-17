@@ -32,7 +32,7 @@ const AccountOverview: FC = () => {
       const address = formatAddress(ipAddress, port, protocol);
 
       setLoading(true);
-      const {data} = await axios.get(`${address}/account_balance/${accountNumber}`);
+      const {data} = await axios.get(`${address}/accounts/${accountNumber}/balance`);
       setBalance(data.balance);
       setLoading(false);
     };
