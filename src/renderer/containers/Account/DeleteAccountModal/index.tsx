@@ -11,23 +11,24 @@ import './DeleteAccountModal.scss';
 
 interface ComponentProps {
   accountNumber: string;
-  toggleDeleteModal(): void;
+  close(): void;
 }
 
-const DeleteAccountModal: FC<ComponentProps> = ({accountNumber, toggleDeleteModal}) => {
+const DeleteAccountModal: FC<ComponentProps> = ({accountNumber, close}) => {
   const dispatch = useDispatch<AppDispatch>();
   const managedAccounts = useSelector(getManagedAccounts);
 
   const handleSubmit = async (): Promise<void> => {
     const account = managedAccounts[accountNumber];
     dispatch(unsetManagedAccount(account));
+    close();
   };
 
   return (
     <Modal
       cancelButton="Cancel"
       className="DeleteAccountModal"
-      close={toggleDeleteModal}
+      close={close}
       header={
         <>
           <Icon className="DeleteAccountModal__icon" icon={IconType.alert} />

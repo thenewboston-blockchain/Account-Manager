@@ -1,5 +1,6 @@
 import React, {FC, useMemo} from 'react';
 
+import AccountNumberLink from '@renderer/components/AccountNumberLink';
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
@@ -27,8 +28,8 @@ const BankTransactions: FC = () => {
         [TableKeys.amount]: bankTransaction.amount,
         [TableKeys.block]: bankTransaction.block.id,
         [TableKeys.id]: bankTransaction.id,
-        [TableKeys.recipient]: bankTransaction.recipient,
-        [TableKeys.sender]: bankTransaction.block.sender,
+        [TableKeys.recipient]: <AccountNumberLink accountNumber={bankTransaction.recipient} />,
+        [TableKeys.sender]: <AccountNumberLink accountNumber={bankTransaction.block.sender} />,
       })) || [],
     [bankBankTransactions],
   );
