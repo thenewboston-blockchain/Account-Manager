@@ -79,11 +79,11 @@ const Connect: FC = () => {
       >
         <FormSelect
           className="Connect__field"
-          isSearchable={false}
           label="Protocol"
           name="protocol"
           options={protocolOptions}
           required
+          searchable={false}
         />
         <FormInput className="Connect__field" label="IP Address" name="ipAddress" required />
         <FormInput className="Connect__field" label="Port" name="port" type="number" />
@@ -92,7 +92,6 @@ const Connect: FC = () => {
         <FormButton ignoreDirty submitting={submitting} type="submit">
           Connect
         </FormButton>
-        <FormButton onClick={() => toast.error('Wow so easy!')}>Toast</FormButton>
       </Form>
     </div>
   );

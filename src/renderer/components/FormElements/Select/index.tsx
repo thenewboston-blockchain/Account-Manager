@@ -13,16 +13,16 @@ import './Select.scss';
 
 export interface BaseSelectProps {
   className?: string;
+  clearable?: boolean;
   creatable?: boolean;
   disabled?: boolean;
   error?: boolean;
-  isClearable?: boolean;
-  isSearchable?: boolean;
   name?: string;
   onBlur?: FocusEventHandler;
-  onChange?(value?: ValueType<InputOption>, actionMeta?: ActionMeta<InputOption>): void;
+  onChange?(value: ValueType<InputOption>, actionMeta?: ActionMeta<InputOption>): void;
   options: InputOption[];
   placeholder?: string;
+  searchable?: boolean;
   value?: InputOption | null;
 }
 
@@ -33,13 +33,13 @@ interface ComponentProps extends BaseSelectProps {
 
 const Select: FC<ComponentProps> = ({
   className,
+  clearable = false,
   creatable = false,
   disabled = false,
   error = false,
   filterOption,
   formatOptionLabel,
-  isClearable = false,
-  isSearchable = true,
+  searchable = true,
   name,
   onBlur,
   onChange,
@@ -69,9 +69,9 @@ const Select: FC<ComponentProps> = ({
       filterOption,
       formatOptionLabel,
       getOptionLabel,
-      isClearable,
+      isClearable: clearable,
       isDisabled: disabled,
-      isSearchable,
+      isSearchable: searchable,
       menuPortalTarget: document.getElementById('dropdown-root'),
       name,
       onBlur,
@@ -85,7 +85,7 @@ const Select: FC<ComponentProps> = ({
 
   const handleKeyDown = (e: any) => {
     if (!e.target.value && e.key === 'Backspace') {
-      onChange?.();
+      onChange?.(null);
     }
   };
 
