@@ -1,9 +1,5 @@
-/* eslint-disable func-names */
-/* eslint-disable react/no-this-in-sfc */
-
-import React, {FC, ReactNode, useMemo} from 'react';
+import React, {FC, ReactNode, useCallback, useMemo} from 'react';
 import {useSelector} from 'react-redux';
-import * as Yup from 'yup';
 import axios from 'axios';
 
 import {FormButton} from '@renderer/components/FormComponents';
@@ -14,12 +10,13 @@ import {Tx} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {calculateTotalCost} from '@renderer/utils/transactions';
+import yup from '@renderer/utils/yup';
 
 import SendPointsModalFields, {INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendPointsModalFields';
 import './SendPointsModal.scss';
 
 const initialValues = {
-  points: '0.00',
+  points: '',
   recipientAccountNumber: '',
   senderAccountNumber: '',
 };
@@ -34,6 +31,20 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
   const activeBank = useSelector(getActiveBankConfig)!;
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
   const managedAccounts = useSelector(getManagedAccounts);
+
+  const checkPointsWithBalance = useCallback(
+    (points: number, accountNumber: string): boolean => {
+      if (!accountNumber || !points) return true;
+      const {balance} = managedAccounts[accountNumber];
+      const totalCost = calculateTotalCost({
+        bankTxFee: activeBank.default_transaction_fee,
+        points,
+        validatorTxFee: activePrimaryValidator.default_transaction_fee,
+      });
+      return totalCost <= parseFloat(balance);
+    },
+    [activeBank.default_transaction_fee, activePrimaryValidator.default_transaction_fee, managedAccounts],
+  );
 
   const createBlock = async (recipientAccountNumber: string, senderAccountNumber: string, txs: Tx[]): Promise<void> => {
     const {signing_key: signingKeyHex} = managedAccounts[senderAccountNumber];
@@ -55,7 +66,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
     const address = formatAddress(ipAddress, port, protocol);
     const {
       data: {balance_lock: balanceLock},
-    } = await axios.get(`${address}/account_balance_lock/${accountNumber}`);
+    } = await axios.get(`${address}/accounts/${accountNumber}/balance_lock`);
     return balanceLock;
   };
 
@@ -97,32 +108,21 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
   };
 
   const validationSchema = useMemo(() => {
-    return Yup.object().shape({
-      points: Yup.number()
-        .moreThan(0, 'Must be greater than 0')
-        .required('This field is required')
-        .test('invalid-amount', INVALID_AMOUNT_ERROR, function (value) {
-          if (!this.parent.senderAccountNumber) return true;
-          const {balance} = managedAccounts[this.parent.senderAccountNumber];
-          const totalCost = calculateTotalCost({
-            bankTxFee: activeBank.default_transaction_fee,
-            points: value,
-            validatorTxFee: activePrimaryValidator.default_transaction_fee,
-          });
-          return totalCost <= parseFloat(balance);
-        }),
-      recipientAccountNumber: Yup.string()
-        .required('This field is required')
-        .test('accounts-match', MATCH_ERROR, function (value) {
-          return value !== this.parent.senderAccountNumber;
-        }),
-      senderAccountNumber: Yup.string()
-        .required('This field is required')
-        .test('accounts-match', MATCH_ERROR, function (value) {
-          return value !== this.parent.recipientAccountNumber;
-        }),
+    const senderAccountNumberRef = yup.ref('senderAccountNumber');
+
+    return yup.object().shape({
+      points: yup
+        .number()
+        .callbackWithRef(senderAccountNumberRef, checkPointsWithBalance, INVALID_AMOUNT_ERROR)
+        .moreThan(0, 'Points must be greater than 0')
+        .required('Points is a required field'),
+      recipientAccountNumber: yup
+        .string()
+        .notEqualTo(senderAccountNumberRef, MATCH_ERROR)
+        .required('This field is required'),
+      senderAccountNumber: yup.string().required('This field is required'),
     });
-  }, [activeBank, activePrimaryValidator, managedAccounts]);
+  }, [checkPointsWithBalance]);
 
   return (
     <Modal
@@ -134,7 +134,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
-      <SendPointsModalFields managedAccounts={managedAccounts} />
+      <SendPointsModalFields />
     </Modal>
   );
 };
