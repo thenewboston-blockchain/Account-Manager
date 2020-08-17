@@ -1,6 +1,10 @@
 .AccountOverview {
   padding: var(--page-padding);
 
+  &__balance {
+    color: var(--color-tertiary);
+  }
+
   &__qr {
     margin-top: 6px;
   }
