@@ -1,80 +1,97 @@
-import React, {FC, ReactNode} from 'react';
-import * as Yup from 'yup';
+import React, {FC, ReactNode, useCallback, useMemo} from 'react';
+import {useSelector} from 'react-redux';
 import axios from 'axios';
 
-import {FormButton, FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
+import {FormButton} from '@renderer/components/FormComponents';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
-import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
-import {InputOption, Tx} from '@renderer/types';
+import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
+import {Tx} from '@renderer/types';
+import {formatAddress} from '@renderer/utils/address';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
+import {calculateTotalCost} from '@renderer/utils/transactions';
+import yup from '@renderer/utils/yup';
 
+import SendPointsModalFields, {INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendPointsModalFields';
 import './SendPointsModal.scss';
 
 const initialValues = {
-  fromAccount: '',
-  points: '0.00',
-  toAccount: '',
+  points: '',
+  recipientAccountNumber: '',
+  senderAccountNumber: '',
 };
 
-const validationSchema = Yup.object().shape({
-  fromAccount: Yup.string().required('This field is required'),
-  points: Yup.number().moreThan(0, 'Must be greater than 0').required('This field is required'),
-  toAccount: Yup.string().required('This field is required'),
-});
-
 type FormValues = typeof initialValues;
-
-const accountFromSelectFieldOptions: InputOption[] = [
-  '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
-  '2cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdq',
-  '4cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdw',
-  '3cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acde',
-  '5cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdr',
-  '6cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdt',
-].map((acc) => ({label: 'Amy', value: acc}));
-
-const accountToSelectFieldOptions: InputOption[] = [
-  '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
-  '2cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdq',
-  '4cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdw',
-].map((acc) => ({label: 'Amy', value: acc}));
 
 interface ComponentProps {
   close(): void;
 }
 
-const txs: Tx[] = [
-  {
-    amount: 5.5,
-    recipient: '484b3176c63d5f37d808404af1a12c4b9649cd6f6769f35bdf5a816133623fbc',
-  },
-  {
-    amount: 1,
-    recipient: '5e12967707909e62b2bb2036c209085a784fabbc3deccefee70052b6181c8ed8',
-  },
-  {
-    amount: 4,
-    recipient: 'ad1f8845c6a1abb6011a2a434a079a087c460657aad54329a84b406dce8bf314',
-  },
-];
-
 const SendPointsModal: FC<ComponentProps> = ({close}) => {
-  const createBlock = async (): Promise<void> => {
-    const signingKeyHex = '4e5804d995d5ab84afb85154d7645c73c8fedb80723a262787c2428e59051b58';
+  const activeBank = useSelector(getActiveBankConfig)!;
+  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
+  const managedAccounts = useSelector(getManagedAccounts);
+
+  const checkPointsWithBalance = useCallback(
+    (points: number, accountNumber: string): boolean => {
+      if (!accountNumber || !points) return true;
+      const {balance} = managedAccounts[accountNumber];
+      const totalCost = calculateTotalCost({
+        bankTxFee: activeBank.default_transaction_fee,
+        points,
+        validatorTxFee: activePrimaryValidator.default_transaction_fee,
+      });
+      return totalCost <= parseFloat(balance);
+    },
+    [activeBank.default_transaction_fee, activePrimaryValidator.default_transaction_fee, managedAccounts],
+  );
+
+  const createBlock = async (recipientAccountNumber: string, senderAccountNumber: string, txs: Tx[]): Promise<void> => {
+    const {signing_key: signingKeyHex} = managedAccounts[senderAccountNumber];
     const {accountNumberHex, signingKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
-    const balanceLock = 'c88d1b0d55f430b66ad603993b76d7e9bd147b7209e13b2bb548fb680905dc8d';
+    const balanceLock = await fetchAccountBalanceLock(senderAccountNumber);
+
+    const {ip_address: ipAddress, port, protocol} = activeBank;
+    const address = formatAddress(ipAddress, port, protocol);
     const block = generateBlock(accountNumberHex, balanceLock, signingKey, txs);
-    const response = await axios.post('http://167.99.173.247/blocks', block, {
+    await axios.post(`${address}/blocks`, block, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    console.error(response);
   };
 
-  const handleSubmit = ({points}: FormValues): void => {
-    console.log(points);
+  const fetchAccountBalanceLock = async (accountNumber: string): Promise<string> => {
+    const {ip_address: ipAddress, port, protocol} = activePrimaryValidator;
+    const address = formatAddress(ipAddress, port, protocol);
+    const {
+      data: {balance_lock: balanceLock},
+    } = await axios.get(`${address}/account_balance_lock/${accountNumber}`);
+    return balanceLock;
+  };
+
+  const handleSubmit = async ({points, recipientAccountNumber, senderAccountNumber}: FormValues): Promise<void> => {
+    const txs: Tx[] = [
+      {
+        amount: points,
+        recipient: recipientAccountNumber,
+      },
+      {
+        amount: activeBank.default_transaction_fee,
+        recipient: activeBank.account_number,
+      },
+      {
+        amount: activePrimaryValidator.default_transaction_fee,
+        recipient: activePrimaryValidator.account_number,
+      },
+    ];
+
+    try {
+      await createBlock(recipientAccountNumber, senderAccountNumber, txs);
+      close();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const renderFooter = (): ReactNode => {
@@ -90,6 +107,23 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
     );
   };
 
+  const validationSchema = useMemo(() => {
+    const senderAccountNumberRef = yup.ref('senderAccountNumber');
+
+    return yup.object().shape({
+      points: yup
+        .number()
+        .callbackWithRef(senderAccountNumberRef, checkPointsWithBalance, INVALID_AMOUNT_ERROR)
+        .moreThan(0, 'Points must be greater than 0')
+        .required('Points is a required field'),
+      recipientAccountNumber: yup
+        .string()
+        .notEqualTo(senderAccountNumberRef, MATCH_ERROR)
+        .required('This field is required'),
+      senderAccountNumber: yup.string().required('This field is required'),
+    });
+  }, [checkPointsWithBalance]);
+
   return (
     <Modal
       className="SendPointsModal"
@@ -100,61 +134,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
     >
-      <>
-        <FormSelectDetailed
-          className="SendPointsModal__select"
-          required
-          label="From: Account"
-          options={accountFromSelectFieldOptions}
-          name="fromAccount"
-        />
-        <FormSelectDetailed
-          className="SendPointsModal__select"
-          required
-          label="To: Friend"
-          options={accountToSelectFieldOptions}
-          name="toAccount"
-        />
-        <table className="SendPointsModal__table">
-          <tbody>
-            <tr>
-              <td>Account Balance</td>
-              <td>
-                <span className="SendPointsModal__account-balance">0.00</span>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Points
-                <RequiredAsterisk />
-              </td>
-              <td>
-                <FormInput
-                  className="SendPointsModal__points-input"
-                  hideError
-                  name="points"
-                  placeholder="0.00"
-                  type="number"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>Bank Registration Fee</td>
-              <td>0.01</td>
-            </tr>
-            <tr>
-              <td>Validator Tx Fee</td>
-              <td>0.02</td>
-            </tr>
-            <tr className="SendPointsModal__total-tr">
-              <td>TOTAL Tx</td>
-              <td>
-                <b>0.00</b>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </>
+      <SendPointsModalFields />
     </Modal>
   );
 };

@@ -1,6 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 import {useSelector} from 'react-redux';
-import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
+import {Route, Switch, useHistory, useParams, useRouteMatch} from 'react-router-dom';
 import noop from 'lodash/noop';
 
 import AccountOverview from '@renderer/containers/Account/AccountOverview';
@@ -12,7 +12,8 @@ import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {useBooleanState} from '@renderer/hooks';
-import {getManagedAccounts} from '@renderer/selectors';
+import {getActiveBankConfig, getManagedAccounts} from '@renderer/selectors';
+import {formatPathFromNode} from '@renderer/utils/address';
 
 import SendPointsModal from './SendPointsModal';
 
@@ -23,8 +24,15 @@ const Account: FC = () => {
   const {path, url} = useRouteMatch();
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
+  const activeBankConfig = useSelector(getActiveBankConfig)!;
+  const history = useHistory();
   const managedAccounts = useSelector(getManagedAccounts);
   const account = managedAccounts[accountNumber];
+
+  if (!account) {
+    history.push(`/banks/${formatPathFromNode(activeBankConfig)}/overview`);
+    return null;
+  }
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {

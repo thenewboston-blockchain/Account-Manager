@@ -16,7 +16,7 @@ interface BaseRadioGroupProps extends Omit<BaseRadioProps, 'checked'> {
 
 type ComponentProps = BaseFormComponentProps<BaseRadioGroupProps>;
 
-const FormRadioGroup: FC<ComponentProps> = ({hideError = false, label, options, required, ...baseRadioProps}) => {
+const FormRadioGroup: FC<ComponentProps> = ({hideErrorText = false, label, options, required, ...baseRadioProps}) => {
   const {className, name} = baseRadioProps;
   const {errors, setFieldTouched, setFieldValue, touched, values} = useFormContext();
   const error = !!errors[name] && !!touched[name];
@@ -59,7 +59,7 @@ const FormRadioGroup: FC<ComponentProps> = ({hideError = false, label, options, 
           </div>
         );
       })}
-      {hideError ? null : renderFormError(name, className)}
+      {renderFormError(name, className, hideErrorText)}
     </div>
   );
 };

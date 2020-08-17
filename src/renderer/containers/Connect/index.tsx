@@ -2,13 +2,13 @@ import React, {FC, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {toast} from 'react-toastify';
-import * as Yup from 'yup';
 
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch, ProtocolType, InputOption} from '@renderer/types';
+import yup from '@renderer/utils/yup';
 
 import './Connect.scss';
 
@@ -25,13 +25,14 @@ const protocolOptions: InputOption[] = [{value: 'http'}, {value: 'https'}];
 
 const genericIpAddressRegex = /([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(\d{1,3}\.){3}\d{1,3}/;
 
-const validationSchema = Yup.object().shape({
-  ipAddress: Yup.string()
+const validationSchema = yup.object().shape({
+  ipAddress: yup
+    .string()
     .required('This field is required')
     .matches(genericIpAddressRegex, {excludeEmptyString: true, message: 'IPv4 or IPv6 addresses only'}),
-  nickname: Yup.string(),
-  port: Yup.number().integer(),
-  protocol: Yup.string().required(),
+  nickname: yup.string(),
+  port: yup.number().integer(),
+  protocol: yup.string().required(),
 });
 
 const Connect: FC = () => {

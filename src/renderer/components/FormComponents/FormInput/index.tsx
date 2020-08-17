@@ -11,7 +11,13 @@ import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
 
 type ComponentProps = BaseFormComponentProps<BaseInputProps>;
 
-const FormInput: FC<ComponentProps> = ({hideError = false, label, required, ...baseInputProps}) => {
+const FormInput: FC<ComponentProps> = ({
+  hideErrorBlock = false,
+  hideErrorText = false,
+  label,
+  required,
+  ...baseInputProps
+}) => {
   const {className, name} = baseInputProps;
   const {errors, touched} = useFormContext();
   const error = !!errors[name] && !!touched[name];
@@ -20,7 +26,7 @@ const FormInput: FC<ComponentProps> = ({hideError = false, label, required, ...b
     <div className={clsx('FormInput FormFieldComponent', className)}>
       {renderFormLabel(name, className, label, required)}
       <Field {...baseInputProps} as={Input} className="FormField" error={error} required={required} />
-      {hideError ? null : renderFormError(name, className)}
+      {hideErrorBlock ? null : renderFormError(name, className, hideErrorText)}
     </div>
   );
 };

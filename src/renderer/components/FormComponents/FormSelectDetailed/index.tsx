@@ -10,7 +10,7 @@ import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
 
 type ComponentProps = BaseFormComponentProps<BaseSelectProps>;
 
-const FormSelectDetailed: FC<ComponentProps> = ({hideError = false, label, required, ...baseSelectProps}) => {
+const FormSelectDetailed: FC<ComponentProps> = ({hideErrorText = false, label, required, ...baseSelectProps}) => {
   const {className, name, options} = baseSelectProps;
   const {error, handleBlur, handleChange, selectedOption} = useFormSelect(name, options);
 
@@ -25,7 +25,7 @@ const FormSelectDetailed: FC<ComponentProps> = ({hideError = false, label, requi
         onChange={handleChange}
         value={selectedOption}
       />
-      {hideError ? null : renderFormError(name, className)}
+      {renderFormError(name, className, hideErrorText)}
     </div>
   );
 };

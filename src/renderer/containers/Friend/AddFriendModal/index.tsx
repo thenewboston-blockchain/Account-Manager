@@ -1,12 +1,12 @@
 import React, {FC} from 'react';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
-import * as Yup from 'yup';
 
 import {FormInput, FormTextArea} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import {createFriend} from '@renderer/store/old/friends';
 import {AppDispatch} from '@renderer/types';
+import yup from '@renderer/utils/yup';
 
 import './AddFriendModal.scss';
 
@@ -15,9 +15,9 @@ const initialValues = {
   friendNickname: '',
 };
 
-const validationSchema = Yup.object().shape({
-  accountNumber: Yup.string().required('This field is required'),
-  friendNickname: Yup.string().required('This field is required'),
+const validationSchema = yup.object().shape({
+  accountNumber: yup.string().required('This field is required'),
+  friendNickname: yup.string().required('This field is required'),
 });
 
 type FormValues = typeof initialValues;

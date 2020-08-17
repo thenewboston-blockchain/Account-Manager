@@ -6,6 +6,7 @@ interface Values {
 
 interface UseFormContextOutput {
   errors: FormikErrors<Values>;
+  isValid: boolean;
   setFieldTouched(field: string, isTouched?: boolean, shouldValidate?: boolean): void;
   setFieldValue(field: string, value: any, shouldValidate?: boolean): void;
   touched: FormikTouched<Values>;
@@ -13,10 +14,11 @@ interface UseFormContextOutput {
 }
 
 const useFormContext = (): UseFormContextOutput => {
-  const {errors, setFieldTouched, setFieldValue, touched, values} = useFormikContext<Values>();
+  const {errors, isValid, setFieldTouched, setFieldValue, touched, values} = useFormikContext<Values>();
 
   return {
     errors,
+    isValid,
     setFieldTouched,
     setFieldValue,
     touched,
