@@ -66,7 +66,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
     const address = formatAddress(ipAddress, port, protocol);
     const {
       data: {balance_lock: balanceLock},
-    } = await axios.get(`${address}/account_balance_lock/${accountNumber}`);
+    } = await axios.get(`${address}/accounts/${accountNumber}/balance_lock`);
     return balanceLock;
   };
 
