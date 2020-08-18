@@ -1,6 +1,7 @@
 import React, {FC, ReactNode, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-dom';
+import noop from 'lodash/noop';
 
 import {Button} from '@renderer/components/FormElements';
 import PageHeader from '@renderer/components/PageHeader';
@@ -14,6 +15,7 @@ import {getActivePrimaryValidator} from '@renderer/selectors';
 import {getIsActivePrimaryValidator} from '@renderer/utils/validators';
 
 import './Validator.scss';
+import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 
 const Validator: FC = () => {
   const {ipAddress, port, protocol} = useParams();
@@ -23,6 +25,13 @@ const Validator: FC = () => {
     () => getIsActivePrimaryValidator(activePrimaryValidator, ipAddress, port, protocol),
     [activePrimaryValidator, ipAddress, port, protocol],
   );
+
+  const dropdownMenuOptions: DropdownMenuOption[] = [
+    {
+      label: 'Sample',
+      onClick: noop,
+    },
+  ];
 
   const renderRightPageHeaderButtons = (): ReactNode => {
     if (isActivePrimaryValidator) return null;
@@ -62,7 +71,12 @@ const Validator: FC = () => {
 
   const renderTop = (): ReactNode => (
     <>
-      <PageHeader rightContent={renderRightPageHeaderButtons()} title={renderValidatorTitle()} trustScore={94.21} />
+      <PageHeader
+        dropdownMenuOptions={dropdownMenuOptions}
+        rightContent={renderRightPageHeaderButtons()}
+        title={renderValidatorTitle()}
+        trustScore={94.21}
+      />
       <PageTabs
         baseUrl={url}
         items={[

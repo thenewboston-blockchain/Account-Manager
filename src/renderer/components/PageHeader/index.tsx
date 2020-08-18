@@ -1,6 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 
-import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import DropdownMenuButton, {DropdownMenuOption, DropdownMenuDirection} from '@renderer/components/DropdownMenuButton';
 import TrustBadge from '@renderer/components/TrustBadge';
 
 import './PageHeader.scss';
@@ -18,9 +18,19 @@ const PageHeader: FC<ComponentProps> = ({dropdownMenuOptions, rightContent, titl
       <div className="PageHeader__left-section">
         <h1 className="PageHeader__title">{title}</h1>
         {trustScore ? <TrustBadge className="PageHeader__TrustBadge" score={trustScore} /> : null}
-        {dropdownMenuOptions ? <DropdownMenuButton options={dropdownMenuOptions} /> : null}
       </div>
-      {rightContent && <div className="PageHeader__right-section">{rightContent}</div>}
+      {(dropdownMenuOptions || rightContent) && (
+        <div className="PageHeader__right-section">
+          {rightContent}
+          {dropdownMenuOptions ? (
+            <DropdownMenuButton
+              className="PageHeader__DropdownMenuButton"
+              direction={DropdownMenuDirection.left}
+              options={dropdownMenuOptions}
+            />
+          ) : null}
+        </div>
+      )}
     </div>
   );
 };

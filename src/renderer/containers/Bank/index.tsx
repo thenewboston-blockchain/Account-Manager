@@ -17,7 +17,6 @@ import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-
 import {useBooleanState} from '@renderer/hooks';
 
 import './Bank.scss';
