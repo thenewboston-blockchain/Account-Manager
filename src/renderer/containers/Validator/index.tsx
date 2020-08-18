@@ -13,7 +13,7 @@ import ValidatorBanks from '@renderer/containers/Validator/ValidatorBanks';
 import ValidatorOverview from '@renderer/containers/Validator/ValidatorOverview';
 import ValidatorValidators from '@renderer/containers/Validator/ValidatorValidators';
 import {getActivePrimaryValidator, getManagedValidators} from '@renderer/selectors';
-import {setManagedValidator} from '@renderer/store/app';
+import {setManagedValidator, unsetManagedValidator} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
 import {getIsActivePrimaryValidator, getIsManagedValidator} from '@renderer/utils/validators';
 
@@ -36,16 +36,30 @@ const Validator: FC = () => {
     protocol,
   ]);
 
-  const dropdownMenuOptions: DropdownMenuOption[] = [
-    {
-      label: 'Sample',
-      onClick: noop,
-    },
-  ];
+  const getDropdownMenuOptions = (): DropdownMenuOption[] => {
+    if (!isManagedValidator) return [];
+    return [
+      {
+        label: 'Remove Validator',
+        onClick: handleRemoveManagedValidator,
+      },
+    ];
+  };
 
   const handleAddManagedValidator = (): void => {
     dispatch(
       setManagedValidator({
+        ip_address: ipAddress,
+        nickname: '',
+        port,
+        protocol,
+      }),
+    );
+  };
+
+  const handleRemoveManagedValidator = (): void => {
+    dispatch(
+      unsetManagedValidator({
         ip_address: ipAddress,
         nickname: '',
         port,
@@ -93,7 +107,7 @@ const Validator: FC = () => {
   const renderTop = (): ReactNode => (
     <>
       <PageHeader
-        dropdownMenuOptions={dropdownMenuOptions}
+        dropdownMenuOptions={getDropdownMenuOptions()}
         rightContent={renderRightPageHeaderButtons()}
         title={renderValidatorTitle()}
         trustScore={94.21}

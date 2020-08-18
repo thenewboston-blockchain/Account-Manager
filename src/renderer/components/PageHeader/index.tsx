@@ -19,10 +19,10 @@ const PageHeader: FC<ComponentProps> = ({dropdownMenuOptions, rightContent, titl
         <h1 className="PageHeader__title">{title}</h1>
         {trustScore ? <TrustBadge className="PageHeader__TrustBadge" score={trustScore} /> : null}
       </div>
-      {(dropdownMenuOptions || rightContent) && (
+      {(dropdownMenuOptions?.length || rightContent) && (
         <div className="PageHeader__right-section">
           {rightContent}
-          {dropdownMenuOptions ? (
+          {dropdownMenuOptions?.length ? (
             <DropdownMenuButton
               className="PageHeader__DropdownMenuButton"
               direction={DropdownMenuDirection.left}
