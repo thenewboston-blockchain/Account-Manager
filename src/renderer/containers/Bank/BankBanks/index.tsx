@@ -2,6 +2,7 @@ import React, {FC, useMemo} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
 import {Loader} from '@renderer/components/FormElements';
+import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {BANK_BANKS} from '@renderer/constants';
@@ -30,7 +31,7 @@ const BankBanks: FC = () => {
         key: bank.node_identifier,
         [TableKeys.accountNumber]: <AccountLink accountNumber={bank.account_number} />,
         [TableKeys.defaultTransactionFee]: bank.default_transaction_fee,
-        [TableKeys.ipAddress]: bank.ip_address,
+        [TableKeys.ipAddress]: <NodeLink node={bank} urlBase="bank" />,
         [TableKeys.nodeIdentifier]: bank.node_identifier,
         [TableKeys.port]: bank.port,
         [TableKeys.protocol]: bank.protocol,
