@@ -104,16 +104,16 @@ const LeftMenu: FC = () => {
     if (!activePrimaryValidator) return [];
     return [
       {
-        baseUrl: `/validator/${activePrimaryValidator.node_identifier}/banks`,
+        baseUrl: `/validator/${formatPathFromNode(activePrimaryValidator)}/banks`,
         key: 'Banks',
         label: 'Banks',
-        to: `/validator/${activePrimaryValidator.node_identifier}/banks`,
+        to: `/validator/${formatPathFromNode(activePrimaryValidator)}/banks`,
       },
       {
-        baseUrl: `/validator/${activePrimaryValidator.node_identifier}/validators`,
+        baseUrl: `/validator/${formatPathFromNode(activePrimaryValidator)}/validators`,
         key: 'Validators',
         label: 'Validators',
-        to: `/validator/${activePrimaryValidator.node_identifier}/validators`,
+        to: `/validator/${formatPathFromNode(activePrimaryValidator)}/validators`,
       },
     ].map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
   };
