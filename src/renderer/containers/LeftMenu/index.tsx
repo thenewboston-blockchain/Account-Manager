@@ -16,7 +16,7 @@ import {
   getManagedValidators,
 } from '@renderer/selectors';
 import {unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
-import {AppDispatch, AppNodeAddressData, ManagedAccount, RootState} from '@renderer/types';
+import {AppDispatch, AppNodeAddressData, ManagedAccount, ManagedValidator, RootState} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
 
 import LeftSubmenu from './LeftSubmenu';
@@ -119,7 +119,7 @@ const LeftMenu: FC = () => {
 
   const getValidatorMenuItems = (): ReactNode[] => {
     return Object.values(managedValidators)
-      .map((managedValidator: AppNodeAddressData) => ({
+      .map((managedValidator: ManagedValidator) => ({
         baseUrl: `/validator/${formatPathFromNode(managedValidator)}`,
         key: managedValidator.ip_address,
         label: managedValidator.ip_address,

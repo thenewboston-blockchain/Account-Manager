@@ -3,12 +3,13 @@ import {PayloadAction} from '@reduxjs/toolkit';
 import localStore from '@renderer/store/localStore';
 import {
   AccountNumber,
-  AppNodeAddressData,
+  AddressData,
   DictWithDataAndError,
   DictWithError,
   DictWithPaginatedResultsAndError,
   ManagedAccount,
   ManagedFriend,
+  ManagedValidator,
   NodeIdentifier,
   PaginatedResults,
 } from '@renderer/types';
@@ -87,7 +88,7 @@ export function setDataErrorReducer() {
   };
 }
 
-export function setNodeLocalAndStateReducer<T extends AppNodeAddressData>() {
+export function setNodeLocalAndStateReducer<T extends AddressData>() {
   return (state: any, {payload}: PayloadAction<T>) => {
     const {ip_address: ipAddress, port, protocol} = payload;
     const key = formatAddress(ipAddress, port, protocol);
@@ -154,7 +155,7 @@ export function unsetAccountLocalAndStateReducer() {
 }
 
 export function unsetNodeLocalAndStateReducer() {
-  return (state: any, {payload: {ip_address: ipAddress, port, protocol}}: PayloadAction<AppNodeAddressData>) => {
+  return (state: any, {payload: {ip_address: ipAddress, port, protocol}}: PayloadAction<ManagedValidator>) => {
     const key = formatAddress(ipAddress, port, protocol);
     delete state[key];
     localStore.set(getStateName(MANAGED_ACCOUNTS), state);

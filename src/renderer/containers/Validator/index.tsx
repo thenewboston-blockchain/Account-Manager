@@ -1,8 +1,9 @@
 import React, {FC, ReactNode, useMemo} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-dom';
 import noop from 'lodash/noop';
 
+import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {Button} from '@renderer/components/FormElements';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
@@ -12,15 +13,17 @@ import ValidatorBanks from '@renderer/containers/Validator/ValidatorBanks';
 import ValidatorOverview from '@renderer/containers/Validator/ValidatorOverview';
 import ValidatorValidators from '@renderer/containers/Validator/ValidatorValidators';
 import {getActivePrimaryValidator} from '@renderer/selectors';
+import {setManagedValidator} from '@renderer/store/app';
+import {AppDispatch} from '@renderer/types';
 import {getIsActivePrimaryValidator} from '@renderer/utils/validators';
 
 import './Validator.scss';
-import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 
 const Validator: FC = () => {
   const {ipAddress, port, protocol} = useParams();
   const {path, url} = useRouteMatch();
   const activePrimaryValidator = useSelector(getActivePrimaryValidator)!;
+  const dispatch = useDispatch<AppDispatch>();
   const isActivePrimaryValidator = useMemo(
     () => getIsActivePrimaryValidator(activePrimaryValidator, ipAddress, port, protocol),
     [activePrimaryValidator, ipAddress, port, protocol],
@@ -33,9 +36,20 @@ const Validator: FC = () => {
     },
   ];
 
+  const handleAddManagedValidator = (): void => {
+    dispatch(
+      setManagedValidator({
+        ip_address: ipAddress,
+        nickname: '',
+        port,
+        protocol,
+      }),
+    );
+  };
+
   const renderRightPageHeaderButtons = (): ReactNode => {
     if (isActivePrimaryValidator) return null;
-    return <Button>Add to Managed Validators</Button>;
+    return <Button onClick={handleAddManagedValidator}>Add to Managed Validators</Button>;
   };
 
   const renderTabContent = (): ReactNode => {
