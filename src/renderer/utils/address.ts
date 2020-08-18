@@ -1,4 +1,4 @@
-import {ParsedUrlQuery, parse, stringify} from 'querystring';
+import {parse, ParsedUrlQuery, stringify} from 'querystring';
 import {AddressData} from '@renderer/types';
 
 export const formatAddress = (ipAddress: string, port: number | string | null, protocol: string): string => {
