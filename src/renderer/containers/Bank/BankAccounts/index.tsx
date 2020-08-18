@@ -1,6 +1,6 @@
 import React, {FC, useMemo} from 'react';
 
-import AccountNumberLink from '@renderer/components/AccountNumberLink';
+import AccountLink from '@renderer/components/AccountLink';
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
@@ -25,7 +25,7 @@ const BankAccounts: FC = () => {
     () =>
       bankAccounts.map((account) => ({
         key: account.account_number,
-        [TableKeys.accountNumber]: <AccountNumberLink accountNumber={account.account_number} />,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={account.account_number} />,
         [TableKeys.createdDate]: account.created_date,
         [TableKeys.id]: account.id,
         [TableKeys.modifiedDate]: account.modified_date,
