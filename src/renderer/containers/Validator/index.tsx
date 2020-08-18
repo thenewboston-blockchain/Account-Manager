@@ -1,4 +1,5 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useMemo} from 'react';
+import {useSelector} from 'react-redux';
 import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-dom';
 
 import {Button} from '@renderer/components/FormElements';
@@ -9,14 +10,24 @@ import ValidatorAccounts from '@renderer/containers/Validator/ValidatorAccounts'
 import ValidatorBanks from '@renderer/containers/Validator/ValidatorBanks';
 import ValidatorOverview from '@renderer/containers/Validator/ValidatorOverview';
 import ValidatorValidators from '@renderer/containers/Validator/ValidatorValidators';
+import {getActivePrimaryValidator} from '@renderer/selectors';
+import {getIsActivePrimaryValidator} from '@renderer/utils/validators';
 
 import './Validator.scss';
 
 const Validator: FC = () => {
-  const {ipAddress} = useParams();
+  const {ipAddress, port, protocol} = useParams();
   const {path, url} = useRouteMatch();
+  const activePrimaryValidator = useSelector(getActivePrimaryValidator)!;
+  const isActivePrimaryValidator = useMemo(
+    () => getIsActivePrimaryValidator(activePrimaryValidator, ipAddress, port, protocol),
+    [activePrimaryValidator, ipAddress, port, protocol],
+  );
 
-  const renderRightPageHeaderButtons = (): ReactNode => <Button>Add to Managed Validators</Button>;
+  const renderRightPageHeaderButtons = (): ReactNode => {
+    if (isActivePrimaryValidator) return null;
+    return <Button>Add to Managed Validators</Button>;
+  };
 
   const renderTabContent = (): ReactNode => {
     const tabContentRoutes = [
