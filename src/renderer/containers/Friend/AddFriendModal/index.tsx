@@ -17,7 +17,7 @@ const initialValues = {
 
 const validationSchema = yup.object().shape({
   friendNickname: yup.string(),
-  friendNumber: yup.string().length(4, 'Signing key must be 64 characters long').required('This field is required'),
+  friendNumber: yup.string().length(64, 'Friend Number must be 64 characters long').required('This field is required'),
 });
 
 type FormValues = typeof initialValues;
