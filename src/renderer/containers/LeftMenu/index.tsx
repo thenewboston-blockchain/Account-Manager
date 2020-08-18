@@ -13,9 +13,10 @@ import {
   getActiveBankConfig,
   getActivePrimaryValidatorConfig,
   getManagedAccounts,
+  getManagedFriends,
 } from '@renderer/selectors';
 import {unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
-import {AppDispatch, ManagedAccount, RootState} from '@renderer/types';
+import {AppDispatch, ManagedAccount, RootState, ManagedFriend} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
 
 import LeftSubmenu from './LeftSubmenu';
@@ -30,6 +31,7 @@ const LeftMenuSelector = (state: RootState) => {
     banks: state.old.banks,
     friends: state.old.friends,
     managedAccounts: getManagedAccounts(state),
+    managedFriends: getManagedFriends(state),
     points: state.old.points,
     validators: state.old.validators,
   };
@@ -42,8 +44,8 @@ const LeftMenu: FC = () => {
     activeBankNickname,
     activePrimaryValidator,
     banks,
-    friends,
     managedAccounts,
+    managedFriends,
     points,
     validators,
   } = useSelector(LeftMenuSelector);
@@ -89,13 +91,13 @@ const LeftMenu: FC = () => {
       ));
   };
 
-  const getFriendMenuItems = (): ReactNode[] => {
-    return friends
-      .map(({accountNumber, nickname}) => ({
-        baseUrl: `/account/${accountNumber}`,
-        key: accountNumber,
-        label: nickname || accountNumber,
-        to: `/account/${accountNumber}/overview`,
+  const getFriendItems = (): ReactNode[] => {
+    return Object.values(managedFriends)
+      .map(({friend_number, nickname}: ManagedFriend) => ({
+        baseUrl: `/friend/${friend_number}`,
+        key: friend_number,
+        label: nickname || friend_number,
+        to: `/friend/${friend_number}/overview`,
       }))
       .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
   };
@@ -155,7 +157,7 @@ const LeftMenu: FC = () => {
         title="Active Bank"
       />
       <LeftSubmenu menuItems={getAccountItems()} rightOnClick={toggleCreateAccountModal} title="Accounts" />
-      <LeftSubmenu menuItems={getFriendMenuItems()} rightOnClick={toggleAddFriendModal} title="Friends" />
+      <LeftSubmenu menuItems={getFriendItems()} rightOnClick={toggleAddFriendModal} title="Friends" />
       <LeftSubmenu menuItems={getBankMenuItems()} rightOnClick={noop} title="Managed Banks" />
       <LeftSubmenu menuItems={getValidatorMenuItems()} rightOnClick={noop} title="Managed Validators" />
       {addFriendModalIsOpen && <AddFriendModal close={toggleAddFriendModal} />}

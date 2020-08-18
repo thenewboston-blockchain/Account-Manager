@@ -6,6 +6,7 @@ import {formatAddressFromNode} from '@renderer/utils/address';
 export const getActiveBank = (state: RootState) => state.app.activeBank;
 export const getActivePrimaryValidator = (state: RootState) => state.app.activePrimaryValidator;
 export const getManagedAccounts = (state: RootState) => state.app.managedAccounts;
+export const getManagedFriends = (state: RootState) => state.app.managedFriends;
 
 export const getBankAccounts = (state: RootState) => state.banks.accounts;
 export const getBankBanks = (state: RootState) => state.banks.banks;

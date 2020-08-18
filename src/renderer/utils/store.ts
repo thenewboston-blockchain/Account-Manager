@@ -6,12 +6,13 @@ import {
   DictWithDataAndError,
   DictWithError,
   DictWithPaginatedResultsAndError,
+  FriendNumber,
   ManagedAccount,
   ManagedFriend,
   NodeIdentifier,
   PaginatedResults,
 } from '@renderer/types';
-import {MANAGED_ACCOUNTS} from '@renderer/constants';
+import {MANAGED_ACCOUNTS, MANAGED_FRIENDS} from '@renderer/constants';
 
 interface Address {
   address: string;
@@ -35,6 +36,15 @@ export function setAccountLocalAndStateReducer<T extends AccountNumber>() {
     const account = state[accountNumber];
     state[accountNumber] = account ? {account, ...payload} : payload;
     localStore.set(getStateName(MANAGED_ACCOUNTS), state);
+  };
+}
+
+export function setFriendLocalAndStateReducer<T extends FriendNumber>() {
+  return (state: any, {payload}: PayloadAction<T>) => {
+    const {friend_number: friendNumber} = payload;
+    const account = state[friendNumber];
+    state[friendNumber] = account ? {account, ...payload} : payload;
+    localStore.set(getStateName(MANAGED_FRIENDS), state);
   };
 }
 
@@ -135,9 +145,16 @@ export function unsetDataReducer() {
 }
 
 export function unsetAccountLocalAndStateReducer() {
-  return (state: any, {payload: {account_number: accountNumber}}: PayloadAction<ManagedAccount | ManagedFriend>) => {
+  return (state: any, {payload: {account_number: accountNumber}}: PayloadAction<ManagedAccount>) => {
     delete state[accountNumber];
     localStore.set(getStateName(MANAGED_ACCOUNTS), state);
+  };
+}
+
+export function unsetFriendLocalAndStateReducer() {
+  return (state: any, {payload: {friend_number: friendNumber}}: PayloadAction<ManagedFriend>) => {
+    delete state[friendNumber];
+    localStore.set(getStateName(MANAGED_FRIENDS), state);
   };
 }
 

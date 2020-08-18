@@ -71,6 +71,10 @@ export interface Error {
   error: string | null;
 }
 
+export interface FriendNumber {
+  friend_number: string;
+}
+
 export interface Id {
   id: string;
 }

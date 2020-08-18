@@ -4,20 +4,20 @@ import {useHistory} from 'react-router-dom';
 
 import {FormInput, FormTextArea} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import {createFriend} from '@renderer/store/old/friends';
+import {setManagedFriend} from '@renderer/store/app/managedFriends';
 import {AppDispatch} from '@renderer/types';
 import yup from '@renderer/utils/yup';
 
 import './AddFriendModal.scss';
 
 const initialValues = {
-  accountNumber: '',
   friendNickname: '',
+  friendNumber: '',
 };
 
 const validationSchema = yup.object().shape({
-  accountNumber: yup.string().required('This field is required'),
-  friendNickname: yup.string().required('This field is required'),
+  friendNickname: yup.string(),
+  friendNumber: yup.string().length(4, 'Signing key must be 64 characters long').required('This field is required'),
 });
 
 type FormValues = typeof initialValues;
@@ -30,9 +30,14 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
 
-  const handleSubmit = ({accountNumber, friendNickname}: FormValues): void => {
-    dispatch(createFriend(friendNickname, accountNumber));
-    history.push('/friend');
+  const handleSubmit = ({friendNumber, friendNickname}: FormValues): void => {
+    dispatch(
+      setManagedFriend({
+        friend_number: friendNumber,
+        nickname: friendNickname,
+      }),
+    );
+    history.push(`/friend/${friendNumber}/overview`);
     close();
   };
 
@@ -47,8 +52,8 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
       submitButton="Create"
       validationSchema={validationSchema}
     >
-      <FormTextArea label="Account Number" name="accountNumber" required />
-      <FormInput label="Friend Nickname" name="friendNickname" required />
+      <FormInput label="Nickname" name="friendNickname" />
+      <FormTextArea label="Friend Number" name="friendNumber" required />
     </Modal>
   );
 };
