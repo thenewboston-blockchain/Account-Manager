@@ -56,9 +56,7 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, direction = Dropdown
 
       if (direction === DropdownMenuDirection.left) {
         setDropdownPositionStyle({right: window.innerWidth - left - width / 2, top: bottom + 3});
-      }
-
-      if (direction === DropdownMenuDirection.right) {
+      } else if (direction === DropdownMenuDirection.right) {
         setDropdownPositionStyle({left: left + width / 2, top: bottom + 3});
       }
 
