@@ -1,4 +1,5 @@
-import {AppNodeAddressData} from '@renderer/types';
+import {AppNodeAddressData, Dict, ManagedValidator} from '@renderer/types';
+import {formatAddress} from '@renderer/utils/address';
 
 export const getIsActivePrimaryValidator = (
   activePrimaryValidator: AppNodeAddressData | null,
@@ -13,4 +14,14 @@ export const getIsActivePrimaryValidator = (
     formattedPort === activePrimaryValidator.port &&
     protocol === activePrimaryValidator.protocol
   );
+};
+
+export const getIsManagedValidator = (
+  managedValidators: Dict<ManagedValidator>,
+  ipAddress: string,
+  port: string,
+  protocol: string,
+): boolean => {
+  const key = formatAddress(ipAddress, port, protocol);
+  return !!managedValidators[key];
 };

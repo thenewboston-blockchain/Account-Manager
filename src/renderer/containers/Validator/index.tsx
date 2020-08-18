@@ -12,10 +12,10 @@ import ValidatorAccounts from '@renderer/containers/Validator/ValidatorAccounts'
 import ValidatorBanks from '@renderer/containers/Validator/ValidatorBanks';
 import ValidatorOverview from '@renderer/containers/Validator/ValidatorOverview';
 import ValidatorValidators from '@renderer/containers/Validator/ValidatorValidators';
-import {getActivePrimaryValidator} from '@renderer/selectors';
+import {getActivePrimaryValidator, getManagedValidators} from '@renderer/selectors';
 import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
-import {getIsActivePrimaryValidator} from '@renderer/utils/validators';
+import {getIsActivePrimaryValidator, getIsManagedValidator} from '@renderer/utils/validators';
 
 import './Validator.scss';
 
@@ -28,6 +28,13 @@ const Validator: FC = () => {
     () => getIsActivePrimaryValidator(activePrimaryValidator, ipAddress, port, protocol),
     [activePrimaryValidator, ipAddress, port, protocol],
   );
+  const managedValidators = useSelector(getManagedValidators);
+  const isManagedValidator = useMemo(() => getIsManagedValidator(managedValidators, ipAddress, port, protocol), [
+    managedValidators,
+    ipAddress,
+    port,
+    protocol,
+  ]);
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
@@ -48,7 +55,7 @@ const Validator: FC = () => {
   };
 
   const renderRightPageHeaderButtons = (): ReactNode => {
-    if (isActivePrimaryValidator) return null;
+    if (isActivePrimaryValidator || isManagedValidator) return null;
     return <Button onClick={handleAddManagedValidator}>Add to Managed Validators</Button>;
   };
 

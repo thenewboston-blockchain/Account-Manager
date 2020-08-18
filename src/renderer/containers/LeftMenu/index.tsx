@@ -16,7 +16,7 @@ import {
   getManagedValidators,
 } from '@renderer/selectors';
 import {unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
-import {AppDispatch, AppNodeAddressData, ManagedAccount, ManagedValidator, RootState} from '@renderer/types';
+import {AppDispatch, ManagedAccount, ManagedValidator, RootState} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
 
 import LeftSubmenu from './LeftSubmenu';
