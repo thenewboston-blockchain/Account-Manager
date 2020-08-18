@@ -62,11 +62,7 @@ const Validator: FC = () => {
 
   const renderTop = (): ReactNode => (
     <>
-      <PageHeader
-        rightContent={renderRightPageHeaderButtons()}
-        title={`VALIDATOR NAME HERE (${ipAddress})`}
-        trustScore={94.21}
-      />
+      <PageHeader rightContent={renderRightPageHeaderButtons()} title={renderValidatorTitle()} trustScore={94.21} />
       <PageTabs
         baseUrl={url}
         items={[
@@ -90,6 +86,11 @@ const Validator: FC = () => {
       />
     </>
   );
+
+  const renderValidatorTitle = (): string => {
+    if (isActivePrimaryValidator) return activePrimaryValidator.nickname || activePrimaryValidator.ip_address;
+    return ipAddress;
+  };
 
   return (
     <div className="Validator">
