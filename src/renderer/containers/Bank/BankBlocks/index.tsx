@@ -1,6 +1,6 @@
 import React, {FC, useMemo} from 'react';
 
-import AccountNumberLink from '@renderer/components/AccountNumberLink';
+import AccountLink from '@renderer/components/AccountLink';
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
@@ -30,7 +30,7 @@ const BankBlocks: FC = () => {
         [TableKeys.createdDate]: block.created_date,
         [TableKeys.id]: block.id,
         [TableKeys.modifiedDate]: block.modified_date,
-        [TableKeys.sender]: <AccountNumberLink accountNumber={block.sender} />,
+        [TableKeys.sender]: <AccountLink accountNumber={block.sender} />,
         [TableKeys.signature]: block.signature,
       })) || [],
     [bankBlocks],

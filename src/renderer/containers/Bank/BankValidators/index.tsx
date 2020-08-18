@@ -1,7 +1,8 @@
 import React, {FC, useMemo} from 'react';
 
-import AccountNumberLink from '@renderer/components/AccountNumberLink';
+import AccountLink from '@renderer/components/AccountLink';
 import {Loader} from '@renderer/components/FormElements';
+import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {BANK_VALIDATORS} from '@renderer/constants';
@@ -32,10 +33,10 @@ const BankValidators: FC = () => {
     () =>
       bankValidators.map((validator) => ({
         key: validator.node_identifier,
-        [TableKeys.accountNumber]: <AccountNumberLink accountNumber={validator.account_number} />,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={validator.account_number} />,
         [TableKeys.dailyConfirmationRate]: validator.daily_confirmation_rate,
         [TableKeys.defaultTransactionFee]: validator.default_transaction_fee,
-        [TableKeys.ipAddress]: validator.ip_address,
+        [TableKeys.ipAddress]: <NodeLink node={validator} urlBase="validator" />,
         [TableKeys.nodeIdentifier]: validator.node_identifier,
         [TableKeys.port]: validator.port,
         [TableKeys.protocol]: validator.protocol,

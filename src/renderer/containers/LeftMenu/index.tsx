@@ -63,7 +63,7 @@ const LeftMenu: FC = () => {
 
   const getActiveBankMenuItem = (): ReactNode => {
     if (!activeBank) return null;
-    const baseUrl = `/banks/${formatPathFromNode(activeBank)}`;
+    const baseUrl = `/bank/${formatPathFromNode(activeBank)}`;
 
     return (
       <LeftSubmenuItemStatus
