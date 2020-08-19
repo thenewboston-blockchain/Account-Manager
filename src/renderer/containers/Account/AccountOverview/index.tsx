@@ -98,7 +98,7 @@ const AccountOverview: FC = () => {
 
   return (
     <div className="AccountOverview">
-      <DetailPanel className="AccountOverview__DetailPanel" items={getItems()} title="Account Info" />
+      <DetailPanel className="AccountOverview__DetailPanel" items={getItems()} title="Account Information" />
     </div>
   );
 };
