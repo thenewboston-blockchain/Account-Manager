@@ -5,18 +5,16 @@ import axios from 'axios';
 
 import DetailPanel from '@renderer/components/DetailPanel';
 import Qr from '@renderer/components/Qr';
-import {getActivePrimaryValidatorConfig, getManagedFriends} from '@renderer/selectors';
+import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
 import {formatAddress} from '@renderer/utils/address';
 
 import './FriendOverview.scss';
 
 const FriendOverview: FC = () => {
-  const {friendNumber} = useParams();
+  const {accountNumber} = useParams();
   const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
-  const managedFriends = useSelector(getManagedFriends);
-  const managedFriend = managedFriends[friendNumber];
 
   useEffect(() => {
     if (!activePrimaryValidator) return;
@@ -26,16 +24,16 @@ const FriendOverview: FC = () => {
       const address = formatAddress(ipAddress, port, protocol);
 
       setLoading(true);
-      const {data} = await axios.get(`${address}/friend/${friendNumber}/balance`);
+      const {data} = await axios.get(`${address}/accounts/${accountNumber}/balance`);
       setBalance(data.balance);
       setLoading(false);
     };
 
     fetchData();
-  }, [friendNumber, activePrimaryValidator]);
+  }, [accountNumber, activePrimaryValidator]);
 
   const getItems = () => {
-    const items = [
+    return [
       {
         key: 'Balance',
         value: loading ? '-' : balance || '0',
@@ -45,14 +43,12 @@ const FriendOverview: FC = () => {
         value: renderFriendNumber(),
       },
     ];
-
-    return items;
   };
 
   const renderFriendNumber = (): ReactNode => (
     <>
-      <div>{loading ? '-' : friendNumber}</div>
-      <Qr className="FriendOverview__qr" text={friendNumber} width={120} />
+      <div>{loading ? '-' : accountNumber}</div>
+      <Qr className="FriendOverview__qr" text={accountNumber} width={120} />
     </>
   );
 

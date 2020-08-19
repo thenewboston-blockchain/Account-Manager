@@ -7,13 +7,10 @@ import {
   DictWithDataAndError,
   DictWithError,
   DictWithPaginatedResultsAndError,
-  FriendNumber,
-  ManagedFriend,
   NodeIdentifier,
   PaginatedResults,
 } from '@renderer/types';
-import {MANAGED_ACCOUNTS, MANAGED_FRIENDS, MANAGED_VALIDATORS} from '@renderer/constants';
-import {formatAddress} from '@renderer/utils/address';
+import {formatAddressFromNode} from '@renderer/utils/address';
 
 interface Address {
   address: string;
@@ -31,21 +28,12 @@ export type SetError = (payload: Address & Error) => PayloadAction<Address & Err
 
 export const getStateName = (actionType: string) => actionType.split('/')[1];
 
-export function setAccountLocalAndStateReducer<T extends AccountNumber>() {
+export function setLocalAndAccountReducer<T extends AccountNumber>(sliceName: string) {
   return (state: any, {payload}: PayloadAction<T>) => {
     const {account_number: accountNumber} = payload;
     const account = state[accountNumber];
     state[accountNumber] = account ? {account, ...payload} : payload;
-    localStore.set(getStateName(MANAGED_ACCOUNTS), state);
-  };
-}
-
-export function setFriendLocalAndStateReducer<T extends FriendNumber>() {
-  return (state: any, {payload}: PayloadAction<T>) => {
-    const {account_number: friendNumber} = payload;
-    const account = state[friendNumber];
-    state[friendNumber] = account ? {account, ...payload} : payload;
-    localStore.set(getStateName(MANAGED_FRIENDS), state);
+    localStore.set(getStateName(sliceName), state);
   };
 }
 
@@ -96,13 +84,12 @@ export function setDataErrorReducer() {
   };
 }
 
-export function setNodeLocalAndStateReducer<T extends AddressData>() {
+export function setLocalAndAddressReducer<T extends AddressData>(sliceName: string) {
   return (state: any, {payload}: PayloadAction<T>) => {
-    const {ip_address: ipAddress, port, protocol} = payload;
-    const key = formatAddress(ipAddress, port, protocol);
-    const validator = state[key];
-    state[key] = validator ? {validator, ...payload} : payload;
-    localStore.set(getStateName(MANAGED_VALIDATORS), state);
+    const address = formatAddressFromNode(payload);
+    const node = state[address];
+    state[address] = node ? {node, ...payload} : payload;
+    localStore.set(getStateName(sliceName), state);
   };
 }
 
@@ -155,25 +142,18 @@ export function unsetDataReducer() {
   };
 }
 
-export function unsetAccountLocalAndStateReducer() {
+export function unsetLocalAndAccountReducer(sliceName: string) {
   return (state: any, {payload: {account_number: accountNumber}}: PayloadAction<AccountNumber>) => {
     delete state[accountNumber];
-    localStore.set(getStateName(MANAGED_ACCOUNTS), state);
+    localStore.set(getStateName(sliceName), state);
   };
 }
 
-export function unsetNodeLocalAndStateReducer() {
-  return (state: any, {payload: {ip_address: ipAddress, port, protocol}}: PayloadAction<AddressData>) => {
-    const key = formatAddress(ipAddress, port, protocol);
-    delete state[key];
-    localStore.set(getStateName(MANAGED_ACCOUNTS), state);
-  };
-}
-
-export function unsetFriendLocalAndStateReducer() {
-  return (state: any, {payload: {account_number: friendNumber}}: PayloadAction<ManagedFriend>) => {
-    delete state[friendNumber];
-    localStore.set(getStateName(MANAGED_FRIENDS), state);
+export function unsetLocalAndAddressReducer(sliceName: string) {
+  return (state: any, {payload}: PayloadAction<AddressData>) => {
+    const address = formatAddressFromNode(payload);
+    delete state[address];
+    localStore.set(getStateName(sliceName), state);
   };
 }
 

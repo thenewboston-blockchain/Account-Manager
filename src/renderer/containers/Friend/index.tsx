@@ -9,17 +9,14 @@ import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-import {useBooleanState} from '@renderer/hooks';
 import {getManagedFriends} from '@renderer/selectors';
 import './Friend.scss';
 
 const Friend: FC = () => {
-  const {friendNumber} = useParams();
+  const {accountNumber} = useParams();
   const {path, url} = useRouteMatch();
-  const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
-  const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
   const managedFriends = useSelector(getManagedFriends);
-  const managedFriend = managedFriends[friendNumber];
+  const managedFriend = managedFriends[accountNumber];
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
@@ -28,11 +25,11 @@ const Friend: FC = () => {
     },
     {
       label: 'Delete Friend',
-      onClick: toggleDeleteModal,
+      onClick: noop,
     },
   ];
 
-  const renderRightPageHeaderButtons = (): ReactNode => <Button onClick={toggleSendPointsModal}>Send Points</Button>;
+  const renderRightPageHeaderButtons = (): ReactNode => <Button onClick={noop}>Send Points</Button>;
 
   const renderTabContent = (): ReactNode => {
     const tabContentRoutes = [
@@ -58,7 +55,7 @@ const Friend: FC = () => {
       <PageHeader
         dropdownMenuOptions={dropdownMenuOptions}
         rightContent={renderRightPageHeaderButtons()}
-        title={managedFriend?.nickname || friendNumber}
+        title={managedFriend?.nickname || accountNumber}
       />
       <PageTabs
         baseUrl={url}

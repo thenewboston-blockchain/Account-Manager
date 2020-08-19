@@ -24,7 +24,7 @@ export const Layout: FC = () => {
           <Route path="/account/:accountNumber">
             <Account />
           </Route>
-          <Route path="/friend/:friendNumber">
+          <Route path="/friend/:accountNumber">
             <Friend />
           </Route>
           <Route path="/bank/:protocol/:ipAddress/:port">

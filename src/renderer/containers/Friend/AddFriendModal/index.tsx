@@ -1,10 +1,11 @@
-import React, {FC} from 'react';
-import {useDispatch} from 'react-redux';
+import React, {FC, useMemo} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 
 import {FormInput, FormTextArea} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import {setManagedFriend} from '@renderer/store/app/managedFriends';
+import {getManagedFriends} from '@renderer/selectors';
+import {setManagedFriend} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
 import yup from '@renderer/utils/yup';
 
@@ -15,11 +16,6 @@ const initialValues = {
   nickname: '',
 };
 
-const validationSchema = yup.object().shape({
-  accountNumber: yup.string().length(64, 'Friend Number must be 64 characters long').required('This field is required'),
-  nickname: yup.string(),
-});
-
 type FormValues = typeof initialValues;
 
 interface ComponentProps {
@@ -29,6 +25,15 @@ interface ComponentProps {
 const AddFriendModal: FC<ComponentProps> = ({close}) => {
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
+  const managedFriends = useSelector(getManagedFriends);
+
+  const managedFriendNicknames = useMemo(
+    () =>
+      Object.values(managedFriends)
+        .filter(({nickname}) => !!nickname)
+        .map(({nickname}) => nickname),
+    [managedFriends],
+  );
 
   const handleSubmit = ({accountNumber, nickname}: FormValues): void => {
     dispatch(
@@ -40,6 +45,16 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
     history.push(`/friend/${accountNumber}/overview`);
     close();
   };
+
+  const validationSchema = useMemo(() => {
+    return yup.object().shape({
+      accountNumber: yup
+        .string()
+        .length(64, 'Friend Number must be 64 characters long')
+        .required('This field is required'),
+      nickname: yup.string().notOneOf(managedFriendNicknames, 'That nickname is already taken'),
+    });
+  }, [managedFriendNicknames]);
 
   return (
     <Modal
