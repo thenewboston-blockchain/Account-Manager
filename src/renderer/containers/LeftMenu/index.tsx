@@ -13,6 +13,7 @@ import {
   getActiveBankConfig,
   getActivePrimaryValidatorConfig,
   getManagedAccounts,
+  getManagedBanks,
   getManagedValidators,
 } from '@renderer/selectors';
 import {unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
@@ -28,9 +29,9 @@ const LeftMenuSelector = (state: RootState) => {
     activeBank: getActiveBankConfig(state),
     activeBankNickname: getActiveBank(state)?.nickname,
     activePrimaryValidator: getActivePrimaryValidatorConfig(state),
-    banks: state.old.banks,
     friends: state.old.friends,
     managedAccounts: getManagedAccounts(state),
+    managedBanks: getManagedBanks(state),
     managedValidators: getManagedValidators(state),
   };
 };
@@ -41,9 +42,9 @@ const LeftMenu: FC = () => {
     activeBank,
     activeBankNickname,
     activePrimaryValidator,
-    banks,
     friends,
     managedAccounts,
+    managedBanks,
     managedValidators,
   } = useSelector(LeftMenuSelector);
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
@@ -76,15 +77,15 @@ const LeftMenu: FC = () => {
   };
 
   const getBankMenuItems = (): ReactNode[] => {
-    return banks
-      .map(({ip_address: ipAddress, node_identifier: nodeIdentifier}) => ({
-        baseUrl: `/bank/${nodeIdentifier}`,
-        key: nodeIdentifier,
-        label: ipAddress,
-        to: `/bank/${nodeIdentifier}/overview`,
+    return Object.values(managedBanks)
+      .map((managedBank: ManagedNode) => ({
+        baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
+        key: managedBank.ip_address,
+        label: managedBank.ip_address,
+        to: `/bank/${formatPathFromNode(managedBank)}/overview`,
       }))
       .map(({baseUrl, key, label, to}) => (
-        <LeftSubmenuItemStatus baseUrl={baseUrl} key={key} label={label} status="offline" to={to} />
+        <LeftSubmenuItemStatus baseUrl={baseUrl} key={key} label={label} status="online" to={to} />
       ));
   };
 
