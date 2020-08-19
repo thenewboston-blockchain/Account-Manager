@@ -1,4 +1,4 @@
-import {Ref, NumberSchema, NumberSchemaConstructor, StringSchema, StringSchemaConstructor} from 'yup';
+import {NumberSchema, NumberSchemaConstructor, Ref, StringSchema, StringSchemaConstructor} from 'yup';
 
 declare module 'yup' {
   interface NumberSchema {
