@@ -1,5 +1,6 @@
 import React, {FC, ReactNode} from 'react';
-import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {Route, Switch, useRouteMatch} from 'react-router-dom';
 
 import BankAccounts from '@renderer/containers/Bank/BankAccounts';
 import BankBanks from '@renderer/containers/Bank/BankBanks';
@@ -10,35 +11,72 @@ import BankOverview from '@renderer/containers/Bank/BankOverview';
 import BankTransactions from '@renderer/containers/Bank/BankTransactions';
 import BankValidatorConfirmationServices from '@renderer/containers/Bank/BankValidatorConfirmationServices';
 import BankValidators from '@renderer/containers/Bank/BankValidators';
-import DeleteBankModal from '@renderer/containers/Bank/DeleteBankModal';
 import EditBankModal from '@renderer/containers/Bank/EditBankModal';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-import {useBooleanState} from '@renderer/hooks';
+import {useAddress, useBooleanState} from '@renderer/hooks';
+import {getActiveBank, getIsActiveBank, getIsManagedBank, getManagedBanks} from '@renderer/selectors';
+import {setManagedBank, unsetManagedBank} from '@renderer/store/app';
+import {AppDispatch} from '@renderer/types';
+import {parseAddressData} from '@renderer/utils/address';
 
 import './Bank.scss';
 
 const Bank: FC = () => {
-  const {ipAddress} = useParams();
+  const address = useAddress();
+  const dispatch = useDispatch<AppDispatch>();
   const {path, url} = useRouteMatch();
-  const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
+  const activeBank = useSelector(getActiveBank)!;
+  const isActiveBank = useSelector(getIsActiveBank(address));
+  const isManagedBank = useSelector(getIsManagedBank(address));
+  const managedBanks = useSelector(getManagedBanks);
 
-  const dropdownMenuOptions: DropdownMenuOption[] = [
-    {
-      label: 'Edit',
-      onClick: toggleEditModal,
-    },
-    {
-      label: 'Remove Bank',
-      onClick: toggleDeleteModal,
-    },
-  ];
+  const getDropdownMenuOptions = (): DropdownMenuOption[] => {
+    if (!isManagedBank) return [];
+    return [
+      {
+        label: 'Edit',
+        onClick: toggleEditModal,
+      },
+      {
+        label: 'Remove Bank',
+        onClick: handleRemoveManagedBank,
+      },
+    ];
+  };
 
-  const renderRightPageHeaderButtons = (): ReactNode => <Button>Add to Managed Banks</Button>;
+  const handleAddManagedBank = (): void => {
+    const {ipAddress, port, protocol} = parseAddressData(address);
+    dispatch(
+      setManagedBank({
+        ip_address: ipAddress,
+        nickname: '',
+        port,
+        protocol,
+      }),
+    );
+  };
+
+  const handleRemoveManagedBank = (): void => {
+    const {ipAddress, port, protocol} = parseAddressData(address);
+    dispatch(
+      unsetManagedBank({
+        ip_address: ipAddress,
+        nickname: '',
+        port,
+        protocol,
+      }),
+    );
+  };
+
+  const renderRightPageHeaderButtons = (): ReactNode => {
+    if (isActiveBank || isManagedBank) return null;
+    return <Button onClick={handleAddManagedBank}>Add to Managed Banks</Button>;
+  };
 
   const renderTabContent = (): ReactNode => {
     const tabContentRoutes = [
@@ -91,12 +129,22 @@ const Bank: FC = () => {
     );
   };
 
+  const renderTitle = (): string => {
+    if (isActiveBank) return activeBank.nickname || activeBank.ip_address;
+    if (isManagedBank) {
+      const managedBank = managedBanks[address];
+      return managedBank.nickname || managedBank.ip_address;
+    }
+    const {ipAddress} = parseAddressData(address);
+    return ipAddress;
+  };
+
   const renderTop = (): ReactNode => (
     <>
       <PageHeader
-        dropdownMenuOptions={dropdownMenuOptions}
+        dropdownMenuOptions={getDropdownMenuOptions()}
         rightContent={renderRightPageHeaderButtons()}
-        title={`Digital Ocean Bank (${ipAddress})`}
+        title={renderTitle()}
         trustScore={98.34}
       />
       <PageTabs
@@ -146,10 +194,9 @@ const Bank: FC = () => {
   return (
     <div className="Bank">
       <PageLayout content={renderTabContent()} top={renderTop()} />
-      {deleteModalIsOpen && <DeleteBankModal toggleDeleteModal={toggleDeleteModal} />}
       {editModalIsOpen && <EditBankModal close={toggleEditModal} />}
     </div>
   );
 };
 
-export default withRouter(Bank);
+export default Bank;
