@@ -1,4 +1,4 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Route, Switch, useRouteMatch} from 'react-router-dom';
 
@@ -24,8 +24,10 @@ const Validator: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {path, url} = useRouteMatch();
   const activePrimaryValidator = useSelector(getActivePrimaryValidator)!;
-  const isActivePrimaryValidator = useSelector(getIsActivePrimaryValidator(address));
-  const isManagedValidator = useSelector(getIsManagedValidator(address));
+  const getIsActivePrimaryValidatorCb = useMemo(() => getIsActivePrimaryValidator(address), [address]);
+  const isActivePrimaryValidator = useSelector(getIsActivePrimaryValidatorCb);
+  const getIsManagedValidatorCb = useMemo(() => getIsManagedValidator(address), [address]);
+  const isManagedValidator = useSelector(getIsManagedValidatorCb);
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
     if (!isManagedValidator) return [];
