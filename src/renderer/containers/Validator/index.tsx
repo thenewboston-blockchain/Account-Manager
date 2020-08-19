@@ -1,6 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Route, Switch, useRouteMatch, withRouter} from 'react-router-dom';
+import {Route, Switch, useRouteMatch} from 'react-router-dom';
 
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {Button} from '@renderer/components/FormElements';
@@ -142,4 +142,4 @@ const Validator: FC = () => {
   );
 };
 
-export default withRouter(Validator);
+export default Validator;

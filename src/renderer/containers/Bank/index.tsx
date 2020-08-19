@@ -1,6 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Route, Switch, useRouteMatch, withRouter} from 'react-router-dom';
+import {Route, Switch, useRouteMatch} from 'react-router-dom';
 
 import BankAccounts from '@renderer/containers/Bank/BankAccounts';
 import BankBanks from '@renderer/containers/Bank/BankBanks';
@@ -18,7 +18,7 @@ import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {useAddress, useBooleanState} from '@renderer/hooks';
-import {getActiveBank, getIsActiveBank, getIsManagedBank} from '@renderer/selectors';
+import {getActiveBank, getIsActiveBank, getIsManagedBank, getManagedBanks} from '@renderer/selectors';
 import {setManagedBank, unsetManagedBank} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
@@ -33,6 +33,7 @@ const Bank: FC = () => {
   const activeBank = useSelector(getActiveBank)!;
   const isActiveBank = useSelector(getIsActiveBank(address));
   const isManagedBank = useSelector(getIsManagedBank(address));
+  const managedBanks = useSelector(getManagedBanks);
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
     if (!isManagedBank) return [];
@@ -130,6 +131,10 @@ const Bank: FC = () => {
 
   const renderTitle = (): string => {
     if (isActiveBank) return activeBank.nickname || activeBank.ip_address;
+    if (isManagedBank) {
+      const managedBank = managedBanks[address];
+      return managedBank.nickname || managedBank.ip_address;
+    }
     const {ipAddress} = parseAddressData(address);
     return ipAddress;
   };
@@ -194,4 +199,4 @@ const Bank: FC = () => {
   );
 };
 
-export default withRouter(Bank);
+export default Bank;
