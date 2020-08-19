@@ -1,6 +1,6 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Route, Switch, useRouteMatch, withRouter} from 'react-router-dom';
+import {Route, Switch, useRouteMatch} from 'react-router-dom';
 
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {Button} from '@renderer/components/FormElements';
@@ -24,8 +24,10 @@ const Validator: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {path, url} = useRouteMatch();
   const activePrimaryValidator = useSelector(getActivePrimaryValidator)!;
-  const isActivePrimaryValidator = useSelector(getIsActivePrimaryValidator(address));
-  const isManagedValidator = useSelector(getIsManagedValidator(address));
+  const getIsActivePrimaryValidatorCb = useMemo(() => getIsActivePrimaryValidator(address), [address]);
+  const isActivePrimaryValidator = useSelector(getIsActivePrimaryValidatorCb);
+  const getIsManagedValidatorCb = useMemo(() => getIsManagedValidator(address), [address]);
+  const isManagedValidator = useSelector(getIsManagedValidatorCb);
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
     if (!isManagedValidator) return [];
@@ -97,12 +99,18 @@ const Validator: FC = () => {
     );
   };
 
+  const renderTitle = (): string => {
+    if (isActivePrimaryValidator) return activePrimaryValidator.nickname || activePrimaryValidator.ip_address;
+    const {ipAddress} = parseAddressData(address);
+    return ipAddress;
+  };
+
   const renderTop = (): ReactNode => (
     <>
       <PageHeader
         dropdownMenuOptions={getDropdownMenuOptions()}
         rightContent={renderRightPageHeaderButtons()}
-        title={renderValidatorTitle()}
+        title={renderTitle()}
         trustScore={94.21}
       />
       <PageTabs
@@ -129,12 +137,6 @@ const Validator: FC = () => {
     </>
   );
 
-  const renderValidatorTitle = (): string => {
-    if (isActivePrimaryValidator) return activePrimaryValidator.nickname || activePrimaryValidator.ip_address;
-    const {ipAddress} = parseAddressData(address);
-    return ipAddress;
-  };
-
   return (
     <div className="Validator">
       <PageLayout content={renderTabContent()} top={renderTop()} />
@@ -142,4 +144,4 @@ const Validator: FC = () => {
   );
 };
 
-export default withRouter(Validator);
+export default Validator;
