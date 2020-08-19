@@ -66,7 +66,6 @@ const Bank: FC = () => {
     dispatch(
       unsetManagedBank({
         ip_address: ipAddress,
-        nickname: '',
         port,
         protocol,
       }),

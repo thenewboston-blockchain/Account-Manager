@@ -4,6 +4,7 @@ export const getActiveBank = (state: RootState) => state.app.activeBank;
 export const getActivePrimaryValidator = (state: RootState) => state.app.activePrimaryValidator;
 export const getManagedAccounts = (state: RootState) => state.app.managedAccounts;
 export const getManagedBanks = (state: RootState) => state.app.managedBanks;
+export const getManagedFriends = (state: RootState) => state.app.managedFriends;
 export const getManagedValidators = (state: RootState) => state.app.managedValidators;
 
 export const getBankAccounts = (state: RootState) => state.banks.accounts;

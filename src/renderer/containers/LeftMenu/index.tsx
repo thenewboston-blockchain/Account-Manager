@@ -14,10 +14,11 @@ import {
   getActivePrimaryValidatorConfig,
   getManagedAccounts,
   getManagedBanks,
+  getManagedFriends,
   getManagedValidators,
 } from '@renderer/selectors';
 import {unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
-import {AppDispatch, ManagedAccount, ManagedNode, RootState} from '@renderer/types';
+import {AppDispatch, RootState} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
 
 import LeftSubmenu from './LeftSubmenu';
@@ -29,9 +30,9 @@ const LeftMenuSelector = (state: RootState) => {
     activeBank: getActiveBankConfig(state),
     activeBankNickname: getActiveBank(state)?.nickname,
     activePrimaryValidator: getActivePrimaryValidatorConfig(state),
-    friends: state.old.friends,
     managedAccounts: getManagedAccounts(state),
     managedBanks: getManagedBanks(state),
+    managedFriends: getManagedFriends(state),
     managedValidators: getManagedValidators(state),
   };
 };
@@ -42,9 +43,9 @@ const LeftMenu: FC = () => {
     activeBank,
     activeBankNickname,
     activePrimaryValidator,
-    friends,
     managedAccounts,
     managedBanks,
+    managedFriends,
     managedValidators,
   } = useSelector(LeftMenuSelector);
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
@@ -53,7 +54,7 @@ const LeftMenu: FC = () => {
   const accountItems = useMemo<ReactNode[]>(
     () =>
       Object.values(managedAccounts)
-        .map(({account_number, nickname}: ManagedAccount) => ({
+        .map(({account_number, nickname}) => ({
           baseUrl: `/account/${account_number}`,
           key: account_number,
           label: nickname || account_number,
@@ -81,7 +82,7 @@ const LeftMenu: FC = () => {
   const bankMenuItems = useMemo<ReactNode[]>(
     () =>
       Object.values(managedBanks)
-        .map((managedBank: ManagedNode) => ({
+        .map((managedBank) => ({
           baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
           key: managedBank.ip_address,
           label: managedBank.ip_address,
@@ -95,15 +96,15 @@ const LeftMenu: FC = () => {
 
   const friendMenuItems = useMemo<ReactNode[]>(
     () =>
-      friends
-        .map(({accountNumber, nickname}) => ({
-          baseUrl: `/account/${accountNumber}`,
-          key: accountNumber,
-          label: nickname || accountNumber,
-          to: `/account/${accountNumber}/overview`,
+      Object.values(managedFriends)
+        .map(({account_number, nickname}) => ({
+          baseUrl: `/friend/${account_number}`,
+          key: account_number,
+          label: nickname || account_number,
+          to: `/friend/${account_number}/overview`,
         }))
         .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />),
-    [friends],
+    [managedFriends],
   );
 
   const handleChangeBank = (): void => {
@@ -132,7 +133,7 @@ const LeftMenu: FC = () => {
   const validatorMenuItems = useMemo<ReactNode[]>(
     () =>
       Object.values(managedValidators)
-        .map((managedValidator: ManagedNode) => ({
+        .map((managedValidator) => ({
           baseUrl: `/validator/${formatPathFromNode(managedValidator)}`,
           key: managedValidator.ip_address,
           label: managedValidator.ip_address,
