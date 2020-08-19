@@ -39,7 +39,7 @@ const FriendOverview: FC = () => {
         value: loading ? '-' : balance || '0',
       },
       {
-        key: 'Account',
+        key: 'Account Number',
         value: renderAccountNumber(),
       },
     ];
