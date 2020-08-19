@@ -56,7 +56,6 @@ const Validator: FC = () => {
     dispatch(
       unsetManagedValidator({
         ip_address: ipAddress,
-        nickname: '',
         port,
         protocol,
       }),

@@ -18,7 +18,7 @@ import {
   getManagedValidators,
 } from '@renderer/selectors';
 import {unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
-import {AppDispatch, ManagedFriend, ManagedNode, RootState} from '@renderer/types';
+import {AppDispatch, RootState} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
 
 import LeftSubmenu from './LeftSubmenu';
@@ -82,7 +82,7 @@ const LeftMenu: FC = () => {
   const bankMenuItems = useMemo<ReactNode[]>(
     () =>
       Object.values(managedBanks)
-        .map((managedBank: ManagedNode) => ({
+        .map((managedBank) => ({
           baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
           key: managedBank.ip_address,
           label: managedBank.ip_address,
@@ -96,8 +96,8 @@ const LeftMenu: FC = () => {
 
   const friendMenuItems = useMemo<ReactNode[]>(
     () =>
-      managedFriends
-        .map(({account_number, nickname}: ManagedFriend) => ({
+      Object.values(managedFriends)
+        .map(({account_number, nickname}) => ({
           baseUrl: `/friend/${account_number}`,
           key: account_number,
           label: nickname || account_number,
@@ -133,7 +133,7 @@ const LeftMenu: FC = () => {
   const validatorMenuItems = useMemo<ReactNode[]>(
     () =>
       Object.values(managedValidators)
-        .map((managedValidator: ManagedNode) => ({
+        .map((managedValidator) => ({
           baseUrl: `/validator/${formatPathFromNode(managedValidator)}`,
           key: managedValidator.ip_address,
           label: managedValidator.ip_address,
