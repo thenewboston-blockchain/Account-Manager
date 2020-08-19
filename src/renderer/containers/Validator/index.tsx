@@ -1,4 +1,4 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Route, Switch, useRouteMatch, withRouter} from 'react-router-dom';
 
@@ -11,7 +11,7 @@ import ValidatorAccounts from '@renderer/containers/Validator/ValidatorAccounts'
 import ValidatorBanks from '@renderer/containers/Validator/ValidatorBanks';
 import ValidatorOverview from '@renderer/containers/Validator/ValidatorOverview';
 import ValidatorValidators from '@renderer/containers/Validator/ValidatorValidators';
-import {useAddress} from '@renderer/hooks';
+import {useAddress, useBooleanState} from '@renderer/hooks';
 import {getActivePrimaryValidator, getIsActivePrimaryValidator, getIsManagedValidator} from '@renderer/selectors';
 import {setManagedValidator, unsetManagedValidator} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
@@ -24,8 +24,11 @@ const Validator: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {path, url} = useRouteMatch();
   const activePrimaryValidator = useSelector(getActivePrimaryValidator)!;
-  const isActivePrimaryValidator = useSelector(getIsActivePrimaryValidator(address));
-  const isManagedValidator = useSelector(getIsManagedValidator(address));
+  const getIsActivePrimaryValidatorCb = useMemo(() => getIsActivePrimaryValidator(address), [address]);
+  const isActivePrimaryValidator = useSelector(getIsActivePrimaryValidatorCb);
+  const getIsManagedValidatorCb = useMemo(() => getIsManagedValidator(address), [address]);
+  const isManagedValidator = useSelector(getIsManagedValidatorCb);
+  const [toggle, toggleToggle] = useBooleanState(false);
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
     if (!isManagedValidator) return [];
@@ -138,6 +141,7 @@ const Validator: FC = () => {
   return (
     <div className="Validator">
       <PageLayout content={renderTabContent()} top={renderTop()} />
+      <Button onClick={toggleToggle}>Button {toggle}</Button>
     </div>
   );
 };
