@@ -1,4 +1,4 @@
-import {AppNodeAddressData, ManagedAccount, ManagedFriend, OldBank, OldValidator} from './app';
+import {AppNodeAddressData, ManagedAccount, ManagedFriend, ManagedValidator, OldBank} from './app';
 import {NodeType, ProtocolType} from './constants';
 import {BaseFormComponentProps, BaseFormInlineComponentProps, GenericFormValues, InputOption} from './forms';
 import {GenericFunction, GenericVoidFunction} from './generic';
@@ -59,11 +59,11 @@ export {
   InvalidBlock,
   ManagedAccount,
   ManagedFriend,
+  ManagedValidator,
   Node,
   NodeIdentifier,
   NodeType,
   OldBank,
-  OldValidator,
   PaginatedQueryParams,
   PaginatedResults,
   PaginatedResultsWithError,

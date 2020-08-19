@@ -14,9 +14,10 @@ import {
   getActivePrimaryValidatorConfig,
   getManagedAccounts,
   getManagedFriends,
+  getManagedValidators,
 } from '@renderer/selectors';
 import {unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
-import {AppDispatch, ManagedAccount, RootState, ManagedFriend} from '@renderer/types';
+import {AppDispatch, ManagedAccount, ManagedFriend, ManagedValidator, RootState} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
 
 import LeftSubmenu from './LeftSubmenu';
@@ -29,11 +30,9 @@ const LeftMenuSelector = (state: RootState) => {
     activeBankNickname: getActiveBank(state)?.nickname,
     activePrimaryValidator: getActivePrimaryValidatorConfig(state),
     banks: state.old.banks,
-    friends: state.old.friends,
     managedAccounts: getManagedAccounts(state),
     managedFriends: getManagedFriends(state),
-    points: state.old.points,
-    validators: state.old.validators,
+    managedValidators: getManagedValidators(state),
   };
 };
 
@@ -46,8 +45,7 @@ const LeftMenu: FC = () => {
     banks,
     managedAccounts,
     managedFriends,
-    points,
-    validators,
+    managedValidators,
   } = useSelector(LeftMenuSelector);
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
   const [createAccountModalIsOpen, toggleCreateAccountModal] = useBooleanState(false);
@@ -121,12 +119,12 @@ const LeftMenu: FC = () => {
   };
 
   const getValidatorMenuItems = (): ReactNode[] => {
-    return validators
-      .map(({ip_address: ipAddress, network_identifier: networkIdentifier}) => ({
-        baseUrl: `/validator/${networkIdentifier}`,
-        key: ipAddress,
-        label: ipAddress,
-        to: `/validator/${networkIdentifier}/overview`,
+    return Object.values(managedValidators)
+      .map((managedValidator: ManagedValidator) => ({
+        baseUrl: `/validator/${formatPathFromNode(managedValidator)}`,
+        key: managedValidator.ip_address,
+        label: managedValidator.ip_address,
+        to: `/validator/${formatPathFromNode(managedValidator)}/overview`,
       }))
       .map(({baseUrl, key, label, to}) => (
         <LeftSubmenuItemStatus baseUrl={baseUrl} key={key} label={label} status="online" to={to} />
@@ -142,7 +140,7 @@ const LeftMenu: FC = () => {
     <div className="LeftMenu">
       <div className="points">
         <div className="points__title">Points</div>
-        <div className="points__amount">{points.toLocaleString()}</div>
+        <div className="points__amount">12,345.00</div>
       </div>
       <LeftSubmenu
         leftIcon={<Icon className="LeftMenu__icon" icon={IconType.earth} />}

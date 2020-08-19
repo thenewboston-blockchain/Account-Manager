@@ -3,16 +3,17 @@ import {PayloadAction} from '@reduxjs/toolkit';
 import localStore from '@renderer/store/localStore';
 import {
   AccountNumber,
+  AddressData,
   DictWithDataAndError,
   DictWithError,
   DictWithPaginatedResultsAndError,
   FriendNumber,
-  ManagedAccount,
   ManagedFriend,
   NodeIdentifier,
   PaginatedResults,
 } from '@renderer/types';
-import {MANAGED_ACCOUNTS, MANAGED_FRIENDS} from '@renderer/constants';
+import {MANAGED_ACCOUNTS, MANAGED_FRIENDS, MANAGED_VALIDATORS} from '@renderer/constants';
+import {formatAddress} from '@renderer/utils/address';
 
 interface Address {
   address: string;
@@ -95,6 +96,16 @@ export function setDataErrorReducer() {
   };
 }
 
+export function setNodeLocalAndStateReducer<T extends AddressData>() {
+  return (state: any, {payload}: PayloadAction<T>) => {
+    const {ip_address: ipAddress, port, protocol} = payload;
+    const key = formatAddress(ipAddress, port, protocol);
+    const validator = state[key];
+    state[key] = validator ? {validator, ...payload} : payload;
+    localStore.set(getStateName(MANAGED_VALIDATORS), state);
+  };
+}
+
 export function setPaginatedResultReducer<T>() {
   return (
     state: DictWithPaginatedResultsAndError<T>,
@@ -145,8 +156,16 @@ export function unsetDataReducer() {
 }
 
 export function unsetAccountLocalAndStateReducer() {
-  return (state: any, {payload: {account_number: accountNumber}}: PayloadAction<ManagedAccount>) => {
+  return (state: any, {payload: {account_number: accountNumber}}: PayloadAction<AccountNumber>) => {
     delete state[accountNumber];
+    localStore.set(getStateName(MANAGED_ACCOUNTS), state);
+  };
+}
+
+export function unsetNodeLocalAndStateReducer() {
+  return (state: any, {payload: {ip_address: ipAddress, port, protocol}}: PayloadAction<AddressData>) => {
+    const key = formatAddress(ipAddress, port, protocol);
+    delete state[key];
     localStore.set(getStateName(MANAGED_ACCOUNTS), state);
   };
 }
