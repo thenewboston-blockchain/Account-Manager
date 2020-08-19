@@ -1,14 +1,14 @@
 import React, {FC, ReactNode} from 'react';
+import {useDispatch} from 'react-redux';
 
 import Modal from '@renderer/components/Modal';
 import {FormInput} from '@renderer/components/FormComponents';
 import {useAddress} from '@renderer/hooks';
+import {setManagedBank} from '@renderer/store/app';
+import {AppDispatch} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
 
 import './EditBankModal.scss';
-import {setManagedBank} from '@renderer/store/app';
-import {useDispatch} from 'react-redux';
-import {AppDispatch} from '@renderer/types';
 
 interface ComponentProps {
   close(): void;
