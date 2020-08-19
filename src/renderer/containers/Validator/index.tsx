@@ -97,12 +97,18 @@ const Validator: FC = () => {
     );
   };
 
+  const renderTitle = (): string => {
+    if (isActivePrimaryValidator) return activePrimaryValidator.nickname || activePrimaryValidator.ip_address;
+    const {ipAddress} = parseAddressData(address);
+    return ipAddress;
+  };
+
   const renderTop = (): ReactNode => (
     <>
       <PageHeader
         dropdownMenuOptions={getDropdownMenuOptions()}
         rightContent={renderRightPageHeaderButtons()}
-        title={renderValidatorTitle()}
+        title={renderTitle()}
         trustScore={94.21}
       />
       <PageTabs
@@ -128,12 +134,6 @@ const Validator: FC = () => {
       />
     </>
   );
-
-  const renderValidatorTitle = (): string => {
-    if (isActivePrimaryValidator) return activePrimaryValidator.nickname || activePrimaryValidator.ip_address;
-    const {ipAddress} = parseAddressData(address);
-    return ipAddress;
-  };
 
   return (
     <div className="Validator">
