@@ -1,4 +1,4 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import noop from 'lodash/noop';
 
@@ -50,18 +50,20 @@ const LeftMenu: FC = () => {
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
   const [createAccountModalIsOpen, toggleCreateAccountModal] = useBooleanState(false);
 
-  const getAccountItems = (): ReactNode[] => {
-    return Object.values(managedAccounts)
-      .map(({account_number, nickname}: ManagedAccount) => ({
-        baseUrl: `/account/${account_number}`,
-        key: account_number,
-        label: nickname || account_number,
-        to: `/account/${account_number}/overview`,
-      }))
-      .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
-  };
+  const accountItems = useMemo<ReactNode[]>(
+    () =>
+      Object.values(managedAccounts)
+        .map(({account_number, nickname}: ManagedAccount) => ({
+          baseUrl: `/account/${account_number}`,
+          key: account_number,
+          label: nickname || account_number,
+          to: `/account/${account_number}/overview`,
+        }))
+        .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />),
+    [managedAccounts],
+  );
 
-  const getActiveBankMenuItem = (): ReactNode => {
+  const activeBankMenuItem = useMemo<ReactNode>(() => {
     if (!activeBank) return null;
     const baseUrl = `/bank/${formatPathFromNode(activeBank)}`;
 
@@ -74,33 +76,42 @@ const LeftMenu: FC = () => {
         to={`${baseUrl}/overview`}
       />
     );
+  }, [activeBank, activeBankNickname]);
+
+  const bankMenuItems = useMemo<ReactNode[]>(
+    () =>
+      Object.values(managedBanks)
+        .map((managedBank: ManagedNode) => ({
+          baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
+          key: managedBank.ip_address,
+          label: managedBank.ip_address,
+          to: `/bank/${formatPathFromNode(managedBank)}/overview`,
+        }))
+        .map(({baseUrl, key, label, to}) => (
+          <LeftSubmenuItemStatus baseUrl={baseUrl} key={key} label={label} status="online" to={to} />
+        )),
+    [managedBanks],
+  );
+
+  const friendMenuItems = useMemo<ReactNode[]>(
+    () =>
+      friends
+        .map(({accountNumber, nickname}) => ({
+          baseUrl: `/account/${accountNumber}`,
+          key: accountNumber,
+          label: nickname || accountNumber,
+          to: `/account/${accountNumber}/overview`,
+        }))
+        .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />),
+    [friends],
+  );
+
+  const handleChangeBank = (): void => {
+    dispatch(unsetActivePrimaryValidator());
+    dispatch(unsetActiveBank());
   };
 
-  const getBankMenuItems = (): ReactNode[] => {
-    return Object.values(managedBanks)
-      .map((managedBank: ManagedNode) => ({
-        baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
-        key: managedBank.ip_address,
-        label: managedBank.ip_address,
-        to: `/bank/${formatPathFromNode(managedBank)}/overview`,
-      }))
-      .map(({baseUrl, key, label, to}) => (
-        <LeftSubmenuItemStatus baseUrl={baseUrl} key={key} label={label} status="online" to={to} />
-      ));
-  };
-
-  const getFriendMenuItems = (): ReactNode[] => {
-    return friends
-      .map(({accountNumber, nickname}) => ({
-        baseUrl: `/account/${accountNumber}`,
-        key: accountNumber,
-        label: nickname || accountNumber,
-        to: `/account/${accountNumber}/overview`,
-      }))
-      .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
-  };
-
-  const getNetworkMenuItems = (): ReactNode[] => {
+  const networkMenuItems = useMemo<ReactNode[]>(() => {
     if (!activePrimaryValidator) return [];
     return [
       {
@@ -116,25 +127,22 @@ const LeftMenu: FC = () => {
         to: `/validator/${formatPathFromNode(activePrimaryValidator)}/validators`,
       },
     ].map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
-  };
+  }, [activePrimaryValidator]);
 
-  const getValidatorMenuItems = (): ReactNode[] => {
-    return Object.values(managedValidators)
-      .map((managedValidator: ManagedNode) => ({
-        baseUrl: `/validator/${formatPathFromNode(managedValidator)}`,
-        key: managedValidator.ip_address,
-        label: managedValidator.ip_address,
-        to: `/validator/${formatPathFromNode(managedValidator)}/overview`,
-      }))
-      .map(({baseUrl, key, label, to}) => (
-        <LeftSubmenuItemStatus baseUrl={baseUrl} key={key} label={label} status="online" to={to} />
-      ));
-  };
-
-  const handleChangeBank = () => {
-    dispatch(unsetActivePrimaryValidator());
-    dispatch(unsetActiveBank());
-  };
+  const validatorMenuItems = useMemo<ReactNode[]>(
+    () =>
+      Object.values(managedValidators)
+        .map((managedValidator: ManagedNode) => ({
+          baseUrl: `/validator/${formatPathFromNode(managedValidator)}`,
+          key: managedValidator.ip_address,
+          label: managedValidator.ip_address,
+          to: `/validator/${formatPathFromNode(managedValidator)}/overview`,
+        }))
+        .map(({baseUrl, key, label, to}) => (
+          <LeftSubmenuItemStatus baseUrl={baseUrl} key={key} label={label} status="online" to={to} />
+        )),
+    [managedValidators],
+  );
 
   return (
     <div className="LeftMenu">
@@ -144,20 +152,20 @@ const LeftMenu: FC = () => {
       </div>
       <LeftSubmenu
         leftIcon={<Icon className="LeftMenu__icon" icon={IconType.earth} />}
-        menuItems={getNetworkMenuItems()}
+        menuItems={networkMenuItems}
         title="Network"
       />
       <LeftSubmenu
-        menuItems={[getActiveBankMenuItem()]}
+        menuItems={[activeBankMenuItem]}
         noExpandToggle
         rightOnClick={handleChangeBank}
         rightText="Change"
         title="Active Bank"
       />
-      <LeftSubmenu menuItems={getAccountItems()} rightOnClick={toggleCreateAccountModal} title="Accounts" />
-      <LeftSubmenu menuItems={getFriendMenuItems()} rightOnClick={toggleAddFriendModal} title="Friends" />
-      <LeftSubmenu menuItems={getBankMenuItems()} rightOnClick={noop} title="Managed Banks" />
-      <LeftSubmenu menuItems={getValidatorMenuItems()} rightOnClick={noop} title="Managed Validators" />
+      <LeftSubmenu menuItems={accountItems} rightOnClick={toggleCreateAccountModal} title="Accounts" />
+      <LeftSubmenu menuItems={friendMenuItems} rightOnClick={toggleAddFriendModal} title="Friends" />
+      <LeftSubmenu menuItems={bankMenuItems} rightOnClick={noop} title="Managed Banks" />
+      <LeftSubmenu menuItems={validatorMenuItems} rightOnClick={noop} title="Managed Validators" />
       {addFriendModalIsOpen && <AddFriendModal close={toggleAddFriendModal} />}
       {createAccountModalIsOpen && <CreateAccountModal close={toggleCreateAccountModal} />}
     </div>
