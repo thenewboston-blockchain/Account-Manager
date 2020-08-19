@@ -1,6 +1,7 @@
 import React, {FC, useMemo} from 'react';
 
 import {Loader} from '@renderer/components/FormElements';
+import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import {VALIDATOR_VALIDATORS} from '@renderer/constants';
 import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
@@ -34,7 +35,7 @@ const ValidatorValidators: FC = () => {
         [TableKeys.accountNumber]: validator.account_number,
         [TableKeys.dailyConfirmationRate]: validator.daily_confirmation_rate,
         [TableKeys.defaultTransactionFee]: validator.default_transaction_fee,
-        [TableKeys.ipAddress]: validator.ip_address,
+        [TableKeys.ipAddress]: <NodeLink node={validator} urlBase="validator" />,
         [TableKeys.nodeIdentifier]: validator.node_identifier,
         [TableKeys.port]: validator.port,
         [TableKeys.protocol]: validator.protocol,

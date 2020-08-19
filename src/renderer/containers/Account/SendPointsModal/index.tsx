@@ -36,11 +36,11 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
     (points: number, accountNumber: string): boolean => {
       if (!accountNumber || !points) return true;
       const {balance} = managedAccounts[accountNumber];
-      const totalCost = calculateTotalCost({
-        bankTxFee: activeBank.default_transaction_fee,
+      const totalCost = calculateTotalCost(
+        activeBank.default_transaction_fee,
         points,
-        validatorTxFee: activePrimaryValidator.default_transaction_fee,
-      });
+        activePrimaryValidator.default_transaction_fee,
+      );
       return totalCost <= parseFloat(balance);
     },
     [activeBank.default_transaction_fee, activePrimaryValidator.default_transaction_fee, managedAccounts],

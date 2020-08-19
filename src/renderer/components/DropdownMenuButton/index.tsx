@@ -10,6 +10,11 @@ import {getCustomClassNames} from '@renderer/utils/components';
 
 import './DropdownMenuButton.scss';
 
+export enum DropdownMenuDirection {
+  left,
+  right,
+}
+
 export interface DropdownMenuOption {
   disabled?: boolean;
   label: ReactNode;
@@ -18,12 +23,13 @@ export interface DropdownMenuOption {
 
 interface ComponentProps {
   className?: string;
+  direction?: DropdownMenuDirection;
   options: DropdownMenuOption[];
 }
 
 const dropdownRoot = document.getElementById('dropdown-root')!;
 
-const DropdownMenuButton: FC<ComponentProps> = ({className, options}) => {
+const DropdownMenuButton: FC<ComponentProps> = ({className, direction = DropdownMenuDirection.right, options}) => {
   const iconRef = useRef<HTMLDivElement>(null);
   const [open, toggleOpen, , closeMenu] = useBooleanState(false);
   const [dropdownPositionStyle, setDropdownPositionStyle] = useState<CSSProperties | undefined>(undefined);
@@ -46,8 +52,14 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, options}) => {
 
   const handleOpenDropdown = (): void => {
     if (iconRef.current) {
-      const {left, bottom, width} = iconRef.current.getBoundingClientRect();
-      setDropdownPositionStyle({left: left + width / 2, top: bottom + 3});
+      const {bottom, left, width} = iconRef.current.getBoundingClientRect();
+
+      if (direction === DropdownMenuDirection.left) {
+        setDropdownPositionStyle({right: window.innerWidth - left - width / 2, top: bottom + 3});
+      } else if (direction === DropdownMenuDirection.right) {
+        setDropdownPositionStyle({left: left + width / 2, top: bottom + 3});
+      }
+
       toggleOpen();
     }
   };

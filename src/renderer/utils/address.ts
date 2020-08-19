@@ -1,5 +1,5 @@
-import {ParsedUrlQuery, parse, stringify} from 'querystring';
-import {AddressData} from '@renderer/types';
+import {parse, ParsedUrlQuery, stringify} from 'querystring';
+import {AddressData, ProtocolType} from '@renderer/types';
 
 export const formatAddress = (ipAddress: string, port: number | string | null, protocol: string): string => {
   const portNumber = Number(port);
@@ -22,6 +22,17 @@ export const formatPath = (ipAddress: string, port: number | string | null, prot
 
 export const formatPathFromNode = (node: AddressData): string => {
   return formatPath(node.ip_address, node.port, node.protocol);
+};
+
+export const parseAddressData = (address: string): {ipAddress: string; port: number | null; protocol: ProtocolType} => {
+  const [protocol, ipAddress, port] = address.replace('//', '').split(':');
+  const formattedPort = port ? parseInt(port, 10) : null;
+
+  return {
+    ipAddress,
+    port: formattedPort,
+    protocol: protocol as ProtocolType,
+  };
 };
 
 export const parseQueryParams = (url: string): ParsedUrlQuery => {

@@ -1,5 +1,6 @@
 import React, {FC, useMemo} from 'react';
 
+import AccountLink from '@renderer/components/AccountLink';
 import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
@@ -22,7 +23,7 @@ const ValidatorAccounts: FC = () => {
     () =>
       validatorAccounts.map((account) => ({
         key: account.id,
-        [TableKeys.accountNumber]: account.account_number,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={account.account_number} />,
         [TableKeys.balanceLock]: account.balance_lock,
         [TableKeys.balance]: account.balance,
       })) || [],

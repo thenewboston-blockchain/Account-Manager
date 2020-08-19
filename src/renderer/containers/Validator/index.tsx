@@ -1,6 +1,8 @@
 import React, {FC, ReactNode} from 'react';
-import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {Route, Switch, useRouteMatch, withRouter} from 'react-router-dom';
 
+import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {Button} from '@renderer/components/FormElements';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
@@ -9,14 +11,60 @@ import ValidatorAccounts from '@renderer/containers/Validator/ValidatorAccounts'
 import ValidatorBanks from '@renderer/containers/Validator/ValidatorBanks';
 import ValidatorOverview from '@renderer/containers/Validator/ValidatorOverview';
 import ValidatorValidators from '@renderer/containers/Validator/ValidatorValidators';
+import {useAddress} from '@renderer/hooks';
+import {getActivePrimaryValidator, getIsActivePrimaryValidator, getIsManagedValidator} from '@renderer/selectors';
+import {setManagedValidator, unsetManagedValidator} from '@renderer/store/app';
+import {AppDispatch} from '@renderer/types';
+import {parseAddressData} from '@renderer/utils/address';
 
 import './Validator.scss';
 
 const Validator: FC = () => {
-  const {ipAddress} = useParams();
+  const address = useAddress();
+  const dispatch = useDispatch<AppDispatch>();
   const {path, url} = useRouteMatch();
+  const activePrimaryValidator = useSelector(getActivePrimaryValidator)!;
+  const isActivePrimaryValidator = useSelector(getIsActivePrimaryValidator(address));
+  const isManagedValidator = useSelector(getIsManagedValidator(address));
 
-  const renderRightPageHeaderButtons = (): ReactNode => <Button>Add to Managed Validators</Button>;
+  const getDropdownMenuOptions = (): DropdownMenuOption[] => {
+    if (!isManagedValidator) return [];
+    return [
+      {
+        label: 'Remove Validator',
+        onClick: handleRemoveManagedValidator,
+      },
+    ];
+  };
+
+  const handleAddManagedValidator = (): void => {
+    const {ipAddress, port, protocol} = parseAddressData(address);
+    dispatch(
+      setManagedValidator({
+        ip_address: ipAddress,
+        nickname: '',
+        port,
+        protocol,
+      }),
+    );
+  };
+
+  const handleRemoveManagedValidator = (): void => {
+    const {ipAddress, port, protocol} = parseAddressData(address);
+    dispatch(
+      unsetManagedValidator({
+        ip_address: ipAddress,
+        nickname: '',
+        port,
+        protocol,
+      }),
+    );
+  };
+
+  const renderRightPageHeaderButtons = (): ReactNode => {
+    if (isActivePrimaryValidator || isManagedValidator) return null;
+    return <Button onClick={handleAddManagedValidator}>Add to Managed Validators</Button>;
+  };
 
   const renderTabContent = (): ReactNode => {
     const tabContentRoutes = [
@@ -52,8 +100,9 @@ const Validator: FC = () => {
   const renderTop = (): ReactNode => (
     <>
       <PageHeader
+        dropdownMenuOptions={getDropdownMenuOptions()}
         rightContent={renderRightPageHeaderButtons()}
-        title={`VALIDATOR NAME HERE (${ipAddress})`}
+        title={renderValidatorTitle()}
         trustScore={94.21}
       />
       <PageTabs
@@ -79,6 +128,12 @@ const Validator: FC = () => {
       />
     </>
   );
+
+  const renderValidatorTitle = (): string => {
+    if (isActivePrimaryValidator) return activePrimaryValidator.nickname || activePrimaryValidator.ip_address;
+    const {ipAddress} = parseAddressData(address);
+    return ipAddress;
+  };
 
   return (
     <div className="Validator">
