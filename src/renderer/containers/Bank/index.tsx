@@ -1,4 +1,5 @@
 import React, {FC, ReactNode} from 'react';
+import {useSelector} from 'react-redux';
 import {Route, Switch, useParams, useRouteMatch, withRouter} from 'react-router-dom';
 
 import BankAccounts from '@renderer/containers/Bank/BankAccounts';
@@ -17,15 +18,20 @@ import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-import {useBooleanState} from '@renderer/hooks';
+import {useAddress, useBooleanState} from '@renderer/hooks';
+import {getActiveBank, getIsActiveBank, getIsManagedBank} from '@renderer/selectors';
 
 import './Bank.scss';
 
 const Bank: FC = () => {
+  const address = useAddress();
   const {ipAddress} = useParams();
   const {path, url} = useRouteMatch();
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
+  const activeBank = useSelector(getActiveBank);
+  const isActiveBank = useSelector(getIsActiveBank(address));
+  const isManagedBank = useSelector(getIsManagedBank(address));
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
