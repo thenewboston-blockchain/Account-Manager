@@ -33,7 +33,7 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
   const handleSubmit = ({friendNumber, friendNickname}: FormValues): void => {
     dispatch(
       setManagedFriend({
-        friend_number: friendNumber,
+        account_number: friendNumber,
         nickname: friendNickname,
       }),
     );

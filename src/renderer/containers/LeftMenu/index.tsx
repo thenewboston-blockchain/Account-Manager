@@ -91,11 +91,11 @@ const LeftMenu: FC = () => {
 
   const getFriendItems = (): ReactNode[] => {
     return Object.values(managedFriends)
-      .map(({friend_number, nickname}: ManagedFriend) => ({
-        baseUrl: `/friend/${friend_number}`,
-        key: friend_number,
-        label: nickname || friend_number,
-        to: `/friend/${friend_number}/overview`,
+      .map(({account_number, nickname}: ManagedFriend) => ({
+        baseUrl: `/friend/${account_number}`,
+        key: account_number,
+        label: nickname || account_number,
+        to: `/friend/${account_number}/overview`,
       }))
       .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
   };

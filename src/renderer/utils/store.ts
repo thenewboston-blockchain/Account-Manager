@@ -42,7 +42,7 @@ export function setAccountLocalAndStateReducer<T extends AccountNumber>() {
 
 export function setFriendLocalAndStateReducer<T extends FriendNumber>() {
   return (state: any, {payload}: PayloadAction<T>) => {
-    const {friend_number: friendNumber} = payload;
+    const {account_number: friendNumber} = payload;
     const account = state[friendNumber];
     state[friendNumber] = account ? {account, ...payload} : payload;
     localStore.set(getStateName(MANAGED_FRIENDS), state);
@@ -171,7 +171,7 @@ export function unsetNodeLocalAndStateReducer() {
 }
 
 export function unsetFriendLocalAndStateReducer() {
-  return (state: any, {payload: {friend_number: friendNumber}}: PayloadAction<ManagedFriend>) => {
+  return (state: any, {payload: {account_number: friendNumber}}: PayloadAction<ManagedFriend>) => {
     delete state[friendNumber];
     localStore.set(getStateName(MANAGED_FRIENDS), state);
   };

@@ -72,7 +72,7 @@ export interface Error {
 }
 
 export interface FriendNumber {
-  friend_number: string;
+  account_number: string;
 }
 
 export interface Id {
