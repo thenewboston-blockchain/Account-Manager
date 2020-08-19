@@ -19,8 +19,8 @@ import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {useAddress, useBooleanState} from '@renderer/hooks';
 import {getActiveBank, getIsActiveBank, getIsManagedBank} from '@renderer/selectors';
-import {AppDispatch} from '@renderer/types';
 import {setManagedBank, unsetManagedBank} from '@renderer/store/app';
+import {AppDispatch} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
 
 import './Bank.scss';
