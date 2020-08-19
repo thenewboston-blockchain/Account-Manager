@@ -11,7 +11,7 @@ import ValidatorAccounts from '@renderer/containers/Validator/ValidatorAccounts'
 import ValidatorBanks from '@renderer/containers/Validator/ValidatorBanks';
 import ValidatorOverview from '@renderer/containers/Validator/ValidatorOverview';
 import ValidatorValidators from '@renderer/containers/Validator/ValidatorValidators';
-import {useAddress, useBooleanState} from '@renderer/hooks';
+import {useAddress} from '@renderer/hooks';
 import {getActivePrimaryValidator, getIsActivePrimaryValidator, getIsManagedValidator} from '@renderer/selectors';
 import {setManagedValidator, unsetManagedValidator} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
@@ -28,7 +28,6 @@ const Validator: FC = () => {
   const isActivePrimaryValidator = useSelector(getIsActivePrimaryValidatorCb);
   const getIsManagedValidatorCb = useMemo(() => getIsManagedValidator(address), [address]);
   const isManagedValidator = useSelector(getIsManagedValidatorCb);
-  const [toggle, toggleToggle] = useBooleanState(false);
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
     if (!isManagedValidator) return [];
@@ -141,7 +140,6 @@ const Validator: FC = () => {
   return (
     <div className="Validator">
       <PageLayout content={renderTabContent()} top={renderTop()} />
-      <Button onClick={toggleToggle}>Button {toggle}</Button>
     </div>
   );
 };
