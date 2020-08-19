@@ -1,5 +1,5 @@
 import {NodeType, ProtocolType} from './constants';
-import {AccountNumber, FriendNumber, AddressData, NodeIdentifier} from './network';
+import {AccountNumber, AddressData, NodeIdentifier} from './network';
 
 export interface AppNodeAddressData extends AddressData, NodeIdentifier {
   nickname: string;
@@ -11,7 +11,7 @@ export interface ManagedAccount extends AccountNumber {
   signing_key: string;
 }
 
-export interface ManagedFriend extends FriendNumber {
+export interface ManagedFriend extends AccountNumber {
   nickname: string;
 }
 
