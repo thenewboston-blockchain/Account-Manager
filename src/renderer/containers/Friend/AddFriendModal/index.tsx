@@ -50,7 +50,7 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
     return yup.object().shape({
       accountNumber: yup
         .string()
-        .length(64, 'Friend Number must be 64 characters long')
+        .length(64, 'Account number must be 64 characters long')
         .required('This field is required'),
       nickname: yup.string().notOneOf(managedFriendNicknames, 'That nickname is already taken'),
     });
@@ -68,7 +68,7 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
       validationSchema={validationSchema}
     >
       <FormInput label="Nickname" name="nickname" />
-      <FormTextArea label="Friend Number" name="accountNumber" required />
+      <FormTextArea label="Account Number" name="accountNumber" required />
     </Modal>
   );
 };

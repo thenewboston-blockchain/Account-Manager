@@ -10,6 +10,7 @@ import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {getManagedFriends} from '@renderer/selectors';
+
 import './Friend.scss';
 
 const Friend: FC = () => {

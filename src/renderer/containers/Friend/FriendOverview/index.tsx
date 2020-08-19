@@ -39,13 +39,13 @@ const FriendOverview: FC = () => {
         value: loading ? '-' : balance || '0',
       },
       {
-        key: 'Friend Number',
-        value: renderFriendNumber(),
+        key: 'Account Number',
+        value: renderAccountNumber(),
       },
     ];
   };
 
-  const renderFriendNumber = (): ReactNode => (
+  const renderAccountNumber = (): ReactNode => (
     <>
       <div>{loading ? '-' : accountNumber}</div>
       <Qr className="FriendOverview__qr" text={accountNumber} width={120} />
@@ -54,7 +54,7 @@ const FriendOverview: FC = () => {
 
   return (
     <div className="FriendOverview">
-      <DetailPanel className="FriendOverview__DetailPanel" items={getItems()} title="Friend Info" />
+      <DetailPanel className="FriendOverview__DetailPanel" items={getItems()} title="Friend Information" />
     </div>
   );
 };
