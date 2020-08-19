@@ -1,10 +1,11 @@
 import {getActiveBankConfig, getActivePrimaryValidatorConfig} from './app';
+import {getIsActiveBank, getIsManagedBank} from './banks';
 import {
   getActiveBank,
   getActivePrimaryValidator,
   getBankAccounts,
-  getBankBankTransactions,
   getBankBanks,
+  getBankBankTransactions,
   getBankBlocks,
   getBankConfigs,
   getBankConfirmationBlocks,
@@ -12,6 +13,7 @@ import {
   getBankValidatorConfirmationServices,
   getBankValidators,
   getManagedAccounts,
+  getManagedBanks,
   getManagedValidators,
   getValidatorAccounts,
   getValidatorBanks,
@@ -34,9 +36,12 @@ export {
   getBankInvalidBlocks,
   getBankValidatorConfirmationServices,
   getBankValidators,
+  getIsActiveBank,
   getIsActivePrimaryValidator,
+  getIsManagedBank,
   getIsManagedValidator,
   getManagedAccounts,
+  getManagedBanks,
   getManagedValidators,
   getValidatorAccounts,
   getValidatorBanks,

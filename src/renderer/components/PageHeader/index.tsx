@@ -1,6 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 
-import DropdownMenuButton, {DropdownMenuOption, DropdownMenuDirection} from '@renderer/components/DropdownMenuButton';
+import DropdownMenuButton, {DropdownMenuDirection, DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import TrustBadge from '@renderer/components/TrustBadge';
 
 import './PageHeader.scss';

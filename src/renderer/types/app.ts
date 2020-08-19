@@ -15,7 +15,7 @@ export interface ManagedFriend extends AccountNumber {
   nickname: string;
 }
 
-export interface ManagedValidator extends AddressData {
+export interface ManagedNode extends AddressData {
   nickname: string;
 }
 
