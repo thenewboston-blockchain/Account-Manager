@@ -5,8 +5,6 @@ import {getManagedFriends} from '@renderer/selectors';
 import {unsetManagedFriend} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
 
-import './DeleteFriendModal.scss';
-
 interface ComponentProps {
   accountNumber: string;
   close(): void;
@@ -23,14 +21,7 @@ const DeleteFriendModal: FC<ComponentProps> = ({accountNumber, close}) => {
   };
 
   return (
-    <Modal
-      cancelButton="Cancel"
-      className="DeleteFriendModal"
-      close={close}
-      header="Remove Friend"
-      onSubmit={handleSubmit}
-      submitButton="Yes"
-    >
+    <Modal cancelButton="Cancel" close={close} header="Remove Friend" onSubmit={handleSubmit} submitButton="Yes">
       Are you sure you want to remove your friend?
     </Modal>
   );

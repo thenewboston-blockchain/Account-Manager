@@ -22,16 +22,19 @@ const Friend: FC = () => {
   const managedFriends = useSelector(getManagedFriends);
   const managedFriend = managedFriends[accountNumber];
 
-  const dropdownMenuOptions: DropdownMenuOption[] = [
-    {
-      label: 'Edit',
-      onClick: noop,
-    },
-    {
-      label: 'Remove Friend',
-      onClick: toggleDeleteModal,
-    },
-  ];
+  const getDropdownMenuOptions = (): DropdownMenuOption[] => {
+    if (!managedFriend) return [];
+    return [
+      {
+        label: 'Edit',
+        onClick: noop,
+      },
+      {
+        label: 'Remove Friend',
+        onClick: toggleDeleteModal,
+      },
+    ];
+  };
 
   const renderRightPageHeaderButtons = (): ReactNode => <Button onClick={noop}>Send Points</Button>;
 
@@ -57,7 +60,7 @@ const Friend: FC = () => {
   const renderTop = (): ReactNode => (
     <>
       <PageHeader
-        dropdownMenuOptions={dropdownMenuOptions}
+        dropdownMenuOptions={getDropdownMenuOptions()}
         rightContent={renderRightPageHeaderButtons()}
         title={managedFriend?.nickname || accountNumber}
       />
