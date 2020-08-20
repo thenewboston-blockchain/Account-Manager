@@ -28,7 +28,7 @@ const Friend: FC = () => {
       onClick: noop,
     },
     {
-      label: 'Delete Friend',
+      label: 'Remove Friend',
       onClick: toggleDeleteModal,
     },
   ];
