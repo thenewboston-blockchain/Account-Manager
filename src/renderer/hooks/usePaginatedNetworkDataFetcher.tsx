@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {PAGINATED_RESULTS_LIMIT} from '@renderer/config';
@@ -190,11 +190,14 @@ function usePaginatedNetworkDataFetcher<T>(
     };
   }, [address, currentPage, dispatch, type]);
 
-  const setPage = (page: number) => (): void => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
+  const setPage = useCallback(
+    (page: number) => (): void => {
+      if (page >= 1 && page <= totalPages) {
+        setCurrentPage(page);
+      }
+    },
+    [setCurrentPage, totalPages],
+  );
 
   return {
     currentPage,
