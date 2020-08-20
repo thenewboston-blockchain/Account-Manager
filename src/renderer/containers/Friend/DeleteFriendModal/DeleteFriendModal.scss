@@ -1,0 +1,16 @@
+.DeleteFriendModal {
+  &__icon {
+    color: var(--color-danger);
+    margin-right: 12px;
+  }
+
+  &__title {
+    color: var(--color-danger);
+  }
+
+  &__warning-span {
+    color: var(--color-danger);
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+}
