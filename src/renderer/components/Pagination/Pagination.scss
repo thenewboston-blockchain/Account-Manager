@@ -44,5 +44,10 @@
         background: transparent;
       }
     }
+
+    &--prev,
+    &--next {
+      padding: 0;
+    }
   }
 }
