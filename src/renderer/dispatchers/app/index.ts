@@ -78,4 +78,6 @@ export const connectAndStoreLocalData = (network: AddressData, bankNickname: str
     protocol: validatorConfig.protocol,
   };
   dispatch(setActivePrimaryValidator(activePrimaryValidatorData));
+
+  return connectResponse;
 };

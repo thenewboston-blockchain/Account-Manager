@@ -8,6 +8,7 @@ import Logo from '@renderer/components/Logo';
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch, InputOption, ProtocolType} from '@renderer/types';
+import {formatPathFromNode} from '@renderer/utils/address';
 import yup from '@renderer/utils/yup';
 
 import './Connect.scss';
@@ -42,7 +43,7 @@ const Connect: FC = () => {
   const history = useHistory();
 
   useEffect(() => {
-    if (activeBankConfig) history.push(`/bank/${activeBankConfig.node_identifier}/overview`);
+    if (activeBankConfig) history.push(`/bank/${formatPathFromNode(activeBankConfig)}/overview`);
   }, [activeBankConfig, history]);
 
   const handleSubmit = async ({ipAddress, nickname, port, protocol}: FormValues): Promise<void> => {

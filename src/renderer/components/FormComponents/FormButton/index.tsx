@@ -37,7 +37,7 @@ const FormButton: FC<FormButtonProps> = ({children, ignoreDirty = false, submitt
 
   return (
     <Button {...baseButtonProps} disabled={buttonIsDisabled} onClick={handleClick}>
-      {submitting ? <Loader /> : children}
+      {type === 'submit' && submitting ? <Loader /> : children}
     </Button>
   );
 };
