@@ -155,12 +155,14 @@ function usePaginatedNetworkDataFetcher<T>(
   queryParams: QueryParams = {},
 ): {
   currentPage: number;
+  count: number;
   error: string | null;
   loading: boolean;
   results: T[];
   setPage(page: number): () => void;
   totalPages: number;
 } {
+  const [count, setCount] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [memoizedQueryParams, setMemoizedQueryParams] = useState<QueryParams>(queryParams);
@@ -177,6 +179,7 @@ function usePaginatedNetworkDataFetcher<T>(
 
   useEffect(() => {
     if (paginatedResultsData) {
+      setCount(paginatedResultsData.count);
       setTotalPages(Math.ceil(paginatedResultsData.count / PAGINATED_RESULTS_LIMIT));
     }
   }, [paginatedResultsData]);
@@ -211,6 +214,7 @@ function usePaginatedNetworkDataFetcher<T>(
   );
 
   return {
+    count,
     currentPage,
     error: paginatedResultsData?.error || null,
     loading,

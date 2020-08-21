@@ -1,12 +1,17 @@
-import {createSelector} from '@reduxjs/toolkit';
+import {createCachedSelector} from 're-reselect';
 
+import {RootState} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 import {getActivePrimaryValidator, getManagedValidators} from './state';
+import {getNthArg} from './utils';
 
-export const getIsActivePrimaryValidator = (address: string) =>
-  createSelector([getActivePrimaryValidator, () => address], (activePrimaryValidator) =>
+export const getIsActivePrimaryValidator: (state: RootState, address: string) => boolean = createCachedSelector(
+  [getActivePrimaryValidator, getNthArg(1)],
+  (activePrimaryValidator, address: string) =>
     activePrimaryValidator ? formatAddressFromNode(activePrimaryValidator) === address : false,
-  );
+)(getNthArg(1));
 
-export const getIsManagedValidator = (address: string) =>
-  createSelector([getManagedValidators, () => address], (managedValidators) => !!managedValidators[address]);
+export const getIsManagedValidator: (state: RootState, address: string) => boolean = createCachedSelector(
+  [getManagedValidators, getNthArg(1)],
+  (managedValidators, address: string) => !!managedValidators[address],
+)(getNthArg(1));

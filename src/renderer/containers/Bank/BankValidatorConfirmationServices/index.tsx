@@ -18,6 +18,7 @@ enum TableKeys {
 const BankValidatorConfirmationServices: FC = () => {
   const address = useAddress();
   const {
+    count,
     currentPage,
     loading,
     results: bankValidatorConfirmationServices,
@@ -64,7 +65,7 @@ const BankValidatorConfirmationServices: FC = () => {
 
   return (
     <div className="BankValidatorConfirmationServices">
-      <PageTable items={pageTableItems} loading={loading} />
+      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
       <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
     </div>
   );
