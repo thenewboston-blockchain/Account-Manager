@@ -16,7 +16,7 @@ export interface ModalButtonProps extends FormButtonProps {
   content: ReactNode;
 }
 
-interface ModalProps {
+interface ComponentProps {
   cancelButton?: ModalButtonProps | string;
   className?: string;
   close(): void;
@@ -33,7 +33,7 @@ interface ModalProps {
   validationSchema?: any;
 }
 
-const Modal: FC<ModalProps> = ({
+const Modal: FC<ComponentProps> = ({
   cancelButton,
   children,
   className,
