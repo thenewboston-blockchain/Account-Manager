@@ -7,10 +7,8 @@ import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import {AppDispatch, InputOption, ProtocolType} from '@renderer/types';
-import yup from '@renderer/utils/yup';
-
-import './ChangeActiveBankModal.scss';
 import {formatPathFromNode} from '@renderer/utils/address';
+import yup from '@renderer/utils/yup';
 
 const initialValues = {
   ipAddress: '',
