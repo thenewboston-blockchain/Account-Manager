@@ -2,10 +2,10 @@ import React, {FC, ReactNode, useState} from 'react';
 import clsx from 'clsx';
 
 import ArrowToggle from '@renderer/components/ArrowToggle';
+import Loader from '@renderer/components/FormElements/Loader';
 import {getCustomClassNames} from '@renderer/utils/components';
 
 import './PageTable.scss';
-import Loader from '@renderer/components/FormElements/Loader';
 
 interface Header {
   [tableKey: string]: string;
