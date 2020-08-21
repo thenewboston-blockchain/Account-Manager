@@ -27,6 +27,14 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
   const history = useHistory();
   const managedFriends = useSelector(getManagedFriends);
 
+  const managedAccountNumbers = useMemo(
+    () =>
+      Object.values(managedFriends)
+        .filter(({account_number}) => !!account_number)
+        .map(({account_number}) => account_number),
+    [managedFriends],
+  );
+
   const managedFriendNicknames = useMemo(
     () =>
       Object.values(managedFriends)
@@ -51,10 +59,11 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
       accountNumber: yup
         .string()
         .length(64, 'Account number must be 64 characters long')
-        .required('This field is required'),
+        .required('This field is required')
+        .notOneOf(managedAccountNumbers, 'This friend already exists'),
       nickname: yup.string().notOneOf(managedFriendNicknames, 'That nickname is already taken'),
     });
-  }, [managedFriendNicknames]);
+  }, [managedAccountNumbers, managedFriendNicknames]);
 
   return (
     <Modal
