@@ -1,12 +1,15 @@
 import {createSelector} from '@reduxjs/toolkit';
+import memoize from 'lodash/memoize';
 
 import {formatAddressFromNode} from '@renderer/utils/address';
 import {getActivePrimaryValidator, getManagedValidators} from './state';
 
-export const getIsActivePrimaryValidator = (address: string) =>
+const getIsActivePrimaryValidatorFn = (address: string) =>
   createSelector([getActivePrimaryValidator, () => address], (activePrimaryValidator) =>
     activePrimaryValidator ? formatAddressFromNode(activePrimaryValidator) === address : false,
   );
+export const getIsActivePrimaryValidator = memoize(getIsActivePrimaryValidatorFn);
 
-export const getIsManagedValidator = (address: string) =>
+const getIsManagedValidatorFn = (address: string) =>
   createSelector([getManagedValidators, () => address], (managedValidators) => !!managedValidators[address]);
+export const getIsManagedValidator = memoize(getIsManagedValidatorFn);
