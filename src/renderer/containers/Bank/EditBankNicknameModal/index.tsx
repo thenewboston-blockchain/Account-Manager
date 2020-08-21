@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
-import Modal from '@renderer/components/Modal';
 import {FormInput} from '@renderer/components/FormComponents';
+import Modal from '@renderer/components/Modal';
 import {useAddress} from '@renderer/hooks';
 import {getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
