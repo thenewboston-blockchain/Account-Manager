@@ -8,23 +8,23 @@ import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-import AddBankSigningKeyModal from '@renderer/containers/Bank/AddBankSigningKeyModal';
-import BankAccounts from '@renderer/containers/Bank/BankAccounts';
-import BankBanks from '@renderer/containers/Bank/BankBanks';
-import BankBlocks from '@renderer/containers/Bank/BankBlocks';
-import BankConfirmationBlocks from '@renderer/containers/Bank/BankConfirmationBlocks';
-import BankInvalidBlocks from '@renderer/containers/Bank/BankInvalidBlocks';
-import BankOverview from '@renderer/containers/Bank/BankOverview';
-import BankTransactions from '@renderer/containers/Bank/BankTransactions';
-import BankValidatorConfirmationServices from '@renderer/containers/Bank/BankValidatorConfirmationServices';
-import BankValidators from '@renderer/containers/Bank/BankValidators';
-import EditBankNicknameModal from '@renderer/containers/Bank/EditBankNicknameModal';
 import {useAddress, useBooleanState} from '@renderer/hooks';
 import {getActiveBank, getIsActiveBank, getIsManagedBank, getManagedBanks} from '@renderer/selectors';
 import {setManagedBank, unsetManagedBank} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
 
+import AddBankSigningKeyModal from './AddBankSigningKeyModal';
+import BankAccounts from './BankAccounts';
+import BankBanks from './BankBanks';
+import BankBlocks from './BankBlocks';
+import BankConfirmationBlocks from './BankConfirmationBlocks';
+import BankInvalidBlocks from './BankInvalidBlocks';
+import BankOverview from './BankOverview';
+import BankTransactions from './BankTransactions';
+import BankValidatorConfirmationServices from './BankValidatorConfirmationServices';
+import BankValidators from './BankValidators';
+import EditBankNicknameModal from './EditBankNicknameModal';
 import './Bank.scss';
 
 const Bank: FC = () => {
