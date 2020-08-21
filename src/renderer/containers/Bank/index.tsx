@@ -37,10 +37,10 @@ const Bank: FC = () => {
   const isActiveBank = useSelector(getIsActiveBank(address));
   const isManagedBank = useSelector(getIsManagedBank(address));
   const managedBanks = useSelector(getManagedBanks);
+  const managedBank = managedBanks[address];
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
     if (!isManagedBank) return [];
-    const managedBank = managedBanks[address];
 
     const menuOptions = [
       {
@@ -91,7 +91,6 @@ const Bank: FC = () => {
   };
 
   const handleRemoveSigningKey = (): void => {
-    const managedBank = managedBanks[address];
     dispatch(
       setManagedBank({
         ...managedBank,
@@ -159,7 +158,6 @@ const Bank: FC = () => {
   const renderTitle = (): string => {
     if (isActiveBank) return activeBank.nickname || activeBank.ip_address;
     if (isManagedBank) {
-      const managedBank = managedBanks[address];
       return managedBank.nickname || managedBank.ip_address;
     }
     const {ipAddress} = parseAddressData(address);
@@ -222,7 +220,7 @@ const Bank: FC = () => {
     <div className="Bank">
       <PageLayout content={renderTabContent()} top={renderTop()} />
       {addSigningKeyModalIsOpen && <AddBankSigningKeyModal close={toggleSigningKeyModal} />}
-      {editNicknameModalIsOpen && <EditBankNicknameModal close={toggleEditNicknameModal} />}
+      {editNicknameModalIsOpen && <EditBankNicknameModal close={toggleEditNicknameModal} bank={managedBank} />}
     </div>
   );
 };
