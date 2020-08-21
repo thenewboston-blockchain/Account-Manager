@@ -1,10 +1,9 @@
 import React, {FC, useMemo} from 'react';
 
-import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {BANK_INVALID_BLOCKS} from '@renderer/constants';
-import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {InvalidBlock} from '@renderer/types';
 
 enum TableKeys {
@@ -15,9 +14,10 @@ enum TableKeys {
 }
 
 const BankInvalidBlocks: FC = () => {
+  const address = useAddress();
   const {currentPage, loading, results: bankInvalidBlocks, setPage, totalPages} = usePaginatedNetworkDataFetcher<
     InvalidBlock
-  >(BANK_INVALID_BLOCKS);
+  >(BANK_INVALID_BLOCKS, address);
 
   const bankInvalidBlockTableData = useMemo<PageTableData[]>(
     () =>
@@ -47,14 +47,8 @@ const BankInvalidBlocks: FC = () => {
 
   return (
     <div className="BankInvalidBlocks">
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <PageTable items={pageTableItems} />
-          <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-        </>
-      )}
+      <PageTable items={pageTableItems} loading={loading} />
+      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
     </div>
   );
 };

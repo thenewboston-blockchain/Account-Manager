@@ -6,7 +6,7 @@ import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {BANK_BANKS} from '@renderer/constants';
-import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {Node} from '@renderer/types';
 
 enum TableKeys {
@@ -21,8 +21,10 @@ enum TableKeys {
 }
 
 const BankBanks: FC = () => {
+  const address = useAddress();
   const {currentPage, loading, results: bankBanks, setPage, totalPages} = usePaginatedNetworkDataFetcher<Node>(
     BANK_BANKS,
+    address,
   );
 
   const bankBanksTableData = useMemo<PageTableData[]>(

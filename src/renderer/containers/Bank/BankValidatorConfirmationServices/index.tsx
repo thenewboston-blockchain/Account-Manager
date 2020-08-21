@@ -1,10 +1,9 @@
 import React, {FC, useMemo} from 'react';
 
-import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants';
-import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {ValidatorConfirmationService} from '@renderer/types';
 
 enum TableKeys {
@@ -17,13 +16,14 @@ enum TableKeys {
 }
 
 const BankValidatorConfirmationServices: FC = () => {
+  const address = useAddress();
   const {
     currentPage,
     loading,
     results: bankValidatorConfirmationServices,
     setPage,
     totalPages,
-  } = usePaginatedNetworkDataFetcher<ValidatorConfirmationService>(BANK_VALIDATOR_CONFIRMATION_SERVICES);
+  } = usePaginatedNetworkDataFetcher<ValidatorConfirmationService>(BANK_VALIDATOR_CONFIRMATION_SERVICES, address);
 
   const bankValidatorConfirmationServicesTableData = useMemo<PageTableData[]>(
     () =>
@@ -64,14 +64,8 @@ const BankValidatorConfirmationServices: FC = () => {
 
   return (
     <div className="BankValidatorConfirmationServices">
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <PageTable items={pageTableItems} />
-          <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-        </>
-      )}
+      <PageTable items={pageTableItems} loading={loading} />
+      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
     </div>
   );
 };

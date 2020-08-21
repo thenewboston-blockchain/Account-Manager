@@ -2,6 +2,7 @@ import React, {FC, ReactNode, useState} from 'react';
 import clsx from 'clsx';
 
 import ArrowToggle from '@renderer/components/ArrowToggle';
+import Loader from '@renderer/components/FormElements/Loader';
 import {getCustomClassNames} from '@renderer/utils/components';
 
 import './PageTable.scss';
@@ -24,9 +25,10 @@ export interface PageTableItems {
 interface ComponentProps {
   className?: string;
   items: PageTableItems;
+  loading?: boolean;
 }
 
-const PageTable: FC<ComponentProps> = ({className, items}) => {
+const PageTable: FC<ComponentProps> = ({className, items, loading = false}) => {
   const {headers, data, orderedKeys} = items;
   const [expanded, setExpanded] = useState<number[]>([]);
 
@@ -64,7 +66,9 @@ const PageTable: FC<ComponentProps> = ({className, items}) => {
     });
   };
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <table className={clsx('PageTable', className)}>
       <thead className={clsx('PageTable__thead', {...getCustomClassNames(className, '__thead', true)})}>
         <tr>

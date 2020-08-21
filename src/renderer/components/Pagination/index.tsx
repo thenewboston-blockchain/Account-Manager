@@ -24,18 +24,22 @@ const Pagination: FC<ComponentProps> = ({className, currentPage, setPage, totalP
     totalPages,
   ]);
 
-  const renderEllipses = useCallback((): ReactNode => {
-    return (
-      <div
-        className={clsx('Pagination__button Pagination__button--ellipses', {
-          ...getCustomClassNames(className, '__button', true),
-          ...getCustomClassNames(className, '__button--ellipses', true),
-        })}
-      >
-        ...
-      </div>
-    );
-  }, [className]);
+  const renderEllipses = useCallback(
+    (key: string): ReactNode => {
+      return (
+        <div
+          className={clsx('Pagination__button Pagination__button--ellipses', {
+            ...getCustomClassNames(className, '__button', true),
+            ...getCustomClassNames(className, '__button--ellipses', true),
+          })}
+          key={key}
+        >
+          ...
+        </div>
+      );
+    },
+    [className],
+  );
 
   const renderPage = useCallback(
     (page: number): ReactNode => {
@@ -46,6 +50,7 @@ const Pagination: FC<ComponentProps> = ({className, currentPage, setPage, totalP
             ...getCustomClassNames(className, '__button', true),
             ...getCustomClassNames(className, '__button--active', page === currentPage),
           })}
+          key={page}
           onClick={setPage(page)}
         >
           {page}
@@ -56,10 +61,10 @@ const Pagination: FC<ComponentProps> = ({className, currentPage, setPage, totalP
   );
 
   const renderMiddle = useCallback((): ReactNode => {
-    if (totalPages === 1) return null;
+    if (totalPages <= 1) return null;
 
     const pageNodes = [renderPage(1)];
-    if (leftEllipsesIsVisible) pageNodes.push(renderEllipses());
+    if (leftEllipsesIsVisible) pageNodes.push(renderEllipses('left'));
 
     const totalMiddleNumbers =
       TOTAL_VISIBLE_PAGES - 2 - (leftEllipsesIsVisible ? 1 : 0) - (rightEllipsesIsVisible ? 1 : 0);
@@ -73,13 +78,13 @@ const Pagination: FC<ComponentProps> = ({className, currentPage, setPage, totalP
       }
     }
 
-    if (rightEllipsesIsVisible) pageNodes.push(renderEllipses());
+    if (rightEllipsesIsVisible) pageNodes.push(renderEllipses('right'));
     pageNodes.push(renderPage(totalPages));
 
     return pageNodes;
   }, [currentPage, leftEllipsesIsVisible, renderEllipses, renderPage, rightEllipsesIsVisible, totalPages]);
 
-  if (totalPages === 1) return null;
+  if (totalPages <= 1) return null;
   return (
     <div className={clsx('Pagination', className)}>
       <Icon

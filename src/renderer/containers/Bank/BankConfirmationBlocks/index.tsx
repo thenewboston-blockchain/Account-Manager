@@ -1,10 +1,9 @@
 import React, {FC, useMemo} from 'react';
 
-import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {BANK_CONFIRMATION_BLOCKS} from '@renderer/constants';
-import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BankConfirmationBlock} from '@renderer/types';
 
 enum TableKeys {
@@ -15,9 +14,10 @@ enum TableKeys {
 }
 
 const BankConfirmationBlocks: FC = () => {
+  const address = useAddress();
   const {currentPage, loading, results: bankConfirmationBlocks, setPage, totalPages} = usePaginatedNetworkDataFetcher<
     BankConfirmationBlock
-  >(BANK_CONFIRMATION_BLOCKS);
+  >(BANK_CONFIRMATION_BLOCKS, address);
 
   const bankConfirmationBlocksTableData = useMemo<PageTableData[]>(
     () =>
@@ -47,14 +47,8 @@ const BankConfirmationBlocks: FC = () => {
 
   return (
     <div className="BankConfirmationBlocks">
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <PageTable items={pageTableItems} />
-          <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-        </>
-      )}
+      <PageTable items={pageTableItems} loading={loading} />
+      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
     </div>
   );
 };

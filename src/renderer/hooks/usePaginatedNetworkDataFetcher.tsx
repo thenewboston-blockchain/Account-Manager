@@ -1,5 +1,6 @@
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import isEqual from 'lodash/isEqual';
 
 import {PAGINATED_RESULTS_LIMIT} from '@renderer/config';
 import {
@@ -53,8 +54,6 @@ import {
 } from '@renderer/store/banks';
 import {unsetValidatorAccounts, unsetValidatorBanks, unsetValidatorValidators} from '@renderer/store/validators';
 import {AppDispatch, DictWithPaginatedResultsAndError, PaginatedQueryParams, RootState} from '@renderer/types';
-
-import useAddress from './useAddress';
 
 const getDispatcherFromType = (
   type: string,
@@ -147,8 +146,13 @@ const getUnsetActionCreatorFromType = (type: string) => {
   }
 };
 
+interface QueryParams {
+  [param: string]: any;
+}
 function usePaginatedNetworkDataFetcher<T>(
   type: string,
+  address: string,
+  queryParams: QueryParams = {},
 ): {
   currentPage: number;
   error: string | null;
@@ -159,25 +163,32 @@ function usePaginatedNetworkDataFetcher<T>(
 } {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
-  const address = useAddress();
+  const [memoizedQueryParams, setMemoizedQueryParams] = useState<QueryParams>(queryParams);
+  const [totalPages, setTotalPages] = useState<number>(1);
   const dispatch = useDispatch<AppDispatch>();
   const paginatedResultsDataObject = useSelector(getSelectorFromType<T>(type));
   const paginatedResultsData = paginatedResultsDataObject[address];
 
-  const totalPages = useMemo<number>(() => {
-    if (!paginatedResultsData) return 1;
+  useEffect(() => {
+    if (!isEqual(memoizedQueryParams, queryParams)) {
+      setMemoizedQueryParams(queryParams);
+    }
+  }, [memoizedQueryParams, queryParams]);
 
-    return Math.ceil(paginatedResultsData.count / PAGINATED_RESULTS_LIMIT);
+  useEffect(() => {
+    if (paginatedResultsData) {
+      setTotalPages(Math.ceil(paginatedResultsData.count / PAGINATED_RESULTS_LIMIT));
+    }
   }, [paginatedResultsData]);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       setLoading(true);
-      const queryParams: PaginatedQueryParams = {
+      const paginatedQueryParams: PaginatedQueryParams = {
         limit: PAGINATED_RESULTS_LIMIT,
         offset: (currentPage - 1) * PAGINATED_RESULTS_LIMIT,
       };
-      await dispatch(getDispatcherFromType(type)(address, queryParams));
+      await dispatch(getDispatcherFromType(type)(address, {...memoizedQueryParams, ...paginatedQueryParams}));
       setLoading(false);
     };
 
@@ -188,7 +199,7 @@ function usePaginatedNetworkDataFetcher<T>(
         dispatch(getUnsetActionCreatorFromType(type)({address}));
       }
     };
-  }, [address, currentPage, dispatch, type]);
+  }, [address, currentPage, dispatch, memoizedQueryParams, type]);
 
   const setPage = useCallback(
     (page: number) => (): void => {
