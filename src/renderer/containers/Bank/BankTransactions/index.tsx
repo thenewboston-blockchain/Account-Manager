@@ -1,11 +1,10 @@
 import React, {FC, useMemo} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
-import {Loader} from '@renderer/components/FormElements';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {BANK_BANK_TRANSACTIONS} from '@renderer/constants';
-import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BankTransaction} from '@renderer/types';
 
 enum TableKeys {
@@ -17,9 +16,10 @@ enum TableKeys {
 }
 
 const BankTransactions: FC = () => {
+  const address = useAddress();
   const {currentPage, loading, results: bankBankTransactions, setPage, totalPages} = usePaginatedNetworkDataFetcher<
     BankTransaction
-  >(BANK_BANK_TRANSACTIONS);
+  >(BANK_BANK_TRANSACTIONS, address);
 
   const bankBankTransactionsTableData = useMemo<PageTableData[]>(
     () =>
@@ -51,14 +51,8 @@ const BankTransactions: FC = () => {
 
   return (
     <div className="BankTransactions">
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <PageTable items={pageTableItems} />
-          <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-        </>
-      )}
+      <PageTable items={pageTableItems} loading={loading} />
+      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
     </div>
   );
 };

@@ -29,7 +29,7 @@ const App: FC = () => {
 
   const renderComponent = (): ReactNode => {
     if (loading) return null;
-    if (!activeBank) return <Connect />;
+    if (!activeBank || !activeBankConfig) return <Connect />;
     return <Layout />;
   };
 

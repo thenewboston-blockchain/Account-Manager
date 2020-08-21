@@ -1,10 +1,9 @@
 import React, {FC, useMemo} from 'react';
 
-import {Loader} from '@renderer/components/FormElements';
 import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import {VALIDATOR_VALIDATORS} from '@renderer/constants';
-import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BaseValidator} from '@renderer/types';
 import Pagination from '@renderer/components/Pagination';
 
@@ -24,9 +23,10 @@ enum TableKeys {
 }
 
 const ValidatorValidators: FC = () => {
+  const address = useAddress();
   const {currentPage, loading, results: validatorValidators, setPage, totalPages} = usePaginatedNetworkDataFetcher<
     BaseValidator
-  >(VALIDATOR_VALIDATORS);
+  >(VALIDATOR_VALIDATORS, address);
 
   const validatorValidatorsTableData = useMemo<PageTableData[]>(
     () =>
@@ -85,14 +85,8 @@ const ValidatorValidators: FC = () => {
 
   return (
     <div className="ValidatorValidators">
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <PageTable items={pageTableItems} />
-          <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-        </>
-      )}
+      <PageTable items={pageTableItems} loading={loading} />
+      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
     </div>
   );
 };
