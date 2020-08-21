@@ -6,21 +6,22 @@ import Modal from '@renderer/components/Modal';
 import {useAddress} from '@renderer/hooks';
 import {getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
-import {AppDispatch} from '@renderer/types';
+import {AppDispatch, ManagedNode} from '@renderer/types';
 
 interface ComponentProps {
+  bank: ManagedNode;
   close(): void;
 }
 
-const initialValues = {
-  nickname: '',
-};
-
-type FormValues = typeof initialValues;
-
-const EditBankNicknameModal: FC<ComponentProps> = ({close}) => {
+const EditBankNicknameModal: FC<ComponentProps> = ({bank, close}) => {
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
+  const initialValues = {
+    nickname: bank.nickname,
+  };
+
+  type FormValues = typeof initialValues;
+
   const managedBanks = useSelector(getManagedBanks);
   const managedBank = managedBanks[address];
 
