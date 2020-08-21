@@ -23,7 +23,7 @@ const AccountTransactions: FC = () => {
   const {accountNumber} = useParams();
   const activeBank = useSelector(getActiveBankConfig)!;
   const activeBankAddress = formatAddressFromNode(activeBank);
-  const {currentPage, loading, results: bankTransactions, setPage, totalPages} = usePaginatedNetworkDataFetcher<
+  const {count, currentPage, loading, results: bankTransactions, setPage, totalPages} = usePaginatedNetworkDataFetcher<
     BankTransaction
   >(BANK_BANK_TRANSACTIONS, activeBankAddress, {account_number: accountNumber});
 
@@ -66,7 +66,7 @@ const AccountTransactions: FC = () => {
 
   return (
     <div className="AccountTransactions">
-      <PageTable items={pageTableItems} loading={loading} />
+      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
       <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
     </div>
   );

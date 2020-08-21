@@ -22,7 +22,7 @@ enum TableKeys {
 
 const BankBanks: FC = () => {
   const address = useAddress();
-  const {currentPage, loading, results: bankBanks, setPage, totalPages} = usePaginatedNetworkDataFetcher<Node>(
+  const {count, currentPage, loading, results: bankBanks, setPage, totalPages} = usePaginatedNetworkDataFetcher<Node>(
     BANK_BANKS,
     address,
   );
@@ -76,7 +76,7 @@ const BankBanks: FC = () => {
         <Loader />
       ) : (
         <>
-          <PageTable items={pageTableItems} />
+          <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
           <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
         </>
       )}

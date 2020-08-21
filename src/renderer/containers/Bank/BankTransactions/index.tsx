@@ -17,9 +17,14 @@ enum TableKeys {
 
 const BankTransactions: FC = () => {
   const address = useAddress();
-  const {currentPage, loading, results: bankBankTransactions, setPage, totalPages} = usePaginatedNetworkDataFetcher<
-    BankTransaction
-  >(BANK_BANK_TRANSACTIONS, address);
+  const {
+    count,
+    currentPage,
+    loading,
+    results: bankBankTransactions,
+    setPage,
+    totalPages,
+  } = usePaginatedNetworkDataFetcher<BankTransaction>(BANK_BANK_TRANSACTIONS, address);
 
   const bankBankTransactionsTableData = useMemo<PageTableData[]>(
     () =>
@@ -51,7 +56,7 @@ const BankTransactions: FC = () => {
 
   return (
     <div className="BankTransactions">
-      <PageTable items={pageTableItems} loading={loading} />
+      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
       <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
     </div>
   );

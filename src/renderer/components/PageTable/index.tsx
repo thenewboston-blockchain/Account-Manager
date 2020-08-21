@@ -3,6 +3,7 @@ import clsx from 'clsx';
 
 import ArrowToggle from '@renderer/components/ArrowToggle';
 import Loader from '@renderer/components/FormElements/Loader';
+import PaginationSummary from '@renderer/components/PaginationSummary';
 import {getCustomClassNames} from '@renderer/utils/components';
 
 import './PageTable.scss';
@@ -24,11 +25,13 @@ export interface PageTableItems {
 
 interface ComponentProps {
   className?: string;
+  count: number;
+  currentPage: number;
   items: PageTableItems;
-  loading?: boolean;
+  loading: boolean;
 }
 
-const PageTable: FC<ComponentProps> = ({className, items, loading = false}) => {
+const PageTable: FC<ComponentProps> = ({className, count, currentPage, items, loading}) => {
   const {headers, data, orderedKeys} = items;
   const [expanded, setExpanded] = useState<number[]>([]);
 
@@ -69,17 +72,20 @@ const PageTable: FC<ComponentProps> = ({className, items, loading = false}) => {
   return loading ? (
     <Loader />
   ) : (
-    <table className={clsx('PageTable', className)}>
-      <thead className={clsx('PageTable__thead', {...getCustomClassNames(className, '__thead', true)})}>
-        <tr>
-          <th />
-          {orderedKeys.map((key) => (
-            <td key={key}>{headers[key]}</td>
-          ))}
-        </tr>
-      </thead>
-      <tbody>{renderRows()}</tbody>
-    </table>
+    <>
+      <PaginationSummary className="PageTable__PaginationSummary" count={count} currentPage={currentPage} />
+      <table className={clsx('PageTable', className)}>
+        <thead className={clsx('PageTable__thead', {...getCustomClassNames(className, '__thead', true)})}>
+          <tr>
+            <th />
+            {orderedKeys.map((key) => (
+              <td key={key}>{headers[key]}</td>
+            ))}
+          </tr>
+        </thead>
+        <tbody>{renderRows()}</tbody>
+      </table>
+    </>
   );
 };
 
