@@ -7,16 +7,16 @@ import {Button} from '@renderer/components/FormElements';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
-import ValidatorAccounts from '@renderer/containers/Validator/ValidatorAccounts';
-import ValidatorBanks from '@renderer/containers/Validator/ValidatorBanks';
-import ValidatorOverview from '@renderer/containers/Validator/ValidatorOverview';
-import ValidatorValidators from '@renderer/containers/Validator/ValidatorValidators';
 import {useAddress} from '@renderer/hooks';
 import {getActivePrimaryValidator, getIsActivePrimaryValidator, getIsManagedValidator} from '@renderer/selectors';
 import {setManagedValidator, unsetManagedValidator} from '@renderer/store/app';
 import {AppDispatch, RootState} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
 
+import ValidatorAccounts from './ValidatorAccounts';
+import ValidatorBanks from './ValidatorBanks';
+import ValidatorOverview from './ValidatorOverview';
+import ValidatorValidators from './ValidatorValidators';
 import './Validator.scss';
 
 const Validator: FC = () => {

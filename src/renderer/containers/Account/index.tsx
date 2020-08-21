@@ -3,9 +3,6 @@ import {useSelector} from 'react-redux';
 import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
 import noop from 'lodash/noop';
 
-import AccountOverview from '@renderer/containers/Account/AccountOverview';
-import AccountTransactions from '@renderer/containers/Account/AccountTransactions';
-import DeleteAccountModal from '@renderer/containers/Account/DeleteAccountModal';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
@@ -14,6 +11,9 @@ import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {useBooleanState} from '@renderer/hooks';
 import {getManagedAccounts} from '@renderer/selectors';
 
+import AccountOverview from './AccountOverview';
+import AccountTransactions from './AccountTransactions';
+import DeleteAccountModal from './DeleteAccountModal';
 import SendPointsModal from './SendPointsModal';
 
 import './Account.scss';

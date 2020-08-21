@@ -3,9 +3,6 @@ import {useSelector} from 'react-redux';
 import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
 import noop from 'lodash/noop';
 
-import DeleteFriendModal from '@renderer/containers/Friend/DeleteFriendModal';
-import EditFriendModal from '@renderer/containers/Friend/EditFriendModal';
-import FriendOverview from '@renderer/containers/Friend/FriendOverview';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
@@ -14,6 +11,10 @@ import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {useBooleanState} from '@renderer/hooks';
 import {getManagedFriends} from '@renderer/selectors';
 
+import DeleteFriendModal from './DeleteFriendModal';
+import EditFriendModal from './EditFriendModal';
+import FriendOverview from './FriendOverview';
+import FriendTransactions from './FriendTransactions';
 import './Friend.scss';
 
 const Friend: FC = () => {
@@ -46,6 +47,10 @@ const Friend: FC = () => {
         content: <FriendOverview />,
         page: 'overview',
       },
+      {
+        content: <FriendTransactions />,
+        page: 'transactions',
+      },
     ];
 
     return (
@@ -72,6 +77,10 @@ const Friend: FC = () => {
           {
             name: 'Overview',
             page: 'overview',
+          },
+          {
+            name: 'Transactions',
+            page: 'transactions',
           },
         ]}
       />
