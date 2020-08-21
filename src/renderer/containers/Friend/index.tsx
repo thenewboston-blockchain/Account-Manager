@@ -81,14 +81,8 @@ const Friend: FC = () => {
   return (
     <div className="friend">
       <PageLayout content={renderTabContent()} top={renderTop()} />
-      {deleteModalIsOpen && <DeleteFriendModal accountNumber={accountNumber} close={toggleDeleteModal} />}
-      {editModalIsOpen && (
-        <EditFriendModal
-          accountNumber={accountNumber}
-          friendNickName={managedFriend?.nickname}
-          close={toggleEditModal}
-        />
-      )}
+      {deleteModalIsOpen && <DeleteFriendModal close={toggleDeleteModal} friend={managedFriend} />}
+      {editModalIsOpen && <EditFriendModal close={toggleEditModal} friend={managedFriend} />}
     </div>
   );
 };

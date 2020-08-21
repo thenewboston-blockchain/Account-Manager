@@ -1,37 +1,27 @@
 import React, {FC} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import Modal from '@renderer/components/Modal';
 import {FormInput} from '@renderer/components/FormComponents';
-import {getManagedFriends} from '@renderer/selectors';
 import {setManagedFriend} from '@renderer/store/app';
-import {AppDispatch} from '@renderer/types';
-
-type FormValues = typeof initialValue;
-
-const initialValue = {
-  accountNumber: '',
-  nickname: '',
-};
+import {AppDispatch, ManagedFriend} from '@renderer/types';
 
 interface ComponentProps {
-  accountNumber: string;
-  friendNickName: string;
+  friend: ManagedFriend;
   close(): void;
 }
 
-const EditFriendModal: FC<ComponentProps> = ({accountNumber, friendNickName, close}) => {
+const EditFriendModal: FC<ComponentProps> = ({friend, close}) => {
   const dispatch = useDispatch<AppDispatch>();
-  const managedFriends = useSelector(getManagedFriends);
 
   const initialValues = {
-    accountNumber: '',
-    nickname: friendNickName,
+    nickname: friend.nickname,
   };
+  type FormValues = typeof initialValues;
 
   const handleSubmit = ({nickname}: FormValues): void => {
     dispatch(
       setManagedFriend({
-        account_number: accountNumber,
+        account_number: friend.account_number,
         nickname,
       }),
     );
