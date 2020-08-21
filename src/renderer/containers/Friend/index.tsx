@@ -4,6 +4,7 @@ import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
 import noop from 'lodash/noop';
 
 import DeleteFriendModal from '@renderer/containers/Friend/DeleteFriendModal';
+import EditFriendModal from '@renderer/containers/Friend/EditFriendModal';
 import FriendOverview from '@renderer/containers/Friend/FriendOverview';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
@@ -19,6 +20,7 @@ const Friend: FC = () => {
   const {accountNumber} = useParams();
   const {path, url} = useRouteMatch();
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
+  const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
   const managedFriends = useSelector(getManagedFriends);
   const managedFriend = managedFriends[accountNumber];
 
@@ -27,7 +29,7 @@ const Friend: FC = () => {
     return [
       {
         label: 'Edit',
-        onClick: noop,
+        onClick: toggleEditModal,
       },
       {
         label: 'Remove Friend',
@@ -79,7 +81,8 @@ const Friend: FC = () => {
   return (
     <div className="friend">
       <PageLayout content={renderTabContent()} top={renderTop()} />
-      {deleteModalIsOpen && <DeleteFriendModal accountNumber={accountNumber} close={toggleDeleteModal} />}
+      {deleteModalIsOpen && <DeleteFriendModal close={toggleDeleteModal} friend={managedFriend} />}
+      {editModalIsOpen && <EditFriendModal close={toggleEditModal} friend={managedFriend} />}
     </div>
   );
 };
