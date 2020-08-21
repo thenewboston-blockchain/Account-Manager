@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 
 import Modal from '@renderer/components/Modal';
+import {SIGNING_KEY_LENGTH_ERROR, SIGNING_KEY_REQUIRED_ERROR} from '@renderer/constants/form-validation';
 import {getActivePrimaryValidator, getManagedAccounts} from '@renderer/selectors';
 import {setManagedAccount} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
@@ -92,9 +93,6 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
   };
 
   const validationSchema = useMemo(() => {
-    const SIGNING_KEY_LENGTH_ERROR = 'Signing key must be 64 characters long';
-    const SIGNING_KEY_REQUIRED_ERROR = 'Signing key is required';
-
     return yup.object().shape({
       nickname: yup.string().notOneOf(managedAccountNicknames, 'That nickname is already taken'),
       signingKey: yup.string().when('type', {

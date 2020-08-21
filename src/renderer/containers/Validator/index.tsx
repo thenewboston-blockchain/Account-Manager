@@ -45,6 +45,7 @@ const Validator: FC = () => {
         nickname: '',
         port,
         protocol,
+        signing_key: '',
       }),
     );
   };
