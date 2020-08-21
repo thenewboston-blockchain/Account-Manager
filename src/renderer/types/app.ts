@@ -17,6 +17,7 @@ export interface ManagedFriend extends AccountNumber {
 
 export interface ManagedNode extends AddressData {
   nickname: string;
+  signing_key: string;
 }
 
 export interface OldBank extends AccountNumber {

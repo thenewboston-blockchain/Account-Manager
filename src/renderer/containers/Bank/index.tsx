@@ -1,7 +1,14 @@
 import React, {FC, ReactNode} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Route, Switch, useRouteMatch} from 'react-router-dom';
+import sortBy from 'lodash/sortBy';
 
+import PageHeader from '@renderer/components/PageHeader';
+import PageLayout from '@renderer/components/PageLayout';
+import PageTabs from '@renderer/components/PageTabs';
+import {Button} from '@renderer/components/FormElements';
+import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import AddBankSigningKeyModal from '@renderer/containers/Bank/AddBankSigningKeyModal';
 import BankAccounts from '@renderer/containers/Bank/BankAccounts';
 import BankBanks from '@renderer/containers/Bank/BankBanks';
 import BankBlocks from '@renderer/containers/Bank/BankBlocks';
@@ -11,12 +18,7 @@ import BankOverview from '@renderer/containers/Bank/BankOverview';
 import BankTransactions from '@renderer/containers/Bank/BankTransactions';
 import BankValidatorConfirmationServices from '@renderer/containers/Bank/BankValidatorConfirmationServices';
 import BankValidators from '@renderer/containers/Bank/BankValidators';
-import EditBankModal from '@renderer/containers/Bank/EditBankModal';
-import PageHeader from '@renderer/components/PageHeader';
-import PageLayout from '@renderer/components/PageLayout';
-import PageTabs from '@renderer/components/PageTabs';
-import {Button} from '@renderer/components/FormElements';
-import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import EditBankNicknameModal from '@renderer/containers/Bank/EditBankNicknameModal';
 import {useAddress, useBooleanState} from '@renderer/hooks';
 import {getActiveBank, getIsActiveBank, getIsManagedBank, getManagedBanks} from '@renderer/selectors';
 import {setManagedBank, unsetManagedBank} from '@renderer/store/app';
@@ -29,7 +31,8 @@ const Bank: FC = () => {
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
   const {path, url} = useRouteMatch();
-  const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
+  const [addSigningKeyModalIsOpen, toggleSigningKeyModal] = useBooleanState(false);
+  const [editNicknameModalIsOpen, toggleEditNicknameModal] = useBooleanState(false);
   const activeBank = useSelector(getActiveBank)!;
   const isActiveBank = useSelector(getIsActiveBank(address));
   const isManagedBank = useSelector(getIsManagedBank(address));
@@ -37,16 +40,30 @@ const Bank: FC = () => {
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
     if (!isManagedBank) return [];
-    return [
+    const managedBank = managedBanks[address];
+
+    const menuOptions = [
       {
-        label: 'Edit',
-        onClick: toggleEditModal,
+        label: 'Edit Nickname',
+        onClick: toggleEditNicknameModal,
       },
       {
         label: 'Remove Bank',
         onClick: handleRemoveManagedBank,
       },
     ];
+
+    const signingKeyOption = !managedBank.signing_key
+      ? {
+          label: 'Add NID Signing Key',
+          onClick: toggleSigningKeyModal,
+        }
+      : {
+          label: 'Remove NID Signing Key',
+          onClick: handleRemoveSigningKey,
+        };
+
+    return sortBy([...menuOptions, signingKeyOption], ['label']);
   };
 
   const handleAddManagedBank = (): void => {
@@ -57,6 +74,7 @@ const Bank: FC = () => {
         nickname: '',
         port,
         protocol,
+        signing_key: '',
       }),
     );
   };
@@ -68,6 +86,16 @@ const Bank: FC = () => {
         ip_address: ipAddress,
         port,
         protocol,
+      }),
+    );
+  };
+
+  const handleRemoveSigningKey = (): void => {
+    const managedBank = managedBanks[address];
+    dispatch(
+      setManagedBank({
+        ...managedBank,
+        signing_key: '',
       }),
     );
   };
@@ -193,7 +221,8 @@ const Bank: FC = () => {
   return (
     <div className="Bank">
       <PageLayout content={renderTabContent()} top={renderTop()} />
-      {editModalIsOpen && <EditBankModal close={toggleEditModal} />}
+      {addSigningKeyModalIsOpen && <AddBankSigningKeyModal close={toggleSigningKeyModal} />}
+      {editNicknameModalIsOpen && <EditBankNicknameModal close={toggleEditNicknameModal} />}
     </div>
   );
 };
