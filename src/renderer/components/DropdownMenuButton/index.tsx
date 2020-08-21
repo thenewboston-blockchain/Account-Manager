@@ -1,10 +1,10 @@
-import React, {CSSProperties, FC, KeyboardEvent, ReactNode, useCallback, useEffect, useRef, useState} from 'react';
+import React, {CSSProperties, FC, KeyboardEvent, ReactNode, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
 
 import Icon, {IconType} from '@renderer/components/Icon';
-import {useBooleanState} from '@renderer/hooks';
+import {useBooleanState, useEventListener} from '@renderer/hooks';
 import {GenericVoidFunction} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';
 
@@ -34,21 +34,13 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, direction = Dropdown
   const [open, toggleOpen, , closeMenu] = useBooleanState(false);
   const [dropdownPositionStyle, setDropdownPositionStyle] = useState<CSSProperties | undefined>(undefined);
 
-  const handleClick = useCallback(
-    (e): void => {
-      if (!dropdownRoot.contains(e.target) && !iconRef.current?.contains(e.target)) {
-        closeMenu();
-      }
-    },
-    [closeMenu],
-  );
+  const handleClick = (e: any): void => {
+    if (!dropdownRoot.contains(e.target) && !iconRef.current?.contains(e.target)) {
+      closeMenu();
+    }
+  };
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClick);
-    return () => {
-      document.removeEventListener('mousedown', handleClick);
-    };
-  }, [handleClick]);
+  useEventListener('mousedown', handleClick, document);
 
   const handleOpenDropdown = (): void => {
     if (iconRef.current) {
