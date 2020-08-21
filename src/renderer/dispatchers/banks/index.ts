@@ -10,7 +10,7 @@ import {
   VALIDATOR_CONFIRMATION_SERVICES,
   VALIDATORS,
 } from '@renderer/constants';
-import {defaultPaginatedQueryParam} from '@renderer/config';
+import {AXIOS_TIMEOUT_MS, defaultPaginatedQueryParam} from '@renderer/config';
 import {
   setBankAccounts,
   setBankAccountsError,
@@ -83,7 +83,7 @@ export const fetchBankConfig = (address: string) => async (
   dispatch: AppDispatch,
 ): Promise<{address: string; data?: BankConfig; error?: any}> => {
   try {
-    const {data} = await axios.get<BankConfig>(`${address}/config`);
+    const {data} = await axios.get<BankConfig>(`${address}/config`, {timeout: AXIOS_TIMEOUT_MS});
 
     if (data.node_type !== NodeType.bank) {
       const errorObject = {address, error: 'Node not a bank'};

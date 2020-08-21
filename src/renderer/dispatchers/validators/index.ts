@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import {defaultPaginatedQueryParam} from '@renderer/config';
+import {AXIOS_TIMEOUT_MS, defaultPaginatedQueryParam} from '@renderer/config';
 import {ACCOUNTS, BANKS, VALIDATORS} from '@renderer/constants';
 import {
   setValidatorAccounts,
@@ -55,7 +55,7 @@ export const fetchValidatorConfig = (address: string) => async (
   dispatch: AppDispatch,
 ): Promise<{address: string; data?: ValidatorConfig; error?: any}> => {
   try {
-    const {data} = await axios.get<ValidatorConfig>(`${address}/config`);
+    const {data} = await axios.get<ValidatorConfig>(`${address}/config`, {timeout: AXIOS_TIMEOUT_MS});
 
     if (data.node_type !== NodeType.primaryValidator && data.node_type !== NodeType.confirmationValidator) {
       const errorObject = {address, error: 'Node not a bank'};
