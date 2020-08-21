@@ -12,18 +12,21 @@ import {getActiveBank, getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch} from '@renderer/types';
 
 const App: FC = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch<AppDispatch>();
   const activeBank = useSelector(getActiveBank);
   const activeBankConfig = useSelector(getActiveBankConfig);
 
   useEffect(() => {
     if (activeBank && !activeBankConfig) {
+      setLoading(true);
       const fetchData = async (): Promise<void> => {
         await dispatch(connect(activeBank));
         setLoading(false);
       };
       fetchData();
+    } else {
+      setLoading(false);
     }
   }, [activeBank, activeBankConfig, dispatch]);
 
