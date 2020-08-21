@@ -8,14 +8,10 @@
     border-bottom: 1px solid var(--color-neutral-400);
   }
 
-  &__thead {
-    color: var(--color-blue-gray-500);
-    font-weight: 500;
-    text-align: left;
-
-    td {
-      padding: 0 4px 6px;
-    }
+  &__PaginationSummary {
+    margin-bottom: 24px;
+    margin-right: 12px;
+    text-align: end;
   }
 
   &__row {
@@ -37,6 +33,16 @@
         white-space: normal;
         word-wrap: break-word;
       }
+    }
+  }
+
+  &__thead {
+    color: var(--color-blue-gray-500);
+    font-weight: 500;
+    text-align: left;
+
+    td {
+      padding: 0 4px 6px;
     }
   }
 }

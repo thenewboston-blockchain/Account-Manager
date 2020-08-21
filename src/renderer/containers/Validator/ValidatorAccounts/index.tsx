@@ -15,7 +15,7 @@ enum TableKeys {
 
 const ValidatorAccounts: FC = () => {
   const address = useAddress();
-  const {currentPage, loading, results: validatorAccounts, setPage, totalPages} = usePaginatedNetworkDataFetcher<
+  const {count, currentPage, loading, results: validatorAccounts, setPage, totalPages} = usePaginatedNetworkDataFetcher<
     ValidatorAccount
   >(VALIDATOR_ACCOUNTS, address);
 
@@ -45,7 +45,7 @@ const ValidatorAccounts: FC = () => {
 
   return (
     <div className="ValidatorAccounts">
-      <PageTable items={pageTableItems} loading={loading} />
+      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
       <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
     </div>
   );

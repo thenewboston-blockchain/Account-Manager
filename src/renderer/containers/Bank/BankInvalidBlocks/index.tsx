@@ -15,7 +15,7 @@ enum TableKeys {
 
 const BankInvalidBlocks: FC = () => {
   const address = useAddress();
-  const {currentPage, loading, results: bankInvalidBlocks, setPage, totalPages} = usePaginatedNetworkDataFetcher<
+  const {count, currentPage, loading, results: bankInvalidBlocks, setPage, totalPages} = usePaginatedNetworkDataFetcher<
     InvalidBlock
   >(BANK_INVALID_BLOCKS, address);
 
@@ -47,7 +47,7 @@ const BankInvalidBlocks: FC = () => {
 
   return (
     <div className="BankInvalidBlocks">
-      <PageTable items={pageTableItems} loading={loading} />
+      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
       <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
     </div>
   );
