@@ -1,4 +1,4 @@
-import React, {FC, ReactNode, useMemo} from 'react';
+import React, {FC, ReactNode} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Route, Switch, useRouteMatch} from 'react-router-dom';
 
@@ -14,7 +14,7 @@ import ValidatorValidators from '@renderer/containers/Validator/ValidatorValidat
 import {useAddress} from '@renderer/hooks';
 import {getActivePrimaryValidator, getIsActivePrimaryValidator, getIsManagedValidator} from '@renderer/selectors';
 import {setManagedValidator, unsetManagedValidator} from '@renderer/store/app';
-import {AppDispatch} from '@renderer/types';
+import {AppDispatch, RootState} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
 
 import './Validator.scss';
@@ -24,10 +24,8 @@ const Validator: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {path, url} = useRouteMatch();
   const activePrimaryValidator = useSelector(getActivePrimaryValidator)!;
-  const getIsActivePrimaryValidatorCb = useMemo(() => getIsActivePrimaryValidator(address), [address]);
-  const isActivePrimaryValidator = useSelector(getIsActivePrimaryValidatorCb);
-  const getIsManagedValidatorCb = useMemo(() => getIsManagedValidator(address), [address]);
-  const isManagedValidator = useSelector(getIsManagedValidatorCb);
+  const isActivePrimaryValidator = useSelector((state: RootState) => getIsActivePrimaryValidator(state, address));
+  const isManagedValidator = useSelector((state: RootState) => getIsManagedValidator(state, address));
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
     if (!isManagedValidator) return [];
