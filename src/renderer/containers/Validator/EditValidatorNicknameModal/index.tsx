@@ -3,26 +3,26 @@ import {useDispatch} from 'react-redux';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import {setManagedBank} from '@renderer/store/app';
+import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch, ManagedNode} from '@renderer/types';
 
 interface ComponentProps {
-  bank: ManagedNode;
   close(): void;
+  validator: ManagedNode;
 }
 
-const EditBankNicknameModal: FC<ComponentProps> = ({bank, close}) => {
+const EditValidatorNicknameModal: FC<ComponentProps> = ({close, validator}) => {
   const dispatch = useDispatch<AppDispatch>();
   const initialValues = {
-    nickname: bank.nickname,
+    nickname: validator.nickname,
   };
 
   type FormValues = typeof initialValues;
 
   const handleSubmit = ({nickname}: FormValues): void => {
     dispatch(
-      setManagedBank({
-        ...bank,
+      setManagedValidator({
+        ...validator,
         nickname,
       }),
     );
@@ -31,16 +31,16 @@ const EditBankNicknameModal: FC<ComponentProps> = ({bank, close}) => {
 
   return (
     <Modal
-      className="EditBankNicknameModal"
+      className="EditValidatorNicknameModal"
       close={close}
-      header="Edit Bank Nickname"
+      header="Edit Validator Nickname"
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitButton="Save"
     >
-      <FormInput label="Bank Nickname" name="nickname" />
+      <FormInput label="Validator Nickname" name="nickname" />
     </Modal>
   );
 };
 
-export default EditBankNicknameModal;
+export default EditValidatorNicknameModal;

@@ -7,12 +7,18 @@ import {Button} from '@renderer/components/FormElements';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
-import {useAddress} from '@renderer/hooks';
-import {getActivePrimaryValidator, getIsActivePrimaryValidator, getIsManagedValidator} from '@renderer/selectors';
+import {useAddress, useBooleanState} from '@renderer/hooks';
+import {
+  getActivePrimaryValidator,
+  getIsActivePrimaryValidator,
+  getIsManagedValidator,
+  getManagedValidators,
+} from '@renderer/selectors';
 import {setManagedValidator, unsetManagedValidator} from '@renderer/store/app';
 import {AppDispatch, RootState} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
 
+import EditValidatorNicknameModal from './EditValidatorNicknameModal';
 import ValidatorAccounts from './ValidatorAccounts';
 import ValidatorBanks from './ValidatorBanks';
 import ValidatorOverview from './ValidatorOverview';
@@ -23,13 +29,20 @@ const Validator: FC = () => {
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
   const {path, url} = useRouteMatch();
+  const [editNicknameModalIsOpen, toggleEditNicknameModal] = useBooleanState(false);
   const activePrimaryValidator = useSelector(getActivePrimaryValidator)!;
   const isActivePrimaryValidator = useSelector((state: RootState) => getIsActivePrimaryValidator(state, address));
   const isManagedValidator = useSelector((state: RootState) => getIsManagedValidator(state, address));
+  const managedValidators = useSelector(getManagedValidators);
+  const managedValidator = managedValidators[address];
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
     if (!isManagedValidator) return [];
     return [
+      {
+        label: 'Edit Nickname',
+        onClick: toggleEditNicknameModal,
+      },
       {
         label: 'Remove Validator',
         onClick: handleRemoveManagedValidator,
@@ -138,6 +151,9 @@ const Validator: FC = () => {
   return (
     <div className="Validator">
       <PageLayout content={renderTabContent()} top={renderTop()} />
+      {editNicknameModalIsOpen && (
+        <EditValidatorNicknameModal close={toggleEditNicknameModal} validator={managedValidator} />
+      )}
     </div>
   );
 };
