@@ -1,13 +1,14 @@
 import React, {FC, ReactNode, useMemo} from 'react';
 import {useSelector} from 'react-redux';
-import noop from 'lodash/noop';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import ChangeActiveBankModal from '@renderer/containers/App/ChangeActiveBankModal';
+import AddBankModal from '@renderer/containers/Bank/AddBankModal';
 import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
+import AddValidatorModal from '@renderer/containers/Validator/AddValidatorModal';
 import {useBooleanState} from '@renderer/hooks';
 import {
   getActiveBank,
@@ -47,7 +48,9 @@ const LeftMenu: FC = () => {
     managedFriends,
     managedValidators,
   } = useSelector(LeftMenuSelector);
+  const [addBankModalIsOpen, toggleAddBankModal] = useBooleanState(false);
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
+  const [addValidatorModalIsOpen, toggleAddValidatorModal] = useBooleanState(false);
   const [changeActiveBankModalIsOpen, toggleActiveBankModal] = useBooleanState(false);
   const [createAccountModalIsOpen, toggleCreateAccountModal] = useBooleanState(false);
 
@@ -160,9 +163,11 @@ const LeftMenu: FC = () => {
       />
       <LeftSubmenu menuItems={accountItems} rightOnClick={toggleCreateAccountModal} title="Accounts" />
       <LeftSubmenu menuItems={friendMenuItems} rightOnClick={toggleAddFriendModal} title="Friends" />
-      <LeftSubmenu menuItems={bankMenuItems} rightOnClick={noop} title="Managed Banks" />
-      <LeftSubmenu menuItems={validatorMenuItems} rightOnClick={noop} title="Managed Validators" />
+      <LeftSubmenu menuItems={bankMenuItems} rightOnClick={toggleAddBankModal} title="Managed Banks" />
+      <LeftSubmenu menuItems={validatorMenuItems} rightOnClick={toggleAddValidatorModal} title="Managed Validators" />
       {addFriendModalIsOpen && <AddFriendModal close={toggleAddFriendModal} />}
+      {addBankModalIsOpen && <AddBankModal close={toggleAddBankModal} />}
+      {addValidatorModalIsOpen && <AddValidatorModal close={toggleAddValidatorModal} />}
       {changeActiveBankModalIsOpen && <ChangeActiveBankModal close={toggleActiveBankModal} />}
       {createAccountModalIsOpen && <CreateAccountModal close={toggleCreateAccountModal} />}
     </div>

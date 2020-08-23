@@ -47,7 +47,7 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
       setSubmitting(true);
       const bankNetworkData = {
         ip_address: ipAddress,
-        port: parseInt(port, 10),
+        port: port ? parseInt(port, 10) : null,
         protocol,
       };
       const response = await dispatch(connectAndStoreLocalData(bankNetworkData, nickname));

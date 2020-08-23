@@ -1,0 +1,9 @@
+.AddValidatorModal {
+  width: 384px;
+
+  &__form-error {
+    color: var(--color-danger);
+    display: block;
+    margin-bottom: 6px;
+  }
+}
