@@ -25,6 +25,7 @@ import BankTransactions from './BankTransactions';
 import BankValidatorConfirmationServices from './BankValidatorConfirmationServices';
 import BankValidators from './BankValidators';
 import EditBankNicknameModal from './EditBankNicknameModal';
+import SetAsActiveBankModal from './SetAsActiveBankModal';
 import './Bank.scss';
 
 const Bank: FC = () => {
@@ -33,6 +34,7 @@ const Bank: FC = () => {
   const {path, url} = useRouteMatch();
   const [addSigningKeyModalIsOpen, toggleSigningKeyModal] = useBooleanState(false);
   const [editNicknameModalIsOpen, toggleEditNicknameModal] = useBooleanState(false);
+  const [setAsActiveBankModalIsOpen, toggleSetAsActiveBankModal] = useBooleanState(false);
   const activeBank = useSelector(getActiveBank)!;
   const isActiveBank = useSelector(getIsActiveBank(address));
   const isManagedBank = useSelector(getIsManagedBank(address));
@@ -50,6 +52,11 @@ const Bank: FC = () => {
       {
         label: 'Remove Bank',
         onClick: handleRemoveManagedBank,
+      },
+      {
+        disabled: isActiveBank,
+        label: 'Set as Active Bank',
+        onClick: toggleSetAsActiveBankModal,
       },
     ];
 
@@ -221,6 +228,7 @@ const Bank: FC = () => {
       <PageLayout content={renderTabContent()} top={renderTop()} />
       {addSigningKeyModalIsOpen && <AddBankSigningKeyModal close={toggleSigningKeyModal} />}
       {editNicknameModalIsOpen && <EditBankNicknameModal close={toggleEditNicknameModal} bank={managedBank} />}
+      {setAsActiveBankModalIsOpen && <SetAsActiveBankModal close={toggleSetAsActiveBankModal} bank={managedBank} />}
     </div>
   );
 };
