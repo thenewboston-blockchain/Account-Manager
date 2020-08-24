@@ -45,12 +45,12 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
   const handleSubmit = async ({ipAddress, nickname, port, protocol}: FormValues): Promise<void> => {
     try {
       setSubmitting(true);
-      const bankNetworkData = {
+      const bankAddressData = {
         ip_address: ipAddress,
         port: port ? parseInt(port, 10) : null,
         protocol,
       };
-      const response = await dispatch(connectAndStoreLocalData(bankNetworkData, nickname));
+      const response = await dispatch(connectAndStoreLocalData(bankAddressData, nickname));
       if (response?.error) {
         toast.error(response.error);
         setSubmitting(false);

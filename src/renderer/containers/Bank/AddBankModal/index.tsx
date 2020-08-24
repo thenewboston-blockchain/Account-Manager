@@ -1,8 +1,10 @@
 import React, {FC, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
+import {toast} from 'react-toastify';
 
 import Modal from '@renderer/components/Modal';
+import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
 import {AppDispatch, ProtocolType} from '@renderer/types';
@@ -46,21 +48,39 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
     [managedBanks],
   );
 
-  const handleSubmit = ({ipAddress, nickname, port, protocol}: FormValues): void => {
-    // TODO: Must check the validity of the address, and get signing key
-    setSubmitting(true);
-    const formattedData = {
-      ip_address: ipAddress,
-      nickname,
-      port: port ? parseInt(port, 10) : null,
-      protocol,
-      signing_key: '',
-    };
+  const handleSubmit = async ({ipAddress, nickname, port, protocol}: FormValues): Promise<void> => {
+    try {
+      setSubmitting(true);
 
-    dispatch(setManagedBank(formattedData));
-    setSubmitting(false);
-    history.push(`/bank/${formatPathFromNode(formattedData)}/overview`);
-    close();
+      const bankAddressData = {
+        ip_address: ipAddress,
+        port: port ? parseInt(port, 10) : null,
+        protocol,
+      };
+
+      const address = formatAddressFromNode(bankAddressData);
+      const bankConfig = await dispatch(fetchBankConfig(address));
+
+      if (bankConfig.error) {
+        toast.error(bankConfig.error);
+        setSubmitting(false);
+        return;
+      }
+
+      const formattedData = {
+        ...bankAddressData,
+        nickname,
+        signing_key: '',
+      };
+
+      dispatch(setManagedBank(formattedData));
+      history.push(`/bank/${formatPathFromNode(formattedData)}/overview`);
+      close();
+    } catch (error) {
+      toast.error('An error occurred');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const validationSchema = useMemo(() => {
