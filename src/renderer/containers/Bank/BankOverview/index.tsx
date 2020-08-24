@@ -32,7 +32,7 @@ const BankOverview: FC = () => {
             },
             {
               key: 'Port',
-              value: bankConfig.port,
+              value: bankConfig.port || '-',
             },
             {
               key: 'Protocol',
