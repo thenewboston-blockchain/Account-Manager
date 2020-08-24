@@ -58,7 +58,7 @@ export const fetchValidatorConfig = (address: string) => async (
     const {data} = await axios.get<ValidatorConfig>(`${address}/config`, {timeout: AXIOS_TIMEOUT_MS});
 
     if (data.node_type !== NodeType.primaryValidator && data.node_type !== NodeType.confirmationValidator) {
-      const errorObject = {address, error: 'Node not a bank'};
+      const errorObject = {address, error: 'Node not a validator'};
       dispatch(setValidatorConfigError(errorObject));
       return errorObject;
     }
