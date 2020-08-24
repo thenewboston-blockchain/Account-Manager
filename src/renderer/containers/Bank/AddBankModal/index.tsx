@@ -59,7 +59,7 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
 
     dispatch(setManagedBank(formattedData));
     setSubmitting(false);
-    history.push(`/bank/${formatPathFromNode(formattedData)}`);
+    history.push(`/bank/${formatPathFromNode(formattedData)}/overview`);
     close();
   };
 

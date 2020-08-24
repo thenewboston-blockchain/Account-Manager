@@ -60,7 +60,7 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
 
     dispatch(setManagedValidator(formattedData));
     setSubmitting(false);
-    history.push(`/validator/${formatPathFromNode(formattedData)}`);
+    history.push(`/validator/${formatPathFromNode(formattedData)}/overview`);
     close();
   };
 
