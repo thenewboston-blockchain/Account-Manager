@@ -4,9 +4,11 @@ import localStore from '@renderer/store/localStore';
 import {
   AccountNumber,
   AddressData,
+  Dict,
   DictWithDataAndError,
   DictWithError,
   DictWithPaginatedResultsAndError,
+  ManagedNode,
   NodeIdentifier,
   PaginatedResults,
 } from '@renderer/types';
@@ -133,6 +135,18 @@ export function setPaginatedResultErrorReducer() {
     state[address].next = null;
     state[address].previous = null;
     state[address].results = [];
+  };
+}
+
+export function unsetActiveNodeReducer() {
+  return (state: Dict<ManagedNode>) => {
+    return Object.entries(state).reduce((acc, [address, node]) => {
+      delete node.isActive;
+      return {
+        ...acc,
+        [address]: node,
+      };
+    }, {});
   };
 }
 
