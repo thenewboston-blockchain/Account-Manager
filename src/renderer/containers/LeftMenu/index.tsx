@@ -88,7 +88,7 @@ const LeftMenu: FC = () => {
         .map((managedBank) => ({
           baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
           key: managedBank.ip_address,
-          label: managedBank.ip_address,
+          label: managedBank.nickname || managedBank.ip_address,
           to: `/bank/${formatPathFromNode(managedBank)}/overview`,
         }))
         .map(({baseUrl, key, label, to}) => (
@@ -134,7 +134,7 @@ const LeftMenu: FC = () => {
         .map((managedValidator) => ({
           baseUrl: `/validator/${formatPathFromNode(managedValidator)}`,
           key: managedValidator.ip_address,
-          label: managedValidator.ip_address,
+          label: managedValidator.nickname || managedValidator.ip_address,
           to: `/validator/${formatPathFromNode(managedValidator)}/overview`,
         }))
         .map(({baseUrl, key, label, to}) => (
