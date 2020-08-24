@@ -1,5 +1,5 @@
 .LeftSubmenu {
-  padding: 12px 12px 12px 10px;
+  padding: 12px 0;
 
   &__add-icon {
     color: var(--color-sail-gray-700);
@@ -20,6 +20,7 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 2px;
+    padding: 0 12px 0 10px;
   }
 
   &__left-items {

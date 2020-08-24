@@ -1,8 +1,10 @@
 import React, {FC, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
+import {toast} from 'react-toastify';
 
 import Modal from '@renderer/components/Modal';
+import {fetchValidatorConfig} from '@renderer/dispatchers/validators';
 import {getManagedValidators} from '@renderer/selectors';
 import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch, ProtocolType} from '@renderer/types';
@@ -47,21 +49,39 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
     [managedValidators],
   );
 
-  const handleSubmit = ({ipAddress, nickname, port, protocol}: FormValues): void => {
-    // TODO: Must check the validity of the address, and get signing key
-    setSubmitting(true);
-    const formattedData = {
-      ip_address: ipAddress,
-      nickname,
-      port: port ? parseInt(port, 10) : null,
-      protocol,
-      signing_key: '',
-    };
+  const handleSubmit = async ({ipAddress, nickname, port, protocol}: FormValues): Promise<void> => {
+    try {
+      setSubmitting(true);
 
-    dispatch(setManagedValidator(formattedData));
-    setSubmitting(false);
-    history.push(`/validator/${formatPathFromNode(formattedData)}`);
-    close();
+      const validatorAddressData = {
+        ip_address: ipAddress,
+        port: port ? parseInt(port, 10) : null,
+        protocol,
+      };
+
+      const address = formatAddressFromNode(validatorAddressData);
+      const validatorConfig = await dispatch(fetchValidatorConfig(address));
+
+      if (validatorConfig.error) {
+        toast.error(validatorConfig.error);
+        setSubmitting(false);
+        return;
+      }
+
+      const formattedData = {
+        ...validatorAddressData,
+        nickname,
+        signing_key: '',
+      };
+
+      dispatch(setManagedValidator(formattedData));
+      history.push(`/validator/${formatPathFromNode(formattedData)}/overview`);
+      close();
+    } catch (error) {
+      toast.error('An error occurred');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const validationSchema = useMemo(() => {

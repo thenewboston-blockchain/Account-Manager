@@ -5,8 +5,8 @@ import {formatAddressFromNode} from '@renderer/utils/address';
 import {fetchBankConfig} from '../banks';
 import {fetchValidatorConfig} from '../validators';
 
-export const connect = (network: AddressData) => async (dispatch: AppDispatch) => {
-  const address = formatAddressFromNode(network);
+export const connect = (bankAddressData: AddressData) => async (dispatch: AppDispatch) => {
+  const address = formatAddressFromNode(bankAddressData);
   const bankConfig = await dispatch(fetchBankConfig(address));
   if (bankConfig.error) {
     return {
@@ -40,10 +40,10 @@ export const connect = (network: AddressData) => async (dispatch: AppDispatch) =
   };
 };
 
-export const connectAndStoreLocalData = (network: AddressData, bankNickname: string) => async (
+export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickname: string) => async (
   dispatch: AppDispatch,
 ) => {
-  const connectResponse = await dispatch(connect(network));
+  const connectResponse = await dispatch(connect(bankAddressData));
   if (connectResponse?.error) {
     return connectResponse;
   }
