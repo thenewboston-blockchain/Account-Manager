@@ -63,7 +63,7 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
 
   const activeBankData = {
     ip_address: bankConfig.ip_address,
-    isActive: true,
+    is_default: true,
     nickname: bankNickname,
     node_identifier: bankConfig.node_identifier,
     port: bankConfig.port,
@@ -75,7 +75,7 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
 
   const activePrimaryValidatorData = {
     ip_address: validatorConfig.ip_address,
-    isActive: true,
+    is_default: true,
     nickname: '',
     node_identifier: validatorConfig.node_identifier,
     port: validatorConfig.port,

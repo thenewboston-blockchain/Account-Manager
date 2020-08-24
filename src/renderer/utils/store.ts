@@ -141,7 +141,7 @@ export function setPaginatedResultErrorReducer() {
 export function unsetActiveNodeReducer() {
   return (state: Dict<ManagedNode>) => {
     Object.values(state).forEach((node) => {
-      delete node.isActive;
+      delete node.is_default;
     });
   };
 }

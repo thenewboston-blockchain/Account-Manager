@@ -3,7 +3,7 @@ import {formatAddressFromNode} from '@renderer/utils/address';
 import {getBankConfigs, getManagedBanks, getManagedValidators, getValidatorConfigs} from './state';
 
 export const getActiveBank = createSelector([getManagedBanks], (managedBanks) => {
-  return Object.values(managedBanks).find((bank) => bank.isActive) || null;
+  return Object.values(managedBanks).find((bank) => bank.is_default) || null;
 });
 
 export const getActiveBankConfig = createSelector([getActiveBank, getBankConfigs], (activeBank, bankConfigs) => {
@@ -13,7 +13,7 @@ export const getActiveBankConfig = createSelector([getActiveBank, getBankConfigs
 });
 
 export const getActivePrimaryValidator = createSelector([getManagedValidators], (managedValidators) => {
-  return Object.values(managedValidators).find((bank) => bank.isActive) || null;
+  return Object.values(managedValidators).find((bank) => bank.is_default) || null;
 });
 
 export const getActivePrimaryValidatorConfig = createSelector(
