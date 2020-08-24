@@ -53,17 +53,21 @@ const AddBankSigningKeyModal: FC<ComponentProps> = ({close}) => {
     return yup.object().shape({
       signingKey: yup
         .string()
+        .length(64, SIGNING_KEY_LENGTH_ERROR)
+        .notOneOf(managedBankSigningKeys, 'That bank already exists')
+        .required(SIGNING_KEY_REQUIRED_ERROR)
         .test({
           message: 'Resulting public key does not match NID',
           name: 'is-valid-private-key',
           test: (value: string) => {
-            const {accountNumberHex} = getKeyPairFromSigningKeyHex(value);
-            return accountNumberHex === nodeIdentifier;
+            try {
+              const {accountNumberHex} = getKeyPairFromSigningKeyHex(value);
+              return accountNumberHex === nodeIdentifier;
+            } catch (error) {
+              return false;
+            }
           },
-        })
-        .length(64, SIGNING_KEY_LENGTH_ERROR)
-        .notOneOf(managedBankSigningKeys, 'That bank already exists')
-        .required(SIGNING_KEY_REQUIRED_ERROR),
+        }),
     });
   }, [managedBankSigningKeys, nodeIdentifier]);
 
