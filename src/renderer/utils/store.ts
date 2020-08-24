@@ -140,13 +140,9 @@ export function setPaginatedResultErrorReducer() {
 
 export function unsetActiveNodeReducer() {
   return (state: Dict<ManagedNode>) => {
-    return Object.entries(state).reduce((acc, [address, node]) => {
+    Object.values(state).forEach((node) => {
       delete node.isActive;
-      return {
-        ...acc,
-        [address]: node,
-      };
-    }, {});
+    });
   };
 }
 
