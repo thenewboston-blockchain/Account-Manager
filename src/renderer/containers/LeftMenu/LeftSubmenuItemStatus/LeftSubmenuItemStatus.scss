@@ -4,16 +4,18 @@
   display: flex;
   line-height: 24px;
   overflow: hidden;
+  padding: 0 12px 0 10px;
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
 
   &:hover {
-    text-decoration: underline;
+    background: var(--color-sail-gray-050);
   }
 
-  &--active {
-    font-weight: 500;
+  &--active,
+  &--active:hover {
+    background: var(--color-sail-gray-100);
   }
 
   &__Icon {
