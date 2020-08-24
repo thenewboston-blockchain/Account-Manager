@@ -9,7 +9,7 @@ import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {useAddress, useBooleanState} from '@renderer/hooks';
-import {getActiveBank, getIsActiveBank, getIsManagedBank, getManagedBanks} from '@renderer/selectors';
+import {getIsActiveBank, getIsManagedBank, getManagedBanks} from '@renderer/selectors';
 import {setManagedBank, unsetManagedBank} from '@renderer/store/app';
 import {AppDispatch, RootState} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
@@ -35,7 +35,6 @@ const Bank: FC = () => {
   const [addSigningKeyModalIsOpen, toggleSigningKeyModal] = useBooleanState(false);
   const [editNicknameModalIsOpen, toggleEditNicknameModal] = useBooleanState(false);
   const [setAsActiveBankModalIsOpen, toggleSetAsActiveBankModal] = useBooleanState(false);
-  const activeBank = useSelector(getActiveBank)!;
   const isActiveBank = useSelector((state: RootState) => getIsActiveBank(state, address));
   const isManagedBank = useSelector((state: RootState) => getIsManagedBank(state, address));
   const managedBanks = useSelector(getManagedBanks);
@@ -50,6 +49,7 @@ const Bank: FC = () => {
         onClick: toggleEditNicknameModal,
       },
       {
+        disabled: isActiveBank,
         label: 'Remove Bank',
         onClick: handleRemoveManagedBank,
       },
@@ -163,7 +163,6 @@ const Bank: FC = () => {
   };
 
   const renderTitle = (): string => {
-    if (isActiveBank) return activeBank.nickname || activeBank.ip_address;
     if (isManagedBank) {
       return managedBank.nickname || managedBank.ip_address;
     }

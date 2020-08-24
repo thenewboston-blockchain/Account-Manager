@@ -19,8 +19,9 @@ import {
   getManagedFriends,
   getManagedValidators,
 } from '@renderer/selectors';
-import {RootState} from '@renderer/types';
+import {ManagedNode, RootState} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
+import {sortByBooleanKey} from '@renderer/utils/sort';
 
 import LeftSubmenu from './LeftSubmenu';
 
@@ -85,14 +86,16 @@ const LeftMenu: FC = () => {
   const bankMenuItems = useMemo<ReactNode[]>(
     () =>
       Object.values(managedBanks)
+        .sort(sortByBooleanKey<ManagedNode>('isActive'))
         .map((managedBank) => ({
+          active: managedBank.isActive || false,
           baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
           key: managedBank.ip_address,
           label: managedBank.nickname || managedBank.ip_address,
           to: `/bank/${formatPathFromNode(managedBank)}/overview`,
         }))
-        .map(({baseUrl, key, label, to}) => (
-          <LeftSubmenuItemStatus baseUrl={baseUrl} key={key} label={label} status="online" to={to} />
+        .map(({active, baseUrl, key, label, to}) => (
+          <LeftSubmenuItemStatus active={active} baseUrl={baseUrl} key={key} label={label} status="online" to={to} />
         )),
     [managedBanks],
   );
@@ -131,14 +134,16 @@ const LeftMenu: FC = () => {
   const validatorMenuItems = useMemo<ReactNode[]>(
     () =>
       Object.values(managedValidators)
+        .sort(sortByBooleanKey<ManagedNode>('isActive'))
         .map((managedValidator) => ({
+          active: managedValidator.isActive || false,
           baseUrl: `/validator/${formatPathFromNode(managedValidator)}`,
           key: managedValidator.ip_address,
           label: managedValidator.nickname || managedValidator.ip_address,
           to: `/validator/${formatPathFromNode(managedValidator)}/overview`,
         }))
-        .map(({baseUrl, key, label, to}) => (
-          <LeftSubmenuItemStatus baseUrl={baseUrl} key={key} label={label} status="online" to={to} />
+        .map(({active, baseUrl, key, label, to}) => (
+          <LeftSubmenuItemStatus active={active} baseUrl={baseUrl} key={key} label={label} status="online" to={to} />
         )),
     [managedValidators],
   );
