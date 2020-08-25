@@ -1,6 +1,5 @@
 .LeftSubmenuItemStatus {
-  $left-padding: 36px;
-  $right-padding: 12px;
+  $left-spacing: 36px;
 
   align-items: center;
   color: var(--color-primary);
@@ -20,8 +19,8 @@
   }
 
   &__Icon {
-    flex-basis: $left-padding;
-    min-width: $left-padding;
+    flex-basis: $left-spacing;
+    min-width: $left-spacing;
 
     &--offline {
       color: var(--color-sail-gray-300);
@@ -50,7 +49,7 @@
     overflow: hidden;
     padding-right: 12px;
     text-overflow: ellipsis;
-    width: calc(var(--left-menu-width) - #{$right-padding});
+    width: calc(var(--left-menu-width) - #{$left-spacing});
 
     &--with-badge {
       padding-right: 8px;
