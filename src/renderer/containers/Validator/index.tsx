@@ -9,11 +9,12 @@ import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {useAddress, useBooleanState} from '@renderer/hooks';
 import {getIsActivePrimaryValidator, getIsManagedValidator, getManagedValidators} from '@renderer/selectors';
-import {setManagedValidator, unsetManagedValidator} from '@renderer/store/app';
+import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch, RootState} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
 
 import EditValidatorNicknameModal from './EditValidatorNicknameModal';
+import RemoveValidatorModal from './RemoveValidatorModal';
 import ValidatorAccounts from './ValidatorAccounts';
 import ValidatorBanks from './ValidatorBanks';
 import ValidatorOverview from './ValidatorOverview';
@@ -25,6 +26,7 @@ const Validator: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {path, url} = useRouteMatch();
   const [editNicknameModalIsOpen, toggleEditNicknameModal] = useBooleanState(false);
+  const [removeValidatorModalIsOpen, toggleRemoveValidatorModal] = useBooleanState(false);
   const isActivePrimaryValidator = useSelector((state: RootState) => getIsActivePrimaryValidator(state, address));
   const isManagedValidator = useSelector((state: RootState) => getIsManagedValidator(state, address));
   const managedValidators = useSelector(getManagedValidators);
@@ -40,7 +42,7 @@ const Validator: FC = () => {
       {
         disabled: isActivePrimaryValidator,
         label: 'Remove Validator',
-        onClick: handleRemoveManagedValidator,
+        onClick: toggleRemoveValidatorModal,
       },
     ];
   };
@@ -54,17 +56,6 @@ const Validator: FC = () => {
         port,
         protocol,
         signing_key: '',
-      }),
-    );
-  };
-
-  const handleRemoveManagedValidator = (): void => {
-    const {ipAddress, port, protocol} = parseAddressData(address);
-    dispatch(
-      unsetManagedValidator({
-        ip_address: ipAddress,
-        port,
-        protocol,
       }),
     );
   };
@@ -150,6 +141,9 @@ const Validator: FC = () => {
       <PageLayout content={renderTabContent()} top={renderTop()} />
       {editNicknameModalIsOpen && (
         <EditValidatorNicknameModal close={toggleEditNicknameModal} validator={managedValidator} />
+      )}
+      {removeValidatorModalIsOpen && (
+        <RemoveValidatorModal close={toggleRemoveValidatorModal} validator={managedValidator} />
       )}
     </div>
   );
