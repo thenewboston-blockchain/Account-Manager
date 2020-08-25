@@ -105,11 +105,11 @@ const Bank: FC = () => {
   const renderTabContent = (): ReactNode => {
     const tabContentRoutes = [
       {
-        content: <BankAccounts />,
+        content: <BankAccounts managedBank={managedBank} />,
         page: 'accounts',
       },
       {
-        content: <BankBanks />,
+        content: <BankBanks managedBank={managedBank} />,
         page: 'banks',
       },
       {
@@ -137,7 +137,7 @@ const Bank: FC = () => {
         page: 'validator-confirmation-services',
       },
       {
-        content: <BankValidators />,
+        content: <BankValidators managedBank={managedBank} />,
         page: 'validators',
       },
     ];

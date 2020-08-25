@@ -97,7 +97,7 @@ const Validator: FC = () => {
         page: 'accounts',
       },
       {
-        content: <ValidatorBanks />,
+        content: <ValidatorBanks managedValidator={managedValidator} />,
         page: 'banks',
       },
       {
@@ -105,7 +105,7 @@ const Validator: FC = () => {
         page: 'overview',
       },
       {
-        content: <ValidatorValidators />,
+        content: <ValidatorValidators managedValidator={managedValidator} />,
         page: 'validators',
       },
     ];

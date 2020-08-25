@@ -1,11 +1,15 @@
-import React, {FC, useMemo} from 'react';
+import React, {FC, useCallback, useMemo, useState} from 'react';
 
+import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
+import EditTrustModal from '@renderer/containers/App/EditTrustModal';
 import {VALIDATOR_VALIDATORS} from '@renderer/constants';
-import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
-import {BaseValidator} from '@renderer/types';
+import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {BaseValidator, ManagedNode} from '@renderer/types';
 import Pagination from '@renderer/components/Pagination';
+
+import './BankValidators.scss';
 
 enum TableKeys {
   nodeIdentifier,
@@ -22,7 +26,11 @@ enum TableKeys {
   trust,
 }
 
-const ValidatorValidators: FC = () => {
+interface ComponentProps {
+  managedValidator: ManagedNode;
+}
+
+const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
   const address = useAddress();
   const {
     count,
@@ -32,6 +40,18 @@ const ValidatorValidators: FC = () => {
     setPage,
     totalPages,
   } = usePaginatedNetworkDataFetcher<BaseValidator>(VALIDATOR_VALIDATORS, address);
+  const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
+  const [editTrustValidator, setEditTrustValidator] = useState<BaseValidator | null>(null);
+
+  const hasSigningKey = useMemo(() => !!managedValidator.signing_key.length, [managedValidator]);
+
+  const handleEditTrustButton = useCallback(
+    (validator: BaseValidator) => (): void => {
+      setEditTrustValidator(validator);
+      toggleEditTrustModal();
+    },
+    [setEditTrustValidator, toggleEditTrustModal],
+  );
 
   const validatorValidatorsTableData = useMemo<PageTableData[]>(
     () =>
@@ -47,10 +67,21 @@ const ValidatorValidators: FC = () => {
         [TableKeys.rootAccountFileHash]: validator.root_account_file_hash,
         [TableKeys.rootAccountFile]: validator.root_account_file,
         [TableKeys.seedBlockIdentifier]: validator.seed_block_identifier,
-        [TableKeys.trust]: validator.trust,
+        [TableKeys.trust]: (
+          <div className="ValidatorValidators__trust-cell">
+            {validator.trust}{' '}
+            <Icon
+              className="ValidatorValidators__edit-trust-icon"
+              disabled={!hasSigningKey}
+              icon={IconType.pencil}
+              onClick={handleEditTrustButton(validator)}
+              size={15}
+            />
+          </div>
+        ),
         [TableKeys.version]: validator.version,
       })) || [],
-    [validatorValidators],
+    [handleEditTrustButton, hasSigningKey, validatorValidators],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -92,6 +123,15 @@ const ValidatorValidators: FC = () => {
     <div className="ValidatorValidators">
       <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
       <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
+      {editTrustModalIsOpen && !!editTrustValidator && (
+        <EditTrustModal
+          close={toggleEditTrustModal}
+          node={managedValidator}
+          nodeIdentifier={editTrustValidator.node_identifier}
+          trust={editTrustValidator.trust}
+          type="validators"
+        />
+      )}
     </div>
   );
 };

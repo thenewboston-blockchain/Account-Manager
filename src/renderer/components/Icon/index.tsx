@@ -16,6 +16,7 @@ import CloseIcon from 'mdi-react/CloseIcon';
 import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
 import EarthIcon from 'mdi-react/EarthIcon';
 import LoadingIcon from 'mdi-react/LoadingIcon';
+import PencilIcon from 'mdi-react/PencilIcon';
 import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
 import RadioboxBlankIcon from 'mdi-react/RadioboxBlankIcon';
@@ -39,6 +40,7 @@ export enum IconType {
   dotsVertical,
   earth,
   loading,
+  pencil,
   play,
   plus,
   radioboxBlank,
@@ -86,6 +88,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled = 
         return <EarthIcon {...iconProps} />;
       case IconType.loading:
         return <LoadingIcon {...iconProps} />;
+      case IconType.pencil:
+        return <PencilIcon {...iconProps} />;
       case IconType.play:
         return <PlayIcon {...iconProps} />;
       case IconType.plus:
