@@ -146,7 +146,7 @@ const LeftMenu: FC = () => {
     <div className="LeftMenu">
       <div className="points">
         <div className="points__title">Points</div>
-        <div className="points__amount">{pointBalance}</div>
+        <div className="points__amount">{pointBalance.toLocaleString()}</div>
       </div>
       <LeftSubmenu
         leftIcon={<Icon className="LeftMenu__icon" icon={IconType.earth} />}
