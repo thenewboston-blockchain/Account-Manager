@@ -21,7 +21,7 @@ const LeftSubmenuItem: FC<LeftSubmenuItemProps> = ({baseUrl, key, label, locatio
       key={key}
       to={to}
     >
-      {label}
+      <div className="LeftSubmenuItem--label">{label}</div>
     </NavLink>
   );
 };

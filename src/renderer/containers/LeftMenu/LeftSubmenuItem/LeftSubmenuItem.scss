@@ -1,10 +1,12 @@
 .LeftSubmenuItem {
+  $left-padding: 36px;
+  $right-padding: 12px;
+
   align-items: center;
   color: var(--color-primary);
   display: flex;
-  line-height: 24px;
   overflow: hidden;
-  padding-left: 36px;
+  padding-left: $left-padding;
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -16,5 +18,12 @@
   &--active,
   &--active:hover {
     background: var(--color-sail-gray-100);
+  }
+
+  &--label {
+    line-height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: calc(var(--left-menu-width) - #{$left-padding + $right-padding});
   }
 }
