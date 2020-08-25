@@ -9,22 +9,16 @@ import './LeftSubmenu.scss';
 interface ComponentProps {
   leftIcon?: ReactNode;
   menuItems: ReactNode[];
-  noExpandToggle?: boolean;
   rightOnClick?(): void;
   rightText?: string;
   title: string;
 }
 
-const LeftSubmenu: FC<ComponentProps> = ({leftIcon, menuItems, noExpandToggle, rightOnClick, rightText, title}) => {
+const LeftSubmenu: FC<ComponentProps> = ({leftIcon, menuItems, rightOnClick, rightText, title}) => {
   const [expanded, toggleExpanded] = useBooleanState(true);
 
   const renderHeaderContent = (): ReactNode => {
-    return noExpandToggle ? (
-      <>
-        <span className="LeftSubmenu__title LeftSubmenu__title--only">{title}</span>
-        {rightOnClick ? renderRightSection() : null}
-      </>
-    ) : (
+    return (
       <>
         <div className="LeftSubmenu__left-items">
           {leftIcon || <ArrowToggle expanded={expanded} onClick={toggleExpanded} />}
