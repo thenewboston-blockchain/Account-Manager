@@ -7,13 +7,22 @@ import './LeftSubmenuItemStatus.scss';
 
 export interface LeftSubmenuItemStatusProps extends RouteComponentProps {
   baseUrl: string;
+  isDefault?: boolean;
   key: string;
   label: ReactNode;
   status: 'offline' | 'online';
   to: string;
 }
 
-const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({baseUrl, key, label, location, status, to}) => {
+const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({
+  baseUrl,
+  isDefault = false,
+  key,
+  label,
+  location,
+  status,
+  to,
+}) => {
   const getIsActive = (): boolean => location.pathname.includes(baseUrl);
 
   const renderStatusIcon = (): ReactNode => {
@@ -44,7 +53,9 @@ const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({baseUrl, key, la
       to={to}
     >
       {renderStatusIcon()}
-      <span className="LeftSubmenuItemStatus__label">{label}</span>
+      <span className="LeftSubmenuItemStatus__label">
+        {label} {isDefault ? '(active)' : null}
+      </span>
     </NavLink>
   );
 };

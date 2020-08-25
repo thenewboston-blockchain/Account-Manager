@@ -5,6 +5,16 @@
   justify-content: space-between;
   padding: 6px 12px;
 
+  &__change-bank {
+    color: var(--color-secondary);
+    cursor: pointer;
+    margin-right: 12px;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+
   &__container {
     align-items: center;
     color: var(--color-blue-gray-700);

@@ -2,7 +2,9 @@ import {createCachedSelector} from 're-reselect';
 
 import {RootState} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
-import {getActivePrimaryValidator, getManagedValidators} from './state';
+
+import {getActivePrimaryValidator} from './app';
+import {getManagedValidators} from './state';
 import {getNthArg} from './utils';
 
 export const getIsActivePrimaryValidator: (state: RootState, address: string) => boolean = createCachedSelector(

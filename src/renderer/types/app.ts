@@ -15,6 +15,7 @@ export interface ManagedFriend extends AccountNumber {
 }
 
 export interface ManagedNode extends AddressData {
+  is_default?: boolean;
   nickname: string;
   signing_key: string;
 }

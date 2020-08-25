@@ -8,12 +8,7 @@ import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {useAddress, useBooleanState} from '@renderer/hooks';
-import {
-  getActivePrimaryValidator,
-  getIsActivePrimaryValidator,
-  getIsManagedValidator,
-  getManagedValidators,
-} from '@renderer/selectors';
+import {getIsActivePrimaryValidator, getIsManagedValidator, getManagedValidators} from '@renderer/selectors';
 import {setManagedValidator, unsetManagedValidator} from '@renderer/store/app';
 import {AppDispatch, RootState} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
@@ -30,7 +25,6 @@ const Validator: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {path, url} = useRouteMatch();
   const [editNicknameModalIsOpen, toggleEditNicknameModal] = useBooleanState(false);
-  const activePrimaryValidator = useSelector(getActivePrimaryValidator)!;
   const isActivePrimaryValidator = useSelector((state: RootState) => getIsActivePrimaryValidator(state, address));
   const isManagedValidator = useSelector((state: RootState) => getIsManagedValidator(state, address));
   const managedValidators = useSelector(getManagedValidators);
@@ -44,6 +38,7 @@ const Validator: FC = () => {
         onClick: toggleEditNicknameModal,
       },
       {
+        disabled: isActivePrimaryValidator,
         label: 'Remove Validator',
         onClick: handleRemoveManagedValidator,
       },
@@ -111,7 +106,9 @@ const Validator: FC = () => {
   };
 
   const renderTitle = (): string => {
-    if (isActivePrimaryValidator) return activePrimaryValidator.nickname || activePrimaryValidator.ip_address;
+    if (isManagedValidator) {
+      return managedValidator.nickname || managedValidator.ip_address;
+    }
     const {ipAddress} = parseAddressData(address);
     return ipAddress;
   };

@@ -1,8 +1,6 @@
-import {getActiveBankConfig, getActivePrimaryValidatorConfig} from './app';
+import {getActiveBank, getActiveBankConfig, getActivePrimaryValidator, getActivePrimaryValidatorConfig} from './app';
 import {getIsActiveBank, getIsManagedBank} from './banks';
 import {
-  getActiveBank,
-  getActivePrimaryValidator,
   getBankAccounts,
   getBankBanks,
   getBankBankTransactions,

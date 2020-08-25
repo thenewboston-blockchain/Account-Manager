@@ -3,7 +3,6 @@ import {useSelector} from 'react-redux';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
-import ChangeActiveBankModal from '@renderer/containers/App/ChangeActiveBankModal';
 import AddBankModal from '@renderer/containers/Bank/AddBankModal';
 import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
@@ -11,16 +10,15 @@ import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItem
 import AddValidatorModal from '@renderer/containers/Validator/AddValidatorModal';
 import {useBooleanState} from '@renderer/hooks';
 import {
-  getActiveBank,
-  getActiveBankConfig,
   getActivePrimaryValidatorConfig,
   getManagedAccounts,
   getManagedBanks,
   getManagedFriends,
   getManagedValidators,
 } from '@renderer/selectors';
-import {RootState} from '@renderer/types';
+import {ManagedNode, RootState} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
+import {sortByBooleanKey} from '@renderer/utils/sort';
 
 import LeftSubmenu from './LeftSubmenu';
 
@@ -28,8 +26,6 @@ import './LeftMenu.scss';
 
 const LeftMenuSelector = (state: RootState) => {
   return {
-    activeBank: getActiveBankConfig(state),
-    activeBankNickname: getActiveBank(state)?.nickname,
     activePrimaryValidator: getActivePrimaryValidatorConfig(state),
     managedAccounts: getManagedAccounts(state),
     managedBanks: getManagedBanks(state),
@@ -39,19 +35,12 @@ const LeftMenuSelector = (state: RootState) => {
 };
 
 const LeftMenu: FC = () => {
-  const {
-    activeBank,
-    activeBankNickname,
-    activePrimaryValidator,
-    managedAccounts,
-    managedBanks,
-    managedFriends,
-    managedValidators,
-  } = useSelector(LeftMenuSelector);
+  const {activePrimaryValidator, managedAccounts, managedBanks, managedFriends, managedValidators} = useSelector(
+    LeftMenuSelector,
+  );
   const [addBankModalIsOpen, toggleAddBankModal] = useBooleanState(false);
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
   const [addValidatorModalIsOpen, toggleAddValidatorModal] = useBooleanState(false);
-  const [changeActiveBankModalIsOpen, toggleActiveBankModal] = useBooleanState(false);
   const [createAccountModalIsOpen, toggleCreateAccountModal] = useBooleanState(false);
 
   const accountItems = useMemo<ReactNode[]>(
@@ -67,32 +56,26 @@ const LeftMenu: FC = () => {
     [managedAccounts],
   );
 
-  const activeBankMenuItem = useMemo<ReactNode>(() => {
-    if (!activeBank) return null;
-    const baseUrl = `/bank/${formatPathFromNode(activeBank)}`;
-
-    return (
-      <LeftSubmenuItemStatus
-        baseUrl={baseUrl}
-        key="active-bank"
-        label={activeBankNickname ? `${activeBankNickname} (${activeBank.ip_address})` : activeBank.ip_address}
-        status="online"
-        to={`${baseUrl}/overview`}
-      />
-    );
-  }, [activeBank, activeBankNickname]);
-
   const bankMenuItems = useMemo<ReactNode[]>(
     () =>
       Object.values(managedBanks)
+        .sort(sortByBooleanKey<ManagedNode>('is_default'))
         .map((managedBank) => ({
           baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
+          isDefault: managedBank.is_default || false,
           key: managedBank.ip_address,
           label: managedBank.nickname || managedBank.ip_address,
           to: `/bank/${formatPathFromNode(managedBank)}/overview`,
         }))
-        .map(({baseUrl, key, label, to}) => (
-          <LeftSubmenuItemStatus baseUrl={baseUrl} key={key} label={label} status="online" to={to} />
+        .map(({baseUrl, isDefault, key, label, to}) => (
+          <LeftSubmenuItemStatus
+            baseUrl={baseUrl}
+            isDefault={isDefault}
+            key={key}
+            label={label}
+            status="online"
+            to={to}
+          />
         )),
     [managedBanks],
   );
@@ -131,14 +114,23 @@ const LeftMenu: FC = () => {
   const validatorMenuItems = useMemo<ReactNode[]>(
     () =>
       Object.values(managedValidators)
+        .sort(sortByBooleanKey<ManagedNode>('is_default'))
         .map((managedValidator) => ({
           baseUrl: `/validator/${formatPathFromNode(managedValidator)}`,
+          isDefault: managedValidator.is_default || false,
           key: managedValidator.ip_address,
           label: managedValidator.nickname || managedValidator.ip_address,
           to: `/validator/${formatPathFromNode(managedValidator)}/overview`,
         }))
-        .map(({baseUrl, key, label, to}) => (
-          <LeftSubmenuItemStatus baseUrl={baseUrl} key={key} label={label} status="online" to={to} />
+        .map(({baseUrl, isDefault, key, label, to}) => (
+          <LeftSubmenuItemStatus
+            baseUrl={baseUrl}
+            isDefault={isDefault}
+            key={key}
+            label={label}
+            status="online"
+            to={to}
+          />
         )),
     [managedValidators],
   );
@@ -154,13 +146,6 @@ const LeftMenu: FC = () => {
         menuItems={networkMenuItems}
         title="Network"
       />
-      <LeftSubmenu
-        menuItems={[activeBankMenuItem]}
-        noExpandToggle
-        rightOnClick={toggleActiveBankModal}
-        rightText="Change"
-        title="Active Bank"
-      />
       <LeftSubmenu menuItems={accountItems} rightOnClick={toggleCreateAccountModal} title="Accounts" />
       <LeftSubmenu menuItems={friendMenuItems} rightOnClick={toggleAddFriendModal} title="Friends" />
       <LeftSubmenu menuItems={bankMenuItems} rightOnClick={toggleAddBankModal} title="Managed Banks" />
@@ -168,7 +153,6 @@ const LeftMenu: FC = () => {
       {addFriendModalIsOpen && <AddFriendModal close={toggleAddFriendModal} />}
       {addBankModalIsOpen && <AddBankModal close={toggleAddBankModal} />}
       {addValidatorModalIsOpen && <AddValidatorModal close={toggleAddValidatorModal} />}
-      {changeActiveBankModalIsOpen && <ChangeActiveBankModal close={toggleActiveBankModal} />}
       {createAccountModalIsOpen && <CreateAccountModal close={toggleCreateAccountModal} />}
     </div>
   );

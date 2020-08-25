@@ -1,15 +1,16 @@
 import React, {FC, ReactNode} from 'react';
 import {useSelector} from 'react-redux';
-import {NavLink} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
+import ChangeActiveBankModal from '@renderer/containers/App/ChangeActiveBankModal';
+import {useBooleanState} from '@renderer/hooks';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
-import {formatPathFromNode} from '@renderer/utils/address';
 
 import './TopNav.scss';
 
 const TopNav: FC = () => {
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
+  const [changeActiveBankModalIsOpen, toggleActiveBankModal] = useBooleanState(false);
 
   const renderLeft = (): ReactNode => (
     <div className="TopNav__container">
@@ -22,12 +23,9 @@ const TopNav: FC = () => {
     if (!activePrimaryValidator) return null;
     return (
       <div className="TopNav__container">
-        <NavLink
-          className="TopNav__primary-validator"
-          to={`/validator/${formatPathFromNode(activePrimaryValidator)}/overview`}
-        >
-          Primary Validator ({`${activePrimaryValidator.ip_address}`})
-        </NavLink>
+        <span className="TopNav__change-bank" onClick={toggleActiveBankModal}>
+          Change Active Bank
+        </span>
         <Icon className="TopNav__icon" icon={IconType.bell} />
       </div>
     );
@@ -37,6 +35,7 @@ const TopNav: FC = () => {
     <div className="TopNav">
       {renderLeft()}
       {renderRight()}
+      {changeActiveBankModalIsOpen && <ChangeActiveBankModal close={toggleActiveBankModal} />}
     </div>
   );
 };

@@ -1,7 +1,5 @@
 import {RootState} from '@renderer/types';
 
-export const getActiveBank = (state: RootState) => state.app.activeBank;
-export const getActivePrimaryValidator = (state: RootState) => state.app.activePrimaryValidator;
 export const getManagedAccounts = (state: RootState) => state.app.managedAccounts;
 export const getManagedBanks = (state: RootState) => state.app.managedBanks;
 export const getManagedFriends = (state: RootState) => state.app.managedFriends;
