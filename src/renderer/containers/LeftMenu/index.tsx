@@ -15,6 +15,7 @@ import {
   getManagedBanks,
   getManagedFriends,
   getManagedValidators,
+  getPointBalance,
 } from '@renderer/selectors';
 import {ManagedNode, RootState} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
@@ -31,13 +32,19 @@ const LeftMenuSelector = (state: RootState) => {
     managedBanks: getManagedBanks(state),
     managedFriends: getManagedFriends(state),
     managedValidators: getManagedValidators(state),
+    pointBalance: getPointBalance(state),
   };
 };
 
 const LeftMenu: FC = () => {
-  const {activePrimaryValidator, managedAccounts, managedBanks, managedFriends, managedValidators} = useSelector(
-    LeftMenuSelector,
-  );
+  const {
+    activePrimaryValidator,
+    managedAccounts,
+    managedBanks,
+    managedFriends,
+    managedValidators,
+    pointBalance,
+  } = useSelector(LeftMenuSelector);
   const [addBankModalIsOpen, toggleAddBankModal] = useBooleanState(false);
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
   const [addValidatorModalIsOpen, toggleAddValidatorModal] = useBooleanState(false);
@@ -139,7 +146,7 @@ const LeftMenu: FC = () => {
     <div className="LeftMenu">
       <div className="points">
         <div className="points__title">Points</div>
-        <div className="points__amount">12,345.00</div>
+        <div className="points__amount">{pointBalance}</div>
       </div>
       <LeftSubmenu
         leftIcon={<Icon className="LeftMenu__icon" icon={IconType.earth} />}

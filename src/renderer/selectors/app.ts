@@ -1,6 +1,6 @@
 import {createSelector} from '@reduxjs/toolkit';
 import {formatAddressFromNode} from '@renderer/utils/address';
-import {getBankConfigs, getManagedBanks, getManagedValidators, getValidatorConfigs} from './state';
+import {getBankConfigs, getManagedAccounts, getManagedBanks, getManagedValidators, getValidatorConfigs} from './state';
 
 export const getActiveBank = createSelector([getManagedBanks], (managedBanks) => {
   return Object.values(managedBanks).find((bank) => bank.is_default) || null;
@@ -24,3 +24,7 @@ export const getActivePrimaryValidatorConfig = createSelector(
     return validatorConfigs[address]?.data || null;
   },
 );
+
+export const getPointBalance = createSelector([getManagedAccounts], (managedAccounts) => {
+  return Object.values(managedAccounts).reduce((acc, account) => acc + (parseFloat(account.balance) || 0), 0);
+});
