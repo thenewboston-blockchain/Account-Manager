@@ -33,10 +33,10 @@ const EditTrustModal: FC<ComponentProps> = ({close, node, nodeIdentifier, trust,
   const handleSubmit = async (values: FormValues): Promise<void> => {
     try {
       setSubmitting(true);
-      const {signingKey} = getKeyPairFromSigningKeyHex(node.signing_key);
+      const {accountNumberHex, signingKey} = getKeyPairFromSigningKeyHex(node.signing_key);
       const requestData = {
         message: values,
-        node_identifier: nodeIdentifier,
+        node_identifier: accountNumberHex,
         signature: generateSignature(JSON.stringify(values), signingKey),
       };
       const address = `${formatAddressFromNode(node)}/${type}/${nodeIdentifier}`;

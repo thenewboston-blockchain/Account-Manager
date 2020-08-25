@@ -94,7 +94,7 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
         <EditTrustModal
           close={toggleEditTrustModal}
           node={managedBank}
-          nodeIdentifier="TODO: Node Identifier"
+          nodeIdentifier={editTrustAccount.account_number}
           trust={editTrustAccount.trust}
           type="accounts"
         />
