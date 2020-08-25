@@ -1,4 +1,10 @@
-import {getActiveBank, getActiveBankConfig, getActivePrimaryValidator, getActivePrimaryValidatorConfig} from './app';
+import {
+  getActiveBank,
+  getActiveBankConfig,
+  getActivePrimaryValidator,
+  getActivePrimaryValidatorConfig,
+  getPointBalance,
+} from './app';
 import {getIsActiveBank, getIsManagedBank} from './banks';
 import {
   getBankAccounts,
@@ -43,6 +49,7 @@ export {
   getManagedBanks,
   getManagedFriends,
   getManagedValidators,
+  getPointBalance,
   getValidatorAccounts,
   getValidatorBanks,
   getValidatorConfigs,
