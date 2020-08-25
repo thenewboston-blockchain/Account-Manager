@@ -10,7 +10,7 @@ import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {useAddress, useBooleanState} from '@renderer/hooks';
 import {getIsActiveBank, getIsManagedBank, getManagedBanks} from '@renderer/selectors';
-import {setManagedBank, unsetManagedBank} from '@renderer/store/app';
+import {setManagedBank} from '@renderer/store/app';
 import {AppDispatch, RootState} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
 
@@ -25,6 +25,7 @@ import BankTransactions from './BankTransactions';
 import BankValidatorConfirmationServices from './BankValidatorConfirmationServices';
 import BankValidators from './BankValidators';
 import EditBankNicknameModal from './EditBankNicknameModal';
+import RemoveBankModal from './RemoveBankModal';
 import SetAsActiveBankModal from './SetAsActiveBankModal';
 import './Bank.scss';
 
@@ -34,6 +35,7 @@ const Bank: FC = () => {
   const {path, url} = useRouteMatch();
   const [addSigningKeyModalIsOpen, toggleSigningKeyModal] = useBooleanState(false);
   const [editNicknameModalIsOpen, toggleEditNicknameModal] = useBooleanState(false);
+  const [removeBankModalIsOpen, toggleRemoveBankModal] = useBooleanState(false);
   const [setAsActiveBankModalIsOpen, toggleSetAsActiveBankModal] = useBooleanState(false);
   const isActiveBank = useSelector((state: RootState) => getIsActiveBank(state, address));
   const isManagedBank = useSelector((state: RootState) => getIsManagedBank(state, address));
@@ -51,7 +53,7 @@ const Bank: FC = () => {
       {
         disabled: isActiveBank,
         label: 'Remove Bank',
-        onClick: handleRemoveManagedBank,
+        onClick: toggleRemoveBankModal,
       },
       {
         disabled: isActiveBank,
@@ -82,17 +84,6 @@ const Bank: FC = () => {
         port,
         protocol,
         signing_key: '',
-      }),
-    );
-  };
-
-  const handleRemoveManagedBank = (): void => {
-    const {ipAddress, port, protocol} = parseAddressData(address);
-    dispatch(
-      unsetManagedBank({
-        ip_address: ipAddress,
-        port,
-        protocol,
       }),
     );
   };
@@ -227,6 +218,7 @@ const Bank: FC = () => {
       <PageLayout content={renderTabContent()} top={renderTop()} />
       {addSigningKeyModalIsOpen && <AddBankSigningKeyModal close={toggleSigningKeyModal} />}
       {editNicknameModalIsOpen && <EditBankNicknameModal close={toggleEditNicknameModal} bank={managedBank} />}
+      {removeBankModalIsOpen && <RemoveBankModal close={toggleRemoveBankModal} bank={managedBank} />}
       {setAsActiveBankModalIsOpen && <SetAsActiveBankModal close={toggleSetAsActiveBankModal} bank={managedBank} />}
     </div>
   );
