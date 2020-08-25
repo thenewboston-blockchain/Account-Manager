@@ -3,13 +3,13 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
+import Pagination from '@renderer/components/Pagination';
 import EditTrustModal from '@renderer/containers/App/EditTrustModal';
 import {VALIDATOR_VALIDATORS} from '@renderer/constants';
 import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BaseValidator, ManagedNode} from '@renderer/types';
-import Pagination from '@renderer/components/Pagination';
 
-import './BankValidators.scss';
+import './ValidatorValidators.scss';
 
 enum TableKeys {
   nodeIdentifier,
