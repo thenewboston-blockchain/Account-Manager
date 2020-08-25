@@ -112,10 +112,10 @@ const BankBanks: FC<ComponentProps> = ({managedBank}) => {
           {editTrustModalIsOpen && !!editTrustBank && (
             <EditTrustModal
               close={toggleEditTrustModal}
-              node={managedBank}
-              nodeIdentifier={editTrustBank.node_identifier}
+              requestingNode={managedBank}
+              targetIdentifier={editTrustBank.node_identifier}
+              targetType="banks"
               trust={editTrustBank.trust}
-              type="banks"
             />
           )}
         </>
