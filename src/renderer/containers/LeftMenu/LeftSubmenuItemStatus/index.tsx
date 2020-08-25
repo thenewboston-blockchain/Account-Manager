@@ -1,5 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom';
+import clsx from 'clsx';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 
@@ -53,9 +54,14 @@ const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({
       to={to}
     >
       {renderStatusIcon()}
-      <span className="LeftSubmenuItemStatus__label">
-        {label} {isDefault ? '(active)' : null}
-      </span>
+      <div
+        className={clsx('LeftSubmenuItemStatus__label', {
+          'LeftSubmenuItemStatus__label--with-badge': isDefault,
+        })}
+      >
+        {label}
+      </div>
+      {isDefault ? <div className="LeftSubmenuItemStatus__badge">active</div> : null}
     </NavLink>
   );
 };

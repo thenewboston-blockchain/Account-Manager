@@ -1,10 +1,12 @@
 .LeftSubmenuItemStatus {
+  $badge-width: 40px;
+  $left-padding: 36px;
+  $right-padding: 12px;
+
   align-items: center;
   color: var(--color-primary);
   display: flex;
-  line-height: 24px;
   overflow: hidden;
-  padding: 0 12px 0 10px;
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -19,7 +21,8 @@
   }
 
   &__Icon {
-    width: 16px;
+    flex-basis: $left-padding;
+    min-width: $left-padding;
 
     &--offline {
       color: var(--color-sail-gray-300);
@@ -30,8 +33,28 @@
     }
   }
 
+  &__badge {
+    align-items: center;
+    background: var(--color-secondary);
+    border-radius: 12px;
+    color: var(--color-white);
+    display: flex;
+    font-size: 11px;
+    justify-content: center;
+    margin-right: 10px;
+    line-height: 12px;
+    padding: 3px 6px;
+  }
+
   &__label {
     line-height: 24px;
-    padding-left: 10px;
+    overflow: hidden;
+    padding-right: 12px;
+    text-overflow: ellipsis;
+    width: calc(var(--left-menu-width) - #{$right-padding});
+
+    &--with-badge {
+      padding-right: 8px;
+    }
   }
 }
