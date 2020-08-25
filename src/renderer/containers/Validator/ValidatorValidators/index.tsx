@@ -126,10 +126,10 @@ const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
       {editTrustModalIsOpen && !!editTrustValidator && (
         <EditTrustModal
           close={toggleEditTrustModal}
-          node={managedValidator}
-          nodeIdentifier={editTrustValidator.node_identifier}
+          requestingNode={managedValidator}
+          targetIdentifier={editTrustValidator.node_identifier}
+          targetType="validators"
           trust={editTrustValidator.trust}
-          type="validators"
         />
       )}
     </div>

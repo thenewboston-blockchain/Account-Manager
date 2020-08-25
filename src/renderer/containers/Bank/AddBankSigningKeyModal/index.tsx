@@ -61,8 +61,8 @@ const AddBankSigningKeyModal: FC<ComponentProps> = ({close}) => {
           name: 'is-valid-private-key',
           test: (value: string) => {
             try {
-              const {accountNumberHex} = getKeyPairFromSigningKeyHex(value);
-              return accountNumberHex === nodeIdentifier;
+              const {publicKeyHex} = getKeyPairFromSigningKeyHex(value);
+              return publicKeyHex === nodeIdentifier;
             } catch (error) {
               return false;
             }

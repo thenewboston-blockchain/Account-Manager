@@ -122,10 +122,10 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
       {editTrustModalIsOpen && !!editTrustValidator && (
         <EditTrustModal
           close={toggleEditTrustModal}
-          node={managedBank}
-          nodeIdentifier={editTrustValidator.node_identifier}
+          requestingNode={managedBank}
+          targetIdentifier={editTrustValidator.node_identifier}
+          targetType="validators"
           trust={editTrustValidator.trust}
-          type="validators"
         />
       )}
     </div>

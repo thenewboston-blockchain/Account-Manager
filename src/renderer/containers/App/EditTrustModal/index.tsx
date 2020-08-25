@@ -11,13 +11,13 @@ import yup from '@renderer/utils/yup';
 
 interface ComponentProps {
   close(): void;
-  node: ManagedNode;
-  nodeIdentifier: string;
+  requestingNode: ManagedNode;
+  targetIdentifier: string;
+  targetType: 'accounts' | 'banks' | 'validators';
   trust: string;
-  type: 'accounts' | 'banks' | 'validators';
 }
 
-const EditTrustModal: FC<ComponentProps> = ({close, node, nodeIdentifier, trust, type}) => {
+const EditTrustModal: FC<ComponentProps> = ({close, requestingNode, targetIdentifier, trust, targetType}) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const initialValues = useMemo(() => ({trust}), [trust]);
@@ -33,13 +33,13 @@ const EditTrustModal: FC<ComponentProps> = ({close, node, nodeIdentifier, trust,
   const handleSubmit = async (values: FormValues): Promise<void> => {
     try {
       setSubmitting(true);
-      const {accountNumberHex, signingKey} = getKeyPairFromSigningKeyHex(node.signing_key);
+      const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(requestingNode.signing_key);
       const requestData = {
         message: values,
-        node_identifier: accountNumberHex,
+        node_identifier: publicKeyHex,
         signature: generateSignature(JSON.stringify(values), signingKey),
       };
-      const address = `${formatAddressFromNode(node)}/${type}/${nodeIdentifier}`;
+      const address = `${formatAddressFromNode(requestingNode)}/${targetType}/${targetIdentifier}`;
       await axios.patch(address, requestData);
       location.reload();
     } catch (error) {

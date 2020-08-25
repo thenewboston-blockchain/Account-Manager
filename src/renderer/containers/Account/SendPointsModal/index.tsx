@@ -48,12 +48,12 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
 
   const createBlock = async (recipientAccountNumber: string, senderAccountNumber: string, txs: Tx[]): Promise<void> => {
     const {signing_key: signingKeyHex} = managedAccounts[senderAccountNumber];
-    const {accountNumberHex, signingKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
+    const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
     const balanceLock = await fetchAccountBalanceLock(senderAccountNumber);
 
     const {ip_address: ipAddress, port, protocol} = activeBank;
     const address = formatAddress(ipAddress, port, protocol);
-    const block = generateBlock(accountNumberHex, balanceLock, signingKey, txs);
+    const block = generateBlock(balanceLock, publicKeyHex, signingKey, txs);
     await axios.post(`${address}/blocks`, block, {
       headers: {
         'Content-Type': 'application/json',

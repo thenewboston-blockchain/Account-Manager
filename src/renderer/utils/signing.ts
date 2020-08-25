@@ -4,8 +4,8 @@ import orderBy from 'lodash/orderBy';
 import {Tx} from '@renderer/types';
 
 export const generateBlock = (
-  accountNumberHex: string,
   balanceLock: string,
+  publicKeyHex: string,
   signingKey: Uint8Array,
   transactions: Tx[],
 ) => {
@@ -15,7 +15,7 @@ export const generateBlock = (
   };
   const strMessage: string = JSON.stringify(message);
   const block = {
-    account_number: accountNumberHex,
+    account_number: publicKeyHex,
     message,
     signature: generateSignature(strMessage, signingKey),
   };
@@ -31,14 +31,14 @@ export const generateSignature = (message: string, signingKey: Uint8Array) => {
 };
 
 export const getKeyPairDetails = (keyPair: SignKeyPair) => {
-  const {publicKey: accountNumber, secretKey: signingKey} = keyPair;
-  const accountNumberHex = Buffer.from(accountNumber).toString('hex');
+  const {publicKey, secretKey: signingKey} = keyPair;
+  const publicKeyHex = Buffer.from(publicKey).toString('hex');
   const signingKeyHex = Buffer.from(signingKey).toString('hex');
   return {
-    accountNumber,
-    accountNumberHex,
+    publicKey,
+    publicKeyHex,
     signingKey,
-    signingKeyHex: signingKeyHex.replace(accountNumberHex, ''),
+    signingKeyHex: signingKeyHex.replace(publicKeyHex, ''),
   };
 };
 
