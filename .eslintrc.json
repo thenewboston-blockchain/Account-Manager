@@ -41,6 +41,7 @@
     "jsx-a11y/control-has-associated-label": "off",
     "jsx-a11y/no-static-element-interactions": "off",
     "no-param-reassign": "off",
+    "no-restricted-globals": "off",
     "prettier/prettier": [
       "error",
       {

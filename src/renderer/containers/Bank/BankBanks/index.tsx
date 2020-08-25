@@ -1,13 +1,17 @@
-import React, {FC, useMemo} from 'react';
+import React, {FC, useCallback, useMemo, useState} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
 import {Loader} from '@renderer/components/FormElements';
+import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
+import EditTrustModal from '@renderer/containers/App/EditTrustModal';
 import {BANK_BANKS} from '@renderer/constants';
-import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
-import {Node} from '@renderer/types';
+import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {ManagedNode, Node} from '@renderer/types';
+
+import './BankBanks.scss';
 
 enum TableKeys {
   nodeIdentifier,
@@ -20,11 +24,27 @@ enum TableKeys {
   version,
 }
 
-const BankBanks: FC = () => {
+interface ComponentProps {
+  managedBank: ManagedNode;
+}
+
+const BankBanks: FC<ComponentProps> = ({managedBank}) => {
   const address = useAddress();
   const {count, currentPage, loading, results: bankBanks, setPage, totalPages} = usePaginatedNetworkDataFetcher<Node>(
     BANK_BANKS,
     address,
+  );
+  const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
+  const [editTrustBank, setEditTrustBank] = useState<Node | null>(null);
+
+  const hasSigningKey = useMemo(() => !!managedBank.signing_key.length, [managedBank]);
+
+  const handleEditTrustButton = useCallback(
+    (bank: Node) => (): void => {
+      setEditTrustBank(bank);
+      toggleEditTrustModal();
+    },
+    [setEditTrustBank, toggleEditTrustModal],
   );
 
   const bankBanksTableData = useMemo<PageTableData[]>(
@@ -37,10 +57,21 @@ const BankBanks: FC = () => {
         [TableKeys.nodeIdentifier]: bank.node_identifier,
         [TableKeys.port]: bank.port,
         [TableKeys.protocol]: bank.protocol,
-        [TableKeys.trust]: bank.trust,
+        [TableKeys.trust]: (
+          <div className="BankBanks__trust-cell">
+            {bank.trust}{' '}
+            <Icon
+              className="BankBanks__edit-trust-icon"
+              disabled={!hasSigningKey}
+              icon={IconType.pencil}
+              onClick={handleEditTrustButton(bank)}
+              size={15}
+            />
+          </div>
+        ),
         [TableKeys.version]: bank.version,
       })) || [],
-    [bankBanks],
+    [bankBanks, handleEditTrustButton, hasSigningKey],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -78,6 +109,15 @@ const BankBanks: FC = () => {
         <>
           <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
           <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
+          {editTrustModalIsOpen && !!editTrustBank && (
+            <EditTrustModal
+              close={toggleEditTrustModal}
+              requestingNode={managedBank}
+              targetIdentifier={editTrustBank.node_identifier}
+              targetType="banks"
+              trust={editTrustBank.trust}
+            />
+          )}
         </>
       )}
     </div>

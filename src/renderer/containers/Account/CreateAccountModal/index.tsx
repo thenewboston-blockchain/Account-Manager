@@ -62,8 +62,8 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
 
     if (type === 'add') {
       try {
-        const {accountNumberHex, signingKeyHex} = getKeyPairFromSigningKeyHex(signingKey);
-        accountNumberStr = accountNumberHex;
+        const {publicKeyHex, signingKeyHex} = getKeyPairFromSigningKeyHex(signingKey);
+        accountNumberStr = publicKeyHex;
         signingKeyStr = signingKeyHex;
         const {balance} = await fetchAccountBalance(accountNumberStr);
         balanceStr = balance;
@@ -74,8 +74,8 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
     }
 
     if (type === 'create') {
-      const {accountNumberHex, signingKeyHex} = generateAccount();
-      accountNumberStr = accountNumberHex;
+      const {publicKeyHex, signingKeyHex} = generateAccount();
+      accountNumberStr = publicKeyHex;
       signingKeyStr = signingKeyHex;
     }
 
