@@ -54,7 +54,7 @@ const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({badge, baseUrl, 
   return (
     <NavLink
       activeClassName="LeftSubmenuItemStatus--active"
-      className="LeftSubmenuItemStatus LeftSubmenuItemStatus--tabbable"
+      className="LeftSubmenuItemStatus"
       isActive={getIsActive}
       key={key}
       to={to}

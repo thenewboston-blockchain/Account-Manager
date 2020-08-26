@@ -34,7 +34,7 @@ const Button: FC<BaseButtonProps> = ({
 
   return (
     <button
-      className={clsx('Button Button--tabbable', `Button--${variant}`, `Button--${color}`, className, {
+      className={clsx('Button', `Button--${variant}`, `Button--${color}`, className, {
         'Button--disabled': disabled,
         ...getCustomClassNames(className, `--${variant}`, true),
         ...getCustomClassNames(className, `--${color}`, true),

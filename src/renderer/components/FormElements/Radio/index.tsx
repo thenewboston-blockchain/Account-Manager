@@ -47,7 +47,6 @@ const Radio: FC<BaseRadioProps> = ({
         className={clsx('Radio', className, {
           'Radio--checked': checked,
           'Radio--error': error,
-          'Radio--tabbable': !unfocusable,
           ...getCustomClassNames(className, '--checked', checked),
           ...getCustomClassNames(className, '--error', error),
         })}

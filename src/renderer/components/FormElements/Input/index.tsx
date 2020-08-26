@@ -39,7 +39,7 @@ const Input: FC<BaseInputProps> = ({
 
   return (
     <input
-      className={clsx('Input Input--tabbable', className, {
+      className={clsx('Input', className, {
         'Input--error': error,
         ...getCustomClassNames(className, '--error', error),
       })}

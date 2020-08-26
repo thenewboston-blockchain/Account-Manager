@@ -37,7 +37,7 @@ const InputTextArea: FC<BaseInputProps> = ({
 
   return (
     <textarea
-      className={clsx('TextArea TextArea--tabbable', className, {
+      className={clsx('TextArea', className, {
         'TextArea--error': error,
         ...getCustomClassNames(className, '--error', error),
       })}

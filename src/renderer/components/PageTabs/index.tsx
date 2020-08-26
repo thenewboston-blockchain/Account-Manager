@@ -17,12 +17,7 @@ const PageTabs: FC<ComponentProps> = ({baseUrl, items}) => {
   return (
     <div className="PageTabs">
       {items.map(({name, page}) => (
-        <NavLink
-          activeClassName="PageTabs__tab--active"
-          className="PageTabs__tab PageTabs__tabbable"
-          key={page}
-          to={`${baseUrl}/${page}`}
-        >
+        <NavLink activeClassName="PageTabs__tab--active" className="PageTabs__tab" key={page} to={`${baseUrl}/${page}`}>
           <div className="PageTabs__tab-name">{name}</div>
           <div className="PageTabs__tab-indicator" />
         </NavLink>

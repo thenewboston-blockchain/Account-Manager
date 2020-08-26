@@ -16,7 +16,7 @@ const LeftSubmenuItem: FC<LeftSubmenuItemProps> = ({baseUrl, key, label, locatio
   return (
     <NavLink
       activeClassName="LeftSubmenuItem--active"
-      className="LeftSubmenuItem LeftSubmenuItem--tabbable"
+      className="LeftSubmenuItem"
       isActive={getIsActive}
       key={key}
       to={to}

@@ -140,7 +140,6 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         className={clsx('Icon', className, {
           'Icon--button': !!onClick,
           'Icon--disabled': disabled,
-          'Icon--tabbable': !!onClick,
           ...getCustomClassNames(className, '--disabled', disabled),
         })}
         ref={ref}

@@ -64,7 +64,7 @@ const Select: FC<ComponentProps> = ({
   const getSharedSelectProps = () => {
     return {
       autoFocus: focused,
-      className: clsx('Select Select--tabbable', className, {
+      className: clsx('Select', className, {
         'Select--error': error,
         ...getCustomClassNames(className, '--error', error),
       }),
