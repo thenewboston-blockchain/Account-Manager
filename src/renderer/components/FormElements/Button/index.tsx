@@ -10,7 +10,7 @@ export interface BaseButtonProps {
   disabled?: boolean;
   onClick?(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
   type?: 'button' | 'reset' | 'submit';
-  variant?: 'contained' | 'link' | 'outlined';
+  variant?: 'contained' | 'link';
 }
 
 const Button: FC<BaseButtonProps> = ({

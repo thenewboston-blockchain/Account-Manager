@@ -2,7 +2,7 @@
   width: 384px;
 
   &__account-balance {
-    color: var(--color-neutral-500);
+    color: var(--color-sail-gray-500);
   }
 
   &__default-submit {
@@ -35,13 +35,13 @@
     width: 100%;
 
     td {
-      border-top: 1px solid var(--color-neutral-300);
+      border-top: 1px solid var(--color-sail-gray-100);
       min-width: 150px;
       padding: 6px 0;
       text-align: left;
 
       &:nth-child(1) {
-        color: var(--color-neutral-600);
+        color: var(--color-sail-gray-500);
         font-weight: 500;
       }
     }

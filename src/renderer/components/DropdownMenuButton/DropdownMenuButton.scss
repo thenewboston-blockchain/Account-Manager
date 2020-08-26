@@ -28,12 +28,12 @@ $button-height: 24px;
       cursor: pointer;
 
       &:hover {
-        background: var(--color-neutral-300);
+        background: var(--color-sail-gray-100);
       }
     }
 
     &--disabled {
-      color: var(--color-neutral-400);
+      color: var(--color-sail-gray-300);
       cursor: default;
     }
   }
