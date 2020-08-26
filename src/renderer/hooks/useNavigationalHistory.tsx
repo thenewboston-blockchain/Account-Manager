@@ -7,42 +7,36 @@ let previousKey: string;
 
 const useNavigationalHistory = () => {
   const history = useHistory();
-  const [goBackIsDisabled, setGoBackIsDisabled] = useState(true);
-  const [goForwardIsDisabled, setGoForwardIsDisabled] = useState(true);
+  const [backEnabled, setBackEnabled] = useState(false);
+  const [forwardEnabled, setForwardEnabled] = useState(false);
 
   history.listen(({key}) => {
     if (key === undefined) return;
 
     if (!locationKeys.includes(key)) {
-      // push
       locationKeys.push(key);
-      setGoBackIsDisabled(false);
-      setGoForwardIsDisabled(true);
+      setBackEnabled(true);
+      setForwardEnabled(false);
     } else if (previousKey && locationKeys.indexOf(key) < locationKeys.indexOf(previousKey)) {
-      // goForward
-      setGoForwardIsDisabled(false);
+      setForwardEnabled(true);
       if (locationKeys[0] === key) {
-        setGoBackIsDisabled(true);
+        setBackEnabled(false);
       }
     } else if (key === locationKeys[locationKeys.length - 1]) {
-      // goForward to the latest page
-      setGoForwardIsDisabled(true);
+      setForwardEnabled(false);
     }
 
     previousKey = key;
   });
 
-  const goBack = useMemo<() => void>(() => (goBackIsDisabled ? noop : history.goBack), [goBackIsDisabled, history]);
-  const goForward = useMemo<() => void>(() => (goForwardIsDisabled ? noop : history.goForward), [
-    goForwardIsDisabled,
-    history,
-  ]);
+  const back = useMemo<() => void>(() => (backEnabled ? history.goBack : noop), [backEnabled, history]);
+  const forward = useMemo<() => void>(() => (forwardEnabled ? history.goForward : noop), [forwardEnabled, history]);
 
   return {
-    goBack,
-    goBackIsDisabled,
-    goForward,
-    goForwardIsDisabled,
+    back,
+    backEnabled,
+    forward,
+    forwardEnabled,
     historyLength: history.length,
   };
 };
