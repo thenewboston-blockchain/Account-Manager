@@ -6,22 +6,21 @@ npm install
 ```
 
 Start the app:
-
 ```
 npm start
 ```
 
 To make an executable package:
-
 ```
 electron-forge make
 ```
 
+## Contributing
+
 If you are contributing to this project, please make sure your code follows these styles guides:
 
-[React (from AirBnB)](https://github.com/airbnb/javascript/tree/master/react)
-
-[CSS (from Google)](https://google.github.io/styleguide/htmlcssguide.html#CSS)
+- [React / JSX Style Guide](https://thenewboston.com/style-guide/react)
+- [CSS / SASS Style Guide](https://thenewboston.com/style-guide/css)
 
 You can check your styling by running: 
 ```
