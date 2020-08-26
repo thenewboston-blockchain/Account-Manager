@@ -30,6 +30,11 @@ export type SetError = (payload: Address & Error) => PayloadAction<Address & Err
 
 export const getStateName = (actionType: string) => actionType.split('/')[1];
 
+export const clearLocalAndStateReducer = () => (state: any, action: PayloadAction<undefined>) => {
+  localStore.set(getStateName(action.type), {});
+  return {};
+};
+
 export function setLocalAndAccountReducer<T extends AccountNumber>(sliceName: string) {
   return (state: any, {payload}: PayloadAction<T>) => {
     const {account_number: accountNumber} = payload;
@@ -41,8 +46,7 @@ export function setLocalAndAccountReducer<T extends AccountNumber>(sliceName: st
 
 export function setLocalAndStateReducer<T>() {
   return (state: any, action: PayloadAction<T>) => {
-    const name = getStateName(action.type);
-    localStore.set(name, action.payload);
+    localStore.set(getStateName(action.type), action.payload);
     return action.payload;
   };
 }

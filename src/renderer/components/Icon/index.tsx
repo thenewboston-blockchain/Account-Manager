@@ -17,6 +17,7 @@ import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
 import EarthIcon from 'mdi-react/EarthIcon';
 import LoadingIcon from 'mdi-react/LoadingIcon';
 import PencilIcon from 'mdi-react/PencilIcon';
+import PowerIcon from 'mdi-react/PowerIcon';
 import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
 import RadioboxBlankIcon from 'mdi-react/RadioboxBlankIcon';
@@ -43,6 +44,7 @@ export enum IconType {
   pencil,
   play,
   plus,
+  power,
   radioboxBlank,
   radioboxMarked,
   tnb,
@@ -95,6 +97,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
           return <PlayIcon {...iconProps} />;
         case IconType.plus:
           return <PlusIcon {...iconProps} />;
+        case IconType.power:
+          return <PowerIcon {...iconProps} />;
         case IconType.radioboxBlank:
           return <RadioboxBlankIcon {...iconProps} />;
         case IconType.radioboxMarked:
