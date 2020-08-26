@@ -4,6 +4,7 @@ import {MANAGED_VALIDATORS} from '@renderer/constants';
 import localStore from '@renderer/store/localStore';
 import {Dict, ManagedNode} from '@renderer/types';
 import {
+  clearLocalAndStateReducer,
   getStateName,
   setLocalAndAddressReducer,
   unsetActiveNodeReducer,
@@ -14,12 +15,18 @@ const managedValidators = createSlice({
   initialState: (localStore.get(getStateName(MANAGED_VALIDATORS)) || {}) as Dict<ManagedNode>,
   name: MANAGED_VALIDATORS,
   reducers: {
+    clearManagedValidators: clearLocalAndStateReducer(),
     setManagedValidator: setLocalAndAddressReducer<ManagedNode>(MANAGED_VALIDATORS),
     unsetActivePrimaryValidator: unsetActiveNodeReducer(),
     unsetManagedValidator: unsetLocalAndAddressReducer(MANAGED_VALIDATORS),
   },
 });
 
-export const {setManagedValidator, unsetActivePrimaryValidator, unsetManagedValidator} = managedValidators.actions;
+export const {
+  clearManagedValidators,
+  setManagedValidator,
+  unsetActivePrimaryValidator,
+  unsetManagedValidator,
+} = managedValidators.actions;
 
 export default managedValidators;

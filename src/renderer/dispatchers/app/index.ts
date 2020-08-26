@@ -1,9 +1,25 @@
-import {setManagedBank, setManagedValidator, unsetActiveBank, unsetActivePrimaryValidator} from '@renderer/store/app';
+import {
+  clearManagedAccounts,
+  clearManagedBanks,
+  clearManagedFriends,
+  clearManagedValidators,
+  setManagedBank,
+  setManagedValidator,
+  unsetActiveBank,
+  unsetActivePrimaryValidator,
+} from '@renderer/store/app';
 import {AddressData, AppDispatch} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 
 import {fetchBankConfig} from '../banks';
 import {fetchValidatorConfig} from '../validators';
+
+export const clearLocalState = () => (dispatch: AppDispatch) => {
+  dispatch(clearManagedAccounts());
+  dispatch(clearManagedBanks());
+  dispatch(clearManagedFriends());
+  dispatch(clearManagedValidators());
+};
 
 export const connect = (bankAddressData: AddressData) => async (dispatch: AppDispatch) => {
   const address = formatAddressFromNode(bankAddressData);

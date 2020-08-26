@@ -1,17 +1,30 @@
 import React, {FC, ReactNode} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
+import Modal from '@renderer/components/Modal';
 import ChangeActiveBankModal from '@renderer/containers/App/ChangeActiveBankModal';
+import {clearLocalState} from '@renderer/dispatchers/app';
 import {useBooleanState, useNavigationalHistory} from '@renderer/hooks';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
+import {AppDispatch} from '@renderer/types';
 
 import './TopNav.scss';
 
 const TopNav: FC = () => {
   const [changeActiveBankModalIsOpen, toggleActiveBankModal] = useBooleanState(false);
+  const [resetAppModalIsOpen, toggleResetAppModal] = useBooleanState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const history = useHistory();
   const {back, backEnabled, forward, forwardEnabled} = useNavigationalHistory();
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
+
+  const handleResetApp = () => {
+    dispatch(clearLocalState());
+    history.push('/connect');
+    toggleResetAppModal();
+  };
 
   const renderLeft = (): ReactNode => (
     <div className="TopNav__container">
@@ -28,6 +41,7 @@ const TopNav: FC = () => {
           Change Active Bank
         </span>
         <Icon className="TopNav__icon" icon={IconType.bell} />
+        <Icon className="TopNav__icon" icon={IconType.power} onClick={toggleResetAppModal} />
       </div>
     );
   };
@@ -37,6 +51,11 @@ const TopNav: FC = () => {
       {renderLeft()}
       {renderRight()}
       {changeActiveBankModalIsOpen && <ChangeActiveBankModal close={toggleActiveBankModal} />}
+      {resetAppModalIsOpen && (
+        <Modal close={toggleResetAppModal} header="Reset App (Dev Only)" onSubmit={handleResetApp} submitButton="Reset">
+          Are you sure you want to reset the app?
+        </Modal>
+      )}
     </div>
   );
 };
