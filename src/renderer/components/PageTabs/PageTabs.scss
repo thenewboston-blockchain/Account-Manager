@@ -13,7 +13,7 @@
     margin-right: 30px;
     text-decoration: none;
 
-    &:focus {
+    &:focus:not(&--active) {
       #{$self}__tab-indicator {
         background: var(--color-sail-gray-300);
         color: var(--color-sail-gray-300);

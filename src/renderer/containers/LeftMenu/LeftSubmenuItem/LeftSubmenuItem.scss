@@ -11,7 +11,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  &:focus,
+  &:focus:not(&--active),
   &:hover {
     background: var(--color-sail-gray-050);
   }
