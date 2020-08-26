@@ -6,12 +6,12 @@
   padding: 6px 12px;
 
   &__change-bank {
-    color: var(--color-secondary);
+    color: var(--color-primary);
     cursor: pointer;
     margin-right: 12px;
 
     &:hover {
-      color: var(--color-primary);
+      text-decoration: underline;
     }
   }
 
@@ -30,16 +30,6 @@
 
     &:last-of-type {
       margin-right: 0;
-    }
-  }
-
-  &__primary-validator {
-    color: var(--color-primary);
-    margin-right: 32px;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
     }
   }
 }

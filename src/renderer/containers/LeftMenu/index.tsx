@@ -76,8 +76,8 @@ const LeftMenu: FC = () => {
         }))
         .map(({baseUrl, isDefault, key, label, to}) => (
           <LeftSubmenuItemStatus
+            badge={isDefault ? 'active-bank' : null}
             baseUrl={baseUrl}
-            isDefault={isDefault}
             key={key}
             label={label}
             status="online"
@@ -131,8 +131,8 @@ const LeftMenu: FC = () => {
         }))
         .map(({baseUrl, isDefault, key, label, to}) => (
           <LeftSubmenuItemStatus
+            badge={isDefault ? 'primary-validator' : null}
             baseUrl={baseUrl}
-            isDefault={isDefault}
             key={key}
             label={label}
             status="online"
