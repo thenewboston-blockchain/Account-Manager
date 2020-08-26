@@ -50,6 +50,7 @@ const SendPointsModalFields: FC = () => {
       {pointsError ? <span className="SendPointsModal__error">{pointsError}</span> : null}
       <FormSelectDetailed
         className="SendPointsModal__select"
+        focused
         required
         label="From"
         options={managedAccountOptions}

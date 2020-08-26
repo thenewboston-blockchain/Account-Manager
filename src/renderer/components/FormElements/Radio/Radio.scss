@@ -2,10 +2,6 @@
   color: var(--color-sail-gray-700);
   display: inline-flex;
 
-  &:hover {
-    background: transparent;
-  }
-
   &--error {
     color: var(--color-danger);
   }

@@ -80,7 +80,7 @@ const AddBankSigningKeyModal: FC<ComponentProps> = ({close}) => {
       submitButton="Save"
       validationSchema={validationSchema}
     >
-      <FormTextArea label="Signing Key" name="signingKey" required />
+      <FormTextArea focused label="Signing Key" name="signingKey" required />
     </Modal>
   );
 };

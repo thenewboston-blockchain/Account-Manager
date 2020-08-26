@@ -80,6 +80,7 @@ const Connect: FC = () => {
       >
         <FormSelect
           className="Connect__field"
+          focused
           label="Protocol"
           name="protocol"
           options={protocolOptions}

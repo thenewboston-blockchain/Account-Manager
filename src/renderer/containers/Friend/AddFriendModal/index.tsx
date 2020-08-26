@@ -76,7 +76,7 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
       submitButton="Create"
       validationSchema={validationSchema}
     >
-      <FormInput label="Nickname" name="nickname" />
+      <FormInput focused label="Nickname" name="nickname" />
       <FormTextArea label="Account Number" name="accountNumber" required />
     </Modal>
   );

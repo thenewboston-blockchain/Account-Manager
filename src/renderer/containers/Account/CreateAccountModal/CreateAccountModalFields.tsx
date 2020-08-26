@@ -9,6 +9,7 @@ const CreateAccountModalFields: FC = () => {
   return (
     <>
       <FormRadioGroup
+        focused
         options={[
           {label: 'Create New Account', value: 'create'},
           {label: 'Add Existing Account', value: 'add'},

@@ -77,7 +77,7 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
       submitting={submitting}
       validationSchema={validationSchema}
     >
-      <FormSelect label="Protocol" name="protocol" options={protocolOptions} required searchable={false} />
+      <FormSelect focused label="Protocol" name="protocol" options={protocolOptions} required searchable={false} />
       <FormInput label="IP Address" name="ipAddress" required />
       <FormInput label="Port" name="port" type="number" />
       <FormInput label="Nickname" name="nickname" />

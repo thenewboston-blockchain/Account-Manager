@@ -17,6 +17,7 @@ export interface BaseSelectProps {
   creatable?: boolean;
   disabled?: boolean;
   error?: boolean;
+  focused?: boolean;
   name?: string;
   onBlur?: FocusEventHandler;
   onChange?(value: ValueType<InputOption>, actionMeta?: ActionMeta<InputOption>): void;
@@ -38,6 +39,7 @@ const Select: FC<ComponentProps> = ({
   disabled = false,
   error = false,
   filterOption,
+  focused = false,
   formatOptionLabel,
   searchable = true,
   name,
@@ -61,7 +63,8 @@ const Select: FC<ComponentProps> = ({
 
   const getSharedSelectProps = () => {
     return {
-      className: clsx('Select', className, {
+      autoFocus: focused,
+      className: clsx('Select Select--tabbable', className, {
         'Select--error': error,
         ...getCustomClassNames(className, '--error', error),
       }),

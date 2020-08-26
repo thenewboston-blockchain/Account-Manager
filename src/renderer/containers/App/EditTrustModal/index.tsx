@@ -59,7 +59,7 @@ const EditTrustModal: FC<ComponentProps> = ({close, requestingNode, targetIdenti
       submitting={submitting}
       validationSchema={validationSchema}
     >
-      <FormInput label="Trust" name="trust" required type="number" />
+      <FormInput focused label="Trust" name="trust" required type="number" />
     </Modal>
   );
 };

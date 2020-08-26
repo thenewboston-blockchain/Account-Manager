@@ -37,7 +37,7 @@ const EditFriendModal: FC<ComponentProps> = ({friend, close}) => {
       onSubmit={handleSubmit}
       submitButton="Save"
     >
-      <FormInput label="Nickname" name="nickname" />
+      <FormInput focused label="Nickname" name="nickname" />
     </Modal>
   );
 };
