@@ -1,6 +1,5 @@
 import React, {FC, ReactNode} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useHistory} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
@@ -16,14 +15,11 @@ const TopNav: FC = () => {
   const [changeActiveBankModalIsOpen, toggleActiveBankModal] = useBooleanState(false);
   const [resetAppModalIsOpen, toggleResetAppModal] = useBooleanState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const history = useHistory();
   const {back, backEnabled, forward, forwardEnabled} = useNavigationalHistory();
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
 
   const handleResetApp = () => {
     dispatch(clearLocalState());
-    history.push('/connect');
-    toggleResetAppModal();
   };
 
   const renderLeft = (): ReactNode => (
