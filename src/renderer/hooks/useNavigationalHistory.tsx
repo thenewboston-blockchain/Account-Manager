@@ -3,7 +3,6 @@ import {useHistory} from 'react-router-dom';
 import noop from 'lodash/noop';
 
 const locationKeys: string[] = [];
-let previousKey: string;
 
 const useNavigationalHistory = () => {
   const history = useHistory();
@@ -13,22 +12,33 @@ const useNavigationalHistory = () => {
   history.listen(({key}) => {
     if (key === undefined) return;
 
+    // User visiting a new location
     if (!locationKeys.includes(key)) {
       locationKeys.push(key);
+
       if (locationKeys.length > 1) {
         setBackEnabled(true);
       }
+
       setForwardEnabled(false);
-    } else if (previousKey && locationKeys.indexOf(key) < locationKeys.indexOf(previousKey)) {
-      setForwardEnabled(true);
-      if (locationKeys[0] === key) {
-        setBackEnabled(false);
-      }
-    } else if (key === locationKeys[locationKeys.length - 1]) {
-      setForwardEnabled(false);
+      return;
     }
 
-    previousKey = key;
+    // User re-visiting first location in history
+    if (key === locationKeys[0]) {
+      setBackEnabled(false);
+      return;
+    }
+
+    // User came back to last location after navigating through earlier history
+    if (key === locationKeys[locationKeys.length - 1]) {
+      setForwardEnabled(false);
+      return;
+    }
+
+    // User is navigating through history (but not at first or last)
+    setBackEnabled(true);
+    setForwardEnabled(true);
   });
 
   const back = useMemo<() => void>(() => (backEnabled ? history.goBack : noop), [backEnabled, history]);
