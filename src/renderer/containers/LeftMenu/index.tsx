@@ -149,7 +149,7 @@ const LeftMenu: FC = () => {
         <div className="points__amount">{pointBalance.toLocaleString()}</div>
       </div>
       <LeftSubmenu
-        leftIcon={<Icon className="LeftMenu__icon" icon={IconType.earth} />}
+        leftIcon={<Icon className="LeftMenu__globe-icon" icon={IconType.earth} size={16} />}
         menuItems={networkMenuItems}
         title="Network"
       />

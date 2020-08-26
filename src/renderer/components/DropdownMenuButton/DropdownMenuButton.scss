@@ -2,12 +2,9 @@ $button-height: 24px;
 
 .DropdownMenuButton {
   $self: &;
-  cursor: pointer;
-  transition: color 0.1s;
 
-  &:hover,
   &--active {
-    color: var(--color-primary);
+    background: var(--color-sail-gray-100);
   }
 
   &__menu {

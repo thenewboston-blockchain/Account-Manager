@@ -1,7 +1,26 @@
 .Icon {
   align-items: center;
+  border-radius: 50%;
   display: flex;
   justify-content: center;
+  transition: background-color 0.3s, color 0.3s;
+
+  &--button {
+    cursor: pointer;
+
+    &:hover {
+      background: var(--color-sail-gray-100);
+    }
+  }
+
+  &--disabled {
+    color: var(--color-sail-gray-300);
+    cursor: default;
+
+    &:hover {
+      background: transparent;
+    }
+  }
 }
 
 .TnbIcon {

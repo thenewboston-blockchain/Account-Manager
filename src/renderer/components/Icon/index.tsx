@@ -56,66 +56,69 @@ interface ComponentProps {
   size?: number | string;
 }
 
-const Icon = forwardRef<HTMLDivElement, ComponentProps>(({className, disabled = false, icon, onClick, size}, ref) => {
-  const iconProps = {
-    onClick: disabled ? noop : onClick,
-    size,
-  };
+const Icon = forwardRef<HTMLDivElement, ComponentProps>(
+  ({className, disabled = false, icon, onClick, size = 24}, ref) => {
+    const iconProps = {
+      onClick: disabled ? noop : onClick,
+      size,
+    };
 
-  const renderIcon = (): ReactNode => {
-    switch (icon) {
-      case IconType.alert:
-        return <AlertIcon {...iconProps} />;
-      case IconType.arrowLeft:
-        return <ArrowLeftIcon {...iconProps} />;
-      case IconType.arrowRight:
-        return <ArrowRightIcon {...iconProps} />;
-      case IconType.bell:
-        return <BellIcon {...iconProps} />;
-      case IconType.checkboxBlankCircle:
-        return <CheckboxBlankCircleIcon {...iconProps} />;
-      case IconType.checkboxBlankCircleOutline:
-        return <CheckboxBlankCircleOutlineIcon {...iconProps} />;
-      case IconType.chevronLeft:
-        return <ChevronLeftIcon {...iconProps} />;
-      case IconType.chevronRight:
-        return <ChevronRightIcon {...iconProps} />;
-      case IconType.close:
-        return <CloseIcon {...iconProps} />;
-      case IconType.dotsVertical:
-        return <DotsVerticalIcon {...iconProps} />;
-      case IconType.earth:
-        return <EarthIcon {...iconProps} />;
-      case IconType.loading:
-        return <LoadingIcon {...iconProps} />;
-      case IconType.pencil:
-        return <PencilIcon {...iconProps} />;
-      case IconType.play:
-        return <PlayIcon {...iconProps} />;
-      case IconType.plus:
-        return <PlusIcon {...iconProps} />;
-      case IconType.radioboxBlank:
-        return <RadioboxBlankIcon {...iconProps} />;
-      case IconType.radioboxMarked:
-        return <RadioboxMarkedIcon {...iconProps} />;
-      case IconType.tnb:
-        return <TnbIcon {...iconProps} />;
-      default:
-        return null;
-    }
-  };
+    const renderIcon = (): ReactNode => {
+      switch (icon) {
+        case IconType.alert:
+          return <AlertIcon {...iconProps} />;
+        case IconType.arrowLeft:
+          return <ArrowLeftIcon {...iconProps} />;
+        case IconType.arrowRight:
+          return <ArrowRightIcon {...iconProps} />;
+        case IconType.bell:
+          return <BellIcon {...iconProps} />;
+        case IconType.checkboxBlankCircle:
+          return <CheckboxBlankCircleIcon {...iconProps} />;
+        case IconType.checkboxBlankCircleOutline:
+          return <CheckboxBlankCircleOutlineIcon {...iconProps} />;
+        case IconType.chevronLeft:
+          return <ChevronLeftIcon {...iconProps} />;
+        case IconType.chevronRight:
+          return <ChevronRightIcon {...iconProps} />;
+        case IconType.close:
+          return <CloseIcon {...iconProps} />;
+        case IconType.dotsVertical:
+          return <DotsVerticalIcon {...iconProps} />;
+        case IconType.earth:
+          return <EarthIcon {...iconProps} />;
+        case IconType.loading:
+          return <LoadingIcon {...iconProps} />;
+        case IconType.pencil:
+          return <PencilIcon {...iconProps} />;
+        case IconType.play:
+          return <PlayIcon {...iconProps} />;
+        case IconType.plus:
+          return <PlusIcon {...iconProps} />;
+        case IconType.radioboxBlank:
+          return <RadioboxBlankIcon {...iconProps} />;
+        case IconType.radioboxMarked:
+          return <RadioboxMarkedIcon {...iconProps} />;
+        case IconType.tnb:
+          return <TnbIcon {...iconProps} />;
+        default:
+          return null;
+      }
+    };
 
-  return (
-    <div
-      className={clsx('Icon', className, {
-        'Icon--disabled': disabled,
-        ...getCustomClassNames(className, '--disabled', disabled),
-      })}
-      ref={ref}
-    >
-      {renderIcon()}
-    </div>
-  );
-});
+    return (
+      <div
+        className={clsx('Icon', className, {
+          'Icon--button': !!onClick,
+          'Icon--disabled': disabled,
+          ...getCustomClassNames(className, '--disabled', disabled),
+        })}
+        ref={ref}
+      >
+        {renderIcon()}
+      </div>
+    );
+  },
+);
 
 export default Icon;
