@@ -88,7 +88,9 @@ const Account: FC = () => {
     <div className="Account">
       <PageLayout content={renderTabContent()} top={renderTop()} />
       {deleteModalIsOpen && <DeleteAccountModal accountNumber={accountNumber} close={toggleDeleteModal} />}
-      {sendPointsModalIsOpen && <SendPointsModal close={toggleSendPointsModal} />}
+      {sendPointsModalIsOpen && (
+        <SendPointsModal close={toggleSendPointsModal} initialRecipient="" initialSender={accountNumber} />
+      )}
     </div>
   );
 };

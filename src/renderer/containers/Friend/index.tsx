@@ -94,7 +94,9 @@ const Friend: FC = () => {
       <PageLayout content={renderTabContent()} top={renderTop()} />
       {deleteModalIsOpen && <DeleteFriendModal close={toggleDeleteModal} friend={managedFriend} />}
       {editModalIsOpen && <EditFriendModal close={toggleEditModal} friend={managedFriend} />}
-      {sendPointsModalIsOpen && <SendPointsModal close={toggleSendPointsModal} />}
+      {sendPointsModalIsOpen && (
+        <SendPointsModal close={toggleSendPointsModal} initialRecipient={accountNumber} initialSender="" />
+      )}
     </div>
   );
 };

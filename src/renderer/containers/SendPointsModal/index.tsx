@@ -1,6 +1,7 @@
 import React, {FC, ReactNode, useCallback, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
+import {toast} from 'react-toastify';
 
 import {FormButton} from '@renderer/components/FormComponents';
 import Icon, {IconType} from '@renderer/components/Icon';
@@ -15,19 +16,13 @@ import yup from '@renderer/utils/yup';
 import SendPointsModalFields, {INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendPointsModalFields';
 import './SendPointsModal.scss';
 
-const initialValues = {
-  points: '',
-  recipientAccountNumber: '',
-  senderAccountNumber: '',
-};
-
-type FormValues = typeof initialValues;
-
 interface ComponentProps {
   close(): void;
+  initialRecipient: string;
+  initialSender: string;
 }
 
-const SendPointsModal: FC<ComponentProps> = ({close}) => {
+const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSender}) => {
   const activeBank = useSelector(getActiveBankConfig)!;
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
   const managedAccounts = useSelector(getManagedAccounts);
@@ -45,6 +40,17 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
     },
     [activeBank.default_transaction_fee, activePrimaryValidator.default_transaction_fee, managedAccounts],
   );
+
+  const initialValues = useMemo(
+    () => ({
+      points: '',
+      recipientAccountNumber: initialRecipient,
+      senderAccountNumber: initialSender,
+    }),
+    [initialRecipient, initialSender],
+  );
+
+  type FormValues = typeof initialValues;
 
   const createBlock = async (recipientAccountNumber: string, senderAccountNumber: string, txs: Tx[]): Promise<void> => {
     const {signing_key: signingKeyHex} = managedAccounts[senderAccountNumber];
@@ -90,7 +96,7 @@ const SendPointsModal: FC<ComponentProps> = ({close}) => {
       await createBlock(recipientAccountNumber, senderAccountNumber, txs);
       close();
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
