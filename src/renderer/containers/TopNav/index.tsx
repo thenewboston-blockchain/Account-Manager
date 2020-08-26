@@ -11,17 +11,12 @@ import './TopNav.scss';
 
 const TopNav: FC = () => {
   const [changeActiveBankModalIsOpen, toggleActiveBankModal] = useBooleanState(false);
-  const {back, backEnabled, forward, forwardEnabled, historyLength} = useNavigationalHistory();
+  const {back, backEnabled, forward, forwardEnabled} = useNavigationalHistory();
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
 
   const renderLeft = (): ReactNode => (
     <div className="TopNav__container">
-      <Icon
-        className="TopNav__icon"
-        disabled={!backEnabled || historyLength === 1}
-        icon={IconType.arrowLeft}
-        onClick={back}
-      />
+      <Icon className="TopNav__icon" disabled={!backEnabled} icon={IconType.arrowLeft} onClick={back} />
       <Icon className="TopNav__icon" disabled={!forwardEnabled} icon={IconType.arrowRight} onClick={forward} />
     </div>
   );

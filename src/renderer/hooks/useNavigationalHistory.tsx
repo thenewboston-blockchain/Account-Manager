@@ -15,7 +15,9 @@ const useNavigationalHistory = () => {
 
     if (!locationKeys.includes(key)) {
       locationKeys.push(key);
-      setBackEnabled(true);
+      if (locationKeys.length > 1) {
+        setBackEnabled(true);
+      }
       setForwardEnabled(false);
     } else if (previousKey && locationKeys.indexOf(key) < locationKeys.indexOf(previousKey)) {
       setForwardEnabled(true);
@@ -37,7 +39,6 @@ const useNavigationalHistory = () => {
     backEnabled,
     forward,
     forwardEnabled,
-    historyLength: history.length,
   };
 };
 
