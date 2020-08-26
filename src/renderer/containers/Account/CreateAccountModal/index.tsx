@@ -83,7 +83,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
     dispatch(
       setManagedAccount({
         account_number: accountNumberStr,
-        balance: balanceStr,
+        balance: balanceStr || '0',
         nickname,
         signing_key: signingKeyStr,
       }),
