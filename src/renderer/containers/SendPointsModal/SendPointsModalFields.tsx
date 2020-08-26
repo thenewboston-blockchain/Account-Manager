@@ -32,7 +32,7 @@ const SendPointsModalFields: FC = () => {
     const {senderAccountNumber} = values;
     if (!senderAccountNumber) return '-';
     const {balance} = managedAccounts[senderAccountNumber];
-    return balance || '0.00';
+    return balance.toLocaleString() || '0.00';
   };
 
   const renderTotal = (): number | string => {
