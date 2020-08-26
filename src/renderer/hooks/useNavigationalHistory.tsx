@@ -3,46 +3,52 @@ import {useHistory} from 'react-router-dom';
 import noop from 'lodash/noop';
 
 const locationKeys: string[] = [];
-let previousKey: string;
 
 const useNavigationalHistory = () => {
   const history = useHistory();
-  const [goBackIsDisabled, setGoBackIsDisabled] = useState(true);
-  const [goForwardIsDisabled, setGoForwardIsDisabled] = useState(true);
+  const [backEnabled, setBackEnabled] = useState(false);
+  const [forwardEnabled, setForwardEnabled] = useState(false);
 
   history.listen(({key}) => {
     if (key === undefined) return;
 
+    // User visiting a new location
     if (!locationKeys.includes(key)) {
-      // push
       locationKeys.push(key);
-      setGoBackIsDisabled(false);
-      setGoForwardIsDisabled(true);
-    } else if (previousKey && locationKeys.indexOf(key) < locationKeys.indexOf(previousKey)) {
-      // goBack
-      setGoForwardIsDisabled(false);
-      if (locationKeys[0] === key) {
-        setGoBackIsDisabled(true);
+
+      if (locationKeys.length > 1) {
+        setBackEnabled(true);
       }
-    } else if (key === locationKeys[locationKeys.length - 1]) {
-      // goForward to the latest page
-      setGoForwardIsDisabled(true);
+
+      setForwardEnabled(false);
+      return;
     }
 
-    previousKey = key;
+    // User re-visiting first location in history
+    if (key === locationKeys[0]) {
+      setBackEnabled(false);
+      return;
+    }
+
+    // User came back to last location after navigating through earlier history
+    if (key === locationKeys[locationKeys.length - 1]) {
+      setForwardEnabled(false);
+      return;
+    }
+
+    // User is navigating through history (but not at first or last)
+    setBackEnabled(true);
+    setForwardEnabled(true);
   });
 
-  const goBack = useMemo<() => void>(() => (goBackIsDisabled ? noop : history.goBack), [goBackIsDisabled, history]);
-  const goForward = useMemo<() => void>(() => (goForwardIsDisabled ? noop : history.goForward), [
-    goForwardIsDisabled,
-    history,
-  ]);
+  const back = useMemo<() => void>(() => (backEnabled ? history.goBack : noop), [backEnabled, history]);
+  const forward = useMemo<() => void>(() => (forwardEnabled ? history.goForward : noop), [forwardEnabled, history]);
 
   return {
-    goBack,
-    goBackIsDisabled,
-    goForward,
-    goForwardIsDisabled,
+    back,
+    backEnabled,
+    forward,
+    forwardEnabled,
   };
 };
 
