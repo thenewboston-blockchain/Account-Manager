@@ -1,5 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 import {useSelector} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import ChangeActiveBankModal from '@renderer/containers/App/ChangeActiveBankModal';
@@ -10,12 +11,17 @@ import './TopNav.scss';
 
 const TopNav: FC = () => {
   const [changeActiveBankModalIsOpen, toggleActiveBankModal] = useBooleanState(false);
-  const {goBack, goBackIsDisabled, goForward, goForwardIsDisabled} = useNavigationalHistory();
+  const {goBack, goBackIsDisabled, goForward, goForwardIsDisabled, historyLength} = useNavigationalHistory();
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
 
   const renderLeft = (): ReactNode => (
     <div className="TopNav__container">
-      <Icon className="TopNav__icon" disabled={goBackIsDisabled} icon={IconType.arrowLeft} onClick={goBack} />
+      <Icon
+        className="TopNav__icon"
+        disabled={goBackIsDisabled || historyLength === 1}
+        icon={IconType.arrowLeft}
+        onClick={goBack}
+      />
       <Icon className="TopNav__icon" disabled={goForwardIsDisabled} icon={IconType.arrowRight} onClick={goForward} />
     </div>
   );
@@ -41,4 +47,4 @@ const TopNav: FC = () => {
   );
 };
 
-export default TopNav;
+export default withRouter(TopNav);

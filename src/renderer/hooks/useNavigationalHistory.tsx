@@ -43,6 +43,7 @@ const useNavigationalHistory = () => {
     goBackIsDisabled,
     goForward,
     goForwardIsDisabled,
+    historyLength: history.length,
   };
 };
 
