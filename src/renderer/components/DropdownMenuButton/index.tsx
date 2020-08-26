@@ -1,4 +1,4 @@
-import React, {CSSProperties, FC, KeyboardEvent, ReactNode, useRef, useState} from 'react';
+import React, {CSSProperties, FC, KeyboardEvent, ReactNode, useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
@@ -31,8 +31,15 @@ const dropdownRoot = document.getElementById('dropdown-root')!;
 
 const DropdownMenuButton: FC<ComponentProps> = ({className, direction = DropdownMenuDirection.right, options}) => {
   const iconRef = useRef<HTMLDivElement>(null);
+  const optionsRef = useRef<HTMLDivElement[]>([]);
   const [open, toggleOpen, , closeMenu] = useBooleanState(false);
   const [dropdownPositionStyle, setDropdownPositionStyle] = useState<CSSProperties | undefined>(undefined);
+
+  useEffect(() => {
+    if (open) {
+      optionsRef.current[0]?.focus();
+    }
+  }, [open, optionsRef]);
 
   const handleClick = (e: any): void => {
     if (!dropdownRoot.contains(e.target) && !iconRef.current?.contains(e.target)) {
@@ -61,9 +68,17 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, direction = Dropdown
     closeMenu();
   };
 
-  const handleOptionKeyPress = (optionOnClick: GenericVoidFunction) => async (
+  const handleOptionKeyDown = (optionOnClick: GenericVoidFunction, index: number) => async (
     e: KeyboardEvent<HTMLDivElement>,
   ): Promise<void> => {
+    if (index !== options.length - 1 && e.key === 'ArrowDown') {
+      optionsRef.current[index + 1]?.focus();
+      return;
+    }
+    if (index !== 0 && e.key === 'ArrowUp') {
+      optionsRef.current[index - 1]?.focus();
+      return;
+    }
     if (e.key === 'Enter') {
       await optionOnClick();
       closeMenu();
@@ -87,7 +102,7 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, direction = Dropdown
             className={clsx('DropdownMenuButton__menu', {...getCustomClassNames(className, '__menu', true)})}
             style={dropdownPositionStyle}
           >
-            {options.map(({disabled = false, label, onClick: optionOnClick}, i) => {
+            {options.map(({disabled = false, label, onClick: optionOnClick}, index) => {
               return (
                 <div
                   className={clsx('DropdownMenuButton__option', {
@@ -95,10 +110,15 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, direction = Dropdown
                     ...getCustomClassNames(className, '__option--disabled', disabled),
                   })}
                   key={JSON.stringify(label)}
-                  onKeyPress={disabled ? noop : handleOptionKeyPress(optionOnClick)}
+                  onKeyDown={disabled ? noop : handleOptionKeyDown(optionOnClick, index)}
                   onClick={disabled ? noop : handleOptionClick(optionOnClick)}
+                  ref={(el) => {
+                    if (el) {
+                      optionsRef.current[index] = el;
+                    }
+                  }}
                   role="button"
-                  tabIndex={i}
+                  tabIndex={0}
                 >
                   {label}
                 </div>
