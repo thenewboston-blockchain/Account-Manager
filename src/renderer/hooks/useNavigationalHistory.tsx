@@ -19,7 +19,7 @@ const useNavigationalHistory = () => {
       setGoBackIsDisabled(false);
       setGoForwardIsDisabled(true);
     } else if (previousKey && locationKeys.indexOf(key) < locationKeys.indexOf(previousKey)) {
-      // goForward
+      // goBack
       setGoForwardIsDisabled(false);
       if (locationKeys[0] === key) {
         setGoBackIsDisabled(true);
