@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import {app, BrowserWindow} from 'electron';
 import contextMenu from 'electron-context-menu';
 import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from 'electron-devtools-installer';

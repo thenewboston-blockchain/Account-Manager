@@ -53,46 +53,6 @@
     }
   }
 
-  &--outlined {
-    background: transparent;
-
-    &#{$self}--primary {
-      border-color: var(--color-blue-gray-200);
-      color: var(--color-primary);
-
-      &:hover {
-        background: var(--color-primary-outline-bg);
-      }
-
-      &#{$self}--disabled,
-      &#{$self}--disabled:hover {
-        background: var(--color-primary-disabled-fill);
-        border-color: var(--color-primary-disabled-text);
-        color: var(--color-primary-disabled-text);
-      }
-    }
-
-    &#{$self}--secondary {
-      border-color: var(--color-secondary);
-      color: var(--color-secondary);
-
-      &:hover {
-        border-color: var(--color-secondary);
-        color: var(--color-secondary);
-      }
-    }
-
-    &#{$self}--tertiary {
-      border-color: var(--color-tertiary);
-      color: var(--color-tertiary);
-
-      &:hover {
-        border-color: var(--color-tertiary);
-        color: var(--color-tertiary);
-      }
-    }
-  }
-
   &--link {
     background: transparent;
     border-color: transparent;

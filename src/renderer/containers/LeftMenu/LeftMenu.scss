@@ -2,10 +2,6 @@
   display: flex;
   flex-direction: column;
 
-  &__globe-icon {
-    color: var(--color-neutral-700);
-  }
-
   .points {
     margin: 12px 12px 12px 36px;
 
@@ -18,7 +14,7 @@
     }
 
     &__title {
-      color: var(--color-neutral-600);
+      color: var(--color-sail-gray-500);
       cursor: default;
       margin-bottom: 2px;
     }

@@ -28,7 +28,7 @@
 
 #dropdown-root {
   .Select__option {
-    border-bottom: 1px solid var(--color-neutral-300);
+    border-bottom: 1px solid var(--color-sail-gray-100);
     height: unset;
     padding: 6px 30px 6px 6px;
 
@@ -39,13 +39,13 @@
     &--is-disabled {
       .SelectDetailed__option-label,
       .SelectDetailed__option-value {
-        color: var(--color-neutral-400);
+        color: var(--color-sail-gray-300);
       }
     }
   }
 
   .SelectDetailed__option-label {
-    color: var(--color-neutral-600);
+    color: var(--color-sail-gray-500);
     font-size: var(--font-size-small);
   }
 

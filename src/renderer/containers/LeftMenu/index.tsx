@@ -76,8 +76,8 @@ const LeftMenu: FC = () => {
         }))
         .map(({baseUrl, isDefault, key, label, to}) => (
           <LeftSubmenuItemStatus
+            badge={isDefault ? 'active-bank' : null}
             baseUrl={baseUrl}
-            isDefault={isDefault}
             key={key}
             label={label}
             status="online"
@@ -131,8 +131,8 @@ const LeftMenu: FC = () => {
         }))
         .map(({baseUrl, isDefault, key, label, to}) => (
           <LeftSubmenuItemStatus
+            badge={isDefault ? 'primary-validator' : null}
             baseUrl={baseUrl}
-            isDefault={isDefault}
             key={key}
             label={label}
             status="online"
@@ -148,11 +148,7 @@ const LeftMenu: FC = () => {
         <div className="points__title">Points</div>
         <div className="points__amount">{pointBalance.toLocaleString()}</div>
       </div>
-      <LeftSubmenu
-        leftIcon={<Icon className="LeftMenu__globe-icon" icon={IconType.earth} size={16} />}
-        menuItems={networkMenuItems}
-        title="Network"
-      />
+      <LeftSubmenu leftIcon={<Icon icon={IconType.earth} size={16} />} menuItems={networkMenuItems} title="Network" />
       <LeftSubmenu menuItems={accountItems} rightOnClick={toggleCreateAccountModal} title="Accounts" />
       <LeftSubmenu menuItems={friendMenuItems} rightOnClick={toggleAddFriendModal} title="Friends" />
       <LeftSubmenu menuItems={bankMenuItems} rightOnClick={toggleAddBankModal} title="Managed Banks" />

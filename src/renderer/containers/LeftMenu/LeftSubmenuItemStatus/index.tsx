@@ -7,24 +7,30 @@ import Icon, {IconType} from '@renderer/components/Icon';
 import './LeftSubmenuItemStatus.scss';
 
 export interface LeftSubmenuItemStatusProps extends RouteComponentProps {
+  badge: 'active-bank' | 'primary-validator' | null;
   baseUrl: string;
-  isDefault?: boolean;
   key: string;
   label: ReactNode;
   status: 'offline' | 'online';
   to: string;
 }
 
-const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({
-  baseUrl,
-  isDefault = false,
-  key,
-  label,
-  location,
-  status,
-  to,
-}) => {
+const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({badge, baseUrl, key, label, location, status, to}) => {
   const getIsActive = (): boolean => location.pathname.includes(baseUrl);
+
+  const renderBadge = (): ReactNode => {
+    if (!badge) return null;
+    return (
+      <div
+        className={clsx('LeftSubmenuItemStatus__badge', {
+          'LeftSubmenuItemStatus__badge--active-bank': badge === 'active-bank',
+          'LeftSubmenuItemStatus__badge--primary-validator': badge === 'primary-validator',
+        })}
+      >
+        {badge === 'active-bank' ? 'active' : 'primary'}
+      </div>
+    );
+  };
 
   const renderStatusIcon = (): ReactNode => {
     return {
@@ -56,12 +62,12 @@ const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({
       {renderStatusIcon()}
       <div
         className={clsx('LeftSubmenuItemStatus__label', {
-          'LeftSubmenuItemStatus__label--with-badge': isDefault,
+          'LeftSubmenuItemStatus__label--with-badge': badge,
         })}
       >
         {label}
       </div>
-      {isDefault ? <div className="LeftSubmenuItemStatus__badge">active</div> : null}
+      {renderBadge()}
     </NavLink>
   );
 };
