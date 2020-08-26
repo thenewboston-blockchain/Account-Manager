@@ -1,5 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 import {useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import ChangeActiveBankModal from '@renderer/containers/App/ChangeActiveBankModal';
@@ -9,13 +10,14 @@ import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
 import './TopNav.scss';
 
 const TopNav: FC = () => {
-  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
+  const history = useHistory();
   const [changeActiveBankModalIsOpen, toggleActiveBankModal] = useBooleanState(false);
+  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
 
   const renderLeft = (): ReactNode => (
     <div className="TopNav__container">
-      <Icon className="TopNav__icon" icon={IconType.arrowLeft} />
-      <Icon className="TopNav__icon" icon={IconType.arrowRight} />
+      <Icon className="TopNav__icon" icon={IconType.arrowLeft} onClick={history.goBack} />
+      <Icon className="TopNav__icon" icon={IconType.arrowRight} onClick={history.goForward} />
     </div>
   );
 
