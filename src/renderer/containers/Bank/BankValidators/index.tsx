@@ -66,13 +66,14 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
         [TableKeys.trust]: (
           <div className="BankValidators__trust-cell">
             {validator.trust}{' '}
-            <Icon
-              className="BankValidators__edit-trust-icon"
-              disabled={!hasSigningKey}
-              icon={IconType.pencil}
-              onClick={handleEditTrustButton(validator)}
-              size={15}
-            />
+            {hasSigningKey ? (
+              <Icon
+                className="BankValidators__edit-trust-icon"
+                icon={IconType.pencil}
+                onClick={handleEditTrustButton(validator)}
+                size={15}
+              />
+            ) : null}
           </div>
         ),
         [TableKeys.version]: validator.version,

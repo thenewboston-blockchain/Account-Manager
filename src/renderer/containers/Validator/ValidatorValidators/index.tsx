@@ -70,13 +70,14 @@ const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
         [TableKeys.trust]: (
           <div className="ValidatorValidators__trust-cell">
             {validator.trust}{' '}
-            <Icon
-              className="ValidatorValidators__edit-trust-icon"
-              disabled={!hasSigningKey}
-              icon={IconType.pencil}
-              onClick={handleEditTrustButton(validator)}
-              size={15}
-            />
+            {hasSigningKey ? (
+              <Icon
+                className="ValidatorValidators__edit-trust-icon"
+                icon={IconType.pencil}
+                onClick={handleEditTrustButton(validator)}
+                size={15}
+              />
+            ) : null}
           </div>
         ),
         [TableKeys.version]: validator.version,
