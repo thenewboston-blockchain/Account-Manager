@@ -38,7 +38,7 @@ const EditValidatorNicknameModal: FC<ComponentProps> = ({close, validator}) => {
       onSubmit={handleSubmit}
       submitButton="Save"
     >
-      <FormInput label="Validator Nickname" name="nickname" />
+      <FormInput focused label="Validator Nickname" name="nickname" />
     </Modal>
   );
 };

@@ -38,7 +38,7 @@ const EditBankNicknameModal: FC<ComponentProps> = ({bank, close}) => {
       onSubmit={handleSubmit}
       submitButton="Save"
     >
-      <FormInput label="Bank Nickname" name="nickname" />
+      <FormInput focused label="Bank Nickname" name="nickname" />
     </Modal>
   );
 };

@@ -122,13 +122,17 @@
 
   .Select__option {
     $self: &;
+    color: var(--color-primary);
     height: 24px;
     padding: 4px 24px 4px 6px;
     position: relative;
 
     &--is-focused {
       background: var(--color-sail-gray-050);
-      color: var(--color-primary);
+    }
+
+    &--is-selected {
+      background: var(--color-sail-gray-100);
     }
 
     &--is-disabled {
@@ -136,6 +140,10 @@
 
       #{$self}--is-focused {
         color: var(--color-white);
+      }
+
+      #{$self}--is-selected {
+        color: var(--color-primary);
       }
     }
   }

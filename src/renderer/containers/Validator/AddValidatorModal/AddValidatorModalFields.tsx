@@ -12,7 +12,7 @@ const AddValidatorModalFields: FC = () => {
   return (
     <>
       {addressError ? <span className="AddValidatorModal__form-error">{errors.form}</span> : null}
-      <FormSelect label="Protocol" name="protocol" options={protocolOptions} required searchable={false} />
+      <FormSelect focused label="Protocol" name="protocol" options={protocolOptions} required searchable={false} />
       <FormInput label="IP Address" name="ipAddress" required />
       <FormInput label="Port" name="port" type="number" />
       <FormInput label="Nickname" name="nickname" />

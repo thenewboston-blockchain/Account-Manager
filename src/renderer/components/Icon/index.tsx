@@ -1,8 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
-import React, {forwardRef, ReactNode} from 'react';
+import React, {forwardRef, ReactNode, useCallback, useMemo} from 'react';
 import clsx from 'clsx';
-import noop from 'lodash/noop';
 
 import AlertIcon from 'mdi-react/AlertIcon';
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon';
@@ -54,18 +53,44 @@ interface ComponentProps {
   className?: string;
   disabled?: boolean;
   icon: IconType;
-  onClick?(e: React.MouseEvent<SVGSVGElement, MouseEvent>): void;
+  onClick?(e?: React.MouseEvent<HTMLDivElement, MouseEvent>): void;
+  onKeyDown?(e?: React.KeyboardEvent<HTMLDivElement>): void;
   size?: number | string;
+  unfocusable?: boolean;
 }
 
 const Icon = forwardRef<HTMLDivElement, ComponentProps>(
-  ({className, disabled = false, icon, onClick, size = 24}, ref) => {
-    const iconProps = {
-      onClick: disabled ? noop : onClick,
-      size,
+  ({className, disabled = false, icon, onClick, onKeyDown, size = 24, unfocusable = false}, ref) => {
+    const iconProps = useMemo(
+      () => ({
+        size,
+      }),
+      [size],
+    );
+
+    const getTabIndex = () => {
+      if (unfocusable) return undefined;
+
+      return onClick ? 0 : undefined;
     };
 
-    const renderIcon = (): ReactNode => {
+    const handleClick = (e?: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+      if (disabled || !onClick) return;
+
+      onClick(e);
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+      if (!onClick) return;
+
+      if (e.key === 'Enter' && !disabled) {
+        handleClick();
+      }
+
+      onKeyDown?.(e);
+    };
+
+    const renderIcon = useCallback((): ReactNode => {
       switch (icon) {
         case IconType.alert:
           return <AlertIcon {...iconProps} />;
@@ -108,7 +133,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         default:
           return null;
       }
-    };
+    }, [icon, iconProps]);
 
     return (
       <div
@@ -118,6 +143,9 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
           ...getCustomClassNames(className, '--disabled', disabled),
         })}
         ref={ref}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
+        tabIndex={getTabIndex()}
       >
         {renderIcon()}
       </div>

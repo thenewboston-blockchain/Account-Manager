@@ -19,10 +19,13 @@ $button-height: 24px;
     align-items: center;
     display: flex;
     height: 30px;
-    outline: none;
     padding: 12px;
     transition: background 0.1s;
     white-space: nowrap;
+
+    &:focus {
+      background: var(--color-sail-gray-100);
+    }
 
     &:not(&--disabled) {
       cursor: pointer;
