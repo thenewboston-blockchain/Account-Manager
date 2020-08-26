@@ -1,6 +1,5 @@
 import React, {FC, ReactNode} from 'react';
 import {useSelector} from 'react-redux';
-import {withRouter} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import ChangeActiveBankModal from '@renderer/containers/App/ChangeActiveBankModal';
@@ -42,4 +41,4 @@ const TopNav: FC = () => {
   );
 };
 
-export default withRouter(TopNav);
+export default TopNav;
