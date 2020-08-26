@@ -3,19 +3,20 @@ import {useSelector} from 'react-redux';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import ChangeActiveBankModal from '@renderer/containers/App/ChangeActiveBankModal';
-import {useBooleanState} from '@renderer/hooks';
+import {useBooleanState, useNavigationalHistory} from '@renderer/hooks';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
 
 import './TopNav.scss';
 
 const TopNav: FC = () => {
-  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
   const [changeActiveBankModalIsOpen, toggleActiveBankModal] = useBooleanState(false);
+  const {back, backEnabled, forward, forwardEnabled} = useNavigationalHistory();
+  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
 
   const renderLeft = (): ReactNode => (
     <div className="TopNav__container">
-      <Icon className="TopNav__icon" icon={IconType.arrowLeft} />
-      <Icon className="TopNav__icon" icon={IconType.arrowRight} />
+      <Icon className="TopNav__icon" disabled={!backEnabled} icon={IconType.arrowLeft} onClick={back} />
+      <Icon className="TopNav__icon" disabled={!forwardEnabled} icon={IconType.arrowRight} onClick={forward} />
     </div>
   );
 

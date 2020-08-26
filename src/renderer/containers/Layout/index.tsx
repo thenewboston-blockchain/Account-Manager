@@ -29,6 +29,9 @@ export const Layout: FC = () => {
           <Route path="/" exact>
             {activeBankConfig ? <Redirect to={`/bank/${formatPathFromNode(activeBankConfig)}/overview`} /> : null}
           </Route>
+          <Route path="/main_window" exact>
+            {activeBankConfig ? <Redirect to={`/bank/${formatPathFromNode(activeBankConfig)}/overview`} /> : null}
+          </Route>
           <Route path="/account/:accountNumber">
             <Account />
           </Route>

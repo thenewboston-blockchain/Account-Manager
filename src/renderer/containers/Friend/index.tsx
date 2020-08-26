@@ -1,7 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 import {useSelector} from 'react-redux';
 import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
-import noop from 'lodash/noop';
 
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
