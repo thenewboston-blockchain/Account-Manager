@@ -8,14 +8,13 @@ import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import SendPointsModal from '@renderer/containers/SendPointsModal';
 import {useBooleanState} from '@renderer/hooks';
 import {getManagedAccounts} from '@renderer/selectors';
 
 import AccountOverview from './AccountOverview';
 import AccountTransactions from './AccountTransactions';
 import DeleteAccountModal from './DeleteAccountModal';
-import SendPointsModal from './SendPointsModal';
-
 import './Account.scss';
 
 const Account: FC = () => {
@@ -89,7 +88,9 @@ const Account: FC = () => {
     <div className="Account">
       <PageLayout content={renderTabContent()} top={renderTop()} />
       {deleteModalIsOpen && <DeleteAccountModal accountNumber={accountNumber} close={toggleDeleteModal} />}
-      {sendPointsModalIsOpen && <SendPointsModal close={toggleSendPointsModal} />}
+      {sendPointsModalIsOpen && (
+        <SendPointsModal close={toggleSendPointsModal} initialRecipient="" initialSender={accountNumber} />
+      )}
     </div>
   );
 };

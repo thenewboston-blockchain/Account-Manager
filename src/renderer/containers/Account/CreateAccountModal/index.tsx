@@ -2,6 +2,7 @@ import React, {FC, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
+import {toast} from 'react-toastify';
 
 import Modal from '@renderer/components/Modal';
 import {SIGNING_KEY_LENGTH_ERROR, SIGNING_KEY_REQUIRED_ERROR} from '@renderer/constants/form-validation';
@@ -68,7 +69,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
         const {balance} = await fetchAccountBalance(accountNumberStr);
         balanceStr = balance;
       } catch (error) {
-        console.error(error);
+        toast.error(error);
         return;
       }
     }
