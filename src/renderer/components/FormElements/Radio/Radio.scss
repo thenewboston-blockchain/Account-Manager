@@ -3,6 +3,10 @@
   display: inline-flex;
   transition: color 0.1s;
 
+  &:hover {
+    background: transparent;
+  }
+
   &--error {
     color: var(--color-danger);
   }
