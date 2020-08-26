@@ -8,6 +8,7 @@ import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import SendPointsModal from '@renderer/containers/SendPointsModal';
 import {useBooleanState} from '@renderer/hooks';
 import {getManagedFriends} from '@renderer/selectors';
 
@@ -22,6 +23,7 @@ const Friend: FC = () => {
   const {path, url} = useRouteMatch();
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
+  const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
   const managedFriends = useSelector(getManagedFriends);
   const managedFriend = managedFriends[accountNumber];
 
@@ -39,7 +41,7 @@ const Friend: FC = () => {
     ];
   };
 
-  const renderRightPageHeaderButtons = (): ReactNode => <Button onClick={noop}>Send Points</Button>;
+  const renderRightPageHeaderButtons = (): ReactNode => <Button onClick={toggleSendPointsModal}>Send Points</Button>;
 
   const renderTabContent = (): ReactNode => {
     const tabContentRoutes = [
@@ -92,6 +94,7 @@ const Friend: FC = () => {
       <PageLayout content={renderTabContent()} top={renderTop()} />
       {deleteModalIsOpen && <DeleteFriendModal close={toggleDeleteModal} friend={managedFriend} />}
       {editModalIsOpen && <EditFriendModal close={toggleEditModal} friend={managedFriend} />}
+      {sendPointsModalIsOpen && <SendPointsModal close={toggleSendPointsModal} />}
     </div>
   );
 };
