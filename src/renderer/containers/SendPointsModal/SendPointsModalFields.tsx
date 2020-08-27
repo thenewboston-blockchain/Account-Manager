@@ -4,7 +4,12 @@ import {useSelector} from 'react-redux';
 import {FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import {useFormContext} from '@renderer/hooks';
-import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
+import {
+  getActiveBankConfig,
+  getActivePrimaryValidatorConfig,
+  getManagedAccounts,
+  getManagedFriends,
+} from '@renderer/selectors';
 import {InputOption} from '@renderer/types';
 
 export const INVALID_AMOUNT_ERROR = 'Invalid amount';
@@ -13,13 +18,14 @@ export const MATCH_ERROR = 'Sender and recipient can not match';
 const SendPointsModalFields: FC = () => {
   const {errors, touched, values} = useFormContext();
   const activeBankConfig = useSelector(getActiveBankConfig)!;
-  const managedAccounts = useSelector(getManagedAccounts);
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
+  const managedAccounts = useSelector(getManagedAccounts);
+  const managedFriends = useSelector(getManagedFriends);
 
   const pointsError = touched.points ? errors.points : '';
   const matchError = errors.recipientAccountNumber === MATCH_ERROR;
 
-  const managedAccountOptions = useMemo<InputOption[]>(
+  const getFromOptions = useMemo<InputOption[]>(
     () =>
       Object.values(managedAccounts).map(({account_number, nickname}) => ({
         label: nickname,
@@ -27,6 +33,14 @@ const SendPointsModalFields: FC = () => {
       })),
     [managedAccounts],
   );
+
+  const getToOptions = useMemo<InputOption[]>(() => {
+    const accounts = [...Object.values(managedAccounts), ...Object.values(managedFriends)];
+    return accounts.map(({account_number, nickname}) => ({
+      label: nickname,
+      value: account_number,
+    }));
+  }, [managedAccounts, managedFriends]);
 
   const renderSenderAccountBalance = (): string => {
     const {senderAccountNumber} = values;
@@ -53,7 +67,7 @@ const SendPointsModalFields: FC = () => {
         focused
         required
         label="From"
-        options={managedAccountOptions}
+        options={getFromOptions}
         name="senderAccountNumber"
       />
       <FormSelectDetailed
@@ -62,7 +76,7 @@ const SendPointsModalFields: FC = () => {
         hideErrorText={matchError}
         required
         label="To"
-        options={managedAccountOptions}
+        options={getToOptions}
         name="recipientAccountNumber"
       />
       <table className="SendPointsModal__table">
