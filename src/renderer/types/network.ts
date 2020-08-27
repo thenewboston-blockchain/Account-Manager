@@ -10,6 +10,10 @@ export interface AddressData {
   protocol: ProtocolType;
 }
 
+export interface Balance {
+  balance: string;
+}
+
 export interface BankAccount extends AccountNumber, CreatedModified, Id {
   account_number: string;
   trust: string;
@@ -116,13 +120,11 @@ export interface Tx {
   recipient: string;
 }
 
-interface UpdatedBalance extends AccountNumber {
-  balance: string;
+interface UpdatedBalance extends AccountNumber, Balance {
   balance_lock?: string;
 }
 
-export interface ValidatorAccount extends AccountNumber, Id {
-  balance: string;
+export interface ValidatorAccount extends AccountNumber, Balance, Id {
   balance_lock: string;
 }
 
