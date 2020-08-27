@@ -6,7 +6,7 @@ import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import EditTrustModal from '@renderer/containers/App/EditTrustModal';
+import EditTrustModal from '@renderer/containers/EditTrustModal';
 import {BANK_BANKS} from '@renderer/constants';
 import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {ManagedNode, Node} from '@renderer/types';
