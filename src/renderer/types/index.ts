@@ -1,10 +1,11 @@
-import {AppNodeAddressData, ManagedAccount, ManagedAccountBalance, ManagedFriend, ManagedNode} from './app';
+import {AppNodeAddressData, ManagedAccount, ManagedFriend, ManagedNode} from './app';
 import {NodeType, ProtocolType} from './constants';
 import {BaseFormComponentProps, BaseFormInlineComponentProps, GenericFormValues, InputOption} from './forms';
 import {GenericFunction, GenericVoidFunction} from './generic';
 import {
   AccountNumber,
   AddressData,
+  Balance,
   BankAccount,
   BankConfig,
   BankConfirmationBlock,
@@ -39,6 +40,7 @@ export {
   AddressData,
   AppDispatch,
   AppNodeAddressData,
+  Balance,
   BankAccount,
   BankConfig,
   BankConfirmationBlock,
@@ -56,7 +58,6 @@ export {
   GenericVoidFunction,
   InvalidBlock,
   ManagedAccount,
-  ManagedAccountBalance,
   ManagedFriend,
   ManagedNode,
   Node,
