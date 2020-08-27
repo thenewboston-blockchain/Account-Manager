@@ -5,6 +5,7 @@ import {GenericFunction, GenericVoidFunction} from './generic';
 import {
   AccountNumber,
   AddressData,
+  Balance,
   BankAccount,
   BankConfig,
   BankConfirmationBlock,
@@ -39,6 +40,7 @@ export {
   AddressData,
   AppDispatch,
   AppNodeAddressData,
+  Balance,
   BankAccount,
   BankConfig,
   BankConfirmationBlock,

@@ -1,11 +1,10 @@
-import {AccountNumber, AddressData, NodeIdentifier} from './network';
+import {AccountNumber, AddressData, Balance, NodeIdentifier} from './network';
 
 export interface AppNodeAddressData extends AddressData, NodeIdentifier {
   nickname: string;
 }
 
-export interface ManagedAccount extends AccountNumber {
-  balance: string;
+export interface ManagedAccount extends AccountNumber, Balance {
   nickname: string;
   signing_key: string;
 }
