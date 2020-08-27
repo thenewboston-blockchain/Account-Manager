@@ -27,7 +27,7 @@ const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({badge, baseUrl, 
           'LeftSubmenuItemStatus__badge--primary-validator': badge === 'primary-validator',
         })}
       >
-        {badge === 'active-bank' ? 'active' : 'primary'}
+        {badge === 'active-bank' ? 'Active' : 'Primary'}
       </div>
     );
   };

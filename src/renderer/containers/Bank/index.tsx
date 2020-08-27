@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Route, Switch, useRouteMatch} from 'react-router-dom';
 import sortBy from 'lodash/sortBy';
 
+import Badge from '@renderer/components/Badge';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
@@ -97,6 +98,11 @@ const Bank: FC = () => {
     );
   };
 
+  const renderAuthenticatedBadge = (): ReactNode => {
+    if (!managedBank?.signing_key) return null;
+    return <Badge color="secondary" text="Authenticated" />;
+  };
+
   const renderRightPageHeaderButtons = (): ReactNode => {
     if (isActiveBank || isManagedBank) return null;
     return <Button onClick={handleAddManagedBank}>Add to Managed Banks</Button>;
@@ -165,9 +171,9 @@ const Bank: FC = () => {
     <>
       <PageHeader
         dropdownMenuOptions={getDropdownMenuOptions()}
+        leftContent={renderAuthenticatedBadge()}
         rightContent={renderRightPageHeaderButtons()}
         title={renderTitle()}
-        trustScore={98.34}
       />
       <PageTabs
         baseUrl={url}

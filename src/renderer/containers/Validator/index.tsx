@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Route, Switch, useRouteMatch} from 'react-router-dom';
 import sortBy from 'lodash/sortBy';
 
+import Badge from '@renderer/components/Badge';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {Button} from '@renderer/components/FormElements';
 import PageHeader from '@renderer/components/PageHeader';
@@ -85,6 +86,11 @@ const Validator: FC = () => {
     );
   };
 
+  const renderAuthenticatedBadge = (): ReactNode => {
+    if (!managedValidator?.signing_key) return null;
+    return <Badge color="secondary" text="Authenticated" />;
+  };
+
   const renderRightPageHeaderButtons = (): ReactNode => {
     if (isActivePrimaryValidator || isManagedValidator) return null;
     return <Button onClick={handleAddManagedValidator}>Add to Managed Validators</Button>;
@@ -133,9 +139,9 @@ const Validator: FC = () => {
     <>
       <PageHeader
         dropdownMenuOptions={getDropdownMenuOptions()}
+        leftContent={renderAuthenticatedBadge()}
         rightContent={renderRightPageHeaderButtons()}
         title={renderTitle()}
-        trustScore={94.21}
       />
       <PageTabs
         baseUrl={url}

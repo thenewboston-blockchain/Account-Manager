@@ -20,8 +20,8 @@
       border-color: var(--color-primary);
 
       &:hover {
-        background: var(--color-primary-dark);
-        border-color: var(--color-primary-dark);
+        background: var(--color-primary-hover);
+        border-color: var(--color-primary-hover);
       }
 
       &#{$self}--disabled,
