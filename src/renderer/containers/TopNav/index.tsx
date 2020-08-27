@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
-import ChangeActiveBankModal from '@renderer/containers/App/ChangeActiveBankModal';
+import ChangeActiveBankModal from '@renderer/containers/ChangeActiveBankModal';
 import {clearLocalState} from '@renderer/dispatchers/app';
 import {useBooleanState, useNavigationalHistory} from '@renderer/hooks';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
