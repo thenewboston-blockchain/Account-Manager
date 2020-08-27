@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
 
-import './Badge.scss';
 import {getCustomClassNames} from '@renderer/utils/components';
+import './Badge.scss';
 
 interface ComponentProps {
   className?: string;
