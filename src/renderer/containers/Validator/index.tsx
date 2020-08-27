@@ -87,7 +87,7 @@ const Validator: FC = () => {
   };
 
   const renderAuthenticatedBadge = (): ReactNode => {
-    if (!managedValidator.signing_key) return null;
+    if (!managedValidator?.signing_key) return null;
     return <Badge color="secondary" text="Authenticated" />;
   };
 

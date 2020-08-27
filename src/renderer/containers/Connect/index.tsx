@@ -15,7 +15,7 @@ import './Connect.scss';
 
 const initialValues = {
   ipAddress: '167.99.173.247',
-  nickname: 'My Cool Bank',
+  nickname: '',
   port: '',
   protocol: 'http' as ProtocolType,
 };
