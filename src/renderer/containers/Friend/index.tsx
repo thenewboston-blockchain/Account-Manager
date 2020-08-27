@@ -12,7 +12,7 @@ import {useBooleanState} from '@renderer/hooks';
 import {getManagedFriends} from '@renderer/selectors';
 
 import DeleteFriendModal from './DeleteFriendModal';
-import EditFriendModal from './EditFriendModal';
+import EditFriendNicknameModal from './EditFriendNicknameModal';
 import FriendOverview from './FriendOverview';
 import FriendTransactions from './FriendTransactions';
 import './Friend.scss';
@@ -92,7 +92,7 @@ const Friend: FC = () => {
     <div className="friend">
       <PageLayout content={renderTabContent()} top={renderTop()} />
       {deleteModalIsOpen && <DeleteFriendModal close={toggleDeleteModal} friend={managedFriend} />}
-      {editModalIsOpen && <EditFriendModal close={toggleEditModal} friend={managedFriend} />}
+      {editModalIsOpen && <EditFriendNicknameModal close={toggleEditModal} friend={managedFriend} />}
       {sendPointsModalIsOpen && (
         <SendPointsModal close={toggleSendPointsModal} initialRecipient={accountNumber} initialSender="" />
       )}

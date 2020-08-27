@@ -10,7 +10,7 @@ interface ComponentProps {
   close(): void;
 }
 
-const EditFriendModal: FC<ComponentProps> = ({friend, close}) => {
+const EditFriendNicknameModal: FC<ComponentProps> = ({friend, close}) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const initialValues = {
@@ -32,14 +32,14 @@ const EditFriendModal: FC<ComponentProps> = ({friend, close}) => {
     <Modal
       cancelButton="Cancel"
       close={close}
-      header="Edit Friend"
+      header="Edit Friend Nickname"
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitButton="Save"
     >
-      <FormInput focused label="Nickname" name="nickname" />
+      <FormInput focused label="Friend Nickname" name="nickname" />
     </Modal>
   );
 };
 
-export default EditFriendModal;
+export default EditFriendNicknameModal;
