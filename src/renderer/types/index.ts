@@ -1,4 +1,4 @@
-import {AppNodeAddressData, ManagedAccount, ManagedFriend, ManagedNode} from './app';
+import {AppNodeAddressData, ManagedAccount, ManagedAccountBalance, ManagedFriend, ManagedNode} from './app';
 import {NodeType, ProtocolType} from './constants';
 import {BaseFormComponentProps, BaseFormInlineComponentProps, GenericFormValues, InputOption} from './forms';
 import {GenericFunction, GenericVoidFunction} from './generic';
@@ -56,6 +56,7 @@ export {
   GenericVoidFunction,
   InvalidBlock,
   ManagedAccount,
+  ManagedAccountBalance,
   ManagedFriend,
   ManagedNode,
   Node,

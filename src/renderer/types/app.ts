@@ -10,6 +10,10 @@ export interface ManagedAccount extends AccountNumber {
   signing_key: string;
 }
 
+export interface ManagedAccountBalance extends AccountNumber {
+  balance: string;
+}
+
 export interface ManagedFriend extends AccountNumber {
   nickname: string;
 }
