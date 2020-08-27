@@ -6,14 +6,14 @@ import {AppDispatch, ManagedFriend} from '@renderer/types';
 
 interface ComponentProps {
   close(): void;
-  friend: ManagedFriend;
+  managedFriend: ManagedFriend;
 }
 
-const DeleteFriendModal: FC<ComponentProps> = ({close, friend}) => {
+const DeleteFriendModal: FC<ComponentProps> = ({close, managedFriend}) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = async (): Promise<void> => {
-    dispatch(unsetManagedFriend(friend));
+    dispatch(unsetManagedFriend(managedFriend));
     close();
   };
 
