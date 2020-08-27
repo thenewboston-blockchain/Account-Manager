@@ -1,7 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 import {useSelector} from 'react-redux';
 import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
-import noop from 'lodash/noop';
 
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
@@ -15,20 +14,22 @@ import {getManagedAccounts} from '@renderer/selectors';
 import AccountOverview from './AccountOverview';
 import AccountTransactions from './AccountTransactions';
 import DeleteAccountModal from './DeleteAccountModal';
+import EditAccountNicknameModal from './EditAccountNicknameModal';
 import './Account.scss';
 
 const Account: FC = () => {
   const {accountNumber} = useParams();
   const {path, url} = useRouteMatch();
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
+  const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
   const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
   const managedAccounts = useSelector(getManagedAccounts);
   const managedAccount = managedAccounts[accountNumber];
 
   const dropdownMenuOptions: DropdownMenuOption[] = [
     {
-      label: 'Edit',
-      onClick: noop,
+      label: 'Edit Nickname',
+      onClick: toggleEditModal,
     },
     {
       label: 'Delete Account',
@@ -87,7 +88,8 @@ const Account: FC = () => {
   return (
     <div className="Account">
       <PageLayout content={renderTabContent()} top={renderTop()} />
-      {deleteModalIsOpen && <DeleteAccountModal accountNumber={accountNumber} close={toggleDeleteModal} />}
+      {deleteModalIsOpen && <DeleteAccountModal close={toggleDeleteModal} managedAccount={managedAccount} />}
+      {editModalIsOpen && <EditAccountNicknameModal close={toggleEditModal} managedAccount={managedAccount} />}
       {sendPointsModalIsOpen && (
         <SendPointsModal close={toggleSendPointsModal} initialRecipient="" initialSender={accountNumber} />
       )}

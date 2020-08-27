@@ -1,26 +1,23 @@
 import React, {FC} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
-import {getManagedAccounts} from '@renderer/selectors';
 import {unsetManagedAccount} from '@renderer/store/app';
-import {AppDispatch} from '@renderer/types';
+import {AppDispatch, ManagedAccount} from '@renderer/types';
 
 import './DeleteAccountModal.scss';
 
 interface ComponentProps {
-  accountNumber: string;
   close(): void;
+  managedAccount: ManagedAccount;
 }
 
-const DeleteAccountModal: FC<ComponentProps> = ({accountNumber, close}) => {
+const DeleteAccountModal: FC<ComponentProps> = ({close, managedAccount}) => {
   const dispatch = useDispatch<AppDispatch>();
-  const managedAccounts = useSelector(getManagedAccounts);
 
   const handleSubmit = async (): Promise<void> => {
-    const account = managedAccounts[accountNumber];
-    dispatch(unsetManagedAccount(account));
+    dispatch(unsetManagedAccount(managedAccount));
     close();
   };
 

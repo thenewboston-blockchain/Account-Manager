@@ -6,22 +6,22 @@ import {setManagedFriend} from '@renderer/store/app';
 import {AppDispatch, ManagedFriend} from '@renderer/types';
 
 interface ComponentProps {
-  friend: ManagedFriend;
   close(): void;
+  managedFriend: ManagedFriend;
 }
 
-const EditFriendNicknameModal: FC<ComponentProps> = ({friend, close}) => {
+const EditFriendNicknameModal: FC<ComponentProps> = ({close, managedFriend}) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const initialValues = {
-    nickname: friend.nickname,
+    nickname: managedFriend.nickname,
   };
   type FormValues = typeof initialValues;
 
   const handleSubmit = ({nickname}: FormValues): void => {
     dispatch(
       setManagedFriend({
-        account_number: friend.account_number,
+        account_number: managedFriend.account_number,
         nickname,
       }),
     );

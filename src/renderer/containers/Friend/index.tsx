@@ -30,7 +30,7 @@ const Friend: FC = () => {
     if (!managedFriend) return [];
     return [
       {
-        label: 'Edit',
+        label: 'Edit Nickname',
         onClick: toggleEditModal,
       },
       {
@@ -91,8 +91,8 @@ const Friend: FC = () => {
   return (
     <div className="friend">
       <PageLayout content={renderTabContent()} top={renderTop()} />
-      {deleteModalIsOpen && <DeleteFriendModal close={toggleDeleteModal} friend={managedFriend} />}
-      {editModalIsOpen && <EditFriendNicknameModal close={toggleEditModal} friend={managedFriend} />}
+      {deleteModalIsOpen && <DeleteFriendModal close={toggleDeleteModal} managedFriend={managedFriend} />}
+      {editModalIsOpen && <EditFriendNicknameModal close={toggleEditModal} managedFriend={managedFriend} />}
       {sendPointsModalIsOpen && (
         <SendPointsModal close={toggleSendPointsModal} initialRecipient={accountNumber} initialSender="" />
       )}

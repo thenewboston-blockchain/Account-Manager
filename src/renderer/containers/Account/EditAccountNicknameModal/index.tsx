@@ -6,22 +6,22 @@ import {setManagedAccount} from '@renderer/store/app';
 import {AppDispatch, ManagedAccount} from '@renderer/types';
 
 interface ComponentProps {
-  account: ManagedAccount;
   close(): void;
+  managedAccount: ManagedAccount;
 }
 
-const EditAccountNicknameModal: FC<ComponentProps> = ({account, close}) => {
+const EditAccountNicknameModal: FC<ComponentProps> = ({close, managedAccount}) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const initialValues = {
-    nickname: account.nickname,
+    nickname: managedAccount.nickname,
   };
   type FormValues = typeof initialValues;
 
   const handleSubmit = ({nickname}: FormValues): void => {
     dispatch(
       setManagedAccount({
-        ...account,
+        ...managedAccount,
         nickname,
       }),
     );
