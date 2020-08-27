@@ -1,0 +1,18 @@
+.Badge {
+  border-radius: 12px;
+  color: var(--color-white);
+  font-size: 12px;
+  padding: 4px 8px;
+
+  &--primary {
+    background: var(--color-primary);
+  }
+
+  &--secondary {
+    background: var(--color-secondary);
+  }
+
+  &--tertiary {
+    background: var(--color-tertiary);
+  }
+}
