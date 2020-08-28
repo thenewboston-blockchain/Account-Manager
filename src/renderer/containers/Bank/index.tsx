@@ -177,6 +177,7 @@ const Bank: FC = () => {
       />
       <PageTabs
         baseUrl={url}
+        breakpoint="large"
         items={[
           {
             name: 'Overview',

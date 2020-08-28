@@ -46,11 +46,11 @@
     transition: all 0.1s;
   }
 
-  @media (max-width: 1280px) {
+  @mixin responsive-tabs {
     flex-direction: column;
     padding: 0;
 
-    &__tab {
+    #{$self}__tab {
       margin: 0;
       padding: 0 12px;
 
@@ -58,7 +58,7 @@
         margin-bottom: 8px;
       }
 
-      &:focus:not(&--active),
+      &:focus:not(#{$self}--active),
       &:hover {
         background: rgba(227, 232, 238, 0.6);
       }
@@ -69,12 +69,24 @@
       }
     }
 
-    &__tab-indicator {
+    #{$self}__tab-indicator {
       display: none;
     }
 
-    &__tab-name {
+    #{$self}__tab-name {
       padding: 4px 0;
+    }
+  }
+
+  &--large {
+    @media (max-width: 1280px) {
+      @include responsive-tabs;
+    }
+  }
+
+  &--small {
+    @media (max-width: 768px) {
+      @include responsive-tabs;
     }
   }
 }
