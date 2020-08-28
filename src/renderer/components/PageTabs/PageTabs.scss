@@ -33,16 +33,48 @@
     }
   }
 
+  &__tab-indicator {
+    background: transparent;
+    border-radius: 3px 3px 0 0;
+    height: 3px;
+    transition: all 0.1s;
+  }
+
   &__tab-name {
     font-weight: 500;
     padding-bottom: 6px;
     transition: all 0.1s;
   }
 
-  &__tab-indicator {
-    background: transparent;
-    border-radius: 3px 3px 0 0;
-    height: 3px;
-    transition: all 0.1s;
+  @media (max-width: 1280px) {
+    flex-direction: column;
+    padding: 0;
+
+    &__tab {
+      margin: 0;
+      padding: 0 12px;
+
+      &:last-of-type {
+        margin-bottom: 8px;
+      }
+
+      &:focus:not(&--active),
+      &:hover {
+        background: rgba(227, 232, 238, 0.6);
+      }
+
+      &--active,
+      &--active:hover {
+        background: var(--color-sail-gray-100);
+      }
+    }
+
+    &__tab-indicator {
+      display: none;
+    }
+
+    &__tab-name {
+      padding: 4px 0;
+    }
   }
 }
