@@ -14,9 +14,8 @@
   }
 
   &__PaginationSummary {
-    margin-bottom: 24px;
-    margin-right: 12px;
-    text-align: end;
+    margin-bottom: 12px;
+    padding: 2px 12px;
   }
 
   &__row {
@@ -48,6 +47,7 @@
 
     td {
       padding: 0 4px 6px;
+      white-space: nowrap;
     }
   }
 }

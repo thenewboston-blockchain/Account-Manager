@@ -33,16 +33,60 @@
     }
   }
 
+  &__tab-indicator {
+    background: transparent;
+    border-radius: 3px 3px 0 0;
+    height: 3px;
+    transition: all 0.1s;
+  }
+
   &__tab-name {
     font-weight: 500;
     padding-bottom: 6px;
     transition: all 0.1s;
   }
 
-  &__tab-indicator {
-    background: transparent;
-    border-radius: 3px 3px 0 0;
-    height: 3px;
-    transition: all 0.1s;
+  @mixin responsive-tabs {
+    flex-direction: column;
+    padding: 0;
+
+    #{$self}__tab {
+      margin: 0;
+      padding: 0 12px;
+
+      &:last-of-type {
+        margin-bottom: 8px;
+      }
+
+      &:focus:not(#{$self}--active),
+      &:hover {
+        background: rgba(227, 232, 238, 0.6);
+      }
+
+      &--active,
+      &--active:hover {
+        background: var(--color-sail-gray-100);
+      }
+    }
+
+    #{$self}__tab-indicator {
+      display: none;
+    }
+
+    #{$self}__tab-name {
+      padding: 4px 0;
+    }
+  }
+
+  &--large {
+    @media (max-width: 1280px) {
+      @include responsive-tabs;
+    }
+  }
+
+  &--small {
+    @media (max-width: 768px) {
+      @include responsive-tabs;
+    }
   }
 }
