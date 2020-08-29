@@ -53,6 +53,11 @@
 
   &__mark-as-read {
     color: var(--color-secondary);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &__NavLink {
