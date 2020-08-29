@@ -23,6 +23,18 @@ const TopNavNotificationsMenu: FC<ComponentProps> = ({iconRef, menuOpen, setMenu
 
   useEventListener('mousedown', handleClick, document);
 
+  const renderHeader = (): ReactNode => {
+    return (
+      <div className="TopNavNotificationsMenu__header">
+        <div className="TopNavNotificationsMenu__header-left">
+          <h2>Notifications</h2>
+          <span className="TopNavNotificationsMenu__count">5 unread</span>
+        </div>
+        <span className="TopNavNotificationsMenu__mark-as-read">Mark all as read</span>
+      </div>
+    );
+  };
+
   const renderNodeAlert = (): ReactNode => {
     return (
       <div className="TopNavNotificationsMenu__notification">
@@ -75,7 +87,7 @@ const TopNavNotificationsMenu: FC<ComponentProps> = ({iconRef, menuOpen, setMenu
 
   return (
     <div className="TopNavNotificationsMenu" ref={menuRef}>
-      <h2>Notifications</h2>
+      {renderHeader()}
       {renderNotification()}
       {renderNotification()}
       {renderNodeAlert()}
