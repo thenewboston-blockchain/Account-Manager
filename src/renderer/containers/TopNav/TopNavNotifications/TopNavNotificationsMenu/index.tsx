@@ -1,6 +1,7 @@
 import React, {FC, ReactNode, useRef} from 'react';
 import {NavLink} from 'react-router-dom';
 
+import Icon, {IconType} from '@renderer/components/Icon';
 import {useEventListener} from '@renderer/hooks';
 
 import './TopNavNotificationsMenu.scss';
@@ -22,22 +23,62 @@ const TopNavNotificationsMenu: FC<ComponentProps> = ({iconRef, menuOpen, setMenu
 
   useEventListener('mousedown', handleClick, document);
 
-  const renderPayment = (): ReactNode => {
-    return <div className="TopNavNotificationsMenu__payment">Hey</div>;
+  const renderNodeAlert = (): ReactNode => {
+    return (
+      <div className="TopNavNotificationsMenu__notification">
+        <Icon className="TopNavNotificationsMenu__Icon" icon={IconType.checkboxBlankCircle} size={8} />
+        <div className="TopNavNotificationsMenu__right">
+          <div className="TopNavNotificationsMenu__description">
+            <div>
+              <NavLink
+                className="TopNavNotificationsMenu__NavLink"
+                to="/account/5e12967707909e62b2bb2036c209085a784fabbc3deccefee70052b6181c8ed8/overview"
+              >
+                The networks Primary Validator has been changed to 64.225.47.205
+              </NavLink>
+            </div>
+            <div className="TopNavNotificationsMenu__time">1h ago</div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderNotification = (): ReactNode => {
+    return (
+      <div className="TopNavNotificationsMenu__notification">
+        <Icon className="TopNavNotificationsMenu__Icon" icon={IconType.checkboxBlankCircle} size={8} />
+        <div className="TopNavNotificationsMenu__right">
+          <div className="TopNavNotificationsMenu__description">
+            <div>
+              <NavLink
+                className="TopNavNotificationsMenu__NavLink"
+                to="/account/5e12967707909e62b2bb2036c209085a784fabbc3deccefee70052b6181c8ed8/overview"
+              >
+                Justin
+              </NavLink>{' '}
+              paid you{' '}
+              <NavLink
+                className="TopNavNotificationsMenu__NavLink"
+                to="/account/5e12967707909e62b2bb2036c209085a784fabbc3deccefee70052b6181c8ed8/overview"
+              >
+                (Personal)
+              </NavLink>
+            </div>
+            <div className="TopNavNotificationsMenu__time">1h ago</div>
+          </div>
+          <div className="TopNavNotificationsMenu__amount">+ 100.0000000000000000</div>
+        </div>
+      </div>
+    );
   };
 
   return (
     <div className="TopNavNotificationsMenu" ref={menuRef}>
       <h2>Notifications</h2>
-      <NavLink
-        className="AccountLink"
-        to="/account/5e12967707909e62b2bb2036c209085a784fabbc3deccefee70052b6181c8ed8/overview"
-      >
-        Click
-      </NavLink>
-      {renderPayment()}
-      {renderPayment()}
-      {renderPayment()}
+      {renderNotification()}
+      {renderNotification()}
+      {renderNodeAlert()}
     </div>
   );
 };
