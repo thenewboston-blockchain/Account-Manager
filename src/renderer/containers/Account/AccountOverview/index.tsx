@@ -34,24 +34,28 @@ const AccountOverview: FC = () => {
       const address = formatAddress(ipAddress, port, protocol);
 
       setLoading(true);
+
       const {data} = await axios.get(`${address}/accounts/${accountNumber}/balance`);
-      dispatch(
-        setManagedAccountBalance({
-          account_number: accountNumber,
-          balance: data.balance || '0',
-        }),
-      );
+      if (managedAccount) {
+        dispatch(
+          setManagedAccountBalance({
+            account_number: managedAccount.account_number,
+            balance: data.balance || '0',
+          }),
+        );
+      }
+
       setLoading(false);
     };
 
     fetchData();
-  }, [accountNumber, activePrimaryValidator, dispatch]);
+  }, [accountNumber, activePrimaryValidator, dispatch, managedAccount]);
 
   const getItems = () => {
     let items = [
       {
         key: 'Balance',
-        value: loading ? '-' : managedAccount.balance || '0',
+        value: loading ? '-' : managedAccount?.balance || '0',
       },
       {
         key: 'Account Number',
