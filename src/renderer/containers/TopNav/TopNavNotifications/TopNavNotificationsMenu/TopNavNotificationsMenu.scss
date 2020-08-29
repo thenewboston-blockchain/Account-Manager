@@ -33,7 +33,7 @@
     display: flex;
     border-bottom: 1px solid var(--color-sail-gray-100);
     justify-content: space-between;
-    padding: 12px $left-spacing 18px;
+    padding: 12px 12px 18px $left-spacing;
   }
 
   &__header-left {
