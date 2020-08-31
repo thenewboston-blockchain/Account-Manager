@@ -10,7 +10,7 @@ import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts
 import {Tx} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
-import {calculateTotalCost} from '@renderer/utils/transactions';
+import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import yup from '@renderer/utils/yup';
 
 import SendPointsModalFields, {INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendPointsModalFields';
@@ -31,14 +31,13 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
     (points: number, accountNumber: string): boolean => {
       if (!accountNumber || !points) return true;
       const {balance} = managedAccounts[accountNumber];
-      const totalCost = calculateTotalCost(
-        activeBank.default_transaction_fee,
-        points,
-        activePrimaryValidator.default_transaction_fee,
-      );
+      const totalCost =
+        getBankTxFee(activeBank, accountNumber) +
+        getPrimaryValidatorTxFee(activePrimaryValidator, accountNumber) +
+        points;
       return totalCost <= parseFloat(balance);
     },
-    [activeBank.default_transaction_fee, activePrimaryValidator.default_transaction_fee, managedAccounts],
+    [activeBank, activePrimaryValidator, managedAccounts],
   );
 
   const initialValues = useMemo(
@@ -83,14 +82,14 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
         recipient: recipientAccountNumber,
       },
       {
-        amount: activeBank.default_transaction_fee,
+        amount: getBankTxFee(activeBank, senderAccountNumber),
         recipient: activeBank.account_number,
       },
       {
-        amount: activePrimaryValidator.default_transaction_fee,
+        amount: getPrimaryValidatorTxFee(activePrimaryValidator, senderAccountNumber),
         recipient: activePrimaryValidator.account_number,
       },
-    ];
+    ].filter((tx) => !!tx.amount);
 
     try {
       await createBlock(recipientAccountNumber, senderAccountNumber, txs);
