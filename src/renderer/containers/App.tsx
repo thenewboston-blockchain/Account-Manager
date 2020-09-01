@@ -2,7 +2,7 @@ import React, {FC, ReactNode, useEffect, useState} from 'react';
 import {hot} from 'react-hot-loader/root';
 import {useDispatch, useSelector} from 'react-redux';
 import {BrowserRouter as Router} from 'react-router-dom';
-import {ToastContainer} from 'react-toastify';
+import {Flip, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Connect from '@renderer/containers/Connect';
@@ -40,15 +40,16 @@ const App: FC = () => {
     <Router>
       {renderComponent()}
       <ToastContainer
-        position="top-right"
         autoClose={5000}
+        closeOnClick
+        draggable
         hideProgressBar
         newestOnTop
-        closeOnClick
-        rtl={false}
         pauseOnFocusLoss
-        draggable
         pauseOnHover
+        position="top-right"
+        rtl={false}
+        transition={Flip}
       />
     </Router>
   );

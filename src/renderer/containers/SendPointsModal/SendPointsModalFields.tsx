@@ -16,7 +16,11 @@ import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactio
 export const INVALID_AMOUNT_ERROR = 'Invalid amount';
 export const MATCH_ERROR = 'Sender and recipient can not match';
 
-const SendPointsModalFields: FC = () => {
+interface ComponentProps {
+  submitting: boolean;
+}
+
+const SendPointsModalFields: FC<ComponentProps> = ({submitting}) => {
   const {errors, touched, values} = useFormContext();
   const activeBankConfig = useSelector(getActiveBankConfig)!;
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
@@ -65,6 +69,7 @@ const SendPointsModalFields: FC = () => {
       {pointsError ? <span className="SendPointsModal__error">{pointsError}</span> : null}
       <FormSelectDetailed
         className="SendPointsModal__select"
+        disabled={submitting}
         focused
         required
         label="From"
@@ -74,6 +79,7 @@ const SendPointsModalFields: FC = () => {
       <FormSelectDetailed
         className="SendPointsModal__select"
         creatable
+        disabled={submitting}
         hideErrorText={matchError}
         required
         label="To"
@@ -96,6 +102,7 @@ const SendPointsModalFields: FC = () => {
             <td>
               <FormInput
                 className="SendPointsModal__points-input"
+                disabled={submitting}
                 hideErrorBlock
                 name="points"
                 placeholder="0.00"
