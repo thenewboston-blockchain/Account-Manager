@@ -77,14 +77,10 @@
       }
     }
 
-    #{$self}__single-value {
-      color: var(--color-primary);
-      margin: 0;
-    }
-
-    #{$self}__placeholder {
-      color: var(--color-sail-gray-500);
-      margin: 0;
+    #{$self}__single-value,
+    #{$self}__placeholder,
+    #{$self}__input {
+      font-family: var(--font-family-mono);
     }
 
     #{$self}__input {
@@ -95,6 +91,16 @@
         color: var(--color-primary);
         transition: none;
       }
+    }
+
+    #{$self}__placeholder {
+      color: var(--color-sail-gray-500);
+      margin: 0;
+    }
+
+    #{$self}__single-value {
+      color: var(--color-primary);
+      margin: 0;
     }
 
     #{$self}__indicators {
