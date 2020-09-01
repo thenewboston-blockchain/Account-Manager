@@ -41,14 +41,12 @@ const TopNavNotificationsMenu: FC<ComponentProps> = ({iconRef, menuOpen, setMenu
         <Icon className="TopNavNotificationsMenu__Icon" icon={IconType.checkboxBlankCircle} size={8} />
         <div className="TopNavNotificationsMenu__right">
           <div className="TopNavNotificationsMenu__description">
-            <div>
-              <NavLink
-                className="TopNavNotificationsMenu__NavLink"
-                to="/account/5e12967707909e62b2bb2036c209085a784fabbc3deccefee70052b6181c8ed8/overview"
-              >
-                The networks Primary Validator has been changed to 64.225.47.205
-              </NavLink>
-            </div>
+            <NavLink
+              className="TopNavNotificationsMenu__NavLink"
+              to="/account/5e12967707909e62b2bb2036c209085a784fabbc3deccefee70052b6181c8ed8/overview"
+            >
+              The networks Primary Validator has been changed to 64.225.47.205
+            </NavLink>
             <div className="TopNavNotificationsMenu__time">1h ago</div>
           </div>
         </div>
