@@ -1,7 +1,6 @@
 import React, {FC, ReactNode, useCallback, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
-import {toast} from 'react-toastify';
 
 import {FormButton} from '@renderer/components/FormComponents';
 import Icon, {IconType} from '@renderer/components/Icon';
@@ -9,6 +8,7 @@ import Modal from '@renderer/components/Modal';
 import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
 import {Tx} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
+import {displayErrorToast} from '@renderer/utils/errors';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import yup from '@renderer/utils/yup';
@@ -118,7 +118,7 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
       await createBlock(recipientAccountNumber, senderAccountNumber, txs);
       close();
     } catch (error) {
-      toast.error(error);
+      displayErrorToast(error);
     }
   };
 
