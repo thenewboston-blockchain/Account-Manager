@@ -77,16 +77,6 @@
       }
     }
 
-    #{$self}__single-value {
-      color: var(--color-primary);
-      margin: 0;
-    }
-
-    #{$self}__placeholder {
-      color: var(--color-sail-gray-500);
-      margin: 0;
-    }
-
     #{$self}__input {
       height: 100%;
       margin-top: 6px;
@@ -95,6 +85,16 @@
         color: var(--color-primary);
         transition: none;
       }
+    }
+
+    #{$self}__placeholder {
+      color: var(--color-sail-gray-500);
+      margin: 0;
+    }
+
+    #{$self}__single-value {
+      color: var(--color-primary);
+      margin: 0;
     }
 
     #{$self}__indicators {

@@ -12,7 +12,7 @@ type ComponentProps = BaseFormComponentProps<BaseSelectProps>;
 
 const FormSelect: FC<ComponentProps> = ({hideErrorText = false, label, required, ...baseSelectProps}) => {
   const {className, name, options} = baseSelectProps;
-  const {error, handleBlur, handleChange, selectedOption} = useFormSelect(name, options);
+  const {error, handleBlur, handleChange, selectedOption} = useFormSelect(name, options, baseSelectProps);
 
   return (
     <div className={clsx('FormSelect FormFieldComponent', className)}>

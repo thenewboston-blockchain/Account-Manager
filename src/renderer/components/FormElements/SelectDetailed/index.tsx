@@ -9,8 +9,6 @@ import {InputOption} from '@renderer/types';
 
 import './SelectDetailed.scss';
 
-const VALUE_LENGTH = 64;
-
 const filterOption = ({label, value}: InputOption, rawInput: string): boolean => {
   const rawInputLowercase = rawInput.toLocaleLowerCase();
   return (
@@ -19,18 +17,15 @@ const filterOption = ({label, value}: InputOption, rawInput: string): boolean =>
   );
 };
 
-const formatOptionValue = (value: string): string =>
-  `${value.slice(0, VALUE_LENGTH / 2)}\n${value.slice(VALUE_LENGTH / 2)}`;
-
 const formatOptionLabel = ({value, label}: InputOption, {context}: FormatOptionLabelMeta<InputOption>): ReactNode => {
   if (context === 'value') {
-    return formatOptionValue(value);
+    return value;
   }
 
   return (
     <>
       {label ? <div className="SelectDetailed__option-label">{label}</div> : null}
-      <div className="SelectDetailed__option-value">{formatOptionValue(value)}</div>
+      <div className="SelectDetailed__option-value">{value}</div>
     </>
   );
 };
