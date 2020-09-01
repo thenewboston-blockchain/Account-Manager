@@ -76,20 +76,43 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
   };
 
   const handleSubmit = async ({points, recipientAccountNumber, senderAccountNumber}: FormValues): Promise<void> => {
-    const txs: Tx[] = [
+    const recipientIsActiveBank = recipientAccountNumber === activeBank.account_number;
+    const recipientIsActivePrimaryValidator = recipientAccountNumber === activePrimaryValidator.account_number;
+
+    const bankTxFee = getBankTxFee(activeBank, senderAccountNumber);
+    const primaryValidatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidator, senderAccountNumber);
+
+    let txs: Tx[] = [
       {
-        amount: points,
+        amount:
+          points +
+          (recipientIsActiveBank ? bankTxFee : 0) +
+          (recipientIsActivePrimaryValidator ? primaryValidatorTxFee : 0),
         recipient: recipientAccountNumber,
       },
-      {
-        amount: getBankTxFee(activeBank, senderAccountNumber),
-        recipient: activeBank.account_number,
-      },
-      {
-        amount: getPrimaryValidatorTxFee(activePrimaryValidator, senderAccountNumber),
-        recipient: activePrimaryValidator.account_number,
-      },
-    ].filter((tx) => !!tx.amount);
+    ];
+
+    if (!recipientIsActiveBank) {
+      txs = [
+        ...txs,
+        {
+          amount: bankTxFee,
+          recipient: activeBank.account_number,
+        },
+      ];
+    }
+
+    if (!recipientIsActivePrimaryValidator) {
+      txs = [
+        ...txs,
+        {
+          amount: primaryValidatorTxFee,
+          recipient: activePrimaryValidator.account_number,
+        },
+      ];
+    }
+
+    txs = txs.filter((tx) => !!tx.amount);
 
     try {
       await createBlock(recipientAccountNumber, senderAccountNumber, txs);
