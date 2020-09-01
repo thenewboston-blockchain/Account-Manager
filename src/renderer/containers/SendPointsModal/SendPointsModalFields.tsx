@@ -11,6 +11,7 @@ import {
   getManagedFriends,
 } from '@renderer/selectors';
 import {InputOption} from '@renderer/types';
+import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 
 export const INVALID_AMOUNT_ERROR = 'Invalid amount';
 export const MATCH_ERROR = 'Sender and recipient can not match';
@@ -50,11 +51,11 @@ const SendPointsModalFields: FC = () => {
   };
 
   const renderTotal = (): number | string => {
-    const {points} = values;
+    const {points, senderAccountNumber} = values;
     if (!points) return '-';
     const floatBalance = parseFloat(points);
-    const floatBankTxFee = parseFloat(activeBankConfig.default_transaction_fee);
-    const floatValidatorTxFee = parseFloat(activePrimaryValidatorConfig.default_transaction_fee);
+    const floatBankTxFee = getBankTxFee(activeBankConfig, senderAccountNumber);
+    const floatValidatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidatorConfig, senderAccountNumber);
     return floatBalance + floatBankTxFee + floatValidatorTxFee;
   };
 
@@ -104,11 +105,11 @@ const SendPointsModalFields: FC = () => {
           </tr>
           <tr>
             <td>Bank Fee</td>
-            <td>{activeBankConfig.default_transaction_fee}</td>
+            <td>{getBankTxFee(activeBankConfig, values?.senderAccountNumber) || '-'}</td>
           </tr>
           <tr>
             <td>Validator Fee</td>
-            <td>{activePrimaryValidatorConfig.default_transaction_fee}</td>
+            <td>{getPrimaryValidatorTxFee(activePrimaryValidatorConfig, values?.senderAccountNumber) || '-'}</td>
           </tr>
           <tr className="SendPointsModal__total-tr">
             <td>Total</td>

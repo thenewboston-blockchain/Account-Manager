@@ -10,7 +10,7 @@ import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts
 import {Tx} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
-import {calculateTotalCost} from '@renderer/utils/transactions';
+import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import yup from '@renderer/utils/yup';
 
 import SendPointsModalFields, {INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendPointsModalFields';
@@ -31,14 +31,13 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
     (points: number, accountNumber: string): boolean => {
       if (!accountNumber || !points) return true;
       const {balance} = managedAccounts[accountNumber];
-      const totalCost = calculateTotalCost(
-        activeBank.default_transaction_fee,
-        points,
-        activePrimaryValidator.default_transaction_fee,
-      );
+      const totalCost =
+        getBankTxFee(activeBank, accountNumber) +
+        getPrimaryValidatorTxFee(activePrimaryValidator, accountNumber) +
+        points;
       return totalCost <= parseFloat(balance);
     },
-    [activeBank.default_transaction_fee, activePrimaryValidator.default_transaction_fee, managedAccounts],
+    [activeBank, activePrimaryValidator, managedAccounts],
   );
 
   const initialValues = useMemo(
@@ -77,20 +76,43 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
   };
 
   const handleSubmit = async ({points, recipientAccountNumber, senderAccountNumber}: FormValues): Promise<void> => {
-    const txs: Tx[] = [
+    const recipientIsActiveBank = recipientAccountNumber === activeBank.account_number;
+    const recipientIsActivePrimaryValidator = recipientAccountNumber === activePrimaryValidator.account_number;
+
+    const bankTxFee = getBankTxFee(activeBank, senderAccountNumber);
+    const primaryValidatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidator, senderAccountNumber);
+
+    let txs: Tx[] = [
       {
-        amount: points,
+        amount:
+          points +
+          (recipientIsActiveBank ? bankTxFee : 0) +
+          (recipientIsActivePrimaryValidator ? primaryValidatorTxFee : 0),
         recipient: recipientAccountNumber,
       },
-      {
-        amount: activeBank.default_transaction_fee,
-        recipient: activeBank.account_number,
-      },
-      {
-        amount: activePrimaryValidator.default_transaction_fee,
-        recipient: activePrimaryValidator.account_number,
-      },
     ];
+
+    if (!recipientIsActiveBank) {
+      txs = [
+        ...txs,
+        {
+          amount: bankTxFee,
+          recipient: activeBank.account_number,
+        },
+      ];
+    }
+
+    if (!recipientIsActivePrimaryValidator) {
+      txs = [
+        ...txs,
+        {
+          amount: primaryValidatorTxFee,
+          recipient: activePrimaryValidator.account_number,
+        },
+      ];
+    }
+
+    txs = txs.filter((tx) => !!tx.amount);
 
     try {
       await createBlock(recipientAccountNumber, senderAccountNumber, txs);

@@ -3,7 +3,7 @@
 
   // This is to override React-Select's specificity
   &.Select {
-    height: 24px;
+    height: 30px;
 
     &#{$self}--error {
       #{$self}__control {
@@ -79,7 +79,7 @@
 
     #{$self}__single-value {
       color: var(--color-primary);
-      margin: 1px 0 0;
+      margin: 0;
     }
 
     #{$self}__placeholder {
@@ -89,7 +89,7 @@
 
     #{$self}__input {
       height: 100%;
-      margin-top: 3px;
+      margin-top: 6px;
 
       input {
         color: var(--color-primary);
@@ -123,7 +123,7 @@
   .Select__option {
     $self: &;
     color: var(--color-primary);
-    height: 24px;
+    height: 30px;
     padding: 4px 24px 4px 6px;
     position: relative;
 
