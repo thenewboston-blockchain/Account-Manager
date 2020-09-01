@@ -92,7 +92,11 @@ const Select: FC<ComponentProps> = ({
     }
   };
 
-  return creatable ? <ReactSelectCreatable {...getSharedSelectProps()} /> : <ReactSelect {...getSharedSelectProps()} />;
+  return creatable ? (
+    <ReactSelectCreatable formatCreateLabel={() => undefined} {...getSharedSelectProps()} />
+  ) : (
+    <ReactSelect {...getSharedSelectProps()} />
+  );
 };
 
 export default Select;

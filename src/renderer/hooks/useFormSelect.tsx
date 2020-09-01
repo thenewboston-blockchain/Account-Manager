@@ -1,16 +1,18 @@
 import {useMemo} from 'react';
 
+import {BaseSelectProps} from '@renderer/components/FormElements';
 import useFormContext from '@renderer/hooks/useFormContext';
 import {InputOption} from '@renderer/types';
 
 interface UseFormSelectOutput {
   error: boolean;
-  handleBlur(): void;
+  handleBlur(e: any): void;
   handleChange(option: InputOption | null): void;
   selectedOption: InputOption | null;
 }
 
-const useFormSelect = (name: string, options: InputOption[]): UseFormSelectOutput => {
+const useFormSelect = (name: string, options: InputOption[], selectProps: BaseSelectProps): UseFormSelectOutput => {
+  const {creatable} = selectProps;
   const {errors, setFieldTouched, setFieldValue, touched, values} = useFormContext();
   const error = !!errors[name] && !!touched[name];
 
@@ -21,8 +23,26 @@ const useFormSelect = (name: string, options: InputOption[]): UseFormSelectOutpu
     return options.find((option) => option.value === value) || {label: value, value};
   }, [name, options, values]);
 
-  const handleBlur = (): void => {
+  const handleBlur = (e: any): void => {
     setFieldTouched(name, true);
+
+    const newValue = e.target.value;
+    if (!newValue.length) return;
+
+    const associatedOptions = options.filter((option) => [option.label, option.value].includes(newValue));
+
+    if (associatedOptions.length === 1) {
+      const option = associatedOptions[0];
+
+      if (!option.disabled) {
+        setFieldValue(name, option.value);
+      }
+      return;
+    }
+
+    if (creatable) {
+      setFieldValue(name, newValue);
+    }
   };
 
   const handleChange = (option: InputOption | null): void => {
