@@ -77,12 +77,6 @@
       }
     }
 
-    #{$self}__single-value,
-    #{$self}__placeholder,
-    #{$self}__input {
-      font-family: var(--font-family-mono);
-    }
-
     #{$self}__input {
       height: 100%;
       margin-top: 6px;
