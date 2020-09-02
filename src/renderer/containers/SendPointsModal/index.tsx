@@ -1,7 +1,6 @@
-import React, {FC, ReactNode, useCallback, useMemo} from 'react';
+import React, {FC, ReactNode, useCallback, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
-import {toast} from 'react-toastify';
 
 import {FormButton} from '@renderer/components/FormComponents';
 import Icon, {IconType} from '@renderer/components/Icon';
@@ -9,6 +8,7 @@ import Modal from '@renderer/components/Modal';
 import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
 import {Tx} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
+import {displayErrorToast} from '@renderer/utils/errors';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import yup from '@renderer/utils/yup';
@@ -26,6 +26,7 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
   const activeBank = useSelector(getActiveBankConfig)!;
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
   const managedAccounts = useSelector(getManagedAccounts);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   const checkPointsWithBalance = useCallback(
     (points: number, accountNumber: string): boolean => {
@@ -115,20 +116,31 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
     txs = txs.filter((tx) => !!tx.amount);
 
     try {
+      setSubmitting(true);
       await createBlock(recipientAccountNumber, senderAccountNumber, txs);
       close();
     } catch (error) {
-      toast.error(error);
+      displayErrorToast(error);
+      setSubmitting(false);
     }
   };
 
   const renderFooter = (): ReactNode => {
     return (
       <>
-        <FormButton className="Modal__default-cancel SendPointsModal__default-cancel" onClick={close} variant="link">
+        <FormButton
+          className="Modal__default-cancel SendPointsModal__default-cancel"
+          onClick={close}
+          submitting={submitting}
+          variant="link"
+        >
           Cancel
         </FormButton>
-        <FormButton className="Modal__default-submit SendPointsModal__default-submit" type="submit">
+        <FormButton
+          className="Modal__default-submit SendPointsModal__default-submit"
+          submitting={submitting}
+          type="submit"
+        >
           Send <Icon className="SendPointsModal__submit-icon" icon={IconType.tnb} size={16} />
         </FormButton>
       </>
@@ -161,9 +173,10 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
       header="Send Points"
       initialValues={initialValues}
       onSubmit={handleSubmit}
+      submitting={submitting}
       validationSchema={validationSchema}
     >
-      <SendPointsModalFields />
+      <SendPointsModalFields submitting={submitting} />
     </Modal>
   );
 };

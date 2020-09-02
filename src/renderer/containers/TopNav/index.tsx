@@ -9,6 +9,7 @@ import {useBooleanState, useNavigationalHistory} from '@renderer/hooks';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
 import {AppDispatch} from '@renderer/types';
 
+import TopNavNotifications from './TopNavNotifications';
 import './TopNav.scss';
 
 const TopNav: FC = () => {
@@ -36,8 +37,8 @@ const TopNav: FC = () => {
         <span className="TopNav__change-bank" onClick={toggleActiveBankModal}>
           Change Active Bank
         </span>
-        <Icon className="TopNav__icon" icon={IconType.bell} />
         <Icon className="TopNav__icon" icon={IconType.power} onClick={toggleResetAppModal} />
+        <TopNavNotifications />
       </div>
     );
   };

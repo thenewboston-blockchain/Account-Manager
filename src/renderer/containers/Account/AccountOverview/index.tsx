@@ -15,6 +15,7 @@ import './AccountOverview.scss';
 
 const AccountOverview: FC = () => {
   const {accountNumber} = useParams();
+  const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [signingKeyVisible, toggleSigningKeyVisible, , setSigningKeyVisibleFalse] = useBooleanState(false);
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
@@ -35,23 +36,28 @@ const AccountOverview: FC = () => {
 
       setLoading(true);
       const {data} = await axios.get(`${address}/accounts/${accountNumber}/balance`);
-      dispatch(
-        setManagedAccountBalance({
-          account_number: accountNumber,
-          balance: data.balance || '0',
-        }),
-      );
+
+      if (managedAccount) {
+        dispatch(
+          setManagedAccountBalance({
+            account_number: managedAccount.account_number,
+            balance: data.balance || '0',
+          }),
+        );
+      }
+
+      setBalance(data.balance);
       setLoading(false);
     };
 
     fetchData();
-  }, [accountNumber, activePrimaryValidator, dispatch]);
+  }, [accountNumber, activePrimaryValidator, dispatch, managedAccount]);
 
   const getItems = () => {
     let items = [
       {
         key: 'Balance',
-        value: loading ? '-' : managedAccount.balance || '0',
+        value: loading ? '-' : managedAccount?.balance || balance || '0',
       },
       {
         key: 'Account Number',
