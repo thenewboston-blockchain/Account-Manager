@@ -1,31 +1,40 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
+import React, {FC, useEffect, useRef} from 'react';
+import {createPortal} from 'react-dom';
+import {useLocation} from 'react-router-dom';
+import clsx from 'clsx';
 
 import Icon, {IconType} from '@renderer/components/Icon';
+import {useBooleanState} from '@renderer/hooks';
 
 import TopNavNotificationsMenu from './TopNavNotificationsMenu';
 import './TopNavNotifications.scss';
 
-const TopNavNotifications: FC<RouteComponentProps> = ({location: {pathname}}) => {
+const dropdownRoot = document.getElementById('dropdown-root')!;
+
+const TopNavNotifications: FC = () => {
+  const {pathname} = useLocation();
   const iconRef = useRef<HTMLDivElement>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [open, toggleOpen, , closeMenu] = useBooleanState(false);
 
   useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname, setMenuOpen]);
-
-  const handleIconClick = (): void => {
-    setMenuOpen(!menuOpen);
-  };
+    closeMenu();
+  }, [pathname, closeMenu]);
 
   return (
     <>
-      <div className="TopNavNotifications">
-        <Icon className="TopNav__icon" icon={IconType.bell} onClick={handleIconClick} ref={iconRef} />
-      </div>
-      {menuOpen && <TopNavNotificationsMenu iconRef={iconRef} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />}
+      <Icon
+        className={clsx('TopNavNotifications', {'TopNavNotifications--active': open})}
+        icon={IconType.bell}
+        onClick={toggleOpen}
+        ref={iconRef}
+      />
+      {open &&
+        createPortal(
+          <TopNavNotificationsMenu iconRef={iconRef} menuOpen={open} toggleOpen={toggleOpen} />,
+          dropdownRoot,
+        )}
     </>
   );
 };
 
-export default withRouter(TopNavNotifications);
+export default TopNavNotifications;
