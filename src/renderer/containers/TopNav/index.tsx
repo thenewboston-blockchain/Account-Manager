@@ -16,7 +16,7 @@ const TopNav: FC = () => {
   const [changeActiveBankModalIsOpen, toggleActiveBankModal] = useBooleanState(false);
   const [resetAppModalIsOpen, toggleResetAppModal] = useBooleanState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const {back, backEnabled, forward, forwardEnabled} = useNavigationalHistory();
+  const {back, backEnabled, forward, forwardEnabled, reload} = useNavigationalHistory();
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
 
   const handleResetApp = () => {
@@ -27,6 +27,7 @@ const TopNav: FC = () => {
     <div className="TopNav__container">
       <Icon className="TopNav__icon" disabled={!backEnabled} icon={IconType.arrowLeft} onClick={back} />
       <Icon className="TopNav__icon" disabled={!forwardEnabled} icon={IconType.arrowRight} onClick={forward} />
+      <Icon className="TopNav__icon" icon={IconType.refresh} onClick={reload} />
     </div>
   );
 

@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
+import {useNavigationalHistory} from '@renderer/hooks';
 import {ManagedNode} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 import {generateSignature, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
@@ -18,6 +19,7 @@ interface ComponentProps {
 }
 
 const EditTrustModal: FC<ComponentProps> = ({close, requestingNode, targetIdentifier, trust, targetType}) => {
+  const {reload} = useNavigationalHistory();
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const initialValues = useMemo(() => ({trust}), [trust]);
@@ -41,7 +43,7 @@ const EditTrustModal: FC<ComponentProps> = ({close, requestingNode, targetIdenti
       };
       const address = `${formatAddressFromNode(requestingNode)}/${targetType}/${targetIdentifier}`;
       await axios.patch(address, requestData);
-      location.reload();
+      reload();
     } catch (error) {
       toast.error('An error occurred');
       setSubmitting(false);
