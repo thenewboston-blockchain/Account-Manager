@@ -50,3 +50,7 @@ You can check your styling by running:
 ```
 npm run lint
 ```
+
+## License
+
+thenewboston is [MIT licensed](http://opensource.org/licenses/MIT).
