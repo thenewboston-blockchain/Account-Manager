@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const path = require('path');
 const rules = require('./webpack.rules');
 
@@ -6,10 +8,9 @@ function srcPaths(src) {
 }
 
 module.exports = {
-  mode: 'development',
   devtool: 'source-map',
-  target: 'electron-main',
   entry: './src/main/main.ts',
+  mode: 'development',
   module: {
     rules,
   },
@@ -21,4 +22,5 @@ module.exports = {
     },
     extensions: ['.js', '.ts', '.tsx', '.jsx', '.json'],
   },
+  target: 'electron-main',
 };
