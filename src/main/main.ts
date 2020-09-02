@@ -114,7 +114,7 @@ const createWindow = (): void => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 };
 
-app.setName('TheNewBoston');
+app.setName('thenewboston');
 
 app.whenReady().then(() => {
   installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
