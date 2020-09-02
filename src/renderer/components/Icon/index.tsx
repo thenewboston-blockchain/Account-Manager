@@ -21,6 +21,7 @@ import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
 import RadioboxBlankIcon from 'mdi-react/RadioboxBlankIcon';
 import RadioboxMarkedIcon from 'mdi-react/RadioboxMarkedIcon';
+import RefreshIcon from 'mdi-react/RefreshIcon';
 
 import {getCustomClassNames} from '@renderer/utils/components';
 import TnbIcon from './TnbIcon';
@@ -46,6 +47,7 @@ export enum IconType {
   power,
   radioboxBlank,
   radioboxMarked,
+  refresh,
   tnb,
 }
 
@@ -128,6 +130,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
           return <RadioboxBlankIcon {...iconProps} />;
         case IconType.radioboxMarked:
           return <RadioboxMarkedIcon {...iconProps} />;
+        case IconType.refresh:
+          return <RefreshIcon {...iconProps} />;
         case IconType.tnb:
           return <TnbIcon {...iconProps} />;
         default:

@@ -47,6 +47,7 @@ export const Layout: FC = () => {
           <Route path="/validator/:protocol/:ipAddress/:port">
             <Validator />
           </Route>
+          <Route path="/reload" />
         </Switch>
       </div>
     </div>

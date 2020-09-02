@@ -1,7 +1,7 @@
 import React, {FC, ReactNode, useEffect, useState} from 'react';
 import {hot} from 'react-hot-loader/root';
 import {useDispatch, useSelector} from 'react-redux';
-import {HashRouter as Router} from 'react-router-dom';
+import {MemoryRouter as Router} from 'react-router-dom';
 import {Flip, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
