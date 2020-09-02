@@ -1,4 +1,4 @@
-import React, {FC, ReactNode, useRef} from 'react';
+import React, {FC, ReactNode, RefObject, useRef} from 'react';
 import {NavLink} from 'react-router-dom';
 
 import Icon, {IconType} from '@renderer/components/Icon';
@@ -7,17 +7,17 @@ import {useEventListener} from '@renderer/hooks';
 import './TopNavNotificationsMenu.scss';
 
 interface ComponentProps {
-  iconRef: any;
+  iconRef: RefObject<HTMLDivElement>;
   menuOpen: boolean;
-  setMenuOpen: Function;
+  toggleOpen(): void;
 }
 
-const TopNavNotificationsMenu: FC<ComponentProps> = ({iconRef, menuOpen, setMenuOpen}) => {
+const TopNavNotificationsMenu: FC<ComponentProps> = ({iconRef, menuOpen, toggleOpen}) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (e: any): void => {
-    if (iconRef && menuOpen && !iconRef.current?.contains(e.target) && !menuRef.current?.contains(e.target)) {
-      setMenuOpen(false);
+    if (menuOpen && !iconRef.current?.contains(e.target) && !menuRef.current?.contains(e.target)) {
+      toggleOpen();
     }
   };
 
