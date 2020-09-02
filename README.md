@@ -1,4 +1,8 @@
 <p align="center">
+  <img alt="thenewboston logo" src="https://i.imgur.com/ZPqpm57.png" width="620">
+</p>
+
+<p align="center">
   <img alt="thenewboston logo" src="https://i.imgur.com/8bY8yCE.png">
 </p>
 
