@@ -2,6 +2,7 @@ import React, {FC, ReactNode} from 'react';
 import clsx from 'clsx';
 
 import {getCustomClassNames} from '@renderer/utils/components';
+import {isNumber} from 'util';
 
 import './DetailPanel.scss';
 
@@ -19,14 +20,30 @@ interface ComponentProps {
 
 const DetailPanel: FC<ComponentProps> = ({className, items, tableHeaders, title}) => {
   const renderTableBody = (): ReactNode => {
+    const getBalance = (value: any) => {
+      if (isNumber(value)) {
+        return value.toLocaleString();
+      }
+      return value;
+    };
     return (
       <tbody>
-        {items.map(({key, value}) => (
-          <tr key={key}>
-            <td>{key}</td>
-            <td>{value}</td>
-          </tr>
-        ))}
+        {items.map(({key, value}) => {
+          if (key === 'Balance') {
+            return (
+              <tr key={key}>
+                <td>{key}</td>
+                <td className={key}>{getBalance(value)}</td>
+              </tr>
+            );
+          }
+          return (
+            <tr key={key}>
+              <td>{key}</td>
+              <td>{value}</td>
+            </tr>
+          );
+        })}
       </tbody>
     );
   };
