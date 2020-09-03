@@ -8,7 +8,7 @@
   min-height: 0px;
   margin: 0px;
   padding: 12px;
-  border-left: #1ea672 3px solid;
+  border-left: var(--color-tertiary) 3px solid;
 }
 
 .Toastify__close-button {
@@ -23,7 +23,7 @@
     width: 20px;
     margin-right: 14px;
     svg {
-      fill: #1ea672;
+      fill: var(--color-tertiary);
     }
   }
 
@@ -34,6 +34,6 @@
     font-size: 14px;
     line-height: 18px;
     margin: 0px;
-    color: #000000;
+    color: var(--color-primary);
   }
 }
