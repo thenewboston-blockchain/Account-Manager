@@ -1,0 +1,39 @@
+.Toastify__toast-container {
+  width: 300px;
+  height: 42px;
+  padding: 0px;
+}
+
+.Toastify__toast {
+  min-height: 0px;
+  margin: 0px;
+  padding: 12px;
+  border-left: #1ea672 3px solid;
+}
+
+.Toastify__close-button {
+  display: none;
+}
+
+.SuccessToast {
+  display: flex;
+
+  .ThumbsUp {
+    height: 18px;
+    width: 20px;
+    margin-right: 14px;
+    svg {
+      fill: #1ea672;
+    }
+  }
+
+  p {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 18px;
+    margin: 0px;
+    color: #000000;
+  }
+}

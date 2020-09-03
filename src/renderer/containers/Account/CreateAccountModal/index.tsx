@@ -5,6 +5,7 @@ import axios from 'axios';
 import {toast} from 'react-toastify';
 
 import Modal from '@renderer/components/Modal';
+import SuccessToast from '@renderer/components/SuccessToast';
 import {SIGNING_KEY_LENGTH_ERROR, SIGNING_KEY_REQUIRED_ERROR} from '@renderer/constants/form-validation';
 import {getActivePrimaryValidator, getManagedAccounts} from '@renderer/selectors';
 import {setManagedAccount} from '@renderer/store/app';
@@ -68,6 +69,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
         signingKeyStr = signingKeyHex;
         const {balance} = await fetchAccountBalance(accountNumberStr);
         balanceStr = balance;
+        toast(<SuccessToast message="You successfully created an account!" />);
       } catch (error) {
         toast.error(error);
         return;
@@ -78,6 +80,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
       const {publicKeyHex, signingKeyHex} = generateAccount();
       accountNumberStr = publicKeyHex;
       signingKeyStr = signingKeyHex;
+      toast(<SuccessToast message="You successfully created an account!" />);
     }
 
     dispatch(
