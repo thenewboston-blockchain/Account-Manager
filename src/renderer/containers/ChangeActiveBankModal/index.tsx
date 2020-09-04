@@ -1,13 +1,13 @@
 import React, {FC, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
-import {toast} from 'react-toastify';
 
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import {AppDispatch, InputOption, ProtocolType} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
+import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import yup from '@renderer/utils/yup';
 
 const initialValues = {
@@ -52,7 +52,7 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
       };
       const response = await dispatch(connectAndStoreLocalData(bankAddressData, nickname));
       if (response?.error) {
-        toast.error(response.error);
+        displayErrorToast(response.error);
         setSubmitting(false);
         return;
       }
@@ -61,7 +61,7 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
       }
       close();
     } catch (error) {
-      toast.error('An error occurred');
+      displayToast('An error occurred');
       setSubmitting(false);
     }
   };

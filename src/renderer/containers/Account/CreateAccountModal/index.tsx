@@ -2,7 +2,6 @@ import React, {FC, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
-import {toast} from 'react-toastify';
 
 import Modal from '@renderer/components/Modal';
 import {SIGNING_KEY_LENGTH_ERROR, SIGNING_KEY_REQUIRED_ERROR} from '@renderer/constants/form-validation';
@@ -12,6 +11,7 @@ import {AppDispatch} from '@renderer/types';
 import {generateAccount} from '@renderer/utils/accounts';
 import {formatAddress} from '@renderer/utils/address';
 import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
+import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import yup from '@renderer/utils/yup';
 
 import CreateAccountModalFields from './CreateAccountModalFields';
@@ -68,8 +68,9 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
         signingKeyStr = signingKeyHex;
         const {balance} = await fetchAccountBalance(accountNumberStr);
         balanceStr = balance;
+        displayToast('You successfully created an account!', 'success');
       } catch (error) {
-        toast.error(error);
+        displayErrorToast(error);
         return;
       }
     }
@@ -78,6 +79,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
       const {publicKeyHex, signingKeyHex} = generateAccount();
       accountNumberStr = publicKeyHex;
       signingKeyStr = signingKeyHex;
+      displayToast('You successfully created an account!', 'success');
     }
 
     dispatch(

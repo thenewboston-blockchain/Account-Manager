@@ -4,6 +4,7 @@ import React, {forwardRef, ReactNode, useCallback, useMemo} from 'react';
 import clsx from 'clsx';
 
 import AlertIcon from 'mdi-react/AlertIcon';
+import AlertCircleOutlineIcon from 'mdi-react/AlertCircleOutlineIcon';
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon';
 import ArrowRightIcon from 'mdi-react/ArrowRightIcon';
 import BellIcon from 'mdi-react/BellIcon';
@@ -22,6 +23,7 @@ import PlusIcon from 'mdi-react/PlusIcon';
 import RadioboxBlankIcon from 'mdi-react/RadioboxBlankIcon';
 import RadioboxMarkedIcon from 'mdi-react/RadioboxMarkedIcon';
 import RefreshIcon from 'mdi-react/RefreshIcon';
+import ThumbsUpIcon from 'mdi-react/ThumbsUpIcon';
 
 import {getCustomClassNames} from '@renderer/utils/components';
 import TnbIcon from './TnbIcon';
@@ -30,6 +32,7 @@ import './Icon.scss';
 // These names are camelCased versions of the names found in https://materialdesignicons.com/
 export enum IconType {
   alert,
+  alertCircleOutline,
   arrowLeft,
   arrowRight,
   bell,
@@ -48,6 +51,7 @@ export enum IconType {
   radioboxBlank,
   radioboxMarked,
   refresh,
+  thumbsUp,
   tnb,
 }
 
@@ -96,6 +100,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
       switch (icon) {
         case IconType.alert:
           return <AlertIcon {...iconProps} />;
+        case IconType.alertCircleOutline:
+          return <AlertCircleOutlineIcon {...iconProps} />;
         case IconType.arrowLeft:
           return <ArrowLeftIcon {...iconProps} />;
         case IconType.arrowRight:
@@ -132,6 +138,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
           return <RadioboxMarkedIcon {...iconProps} />;
         case IconType.refresh:
           return <RefreshIcon {...iconProps} />;
+        case IconType.thumbsUp:
+          return <ThumbsUpIcon {...iconProps} />;
         case IconType.tnb:
           return <TnbIcon {...iconProps} />;
         default:

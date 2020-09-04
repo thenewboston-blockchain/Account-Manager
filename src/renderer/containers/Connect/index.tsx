@@ -1,7 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
-import {toast} from 'react-toastify';
 
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
@@ -9,6 +8,7 @@ import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch, InputOption, ProtocolType} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
+import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import yup from '@renderer/utils/yup';
 
 import './Connect.scss';
@@ -56,10 +56,10 @@ const Connect: FC = () => {
       };
       const response = await dispatch(connectAndStoreLocalData(bankAddressData, nickname));
       if (response?.error) {
-        toast.error(response.error);
+        displayErrorToast(response.error);
       }
     } catch (error) {
-      toast.error('An error occurred');
+      displayToast('An error occurred');
     } finally {
       setSubmitting(false);
     }

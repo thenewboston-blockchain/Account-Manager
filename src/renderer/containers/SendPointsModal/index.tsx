@@ -8,7 +8,7 @@ import Modal from '@renderer/components/Modal';
 import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
 import {Tx} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
-import {displayErrorToast} from '@renderer/utils/errors';
+import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import yup from '@renderer/utils/yup';
@@ -118,6 +118,7 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
     try {
       setSubmitting(true);
       await createBlock(recipientAccountNumber, senderAccountNumber, txs);
+      displayToast('Your payment has been sent', 'success');
       close();
     } catch (error) {
       displayErrorToast(error);
