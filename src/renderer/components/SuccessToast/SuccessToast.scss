@@ -1,39 +1,17 @@
-.Toastify__toast-container {
-  width: 300px;
-  height: 42px;
-  padding: 0px;
-}
-
-.Toastify__toast {
-  min-height: 0px;
-  margin: 0px;
-  padding: 12px;
-  border-left: var(--color-tertiary) 3px solid;
-}
-
-.Toastify__close-button {
-  display: none;
-}
-
 .SuccessToast {
+  border-left: 3px solid var(--color-tertiary);
   display: flex;
+  padding: 12px;
 
-  .ThumbsUp {
-    height: 18px;
-    width: 20px;
+  &__icon {
+    color: var(--color-tertiary);
     margin-right: 14px;
-    svg {
-      fill: var(--color-tertiary);
-    }
   }
 
-  p {
-    font-family: Roboto;
-    font-style: normal;
+  &__text {
+    color: var(--color-black);
+    font-family: var(--font-family-default);
     font-weight: bold;
-    font-size: 14px;
-    line-height: 18px;
-    margin: 0px;
-    color: var(--color-primary);
+    margin: 0;
   }
 }

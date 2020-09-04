@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
-
 import React, {FC} from 'react';
 
 import Icon, {IconType} from '@renderer/components/Icon';
@@ -13,8 +11,8 @@ interface ComponentProps {
 const SuccessToast: FC<ComponentProps> = ({message}) => {
   return (
     <div className="SuccessToast">
-      <Icon className="ThumbsUp" icon={IconType.thumbsUp} size={16} />
-      <p>{message}</p>
+      <Icon className="SuccessToast__icon" icon={IconType.thumbsUp} size={20} />
+      <p className="SuccessToast__text">{message}</p>
     </div>
   );
 };
