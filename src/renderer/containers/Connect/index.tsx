@@ -14,7 +14,7 @@ import yup from '@renderer/utils/yup';
 import './Connect.scss';
 
 const initialValues = {
-  ipAddress: '167.99.173.247',
+  ipAddress: '143.110.137.54',
   nickname: '',
   port: '',
   protocol: 'http' as ProtocolType,
