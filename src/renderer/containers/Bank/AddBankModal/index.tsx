@@ -62,7 +62,7 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       const bankConfig = await dispatch(fetchBankConfig(address));
 
       if (bankConfig.error) {
-        displayErrorToast(bankConfig);
+        displayErrorToast(bankConfig.error);
         setSubmitting(false);
         return;
       }

@@ -52,7 +52,7 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
       };
       const response = await dispatch(connectAndStoreLocalData(bankAddressData, nickname));
       if (response?.error) {
-        displayErrorToast(response);
+        displayErrorToast(response.error);
         setSubmitting(false);
         return;
       }

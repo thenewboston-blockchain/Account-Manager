@@ -56,7 +56,7 @@ const Connect: FC = () => {
       };
       const response = await dispatch(connectAndStoreLocalData(bankAddressData, nickname));
       if (response?.error) {
-        displayErrorToast(response);
+        displayErrorToast(response.error);
       }
     } catch (error) {
       displayToast('An error occurred');

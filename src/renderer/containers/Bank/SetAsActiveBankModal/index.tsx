@@ -23,7 +23,7 @@ const SetAsActiveBankModal: FC<ComponentProps> = ({bank, close}) => {
       setSubmitting(true);
       const response = await dispatch(connectAndStoreLocalData(bank, bank.nickname));
       if (response?.error) {
-        displayErrorToast(response);
+        displayErrorToast(response.error);
         setSubmitting(false);
         return;
       }

@@ -63,7 +63,7 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
       const validatorConfig = await dispatch(fetchValidatorConfig(address));
 
       if (validatorConfig.error) {
-        displayErrorToast(validatorConfig);
+        displayErrorToast(validatorConfig.error);
         setSubmitting(false);
         return;
       }
