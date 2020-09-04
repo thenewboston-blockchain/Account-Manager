@@ -4,6 +4,7 @@ import React, {forwardRef, ReactNode, useCallback, useMemo} from 'react';
 import clsx from 'clsx';
 
 import AlertIcon from 'mdi-react/AlertIcon';
+import AlertCircleOutlineIcon from 'mdi-react/AlertCircleOutlineIcon';
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon';
 import ArrowRightIcon from 'mdi-react/ArrowRightIcon';
 import BellIcon from 'mdi-react/BellIcon';
@@ -31,6 +32,7 @@ import './Icon.scss';
 // These names are camelCased versions of the names found in https://materialdesignicons.com/
 export enum IconType {
   alert,
+  alertCircleOutline,
   arrowLeft,
   arrowRight,
   bell,
@@ -98,6 +100,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
       switch (icon) {
         case IconType.alert:
           return <AlertIcon {...iconProps} />;
+        case IconType.alertCircleOutline:
+          return <AlertCircleOutlineIcon {...iconProps} />;
         case IconType.arrowLeft:
           return <ArrowLeftIcon {...iconProps} />;
         case IconType.arrowRight:

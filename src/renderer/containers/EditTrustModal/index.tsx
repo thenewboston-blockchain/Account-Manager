@@ -1,5 +1,4 @@
 import React, {FC, useMemo, useState} from 'react';
-import {toast} from 'react-toastify';
 import axios from 'axios';
 
 import {FormInput} from '@renderer/components/FormComponents';
@@ -8,6 +7,7 @@ import {useNavigationalHistory} from '@renderer/hooks';
 import {ManagedNode} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 import {generateSignature, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
+import {displayToast} from '@renderer/utils/toast';
 import yup from '@renderer/utils/yup';
 
 interface ComponentProps {
@@ -45,7 +45,7 @@ const EditTrustModal: FC<ComponentProps> = ({close, requestingNode, targetIdenti
       await axios.patch(address, requestData);
       reload();
     } catch (error) {
-      toast.error('An error occurred');
+      displayToast('An error occurred');
       setSubmitting(false);
     }
   };

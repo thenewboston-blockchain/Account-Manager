@@ -1,7 +1,6 @@
 import React, {FC, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
-import {toast} from 'react-toastify';
 
 import Modal from '@renderer/components/Modal';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
@@ -9,6 +8,7 @@ import {getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
 import {AppDispatch, ProtocolType} from '@renderer/types';
 import {formatAddress, formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
+import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import yup from '@renderer/utils/yup';
 
 import AddBankModalFields from './AddBankModalFields';
@@ -62,7 +62,7 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       const bankConfig = await dispatch(fetchBankConfig(address));
 
       if (bankConfig.error) {
-        toast.error(bankConfig.error);
+        displayErrorToast(bankConfig);
         setSubmitting(false);
         return;
       }
@@ -77,7 +77,7 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       history.push(`/bank/${formatPathFromNode(formattedData)}/overview`);
       close();
     } catch (error) {
-      toast.error('An error occurred');
+      displayToast('An error occurred');
     } finally {
       setSubmitting(false);
     }

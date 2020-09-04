@@ -1,16 +1,14 @@
 import React, {FC, ReactNode, useCallback, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
-import {toast} from 'react-toastify';
 
 import {FormButton} from '@renderer/components/FormComponents';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
-import SuccessToast from '@renderer/components/SuccessToast';
 import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
 import {Tx} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
-import {displayErrorToast} from '@renderer/utils/errors';
+import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import yup from '@renderer/utils/yup';
@@ -120,7 +118,7 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
     try {
       setSubmitting(true);
       await createBlock(recipientAccountNumber, senderAccountNumber, txs);
-      toast(<SuccessToast message="Your payment has been sent" />);
+      displayToast('Your payment has been sent', 'success');
       close();
     } catch (error) {
       displayErrorToast(error);
