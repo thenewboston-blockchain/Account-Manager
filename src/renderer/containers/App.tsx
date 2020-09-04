@@ -40,8 +40,8 @@ const App: FC = () => {
     <Router>
       {renderComponent()}
       <ToastContainer
-        autoClose={50000}
-        // closeOnClick
+        autoClose={5000}
+        closeOnClick
         draggable
         hideProgressBar
         newestOnTop
