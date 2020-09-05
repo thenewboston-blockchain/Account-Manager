@@ -136,6 +136,13 @@ const TopNavNotifications: FC = () => {
     });
   };
 
+  const renderUnreadNotificationsDot = (): ReactNode => {
+    const unreadNotifications = menuNotifications.filter(
+      ({notificationTime}) => lastReadTime && lastReadTime < notificationTime,
+    );
+    return unreadNotifications.length ? <span className="TopNavNotifications__unread-notifications-dot" /> : null;
+  };
+
   const truncate = (str: string, size: number) => {
     return str.length <= size ? str : `${str.slice(0, size)}...`;
   };
@@ -147,12 +154,15 @@ const TopNavNotifications: FC = () => {
 
   return (
     <>
-      <Icon
-        className={clsx('TopNavNotifications', {'TopNavNotifications--active': open})}
-        icon={IconType.bell}
-        onClick={handleBellClick}
-        ref={iconRef}
-      />
+      <div className="TopNavNotifications__Icon-container">
+        <Icon
+          className={clsx('TopNavNotifications', {'TopNavNotifications--active': open})}
+          icon={IconType.bell}
+          onClick={handleBellClick}
+          ref={iconRef}
+        />
+        {renderUnreadNotificationsDot()}
+      </div>
       {open &&
         createPortal(
           <TopNavNotificationsMenu
