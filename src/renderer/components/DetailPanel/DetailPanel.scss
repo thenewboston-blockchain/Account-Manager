@@ -1,4 +1,9 @@
 .DetailPanel {
+  a {
+    color: var(--color-secondary);
+    text-decoration: none;
+  }
+
   &__table {
     td,
     th {
@@ -11,6 +16,7 @@
     th {
       color: var(--color-sail-gray-500);
       font-weight: 500;
+      padding-right: 8px;
     }
 
     td {
