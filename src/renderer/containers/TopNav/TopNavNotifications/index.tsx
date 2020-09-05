@@ -36,13 +36,15 @@ const TopNavNotifications: FC = () => {
     const managedAccount = managedAccounts[accountNumber];
 
     if (managedAccount) {
-      return managedAccount.nickname || managedAccount.account_number;
+      return managedAccount.nickname
+        ? truncate(managedAccount.nickname, 16)
+        : truncate(managedAccount.account_number, 8);
     }
 
     const managedFriend = managedFriends[accountNumber];
 
     if (managedFriend) {
-      return managedFriend.nickname || managedFriend.account_number;
+      return managedFriend.nickname ? truncate(managedFriend.nickname, 16) : truncate(managedFriend.account_number, 8);
     }
 
     return accountNumber;
@@ -78,25 +80,29 @@ const TopNavNotifications: FC = () => {
     } = payload;
 
     return txs.map(({amount, recipient: recipientAccountNumber}: any) => (
-      <div className="TopNavNotificationsMenu__notification" key={recipientAccountNumber}>
-        <Icon className="TopNavNotificationsMenu__Icon" icon={IconType.checkboxBlankCircle} size={8} />
-        <div className="TopNavNotificationsMenu__right">
-          <div className="TopNavNotificationsMenu__description">
+      <div className="TopNavNotifications__notification" key={recipientAccountNumber}>
+        <Icon className="TopNavNotifications__Icon" icon={IconType.checkboxBlankCircle} size={8} />
+        <div className="TopNavNotifications__right">
+          <div className="TopNavNotifications__description">
             <div>
-              <NavLink className="TopNavNotificationsMenu__NavLink" to={`/account/${senderAccountNumber}/overview`}>
+              <NavLink className="TopNavNotifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
                 {getAccountNickname(senderAccountNumber)}
               </NavLink>{' '}
               paid you{' '}
-              <NavLink className="TopNavNotificationsMenu__NavLink" to={`/account/${recipientAccountNumber}/overview`}>
+              <NavLink className="TopNavNotifications__NavLink" to={`/account/${recipientAccountNumber}/overview`}>
                 ({getAccountNickname(recipientAccountNumber)})
               </NavLink>
             </div>
-            <div className="TopNavNotificationsMenu__time">1h ago</div>
+            <div className="TopNavNotifications__time">1h ago</div>
           </div>
-          <div className="TopNavNotificationsMenu__amount">+ {amount}</div>
+          <div className="TopNavNotifications__amount">+ {amount}</div>
         </div>
       </div>
     ));
+  };
+
+  const truncate = (str: string, size: number) => {
+    return str.length <= size ? str : `${str.slice(0, size)}...`;
   };
 
   return (
