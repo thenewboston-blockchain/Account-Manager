@@ -27,19 +27,24 @@ const TopNavNotifications: FC = () => {
   const [lastReadTime, setLastReadTime] = useState<number>(new Date().getTime());
   const [menuNotifications, setMenuNotifications] = useState<MenuNotification[]>([]);
   const [open, toggleOpen, , closeMenu] = useBooleanState(false);
+  const [websockets, setWebsockets] = useState([]);
   const iconRef = useRef<HTMLDivElement>(null);
   const managedAccounts = useSelector(getManagedAccounts);
   const managedFriends = useSelector(getManagedFriends);
 
   useEffect(() => {
-    const accountNumber = 'dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5';
-    const socket = new WebSocket(`ws://143.110.137.54/ws/confirmation_blocks/${accountNumber}`);
-    socket.onmessage = handleSocketMessage;
-  });
-
-  useEffect(() => {
     closeMenu();
   }, [pathname, closeMenu]);
+
+  useEffect(() => {
+    const sockets: any = Object.values(managedAccounts).map(
+      ({account_number}) => new WebSocket(`ws://143.110.137.54/ws/confirmation_blocks/${account_number}`),
+    );
+    setWebsockets(sockets);
+    return () => {
+      sockets.forEach((socket: any) => socket.close());
+    };
+  }, [managedAccounts]);
 
   const getAccountNickname = (accountNumber: string): string => {
     const managedAccount = managedAccounts[accountNumber];
@@ -73,22 +78,36 @@ const TopNavNotifications: FC = () => {
     closeMenu();
   };
 
-  const handleSocketMessage = (event: any) => {
-    try {
-      const notification = JSON.parse(event.data);
-      const time = new Date().getTime();
-      setMenuNotifications([
-        {
-          notificationTime: time,
-          notificationType: notification.notification_type,
-          payload: notification.payload,
-        },
-        ...menuNotifications,
-      ]);
-    } catch (error) {
-      displayErrorToast(error);
-    }
-  };
+  useEffect(() => {
+    websockets.forEach((socket: any) => {
+      socket.onmessage = (event: any) => {
+        try {
+          const notification = JSON.parse(event.data);
+
+          if (notification.notification_type === 'CONFIRMATION_BLOCK_NOTIFICATION') {
+            const blockIdentifiers = menuNotifications
+              .filter(({notificationType}) => notificationType === 'CONFIRMATION_BLOCK_NOTIFICATION')
+              .map((confirmationBlockNotification) => confirmationBlockNotification.payload.message.block_identifier);
+
+            const blockIdentifier = notification.payload.message.block_identifier;
+            if (blockIdentifiers.includes(blockIdentifier)) return;
+          }
+
+          const time = new Date().getTime();
+          setMenuNotifications([
+            {
+              notificationTime: time,
+              notificationType: notification.notification_type,
+              payload: notification.payload,
+            },
+            ...menuNotifications,
+          ]);
+        } catch (error) {
+          displayErrorToast(error);
+        }
+      };
+    });
+  }, [menuNotifications, websockets]);
 
   const renderNotifications = (): ReactNode[] => {
     let notifications = menuNotifications.filter(
@@ -137,10 +156,10 @@ const TopNavNotifications: FC = () => {
   };
 
   const renderUnreadNotificationsDot = (): ReactNode => {
-    const unreadNotifications = menuNotifications.filter(
-      ({notificationTime}) => lastReadTime < notificationTime,
-    );
-    return unreadNotifications.length ? <span className="TopNavNotifications__unread-notifications-dot" /> : null;
+    const unreadNotifications = menuNotifications.filter(({notificationTime}) => lastReadTime < notificationTime);
+    return unreadNotifications.length ? (
+      <span className="TopNavNotifications__unread-notifications-dot" onClick={handleBellClick} />
+    ) : null;
   };
 
   const truncate = (str: string, size: number) => {

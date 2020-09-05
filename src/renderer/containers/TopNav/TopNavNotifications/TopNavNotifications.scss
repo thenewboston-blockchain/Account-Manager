@@ -66,6 +66,7 @@
   &__unread-notifications-dot {
     background: var(--color-alert);
     border-radius: 99px;
+    cursor: pointer;
     height: 11px;
     position: absolute;
     right: 0;
