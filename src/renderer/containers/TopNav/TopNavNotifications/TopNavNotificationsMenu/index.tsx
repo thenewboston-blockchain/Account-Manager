@@ -9,10 +9,11 @@ import './TopNavNotificationsMenu.scss';
 interface ComponentProps {
   iconRef: RefObject<HTMLDivElement>;
   menuOpen: boolean;
+  notifications: ReactNode[];
   toggleOpen(): void;
 }
 
-const TopNavNotificationsMenu: FC<ComponentProps> = ({iconRef, menuOpen, toggleOpen}) => {
+const TopNavNotificationsMenu: FC<ComponentProps> = ({iconRef, menuOpen, notifications, toggleOpen}) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (e: any): void => {
@@ -86,9 +87,7 @@ const TopNavNotificationsMenu: FC<ComponentProps> = ({iconRef, menuOpen, toggleO
   return (
     <div className="TopNavNotificationsMenu" ref={menuRef}>
       {renderHeader()}
-      {renderNotification()}
-      {renderNotification()}
-      {renderNodeAlert()}
+      {notifications}
     </div>
   );
 };
