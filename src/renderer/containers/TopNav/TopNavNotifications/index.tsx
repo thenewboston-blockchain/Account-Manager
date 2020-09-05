@@ -24,7 +24,7 @@ interface MenuNotification {
 
 const TopNavNotifications: FC = () => {
   const {pathname} = useLocation();
-  const [lastReadTime, setLastReadTime] = useState<number | null>(null);
+  const [lastReadTime, setLastReadTime] = useState<number>(new Date().getTime());
   const [menuNotifications, setMenuNotifications] = useState<MenuNotification[]>([]);
   const [open, toggleOpen, , closeMenu] = useBooleanState(false);
   const iconRef = useRef<HTMLDivElement>(null);
@@ -111,7 +111,7 @@ const TopNavNotifications: FC = () => {
         <div className="TopNavNotifications__notification" key={recipient}>
           <Icon
             className={clsx('TopNavNotifications__Icon', {
-              'TopNavNotifications__Icon--read': lastReadTime && lastReadTime > notificationTime,
+              'TopNavNotifications__Icon--read': lastReadTime > notificationTime,
             })}
             icon={IconType.checkboxBlankCircle}
             size={8}
@@ -138,7 +138,7 @@ const TopNavNotifications: FC = () => {
 
   const renderUnreadNotificationsDot = (): ReactNode => {
     const unreadNotifications = menuNotifications.filter(
-      ({notificationTime}) => lastReadTime && lastReadTime < notificationTime,
+      ({notificationTime}) => lastReadTime < notificationTime,
     );
     return unreadNotifications.length ? <span className="TopNavNotifications__unread-notifications-dot" /> : null;
   };
