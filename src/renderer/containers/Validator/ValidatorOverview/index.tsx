@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 
+import A from '@renderer/components/A';
 import DetailPanel from '@renderer/components/DetailPanel';
 import {Loader} from '@renderer/components/FormElements';
 import {VALIDATOR_CONFIGS} from '@renderer/constants';
@@ -45,6 +46,22 @@ const ValidatorOverview: FC = () => {
             {
               key: 'Transaction Fee',
               value: validatorConfig.default_transaction_fee,
+            },
+            {
+              key: 'Daily Rate',
+              value: validatorConfig.daily_confirmation_rate || '-',
+            },
+            {
+              key: 'Root Account File',
+              value: <A href={validatorConfig.root_account_file}>{validatorConfig.root_account_file}</A>,
+            },
+            {
+              key: 'Root Account File Hash',
+              value: validatorConfig.root_account_file_hash,
+            },
+            {
+              key: 'Seed Block Identifier',
+              value: validatorConfig.seed_block_identifier || '-',
             },
             {
               key: 'Node Type',
