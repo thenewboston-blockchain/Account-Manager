@@ -24,6 +24,10 @@
     &--offline {
       color: var(--color-sail-gray-300);
     }
+
+    &--read {
+      color: transparent;
+    }
   }
 
   &__NavLink {

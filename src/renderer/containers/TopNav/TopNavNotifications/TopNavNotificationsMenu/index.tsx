@@ -4,18 +4,25 @@ import {useEventListener} from '@renderer/hooks';
 import './TopNavNotificationsMenu.scss';
 
 interface ComponentProps {
+  handleMenuClose(): void;
   iconRef: RefObject<HTMLDivElement>;
   menuOpen: boolean;
   notifications: ReactNode[];
-  toggleOpen(): void;
+  updateLastReadTime(): void;
 }
 
-const TopNavNotificationsMenu: FC<ComponentProps> = ({iconRef, menuOpen, notifications, toggleOpen}) => {
+const TopNavNotificationsMenu: FC<ComponentProps> = ({
+  handleMenuClose,
+  iconRef,
+  menuOpen,
+  notifications,
+  updateLastReadTime,
+}) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (e: any): void => {
     if (menuOpen && !iconRef.current?.contains(e.target) && !menuRef.current?.contains(e.target)) {
-      toggleOpen();
+      handleMenuClose();
     }
   };
 
@@ -28,7 +35,9 @@ const TopNavNotificationsMenu: FC<ComponentProps> = ({iconRef, menuOpen, notific
           <h2>Notifications</h2>
           <span className="TopNavNotificationsMenu__count">5 unread</span>
         </div>
-        <span className="TopNavNotificationsMenu__mark-as-read">Mark all as read</span>
+        <span className="TopNavNotificationsMenu__mark-as-read" onClick={updateLastReadTime}>
+          Mark all as read
+        </span>
       </div>
     );
   };
