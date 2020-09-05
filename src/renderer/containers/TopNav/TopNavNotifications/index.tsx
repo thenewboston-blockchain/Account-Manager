@@ -3,6 +3,8 @@ import {createPortal} from 'react-dom';
 import {useSelector} from 'react-redux';
 import {NavLink, useLocation} from 'react-router-dom';
 import clsx from 'clsx';
+import reverse from 'lodash/reverse';
+import sortBy from 'lodash/sortBy';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState} from '@renderer/hooks';
@@ -76,12 +78,12 @@ const TopNavNotifications: FC = () => {
       const notification = JSON.parse(event.data);
       const time = new Date().getTime();
       setMenuNotifications([
-        ...menuNotifications,
         {
           notificationTime: time,
           notificationType: notification.notification_type,
           payload: notification.payload,
         },
+        ...menuNotifications,
       ]);
     } catch (error) {
       displayErrorToast(error);
@@ -89,45 +91,49 @@ const TopNavNotifications: FC = () => {
   };
 
   const renderNotifications = (): ReactNode[] => {
-    return menuNotifications
-      .filter(({notificationType}) => notificationType === 'CONFIRMATION_BLOCK_NOTIFICATION')
-      .map(({notificationTime, payload}) => {
-        const {
-          message: {
-            block: {
-              account_number: senderAccountNumber,
-              message: {txs},
-            },
-          },
-        } = payload;
+    let notifications = menuNotifications.filter(
+      ({notificationType}) => notificationType === 'CONFIRMATION_BLOCK_NOTIFICATION',
+    );
+    notifications = sortBy(notifications, ['notificationTime']);
+    notifications = reverse(notifications);
 
-        return txs.map(({amount, recipient}: any) => (
-          <div className="TopNavNotifications__notification" key={recipient}>
-            <Icon
-              className={clsx('TopNavNotifications__Icon', {
-                'TopNavNotifications__Icon--read': lastReadTime && lastReadTime < notificationTime,
-              })}
-              icon={IconType.checkboxBlankCircle}
-              size={8}
-            />
-            <div className="TopNavNotifications__right">
-              <div className="TopNavNotifications__description">
-                <div>
-                  <NavLink className="TopNavNotifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
-                    {getAccountNickname(senderAccountNumber)}
-                  </NavLink>{' '}
-                  paid you{' '}
-                  <NavLink className="TopNavNotifications__NavLink" to={`/account/${recipient}/overview`}>
-                    ({getAccountNickname(recipient)})
-                  </NavLink>
-                </div>
-                <div className="TopNavNotifications__time">1h ago</div>
+    return notifications.map(({notificationTime, payload}) => {
+      const {
+        message: {
+          block: {
+            account_number: senderAccountNumber,
+            message: {txs},
+          },
+        },
+      } = payload;
+
+      return txs.map(({amount, recipient}: any) => (
+        <div className="TopNavNotifications__notification" key={recipient}>
+          <Icon
+            className={clsx('TopNavNotifications__Icon', {
+              'TopNavNotifications__Icon--read': lastReadTime && lastReadTime > notificationTime,
+            })}
+            icon={IconType.checkboxBlankCircle}
+            size={8}
+          />
+          <div className="TopNavNotifications__right">
+            <div className="TopNavNotifications__description">
+              <div>
+                <NavLink className="TopNavNotifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
+                  {getAccountNickname(senderAccountNumber)}
+                </NavLink>{' '}
+                paid you{' '}
+                <NavLink className="TopNavNotifications__NavLink" to={`/account/${recipient}/overview`}>
+                  ({getAccountNickname(recipient)})
+                </NavLink>
               </div>
-              <div className="TopNavNotifications__amount">+ {amount}</div>
+              <div className="TopNavNotifications__time">1h ago</div>
             </div>
+            <div className="TopNavNotifications__amount">+ {amount}</div>
           </div>
-        ));
-      });
+        </div>
+      ));
+    });
   };
 
   const truncate = (str: string, size: number) => {
@@ -136,7 +142,6 @@ const TopNavNotifications: FC = () => {
 
   const updateLastReadTime = (): void => {
     const time = new Date().getTime();
-    console.warn(time);
     setLastReadTime(time);
   };
 
