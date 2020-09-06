@@ -24,6 +24,12 @@ export const formatPathFromNode = (node: AddressData): string => {
   return formatPath(node.ip_address, node.port, node.protocol);
 };
 
+export const formatSocketAddress = (ipAddress: string, port: number | string | null): string => {
+  const portNumber = Number(port);
+  const formattedPort = portNumber && portNumber !== 80 ? `:${port}` : '';
+  return `ws://${ipAddress}${formattedPort}`;
+};
+
 export const parseAddressData = (address: string): {ipAddress: string; port: number | null; protocol: ProtocolType} => {
   const [protocol, ipAddress, port] = address.replace('//', '').split(':');
   const formattedPort = port ? parseInt(port, 10) : null;

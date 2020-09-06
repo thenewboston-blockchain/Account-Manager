@@ -8,7 +8,8 @@ import sortBy from 'lodash/sortBy';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState} from '@renderer/hooks';
-import {getManagedAccounts, getManagedFriends} from '@renderer/selectors';
+import {getActiveBank, getManagedAccounts, getManagedFriends} from '@renderer/selectors';
+import {formatSocketAddress} from '@renderer/utils/address';
 import {displayErrorToast} from '@renderer/utils/toast';
 
 import TopNavNotificationsMenu from './TopNavNotificationsMenu';
@@ -28,6 +29,8 @@ const TopNavNotifications: FC = () => {
   const [menuNotifications, setMenuNotifications] = useState<MenuNotification[]>([]);
   const [open, toggleOpen, , closeMenu] = useBooleanState(false);
   const [websockets, setWebsockets] = useState([]);
+  const activeBank = useSelector(getActiveBank)!;
+  const bankSocketAddress = formatSocketAddress(activeBank.ip_address, activeBank.port);
   const iconRef = useRef<HTMLDivElement>(null);
   const managedAccounts = useSelector(getManagedAccounts);
   const managedFriends = useSelector(getManagedFriends);
@@ -44,13 +47,13 @@ const TopNavNotifications: FC = () => {
   useEffect(() => {
     const accountNumbers = managedAccountNumbers.split('-');
     const sockets: any = accountNumbers.map(
-      (accountNumber) => new WebSocket(`ws://143.110.137.54/ws/confirmation_blocks/${accountNumber}`),
+      (accountNumber) => new WebSocket(`${bankSocketAddress}/ws/confirmation_blocks/${accountNumber}`),
     );
     setWebsockets(sockets);
     return () => {
       sockets.forEach((socket: any) => socket.close());
     };
-  }, [managedAccountNumbers]);
+  }, [bankSocketAddress, managedAccountNumbers]);
 
   const getAccountNickname = (accountNumber: string): string => {
     const managedAccount = managedAccounts[accountNumber];
