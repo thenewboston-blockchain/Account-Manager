@@ -182,7 +182,7 @@ const TopNavNotifications: FC = () => {
                   ({getAccountNickname(recipient)})
                 </NavLink>
               </div>
-              <div className="TopNavNotifications__time">1h ago</div>
+              <div className="TopNavNotifications__time">{notificationTime}</div>
             </div>
             <div className="TopNavNotifications__amount">+ {amount}</div>
           </div>
