@@ -97,7 +97,6 @@ const TopNavNotifications: FC = () => {
   const processUpdatedBalances = useCallback(
     (updatedBalances: any[]) => {
       const accountNumbers = managedAccountNumbers.split('-');
-
       updatedBalances
         .filter(({account_number: accountNumber}) => accountNumbers.includes(accountNumber))
         .forEach(({account_number: accountNumber, balance}) => {

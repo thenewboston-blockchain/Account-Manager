@@ -4,8 +4,10 @@
   background: var(--color-white);
   border-radius: 3px;
   box-shadow: 0 3px 12px 1px rgba(4, 34, 53, 0.24);
+  max-height: 60%;
   max-width: 440px;
   min-width: 400px;
+  overflow-y: auto;
   position: fixed;
   right: 12px;
   top: 40px;
