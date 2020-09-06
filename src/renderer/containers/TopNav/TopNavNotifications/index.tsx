@@ -1,6 +1,6 @@
-import React, {FC, ReactNode, useEffect, useRef, useState} from 'react';
+import React, {FC, ReactNode, useCallback, useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {NavLink, useLocation} from 'react-router-dom';
 import clsx from 'clsx';
 import reverse from 'lodash/reverse';
@@ -9,8 +9,10 @@ import sortBy from 'lodash/sortBy';
 import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState} from '@renderer/hooks';
 import {getActiveBank, getManagedAccounts, getManagedFriends} from '@renderer/selectors';
+import {setManagedAccountBalance} from '@renderer/store/app';
 import {formatSocketAddress} from '@renderer/utils/address';
 import {displayErrorToast} from '@renderer/utils/toast';
+import {AppDispatch} from '@renderer/types';
 
 import TopNavNotificationsMenu from './TopNavNotificationsMenu';
 import './TopNavNotifications.scss';
@@ -30,6 +32,7 @@ const TopNavNotifications: FC = () => {
   const [open, toggleOpen, , closeMenu] = useBooleanState(false);
   const [websockets, setWebsockets] = useState([]);
   const activeBank = useSelector(getActiveBank)!;
+  const dispatch = useDispatch<AppDispatch>();
   const bankSocketAddress = formatSocketAddress(activeBank.ip_address, activeBank.port);
   const iconRef = useRef<HTMLDivElement>(null);
   const managedAccounts = useSelector(getManagedAccounts);
@@ -91,6 +94,24 @@ const TopNavNotifications: FC = () => {
     closeMenu();
   };
 
+  const processUpdatedBalances = useCallback(
+    (updatedBalances: any[]) => {
+      const accountNumbers = managedAccountNumbers.split('-');
+
+      updatedBalances
+        .filter(({account_number: accountNumber}) => accountNumbers.includes(accountNumber))
+        .forEach(({account_number: accountNumber, balance}) => {
+          dispatch(
+            setManagedAccountBalance({
+              account_number: accountNumber,
+              balance: balance || '0',
+            }),
+          );
+        });
+    },
+    [dispatch, managedAccountNumbers],
+  );
+
   useEffect(() => {
     websockets.forEach((socket: any) => {
       socket.onmessage = (event: any) => {
@@ -106,6 +127,9 @@ const TopNavNotifications: FC = () => {
             if (blockIdentifiers.includes(blockIdentifier)) return;
           }
 
+          const updatedBalances = notification.payload.message.updated_balances;
+          processUpdatedBalances(updatedBalances);
+
           const time = new Date().getTime();
           setMenuNotifications([
             {
@@ -120,7 +144,7 @@ const TopNavNotifications: FC = () => {
         }
       };
     });
-  }, [menuNotifications, websockets]);
+  }, [menuNotifications, processUpdatedBalances, websockets]);
 
   const renderNotifications = (): ReactNode[] => {
     let notifications = menuNotifications.filter(
