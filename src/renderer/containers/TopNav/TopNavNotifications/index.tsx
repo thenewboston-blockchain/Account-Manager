@@ -32,19 +32,25 @@ const TopNavNotifications: FC = () => {
   const managedAccounts = useSelector(getManagedAccounts);
   const managedFriends = useSelector(getManagedFriends);
 
+  const managedAccountNumbers = Object.values(managedAccounts)
+    .map(({account_number}) => account_number)
+    .sort()
+    .join('-');
+
   useEffect(() => {
     closeMenu();
   }, [pathname, closeMenu]);
 
   useEffect(() => {
-    const sockets: any = Object.values(managedAccounts).map(
-      ({account_number}) => new WebSocket(`ws://143.110.137.54/ws/confirmation_blocks/${account_number}`),
+    const accountNumbers = managedAccountNumbers.split('-');
+    const sockets: any = accountNumbers.map(
+      (accountNumber) => new WebSocket(`ws://143.110.137.54/ws/confirmation_blocks/${accountNumber}`),
     );
     setWebsockets(sockets);
     return () => {
       sockets.forEach((socket: any) => socket.close());
     };
-  }, [managedAccounts]);
+  }, [managedAccountNumbers]);
 
   const getAccountNickname = (accountNumber: string): string => {
     const managedAccount = managedAccounts[accountNumber];
