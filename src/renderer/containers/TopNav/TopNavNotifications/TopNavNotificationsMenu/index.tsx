@@ -8,6 +8,7 @@ interface ComponentProps {
   iconRef: RefObject<HTMLDivElement>;
   menuOpen: boolean;
   notifications: ReactNode[];
+  unreadNotificationsLength: number;
   updateLastReadTime(): void;
 }
 
@@ -16,6 +17,7 @@ const TopNavNotificationsMenu: FC<ComponentProps> = ({
   iconRef,
   menuOpen,
   notifications,
+  unreadNotificationsLength,
   updateLastReadTime,
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
@@ -33,7 +35,7 @@ const TopNavNotificationsMenu: FC<ComponentProps> = ({
       <div className="TopNavNotificationsMenu__header">
         <div className="TopNavNotificationsMenu__header-left">
           <h2>Notifications</h2>
-          <span className="TopNavNotificationsMenu__count">5 unread</span>
+          <span className="TopNavNotificationsMenu__count">{unreadNotificationsLength} unread</span>
         </div>
         <span className="TopNavNotificationsMenu__mark-as-read" onClick={updateLastReadTime}>
           Mark all as read

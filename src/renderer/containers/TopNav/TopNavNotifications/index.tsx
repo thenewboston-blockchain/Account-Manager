@@ -73,6 +73,10 @@ const TopNavNotifications: FC = () => {
     return accountNumber;
   };
 
+  const getUnreadNotificationsLength = (): number => {
+    return menuNotifications.filter(({notificationTime}) => lastReadTime < notificationTime).length;
+  };
+
   const handleBellClick = (): void => {
     if (open) {
       updateLastReadTime();
@@ -165,8 +169,7 @@ const TopNavNotifications: FC = () => {
   };
 
   const renderUnreadNotificationsDot = (): ReactNode => {
-    const unreadNotifications = menuNotifications.filter(({notificationTime}) => lastReadTime < notificationTime);
-    return unreadNotifications.length ? (
+    return getUnreadNotificationsLength() ? (
       <span className="TopNavNotifications__unread-notifications-dot" onClick={handleBellClick} />
     ) : null;
   };
@@ -198,6 +201,7 @@ const TopNavNotifications: FC = () => {
             iconRef={iconRef}
             menuOpen={open}
             notifications={renderNotifications()}
+            unreadNotificationsLength={getUnreadNotificationsLength()}
             updateLastReadTime={updateLastReadTime}
           />,
           dropdownRoot,
