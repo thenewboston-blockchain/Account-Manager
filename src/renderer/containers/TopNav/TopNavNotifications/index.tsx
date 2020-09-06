@@ -74,7 +74,7 @@ const TopNavNotifications: FC = () => {
       return managedFriend.nickname ? truncate(managedFriend.nickname, 16) : truncate(managedFriend.account_number, 8);
     }
 
-    return accountNumber;
+    return truncate(accountNumber, 16);
   };
 
   const getUnreadNotificationsLength = (): number => {
