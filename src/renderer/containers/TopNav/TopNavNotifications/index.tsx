@@ -5,6 +5,7 @@ import {NavLink, useLocation} from 'react-router-dom';
 import clsx from 'clsx';
 import reverse from 'lodash/reverse';
 import sortBy from 'lodash/sortBy';
+import TimeAgo from 'timeago-react';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState} from '@renderer/hooks';
@@ -162,32 +163,42 @@ const TopNavNotifications: FC = () => {
         },
       } = payload;
 
-      return txs.map(({amount, recipient}: any) => (
-        <div className="TopNavNotifications__notification" key={recipient}>
-          <Icon
-            className={clsx('TopNavNotifications__Icon', {
-              'TopNavNotifications__Icon--read': lastReadTime > notificationTime,
-            })}
-            icon={IconType.checkboxBlankCircle}
-            size={8}
-          />
-          <div className="TopNavNotifications__right">
-            <div className="TopNavNotifications__description">
-              <div>
-                <NavLink className="TopNavNotifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
-                  {getAccountNickname(senderAccountNumber)}
-                </NavLink>{' '}
-                paid you{' '}
-                <NavLink className="TopNavNotifications__NavLink" to={`/account/${recipient}/overview`}>
-                  ({getAccountNickname(recipient)})
-                </NavLink>
+      return txs.map(({amount, recipient}: any) => {
+        const read = lastReadTime > notificationTime;
+
+        return (
+          <div className="TopNavNotifications__notification" key={recipient}>
+            <Icon
+              className={clsx('TopNavNotifications__Icon', {
+                'TopNavNotifications__Icon--read': read,
+              })}
+              icon={IconType.checkboxBlankCircle}
+              size={8}
+            />
+            <div className="TopNavNotifications__right">
+              <div className="TopNavNotifications__description">
+                <div>
+                  <NavLink className="TopNavNotifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
+                    {getAccountNickname(senderAccountNumber)}
+                  </NavLink>{' '}
+                  paid you{' '}
+                  <NavLink className="TopNavNotifications__NavLink" to={`/account/${recipient}/overview`}>
+                    ({getAccountNickname(recipient)})
+                  </NavLink>
+                </div>
+                <div
+                  className={clsx('TopNavNotifications__time', {
+                    'TopNavNotifications__time--read': read,
+                  })}
+                >
+                  <TimeAgo datetime={notificationTime} />
+                </div>
               </div>
-              <div className="TopNavNotifications__time">{notificationTime}</div>
+              <div className="TopNavNotifications__amount">+ {amount}</div>
             </div>
-            <div className="TopNavNotifications__amount">+ {amount}</div>
           </div>
-        </div>
-      ));
+        );
+      });
     });
   };
 

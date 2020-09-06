@@ -61,6 +61,10 @@
     font-size: 10px;
     font-weight: 500;
     margin-top: 6px;
+
+    &--read {
+      color: var(--color-sail-gray-300);
+    }
   }
 
   &__unread-notifications-dot {
