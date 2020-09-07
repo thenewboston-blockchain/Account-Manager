@@ -10,6 +10,7 @@ import TimeAgo from 'timeago-react';
 import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState} from '@renderer/hooks';
 import {getManagedAccounts, getManagedFriends, getNotifications} from '@renderer/selectors';
+import {NotificationType} from '@renderer/types';
 
 import NotificationsMenu from './NotificationsMenu';
 import './Notifications.scss';
@@ -74,7 +75,7 @@ const Notifications: FC = () => {
     const accountNumbers = managedAccountNumbers.split('-');
 
     let confirmationBlockNotifications = Object.values(notifications).filter(
-      ({notificationType}) => notificationType === 'CONFIRMATION_BLOCK_NOTIFICATION',
+      ({notificationType}) => notificationType === NotificationType.confirmationBlockNotification,
     );
     confirmationBlockNotifications = sortBy(confirmationBlockNotifications, ['notificationTime']);
     confirmationBlockNotifications = reverse(confirmationBlockNotifications);

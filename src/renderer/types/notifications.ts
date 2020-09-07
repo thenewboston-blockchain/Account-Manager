@@ -9,3 +9,7 @@ export interface Notification {
 export interface NotificationDict {
   [key: number]: Notification;
 }
+
+export enum NotificationType {
+  confirmationBlockNotification = 'CONFIRMATION_BLOCK_NOTIFICATION',
+}
