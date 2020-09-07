@@ -1,7 +1,7 @@
 import React, {FC, ReactNode, RefObject, useRef} from 'react';
 import {useEventListener} from '@renderer/hooks';
 
-import './TopNavNotificationsMenu.scss';
+import './NotificationsMenu.scss';
 
 interface ComponentProps {
   handleMenuClose(): void;
@@ -12,7 +12,7 @@ interface ComponentProps {
   updateLastReadTime(): void;
 }
 
-const TopNavNotificationsMenu: FC<ComponentProps> = ({
+const NotificationsMenu: FC<ComponentProps> = ({
   handleMenuClose,
   iconRef,
   menuOpen,
@@ -32,12 +32,12 @@ const TopNavNotificationsMenu: FC<ComponentProps> = ({
 
   const renderHeader = (): ReactNode => {
     return (
-      <div className="TopNavNotificationsMenu__header">
-        <div className="TopNavNotificationsMenu__header-left">
+      <div className="NotificationsMenu__header">
+        <div className="NotificationsMenu__header-left">
           <h2>Notifications</h2>
-          <span className="TopNavNotificationsMenu__count">{unreadNotificationsLength} unread</span>
+          <span className="NotificationsMenu__count">{unreadNotificationsLength} unread</span>
         </div>
-        <span className="TopNavNotificationsMenu__mark-as-read" onClick={updateLastReadTime}>
+        <span className="NotificationsMenu__mark-as-read" onClick={updateLastReadTime}>
           Mark all as read
         </span>
       </div>
@@ -45,11 +45,11 @@ const TopNavNotificationsMenu: FC<ComponentProps> = ({
   };
 
   return (
-    <div className="TopNavNotificationsMenu" ref={menuRef}>
+    <div className="NotificationsMenu" ref={menuRef}>
       {renderHeader()}
       {notifications}
     </div>
   );
 };
 
-export default TopNavNotificationsMenu;
+export default NotificationsMenu;

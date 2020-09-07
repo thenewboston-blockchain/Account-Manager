@@ -15,8 +15,8 @@ import {formatSocketAddress} from '@renderer/utils/address';
 import {displayErrorToast} from '@renderer/utils/toast';
 import {AppDispatch} from '@renderer/types';
 
-import TopNavNotificationsMenu from './TopNavNotificationsMenu';
-import './TopNavNotifications.scss';
+import NotificationsMenu from './NotificationsMenu';
+import './Notifications.scss';
 
 const dropdownRoot = document.getElementById('dropdown-root')!;
 
@@ -26,7 +26,7 @@ interface MenuNotification {
   payload: any;
 }
 
-const TopNavNotifications: FC = () => {
+const Notifications: FC = () => {
   const {pathname} = useLocation();
   const [lastReadTime, setLastReadTime] = useState<number>(new Date().getTime());
   const [menuNotifications, setMenuNotifications] = useState<MenuNotification[]>([]);
@@ -167,34 +167,34 @@ const TopNavNotifications: FC = () => {
         const read = lastReadTime > notificationTime;
 
         return (
-          <div className="TopNavNotifications__notification" key={recipient}>
+          <div className="Notifications__notification" key={recipient}>
             <Icon
-              className={clsx('TopNavNotifications__Icon', {
-                'TopNavNotifications__Icon--read': read,
+              className={clsx('Notifications__Icon', {
+                'Notifications__Icon--read': read,
               })}
               icon={IconType.checkboxBlankCircle}
               size={8}
             />
-            <div className="TopNavNotifications__right">
-              <div className="TopNavNotifications__description">
+            <div className="Notifications__right">
+              <div className="Notifications__description">
                 <div>
-                  <NavLink className="TopNavNotifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
+                  <NavLink className="Notifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
                     {getAccountNickname(senderAccountNumber)}
                   </NavLink>{' '}
                   paid you{' '}
-                  <NavLink className="TopNavNotifications__NavLink" to={`/account/${recipient}/overview`}>
+                  <NavLink className="Notifications__NavLink" to={`/account/${recipient}/overview`}>
                     ({getAccountNickname(recipient)})
                   </NavLink>
                 </div>
                 <div
-                  className={clsx('TopNavNotifications__time', {
-                    'TopNavNotifications__time--read': read,
+                  className={clsx('Notifications__time', {
+                    'Notifications__time--read': read,
                   })}
                 >
                   <TimeAgo datetime={notificationTime} />
                 </div>
               </div>
-              <div className="TopNavNotifications__amount">+ {amount}</div>
+              <div className="Notifications__amount">+ {amount}</div>
             </div>
           </div>
         );
@@ -204,7 +204,7 @@ const TopNavNotifications: FC = () => {
 
   const renderUnreadNotificationsDot = (): ReactNode => {
     return getUnreadNotificationsLength() ? (
-      <span className="TopNavNotifications__unread-notifications-dot" onClick={handleBellClick} />
+      <span className="Notifications__unread-notifications-dot" onClick={handleBellClick} />
     ) : null;
   };
 
@@ -219,9 +219,9 @@ const TopNavNotifications: FC = () => {
 
   return (
     <>
-      <div className="TopNavNotifications__Icon-container">
+      <div className="Notifications__Icon-container">
         <Icon
-          className={clsx('TopNavNotifications', {'TopNavNotifications--active': open})}
+          className={clsx('Notifications', {'Notifications--active': open})}
           icon={IconType.bell}
           onClick={handleBellClick}
           ref={iconRef}
@@ -230,7 +230,7 @@ const TopNavNotifications: FC = () => {
       </div>
       {open &&
         createPortal(
-          <TopNavNotificationsMenu
+          <NotificationsMenu
             handleMenuClose={handleMenuClose}
             iconRef={iconRef}
             menuOpen={open}
@@ -244,4 +244,4 @@ const TopNavNotifications: FC = () => {
   );
 };
 
-export default TopNavNotifications;
+export default Notifications;
