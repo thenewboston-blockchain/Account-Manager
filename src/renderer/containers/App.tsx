@@ -11,7 +11,8 @@ import {connect} from '@renderer/dispatchers/app';
 import {getActiveBank, getActiveBankConfig, getManagedAccounts} from '@renderer/selectors';
 import {AppDispatch} from '@renderer/types';
 import {formatSocketAddress} from '@renderer/utils/address';
-import initializeSockets, {handleConfirmationBlockNotification} from '@renderer/utils/sockets';
+import initializeSockets from '@renderer/utils/sockets';
+import handleConfirmationBlockNotification from '@renderer/utils/sockets/confirmation-block-notifications';
 import {displayErrorToast} from '@renderer/utils/toast';
 
 const App: FC = () => {
