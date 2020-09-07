@@ -31,6 +31,10 @@ const Notifications: FC = () => {
     .sort()
     .join('-');
 
+  const unreadNotificationsLength = Object.values(notifications).filter(
+    ({notificationTime}) => lastReadTime < notificationTime,
+  ).length;
+
   useEffect(() => {
     closeMenu();
   }, [pathname, closeMenu]);
@@ -51,10 +55,6 @@ const Notifications: FC = () => {
     }
 
     return truncate(accountNumber, 16);
-  };
-
-  const getUnreadNotificationsLength = (): number => {
-    return Object.values(notifications).filter(({notificationTime}) => lastReadTime < notificationTime).length;
   };
 
   const handleBellClick = (): void => {
@@ -132,7 +132,7 @@ const Notifications: FC = () => {
   };
 
   const renderUnreadNotificationsDot = (): ReactNode => {
-    return getUnreadNotificationsLength() ? (
+    return unreadNotificationsLength ? (
       <span className="Notifications__unread-notifications-dot" onClick={handleBellClick} />
     ) : null;
   };
@@ -164,7 +164,7 @@ const Notifications: FC = () => {
             iconRef={iconRef}
             menuOpen={open}
             notifications={renderNotifications()}
-            unreadNotificationsLength={getUnreadNotificationsLength()}
+            unreadNotificationsLength={unreadNotificationsLength}
             updateLastReadTime={updateLastReadTime}
           />,
           dropdownRoot,
