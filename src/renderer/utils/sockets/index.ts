@@ -1,6 +1,8 @@
+import ReconnectingWebSocket from 'reconnecting-websocket';
+
 const initializeSockets = (accountNumbers: string[], bankSocketAddress: string) => {
   const sockets: any = accountNumbers.map(
-    (accountNumber) => new WebSocket(`${bankSocketAddress}/ws/confirmation_blocks/${accountNumber}`),
+    (accountNumber) => new ReconnectingWebSocket(`${bankSocketAddress}/ws/confirmation_blocks/${accountNumber}`),
   );
   return sockets;
 };

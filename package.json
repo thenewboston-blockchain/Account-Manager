@@ -146,6 +146,7 @@
     "react-scripts": "^3.4.1",
     "react-select": "^3.1.0",
     "react-toastify": "^6.0.8",
+    "reconnecting-websocket": "^4.4.0",
     "timeago-react": "^3.0.0",
     "tweetnacl": "^1.0.3",
     "typeface-roboto": "0.0.75",
