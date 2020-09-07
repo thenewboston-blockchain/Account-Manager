@@ -19,6 +19,15 @@
     margin-left: 12px;
   }
 
+  &__empty {
+    align-items: center;
+    display: flex;
+    font-size: 36px;
+    font-weight: 300;
+    justify-content: center;
+    height: 300px;
+  }
+
   &__header {
     align-items: baseline;
     display: flex;

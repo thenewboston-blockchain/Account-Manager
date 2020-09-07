@@ -44,10 +44,18 @@ const NotificationsMenu: FC<ComponentProps> = ({
     );
   };
 
+  const renderEmptyState = (): ReactNode => {
+    return (
+      <div className="NotificationsMenu__empty">
+        <h1>No notifications</h1>
+      </div>
+    );
+  };
+
   return (
     <div className="NotificationsMenu" ref={menuRef}>
       {renderHeader()}
-      {notifications}
+      {notifications.length ? notifications : renderEmptyState()}
     </div>
   );
 };
