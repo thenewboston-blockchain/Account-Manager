@@ -119,16 +119,16 @@ const Notifications: FC = () => {
           const notification = JSON.parse(event.data);
 
           if (notification.notification_type === 'CONFIRMATION_BLOCK_NOTIFICATION') {
-            const blockIdentifiers = menuNotifications
+            const currentBlockIdentifiers = menuNotifications
               .filter(({notificationType}) => notificationType === 'CONFIRMATION_BLOCK_NOTIFICATION')
               .map((confirmationBlockNotification) => confirmationBlockNotification.payload.message.block_identifier);
 
             const blockIdentifier = notification.payload.message.block_identifier;
-            if (blockIdentifiers.includes(blockIdentifier)) return;
-          }
+            if (currentBlockIdentifiers.includes(blockIdentifier)) return;
 
-          const updatedBalances = notification.payload.message.updated_balances;
-          processUpdatedBalances(updatedBalances);
+            const updatedBalances = notification.payload.message.updated_balances;
+            processUpdatedBalances(updatedBalances);
+          }
 
           const time = new Date().getTime();
           setMenuNotifications([
