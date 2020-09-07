@@ -3,6 +3,7 @@ import {createPortal} from 'react-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {NavLink, useLocation} from 'react-router-dom';
 import clsx from 'clsx';
+import intersection from 'lodash/intersection';
 import reverse from 'lodash/reverse';
 import sortBy from 'lodash/sortBy';
 import TimeAgo from 'timeago-react';
@@ -112,6 +113,43 @@ const Notifications: FC = () => {
     [dispatch, managedAccountNumbers],
   );
 
+  const handleConfirmationBlockNotification = useCallback(
+    (notification: any) => {
+      const {
+        payload: {
+          message: {
+            block: {
+              message: {txs},
+            },
+            block_identifier: blockIdentifier,
+            updated_balances: updatedBalances,
+          },
+        },
+      } = notification;
+
+      const accountNumbers = managedAccountNumbers.split('-');
+      const recipients = txs.map(({recipient}: any) => recipient);
+      const managedAccountRecipients = intersection(accountNumbers, recipients);
+      if (!managedAccountRecipients.length) return;
+
+      const blockIdentifiers = menuNotifications
+        .filter(({notificationType}) => notificationType === 'CONFIRMATION_BLOCK_NOTIFICATION')
+        .map((confirmationBlockNotification) => confirmationBlockNotification.payload.message.block_identifier);
+      if (blockIdentifiers.includes(blockIdentifier)) return;
+
+      processUpdatedBalances(updatedBalances);
+      setMenuNotifications([
+        {
+          notificationTime: new Date().getTime(),
+          notificationType: notification.notification_type,
+          payload: notification.payload,
+        },
+        ...menuNotifications,
+      ]);
+    },
+    [managedAccountNumbers, menuNotifications, processUpdatedBalances],
+  );
+
   useEffect(() => {
     websockets.forEach((socket: any) => {
       socket.onmessage = (event: any) => {
@@ -119,34 +157,18 @@ const Notifications: FC = () => {
           const notification = JSON.parse(event.data);
 
           if (notification.notification_type === 'CONFIRMATION_BLOCK_NOTIFICATION') {
-            const currentBlockIdentifiers = menuNotifications
-              .filter(({notificationType}) => notificationType === 'CONFIRMATION_BLOCK_NOTIFICATION')
-              .map((confirmationBlockNotification) => confirmationBlockNotification.payload.message.block_identifier);
-
-            const blockIdentifier = notification.payload.message.block_identifier;
-            if (currentBlockIdentifiers.includes(blockIdentifier)) return;
-
-            const updatedBalances = notification.payload.message.updated_balances;
-            processUpdatedBalances(updatedBalances);
+            handleConfirmationBlockNotification(notification);
           }
-
-          const time = new Date().getTime();
-          setMenuNotifications([
-            {
-              notificationTime: time,
-              notificationType: notification.notification_type,
-              payload: notification.payload,
-            },
-            ...menuNotifications,
-          ]);
         } catch (error) {
           displayErrorToast(error);
         }
       };
     });
-  }, [menuNotifications, processUpdatedBalances, websockets]);
+  }, [handleConfirmationBlockNotification, menuNotifications, websockets]);
 
   const renderNotifications = (): ReactNode[] => {
+    const accountNumbers = managedAccountNumbers.split('-');
+
     let notifications = menuNotifications.filter(
       ({notificationType}) => notificationType === 'CONFIRMATION_BLOCK_NOTIFICATION',
     );
@@ -163,42 +185,44 @@ const Notifications: FC = () => {
         },
       } = payload;
 
-      return txs.map(({amount, recipient}: any) => {
-        const read = lastReadTime > notificationTime;
+      return txs
+        .filter(({recipient}: any) => accountNumbers.includes(recipient))
+        .map(({amount, recipient}: any) => {
+          const read = lastReadTime > notificationTime;
 
-        return (
-          <div className="Notifications__notification" key={recipient}>
-            <Icon
-              className={clsx('Notifications__Icon', {
-                'Notifications__Icon--read': read,
-              })}
-              icon={IconType.checkboxBlankCircle}
-              size={8}
-            />
-            <div className="Notifications__right">
-              <div className="Notifications__description">
-                <div>
-                  <NavLink className="Notifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
-                    {getAccountNickname(senderAccountNumber)}
-                  </NavLink>{' '}
-                  paid you{' '}
-                  <NavLink className="Notifications__NavLink" to={`/account/${recipient}/overview`}>
-                    ({getAccountNickname(recipient)})
-                  </NavLink>
+          return (
+            <div className="Notifications__notification" key={recipient}>
+              <Icon
+                className={clsx('Notifications__Icon', {
+                  'Notifications__Icon--read': read,
+                })}
+                icon={IconType.checkboxBlankCircle}
+                size={8}
+              />
+              <div className="Notifications__right">
+                <div className="Notifications__description">
+                  <div>
+                    <NavLink className="Notifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
+                      {getAccountNickname(senderAccountNumber)}
+                    </NavLink>{' '}
+                    paid you{' '}
+                    <NavLink className="Notifications__NavLink" to={`/account/${recipient}/overview`}>
+                      ({getAccountNickname(recipient)})
+                    </NavLink>
+                  </div>
+                  <div
+                    className={clsx('Notifications__time', {
+                      'Notifications__time--read': read,
+                    })}
+                  >
+                    <TimeAgo datetime={notificationTime} />
+                  </div>
                 </div>
-                <div
-                  className={clsx('Notifications__time', {
-                    'Notifications__time--read': read,
-                  })}
-                >
-                  <TimeAgo datetime={notificationTime} />
-                </div>
+                <div className="Notifications__amount">+ {amount}</div>
               </div>
-              <div className="Notifications__amount">+ {amount}</div>
             </div>
-          </div>
-        );
-      });
+          );
+        });
     });
   };
 
