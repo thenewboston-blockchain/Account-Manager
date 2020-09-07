@@ -1,4 +1,5 @@
 import React, {FC, ReactNode, RefObject, useRef} from 'react';
+
 import {useEventListener} from '@renderer/hooks';
 
 import './NotificationsMenu.scss';

@@ -31,14 +31,14 @@ const App: FC = () => {
     const accountNumbers = managedAccountNumbers.split('-');
     const sockets = initializeSockets(accountNumbers, bankSocketAddress);
 
-    sockets.forEach((socket: any) => {
+    sockets.forEach((socket: WebSocket) => {
       socket.onmessage = (event: any) => {
         processSocketEvent(accountNumbers, dispatch, event);
       };
     });
 
     return () => {
-      sockets.forEach((socket: any) => socket.close());
+      sockets.forEach((socket: WebSocket) => socket.close());
     };
   }, [bankSocketAddress, dispatch, managedAccountNumbers]);
 

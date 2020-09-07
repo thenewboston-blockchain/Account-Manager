@@ -2,6 +2,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 
 import {AppDispatch, NotificationType} from '@renderer/types';
 import {displayErrorToast} from '@renderer/utils/toast';
+
 import handleConfirmationBlockNotification from './confirmation-block-notifications';
 
 export const initializeSockets = (accountNumbers: string[], bankSocketAddress: string) => {
