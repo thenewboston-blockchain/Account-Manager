@@ -25,8 +25,6 @@ const Notifications: FC = () => {
   const managedFriends = useSelector(getManagedFriends);
   const notifications = useSelector(getNotifications);
 
-  const menuNotifications = Object.values(notifications);
-
   const managedAccountNumbers = Object.values(managedAccounts)
     .map(({account_number}) => account_number)
     .sort()
@@ -55,7 +53,7 @@ const Notifications: FC = () => {
   };
 
   const getUnreadNotificationsLength = (): number => {
-    return menuNotifications.filter(({notificationTime}) => lastReadTime < notificationTime).length;
+    return Object.values(notifications).filter(({notificationTime}) => lastReadTime < notificationTime).length;
   };
 
   const handleBellClick = (): void => {
@@ -75,7 +73,7 @@ const Notifications: FC = () => {
   const renderNotifications = (): ReactNode[] => {
     const accountNumbers = managedAccountNumbers.split('-');
 
-    let confirmationBlockNotifications = menuNotifications.filter(
+    let confirmationBlockNotifications = Object.values(notifications).filter(
       ({notificationType}) => notificationType === 'CONFIRMATION_BLOCK_NOTIFICATION',
     );
     confirmationBlockNotifications = sortBy(confirmationBlockNotifications, ['notificationTime']);
