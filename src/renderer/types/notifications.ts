@@ -6,10 +6,6 @@ export interface Notification {
   payload: ValidatorConfirmationBlock;
 }
 
-export interface NotificationDict {
-  [key: number]: Notification;
-}
-
 export enum NotificationType {
   confirmationBlockNotification = 'CONFIRMATION_BLOCK_NOTIFICATION',
 }

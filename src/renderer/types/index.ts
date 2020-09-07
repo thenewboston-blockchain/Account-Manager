@@ -26,7 +26,7 @@ import {
   ValidatorConfirmationBlock,
   ValidatorConfirmationService,
 } from './network';
-import {Notification, NotificationDict, NotificationType} from './notifications';
+import {Notification, NotificationType} from './notifications';
 import {
   AppDispatch,
   Dict,
@@ -65,7 +65,6 @@ export {
   NodeIdentifier,
   NodeType,
   Notification,
-  NotificationDict,
   NotificationType,
   PaginatedQueryParams,
   PaginatedResults,

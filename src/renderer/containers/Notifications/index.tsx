@@ -31,9 +31,8 @@ const Notifications: FC = () => {
     .sort()
     .join('-');
 
-  const unreadNotificationsLength = Object.values(notifications).filter(
-    ({notificationTime}) => lastReadTime < notificationTime,
-  ).length;
+  const unreadNotificationsLength = notifications.filter(({notificationTime}) => lastReadTime < notificationTime)
+    .length;
 
   useEffect(() => {
     closeMenu();
@@ -74,7 +73,7 @@ const Notifications: FC = () => {
   const renderNotifications = (): ReactNode[] => {
     const accountNumbers = managedAccountNumbers.split('-');
 
-    let confirmationBlockNotifications = Object.values(notifications).filter(
+    let confirmationBlockNotifications = notifications.filter(
       ({notificationType}) => notificationType === NotificationType.confirmationBlockNotification,
     );
     confirmationBlockNotifications = sortBy(confirmationBlockNotifications, ['notificationTime']);

@@ -1,10 +1,10 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 import {NOTIFICATIONS} from '@renderer/constants';
-import {Notification, NotificationDict, NotificationType} from '@renderer/types';
+import {Notification, NotificationType} from '@renderer/types';
 
 const notifications = createSlice({
-  initialState: {} as NotificationDict,
+  initialState: [] as Notification[],
   name: NOTIFICATIONS,
   reducers: {
     setConfirmationBlockNotification: (state, {payload}: PayloadAction<Notification>) => {
@@ -14,8 +14,7 @@ const notifications = createSlice({
 
       if (blockIdentifiers.includes(payload.payload.message.block_identifier)) return;
 
-      const {notificationTime} = payload;
-      state[notificationTime] = payload;
+      state.push(payload);
     },
   },
 });
