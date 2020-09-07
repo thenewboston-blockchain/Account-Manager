@@ -3,6 +3,7 @@ import {hot} from 'react-hot-loader/root';
 import {useDispatch, useSelector} from 'react-redux';
 import {MemoryRouter as Router} from 'react-router-dom';
 import {Flip, ToastContainer} from 'react-toastify';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Connect from '@renderer/containers/Connect';
@@ -31,14 +32,14 @@ const App: FC = () => {
     const accountNumbers = managedAccountNumbers.split('-');
     const sockets = initializeSockets(accountNumbers, bankSocketAddress);
 
-    sockets.forEach((socket: WebSocket) => {
+    sockets.forEach((socket: ReconnectingWebSocket) => {
       socket.onmessage = (event: any) => {
         processSocketEvent(accountNumbers, dispatch, event);
       };
     });
 
     return () => {
-      sockets.forEach((socket: WebSocket) => socket.close());
+      sockets.forEach((socket: ReconnectingWebSocket) => socket.close());
     };
   }, [bankSocketAddress, dispatch, managedAccountNumbers]);
 

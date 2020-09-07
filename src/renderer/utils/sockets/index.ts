@@ -6,10 +6,9 @@ import {displayErrorToast} from '@renderer/utils/toast';
 import handleConfirmationBlockNotification from './confirmation-block-notifications';
 
 export const initializeSockets = (accountNumbers: string[], bankSocketAddress: string) => {
-  const sockets: any = accountNumbers.map(
+  return accountNumbers.map(
     (accountNumber) => new ReconnectingWebSocket(`${bankSocketAddress}/ws/confirmation_blocks/${accountNumber}`),
   );
-  return sockets;
 };
 
 export const processSocketEvent = (accountNumbers: string[], dispatch: AppDispatch, event: any) => {
