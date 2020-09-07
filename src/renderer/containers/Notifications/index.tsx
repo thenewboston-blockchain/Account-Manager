@@ -1,44 +1,30 @@
-import React, {FC, ReactNode, useCallback, useEffect, useRef, useState} from 'react';
+import React, {FC, ReactNode, useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {NavLink, useLocation} from 'react-router-dom';
 import clsx from 'clsx';
-import intersection from 'lodash/intersection';
 import reverse from 'lodash/reverse';
 import sortBy from 'lodash/sortBy';
 import TimeAgo from 'timeago-react';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState} from '@renderer/hooks';
-import {getActiveBank, getManagedAccounts, getManagedFriends} from '@renderer/selectors';
-import {setManagedAccountBalance} from '@renderer/store/app';
-import {formatSocketAddress} from '@renderer/utils/address';
-import {displayErrorToast} from '@renderer/utils/toast';
-import {AppDispatch} from '@renderer/types';
+import {getManagedAccounts, getManagedFriends, getNotifications} from '@renderer/selectors';
+import {NotificationType} from '@renderer/types';
 
 import NotificationsMenu from './NotificationsMenu';
 import './Notifications.scss';
 
 const dropdownRoot = document.getElementById('dropdown-root')!;
 
-interface MenuNotification {
-  notificationTime: number;
-  notificationType: string;
-  payload: any;
-}
-
 const Notifications: FC = () => {
   const {pathname} = useLocation();
   const [lastReadTime, setLastReadTime] = useState<number>(new Date().getTime());
-  const [menuNotifications, setMenuNotifications] = useState<MenuNotification[]>([]);
   const [open, toggleOpen, , closeMenu] = useBooleanState(false);
-  const [websockets, setWebsockets] = useState([]);
-  const activeBank = useSelector(getActiveBank)!;
-  const dispatch = useDispatch<AppDispatch>();
-  const bankSocketAddress = formatSocketAddress(activeBank.ip_address, activeBank.port);
   const iconRef = useRef<HTMLDivElement>(null);
   const managedAccounts = useSelector(getManagedAccounts);
   const managedFriends = useSelector(getManagedFriends);
+  const notifications = useSelector(getNotifications);
 
   const managedAccountNumbers = Object.values(managedAccounts)
     .map(({account_number}) => account_number)
@@ -48,17 +34,6 @@ const Notifications: FC = () => {
   useEffect(() => {
     closeMenu();
   }, [pathname, closeMenu]);
-
-  useEffect(() => {
-    const accountNumbers = managedAccountNumbers.split('-');
-    const sockets: any = accountNumbers.map(
-      (accountNumber) => new WebSocket(`${bankSocketAddress}/ws/confirmation_blocks/${accountNumber}`),
-    );
-    setWebsockets(sockets);
-    return () => {
-      sockets.forEach((socket: any) => socket.close());
-    };
-  }, [bankSocketAddress, managedAccountNumbers]);
 
   const getAccountNickname = (accountNumber: string): string => {
     const managedAccount = managedAccounts[accountNumber];
@@ -79,7 +54,7 @@ const Notifications: FC = () => {
   };
 
   const getUnreadNotificationsLength = (): number => {
-    return menuNotifications.filter(({notificationTime}) => lastReadTime < notificationTime).length;
+    return Object.values(notifications).filter(({notificationTime}) => lastReadTime < notificationTime).length;
   };
 
   const handleBellClick = (): void => {
@@ -96,86 +71,16 @@ const Notifications: FC = () => {
     closeMenu();
   };
 
-  const processUpdatedBalances = useCallback(
-    (updatedBalances: any[]) => {
-      const accountNumbers = managedAccountNumbers.split('-');
-      updatedBalances
-        .filter(({account_number: accountNumber}) => accountNumbers.includes(accountNumber))
-        .forEach(({account_number: accountNumber, balance}) => {
-          dispatch(
-            setManagedAccountBalance({
-              account_number: accountNumber,
-              balance: balance || '0',
-            }),
-          );
-        });
-    },
-    [dispatch, managedAccountNumbers],
-  );
-
-  const handleConfirmationBlockNotification = useCallback(
-    (notification: any) => {
-      const {
-        payload: {
-          message: {
-            block: {
-              message: {txs},
-            },
-            block_identifier: blockIdentifier,
-            updated_balances: updatedBalances,
-          },
-        },
-      } = notification;
-
-      const accountNumbers = managedAccountNumbers.split('-');
-      const recipients = txs.map(({recipient}: any) => recipient);
-      const managedAccountRecipients = intersection(accountNumbers, recipients);
-      if (!managedAccountRecipients.length) return;
-
-      const blockIdentifiers = menuNotifications
-        .filter(({notificationType}) => notificationType === 'CONFIRMATION_BLOCK_NOTIFICATION')
-        .map((confirmationBlockNotification) => confirmationBlockNotification.payload.message.block_identifier);
-      if (blockIdentifiers.includes(blockIdentifier)) return;
-
-      processUpdatedBalances(updatedBalances);
-      setMenuNotifications([
-        {
-          notificationTime: new Date().getTime(),
-          notificationType: notification.notification_type,
-          payload: notification.payload,
-        },
-        ...menuNotifications,
-      ]);
-    },
-    [managedAccountNumbers, menuNotifications, processUpdatedBalances],
-  );
-
-  useEffect(() => {
-    websockets.forEach((socket: any) => {
-      socket.onmessage = (event: any) => {
-        try {
-          const notification = JSON.parse(event.data);
-
-          if (notification.notification_type === 'CONFIRMATION_BLOCK_NOTIFICATION') {
-            handleConfirmationBlockNotification(notification);
-          }
-        } catch (error) {
-          displayErrorToast(error);
-        }
-      };
-    });
-  }, [handleConfirmationBlockNotification, menuNotifications, websockets]);
-
   const renderNotifications = (): ReactNode[] => {
     const accountNumbers = managedAccountNumbers.split('-');
 
-    let notifications = menuNotifications.filter(
-      ({notificationType}) => notificationType === 'CONFIRMATION_BLOCK_NOTIFICATION',
+    let confirmationBlockNotifications = Object.values(notifications).filter(
+      ({notificationType}) => notificationType === NotificationType.confirmationBlockNotification,
     );
-    notifications = sortBy(notifications, ['notificationTime']);
-    notifications = reverse(notifications);
+    confirmationBlockNotifications = sortBy(confirmationBlockNotifications, ['notificationTime']);
+    confirmationBlockNotifications = reverse(confirmationBlockNotifications);
 
-    return notifications.map(({notificationTime, payload}) => {
+    return confirmationBlockNotifications.map(({notificationTime, payload}) => {
       const {
         message: {
           block: {
