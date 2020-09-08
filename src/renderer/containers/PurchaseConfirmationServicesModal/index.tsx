@@ -1,12 +1,11 @@
 import React, {FC, useMemo, useState} from 'react';
-import {useSelector} from 'react-redux';
 
-import {FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
-import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedBanks} from '@renderer/selectors';
-import {BaseValidator, InputOption} from '@renderer/types';
+import {BaseValidator} from '@renderer/types';
+import {displayErrorToast, displayToast} from '@renderer/utils/toast';
+import yup from '@renderer/utils/yup';
 
+import PurchaseConfirmationServicesModalFields from './PurchaseConfirmationServicesModalFields';
 import './PurchaseConfirmationServicesModal.scss';
 
 interface ComponentProps {
@@ -14,85 +13,47 @@ interface ComponentProps {
   validator: BaseValidator;
 }
 
-const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close}) => {
+const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator}) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const activeBankConfig = useSelector(getActiveBankConfig)!;
-  const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
-  const managedBanks = useSelector(getManagedBanks);
 
-  const getFromOptions = useMemo<InputOption[]>(
-    () =>
-      Object.values(managedBanks).map(({ip_address, nickname}) => ({
-        label: nickname,
-        value: ip_address,
-      })),
-    [managedBanks],
+  const initialValues = useMemo(
+    () => ({
+      bankAccountNumber: '123',
+    }),
+    [],
   );
+
+  type FormValues = typeof initialValues;
+
+  const handleSubmit = async ({bankAccountNumber}: FormValues): Promise<void> => {
+    try {
+      setSubmitting(true);
+      displayToast(bankAccountNumber, 'success');
+      close();
+    } catch (error) {
+      displayErrorToast(error);
+      setSubmitting(false);
+    }
+  };
+
+  const validationSchema = useMemo(() => {
+    return yup.object().shape({
+      bankAccountNumber: yup.string().required('This field is required'),
+    });
+  }, []);
 
   return (
     <Modal
       className="PurchaseConfirmationServicesModal"
       close={close}
       header="Purchase Confirmation Services"
-      initialValues={{}}
-      onSubmit={() => {}}
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
       submitButton="Purchase"
       submitting={submitting}
-      validationSchema={{}}
+      validationSchema={validationSchema}
     >
-      <FormSelectDetailed
-        className="PurchaseConfirmationServicesModal__select"
-        disabled={submitting}
-        focused
-        required
-        label="From: Managed Bank"
-        options={getFromOptions}
-        name="managedBank"
-      />
-      <table className="PurchaseConfirmationServicesModal__table">
-        <tbody>
-          <tr>
-            <td>Account Balance</td>
-            <td>
-              <span className="PurchaseConfirmationServicesModal__account-balance">{`${(1350).toLocaleString()}`}</span>
-            </td>
-          </tr>
-          <tr>
-            <td>Bank Fee</td>
-            <td>1</td>
-          </tr>
-          <tr>
-            <td>Validator Fee</td>
-            <td>2</td>
-          </tr>
-          <tr>
-            <td>Daily Rate</td>
-            <td>4</td>
-          </tr>
-          <tr>
-            <td>
-              Amount
-              <RequiredAsterisk />
-            </td>
-            <td>
-              <FormInput
-                className="PurchaseConfirmationServicesModal__points-input"
-                disabled={submitting}
-                hideErrorBlock
-                name="points"
-                placeholder="0.00"
-                type="number"
-              />
-            </td>
-          </tr>
-          <tr className="PurchaseConfirmationServicesModal__time-tr">
-            <td>Time</td>
-            <td>
-              <b>5.26 days</b>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <PurchaseConfirmationServicesModalFields validator={validator} />
     </Modal>
   );
 };

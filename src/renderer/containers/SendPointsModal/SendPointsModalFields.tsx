@@ -51,7 +51,7 @@ const SendPointsModalFields: FC<ComponentProps> = ({submitting}) => {
     const {senderAccountNumber} = values;
     if (!senderAccountNumber) return '-';
     const {balance} = managedAccounts[senderAccountNumber];
-    return balance?.toLocaleString() || '0.00';
+    return balance?.toLocaleString() || '0';
   };
 
   const renderTotal = (): number | string => {
@@ -104,7 +104,7 @@ const SendPointsModalFields: FC<ComponentProps> = ({submitting}) => {
                 disabled={submitting}
                 hideErrorBlock
                 name="points"
-                placeholder="0.00"
+                placeholder="0"
                 type="number"
               />
             </td>

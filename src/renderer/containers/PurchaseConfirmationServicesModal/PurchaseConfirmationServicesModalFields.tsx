@@ -1,0 +1,90 @@
+import React, {FC, useMemo, useState} from 'react';
+import {useSelector} from 'react-redux';
+
+import {FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
+import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
+import {useFormContext} from '@renderer/hooks';
+import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedBanks} from '@renderer/selectors';
+import {BaseValidator, InputOption} from '@renderer/types';
+import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
+
+interface ComponentProps {
+  validator: BaseValidator;
+}
+
+const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({validator}) => {
+  const {values} = useFormContext();
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const activeBankConfig = useSelector(getActiveBankConfig)!;
+  const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
+  const managedBanks = useSelector(getManagedBanks);
+
+  const getFromOptions = useMemo<InputOption[]>(
+    () =>
+      Object.values(managedBanks).map(({ip_address, nickname}) => ({
+        label: nickname,
+        value: ip_address,
+      })),
+    [managedBanks],
+  );
+
+  return (
+    <>
+      <FormSelectDetailed
+        className="PurchaseConfirmationServicesModal__select"
+        disabled={submitting}
+        focused
+        required
+        label="From: Managed Bank"
+        options={getFromOptions}
+        name="managedBank"
+      />
+      <table className="PurchaseConfirmationServicesModal__table">
+        <tbody>
+          <tr>
+            <td>Account Balance</td>
+            <td>
+              <span className="PurchaseConfirmationServicesModal__account-balance">{`${(1350).toLocaleString()}`}</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Bank Fee</td>
+            <td>{getBankTxFee(activeBankConfig, values?.bankAccountNumber) || '-'}</td>
+          </tr>
+          <tr>
+            <td>Validator Fee</td>
+            <td>{getPrimaryValidatorTxFee(activePrimaryValidatorConfig, values?.bankAccountNumber) || '-'}</td>
+          </tr>
+          <tr>
+            <td>Daily Rate</td>
+            <td>{validator.daily_confirmation_rate}</td>
+          </tr>
+          <tr>
+            <td>
+              Amount
+              <RequiredAsterisk />
+            </td>
+            <td>
+              <FormInput
+                className="PurchaseConfirmationServicesModal__points-input"
+                disabled={submitting}
+                hideErrorBlock
+                name="points"
+                placeholder="0"
+                type="number"
+              />
+            </td>
+          </tr>
+          <tr className="PurchaseConfirmationServicesModal__time-tr">
+            <td>Time</td>
+            <td>
+              <b>5.26 days</b>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </>
+  );
+};
+
+export default PurchaseConfirmationServicesModalFields;
