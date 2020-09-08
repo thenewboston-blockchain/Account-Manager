@@ -53,7 +53,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
       submitting={submitting}
       validationSchema={validationSchema}
     >
-      <PurchaseConfirmationServicesModalFields validator={validator} />
+      <PurchaseConfirmationServicesModalFields submitting={submitting} validator={validator} />
     </Modal>
   );
 };

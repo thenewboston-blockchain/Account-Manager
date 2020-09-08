@@ -1,4 +1,4 @@
-import React, {FC, useMemo, useState} from 'react';
+import React, {FC, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 
 import {FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
@@ -9,12 +9,12 @@ import {BaseValidator, InputOption} from '@renderer/types';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 
 interface ComponentProps {
+  submitting: boolean;
   validator: BaseValidator;
 }
 
-const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({validator}) => {
+const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting, validator}) => {
   const {values} = useFormContext();
-  const [submitting, setSubmitting] = useState<boolean>(false);
   const activeBankConfig = useSelector(getActiveBankConfig)!;
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
   const managedBanks = useSelector(getManagedBanks);

@@ -2,7 +2,6 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import AccountLink from '@renderer/components/AccountLink';
-import DropdownMenuButton, {DropdownMenuDirection} from '@renderer/components/DropdownMenuButton';
 import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
@@ -20,7 +19,6 @@ enum TableKeys {
   accountNumber,
   dailyConfirmationRate,
   defaultTransactionFee,
-  dropdownMenu,
   ipAddress,
   nodeIdentifier,
   port,
@@ -55,18 +53,6 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
     [setPurchaseServicesValidator, togglePurchaseServicesModal],
   );
 
-  const getMenuOptions = useCallback(
-    (validator: BaseValidator) => {
-      return [
-        {
-          label: 'Purchase Confirmation Services',
-          onClick: handlePurchaseServicesClick(validator),
-        },
-      ];
-    },
-    [handlePurchaseServicesClick],
-  );
-
   const hasSigningKey = useMemo(() => !!managedBank.signing_key.length, [managedBank]);
 
   const handleEditTrustButton = useCallback(
@@ -77,18 +63,18 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
     [setEditTrustValidator, toggleEditTrustModal],
   );
 
-  const renderValidatorDropdownMenu = useCallback(
+  const renderValidatorDailyRate = useCallback(
     (validator) => {
-      if (activePrimaryValidator?.node_identifier === validator.node_identifier) return ' ';
+      if (activePrimaryValidator?.node_identifier === validator.node_identifier || !validator.daily_confirmation_rate) {
+        return '-';
+      }
       return (
-        <DropdownMenuButton
-          className="BankValidators__DropdownMenuButton"
-          direction={DropdownMenuDirection.left}
-          options={getMenuOptions(validator)}
-        />
+        <span className="BankValidators__clickable-text" onClick={handlePurchaseServicesClick(validator)}>
+          {validator.daily_confirmation_rate}
+        </span>
       );
     },
-    [activePrimaryValidator, getMenuOptions],
+    [activePrimaryValidator, handlePurchaseServicesClick],
   );
 
   const bankValidatorsTableData = useMemo<PageTableData[]>(
@@ -96,7 +82,7 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
       bankValidators.map((validator) => ({
         key: validator.node_identifier,
         [TableKeys.accountNumber]: <AccountLink accountNumber={validator.account_number} />,
-        [TableKeys.dailyConfirmationRate]: validator.daily_confirmation_rate,
+        [TableKeys.dailyConfirmationRate]: renderValidatorDailyRate(validator),
         [TableKeys.defaultTransactionFee]: validator.default_transaction_fee,
         [TableKeys.ipAddress]: <NodeLink node={validator} urlBase="validator" />,
         [TableKeys.nodeIdentifier]: validator.node_identifier,
@@ -119,9 +105,8 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
           </div>
         ),
         [TableKeys.version]: validator.version,
-        [TableKeys.dropdownMenu]: renderValidatorDropdownMenu(validator),
       })) || [],
-    [bankValidators, handleEditTrustButton, hasSigningKey, renderValidatorDropdownMenu],
+    [bankValidators, handleEditTrustButton, hasSigningKey, renderValidatorDailyRate],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -131,7 +116,6 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
         [TableKeys.accountNumber]: 'Account Number',
         [TableKeys.dailyConfirmationRate]: 'Daily Rate',
         [TableKeys.defaultTransactionFee]: 'Tx Fee',
-        [TableKeys.dropdownMenu]: ' ',
         [TableKeys.ipAddress]: 'IP Address',
         [TableKeys.nodeIdentifier]: 'Network ID',
         [TableKeys.port]: 'Port',
@@ -155,7 +139,6 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
         TableKeys.seedBlockIdentifier,
         TableKeys.trust,
         TableKeys.version,
-        TableKeys.dropdownMenu,
       ],
     }),
     [bankValidatorsTableData],
