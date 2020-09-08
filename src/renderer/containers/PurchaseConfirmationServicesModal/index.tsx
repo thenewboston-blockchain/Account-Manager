@@ -3,12 +3,11 @@ import {useSelector} from 'react-redux';
 
 import {FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
+import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import {getManagedBanks} from '@renderer/selectors';
 import {BaseValidator, InputOption} from '@renderer/types';
 
 import './PurchaseConfirmationServicesModal.scss';
-import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
-import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 
 interface ComponentProps {
   close(): void;
