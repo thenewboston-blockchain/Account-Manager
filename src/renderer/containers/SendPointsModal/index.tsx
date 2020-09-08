@@ -36,14 +36,14 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
         getBankTxFee(activeBank, accountNumber) +
         getPrimaryValidatorTxFee(activePrimaryValidator, accountNumber) +
         points;
-      return totalCost <= parseFloat(balance);
+      return totalCost <= balance;
     },
     [activeBank, activePrimaryValidator, managedAccounts],
   );
 
   const initialValues = useMemo(
     () => ({
-      points: '',
+      points: 0,
       recipientAccountNumber: initialRecipient,
       senderAccountNumber: initialSender,
     }),

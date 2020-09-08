@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 import {FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
-import {getManagedBanks} from '@renderer/selectors';
+import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedBanks} from '@renderer/selectors';
 import {BaseValidator, InputOption} from '@renderer/types';
 
 import './PurchaseConfirmationServicesModal.scss';
@@ -16,6 +16,8 @@ interface ComponentProps {
 
 const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close}) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const activeBankConfig = useSelector(getActiveBankConfig)!;
+  const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
   const managedBanks = useSelector(getManagedBanks);
 
   const getFromOptions = useMemo<InputOption[]>(
