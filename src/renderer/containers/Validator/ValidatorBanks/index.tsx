@@ -80,7 +80,7 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
       headers: {
         [TableKeys.accountNumber]: 'Account Number',
         [TableKeys.confirmationExpiration]: 'Confirmation Expiration',
-        [TableKeys.defaultTransactionFee]: 'Transaction Fee',
+        [TableKeys.defaultTransactionFee]: 'Tx Fee',
         [TableKeys.ipAddress]: 'IP Address',
         [TableKeys.nodeIdentifier]: 'NID',
         [TableKeys.port]: 'Port',

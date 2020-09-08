@@ -1,13 +1,17 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
+import {useSelector} from 'react-redux';
 
 import AccountLink from '@renderer/components/AccountLink';
+import DropdownMenuButton, {DropdownMenuDirection} from '@renderer/components/DropdownMenuButton';
 import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
+import PurchaseConfirmationServicesModal from '@renderer/containers/PurchaseConfirmationServicesModal';
 import {BANK_VALIDATORS} from '@renderer/constants';
 import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
 import {BaseValidator, ManagedNode} from '@renderer/types';
 
 import './BankValidators.scss';
@@ -16,6 +20,7 @@ enum TableKeys {
   accountNumber,
   dailyConfirmationRate,
   defaultTransactionFee,
+  dropdownMenu,
   ipAddress,
   nodeIdentifier,
   port,
@@ -38,6 +43,29 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
   >(BANK_VALIDATORS, address);
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustValidator, setEditTrustValidator] = useState<BaseValidator | null>(null);
+  const [purchaseServicesModalIsOpen, togglePurchaseServicesModal] = useBooleanState(false);
+  const [purchaseServicesValidator, setPurchaseServicesValidator] = useState<BaseValidator | null>(null);
+  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
+
+  const handlePurchaseServicesClick = useCallback(
+    (validator: BaseValidator) => (): void => {
+      setPurchaseServicesValidator(validator);
+      togglePurchaseServicesModal();
+    },
+    [setPurchaseServicesValidator, togglePurchaseServicesModal],
+  );
+
+  const getMenuOptions = useCallback(
+    (validator: BaseValidator) => {
+      return [
+        {
+          label: 'Purchase Confirmation Services',
+          onClick: handlePurchaseServicesClick(validator),
+        },
+      ];
+    },
+    [handlePurchaseServicesClick],
+  );
 
   const hasSigningKey = useMemo(() => !!managedBank.signing_key.length, [managedBank]);
 
@@ -47,6 +75,20 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
       toggleEditTrustModal();
     },
     [setEditTrustValidator, toggleEditTrustModal],
+  );
+
+  const renderValidatorDropdownMenu = useCallback(
+    (validator) => {
+      if (activePrimaryValidator?.node_identifier === validator.node_identifier) return ' ';
+      return (
+        <DropdownMenuButton
+          className="BankValidators__DropdownMenuButton"
+          direction={DropdownMenuDirection.left}
+          options={getMenuOptions(validator)}
+        />
+      );
+    },
+    [activePrimaryValidator, getMenuOptions],
   );
 
   const bankValidatorsTableData = useMemo<PageTableData[]>(
@@ -77,8 +119,9 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
           </div>
         ),
         [TableKeys.version]: validator.version,
+        [TableKeys.dropdownMenu]: renderValidatorDropdownMenu(validator),
       })) || [],
-    [bankValidators, handleEditTrustButton, hasSigningKey],
+    [bankValidators, handleEditTrustButton, hasSigningKey, renderValidatorDropdownMenu],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -86,8 +129,9 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
       data: bankValidatorsTableData,
       headers: {
         [TableKeys.accountNumber]: 'Account Number',
-        [TableKeys.dailyConfirmationRate]: 'Daily Confirmation Rate',
-        [TableKeys.defaultTransactionFee]: 'Default Tx Fee',
+        [TableKeys.dailyConfirmationRate]: 'Daily Rate',
+        [TableKeys.defaultTransactionFee]: 'Tx Fee',
+        [TableKeys.dropdownMenu]: ' ',
         [TableKeys.ipAddress]: 'IP Address',
         [TableKeys.nodeIdentifier]: 'Network ID',
         [TableKeys.port]: 'Port',
@@ -111,6 +155,7 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
         TableKeys.seedBlockIdentifier,
         TableKeys.trust,
         TableKeys.version,
+        TableKeys.dropdownMenu,
       ],
     }),
     [bankValidatorsTableData],
@@ -128,6 +173,9 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
           targetType="validators"
           trust={editTrustValidator.trust}
         />
+      )}
+      {purchaseServicesModalIsOpen && !!purchaseServicesValidator && (
+        <PurchaseConfirmationServicesModal close={togglePurchaseServicesModal} />
       )}
     </div>
   );

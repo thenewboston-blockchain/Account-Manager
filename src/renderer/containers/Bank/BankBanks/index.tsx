@@ -80,7 +80,7 @@ const BankBanks: FC<ComponentProps> = ({managedBank}) => {
       data: bankBanksTableData,
       headers: {
         [TableKeys.accountNumber]: 'Account Number',
-        [TableKeys.defaultTransactionFee]: 'Default Tx Fee',
+        [TableKeys.defaultTransactionFee]: 'Tx Fee',
         [TableKeys.ipAddress]: 'IP Address',
         [TableKeys.nodeIdentifier]: 'Network ID',
         [TableKeys.port]: 'Port',

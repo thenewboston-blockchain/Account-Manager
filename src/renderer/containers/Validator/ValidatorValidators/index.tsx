@@ -90,8 +90,8 @@ const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
       data: validatorValidatorsTableData,
       headers: {
         [TableKeys.accountNumber]: 'Account Number',
-        [TableKeys.dailyConfirmationRate]: 'Daily Confirmation Rate',
-        [TableKeys.defaultTransactionFee]: 'Transaction Fee',
+        [TableKeys.dailyConfirmationRate]: 'Daily Rate',
+        [TableKeys.defaultTransactionFee]: 'Tx Fee',
         [TableKeys.ipAddress]: 'IP Address',
         [TableKeys.nodeIdentifier]: 'NID',
         [TableKeys.port]: 'Port',
