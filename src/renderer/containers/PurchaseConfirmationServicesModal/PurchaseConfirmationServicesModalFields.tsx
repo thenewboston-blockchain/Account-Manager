@@ -34,10 +34,10 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
         className="PurchaseConfirmationServicesModal__select"
         disabled={submitting}
         focused
-        required
         label="From: Managed Bank"
-        options={getFromOptions}
         name="managedBank"
+        options={getFromOptions}
+        required
       />
       <table className="PurchaseConfirmationServicesModal__table">
         <tbody>
