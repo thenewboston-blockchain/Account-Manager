@@ -8,6 +8,8 @@ import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedBanks} f
 import {BaseValidator, InputOption} from '@renderer/types';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 
+import './PurchaseConfirmationServicesModalFields.scss';
+
 interface ComponentProps {
   submitting: boolean;
   validator: BaseValidator;
@@ -31,7 +33,6 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
   return (
     <>
       <FormSelectDetailed
-        className="PurchaseConfirmationServicesModal__select"
         disabled={submitting}
         focused
         label="From: Managed Bank"
@@ -39,12 +40,12 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
         options={getFromOptions}
         required
       />
-      <table className="PurchaseConfirmationServicesModal__table">
+      <table className="PurchaseConfirmationServicesModalFields__table">
         <tbody>
           <tr>
             <td>Account Balance</td>
             <td>
-              <span className="PurchaseConfirmationServicesModal__account-balance">{`${(1350).toLocaleString()}`}</span>
+              <span className="PurchaseConfirmationServicesModalFields__account-balance">{`${(1350).toLocaleString()}`}</span>
             </td>
           </tr>
           <tr>
@@ -65,17 +66,10 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
               <RequiredAsterisk />
             </td>
             <td>
-              <FormInput
-                className="PurchaseConfirmationServicesModal__points-input"
-                disabled={submitting}
-                hideErrorBlock
-                name="points"
-                placeholder="0"
-                type="number"
-              />
+              <FormInput disabled={submitting} hideErrorBlock name="points" placeholder="0" type="number" />
             </td>
           </tr>
-          <tr className="PurchaseConfirmationServicesModal__time-tr">
+          <tr className="PurchaseConfirmationServicesModalFields__time-tr">
             <td>Time</td>
             <td>
               <b>5.26 days</b>
