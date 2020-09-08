@@ -1,6 +1,6 @@
 {
   "name": "thenewboston-ui",
-  "productName": "thenewboston-ui",
+  "productName": "thenewboston",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "./.webpack/main",
@@ -11,7 +11,17 @@
     "prettier": "prettier --write \"{,!(.webpack|node_modules)/**/}*.{ts,tsx,js,json,css,less,scss}\"",
     "publish": "electron-forge publish",
     "start": "electron-forge start",
-    "test": "jest"
+    "test": "jest",
+    "sign-exe": "signcode './out/make/squirrel.windows/x64/thenewboston-1.0.0\\ Setup.exe' --cert ~/electron-api-demos.p12 --prompt --name 'Electron API Demos' --url 'https://www.thenewboston.com/'",
+    "sign-installer": "signcode './out/make/squirrel.windows/x64/thenewboston-1.0.0\\ Setup.exe' --cert ~/electron-api-demos.p12 --prompt --name 'Electron API Demos' --url 'https://www.thenewboston.com/'",
+    "pack-mac": "electron-packager . --asar --asar-unpack=protocol-link.html --overwrite --platform=darwin --arch=x64 --icon=assets/app-icon/mac/app.icns --prune=true --out=out --osx-sign.identity='Developer ID Application: GitHub' --extend-info=assets/mac/info.plist",
+    "pack-win": "electron-packager . ElectronAPIDemos --asar --asar-unpack=protocol-link.html --overwrite --platform=win32 --arch=ia32 --icon=assets/app-icon/win/app.ico --prune=true --out=out --version-string.CompanyName='GitHub, Inc.' --version-string.FileDescription='Electron API Demos' --version-string.ProductName='Electron API Demos'",
+    "pack-linux": "electron-packager . --asar --asar-unpack=protocol-link.html --overwrite --platform=linux --arch=x64 --icon=assets/app-icon/png/64.png --prune=true --out=out",
+    "installer": "node ./buildConfig/installer.js",
+    "windows-store": "node ./buildConfig/windows-store.js",
+    "mas": "./buildConfig/mas.sh",
+    "prepare-release": "npm run package && npm run sign-exe && npm run installer && npm run sign-installer",
+    "release": "node ./buildConfig/release.js"
   },
   "keywords": [],
   "author": {
@@ -20,49 +30,7 @@
   },
   "license": "MIT",
   "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "thenewboston_ui"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ],
-      "plugins": [
-        [
-          "@electron-forge/plugin-webpack",
-          {
-            "mainConfig": "./webpack.main.config.js",
-            "renderer": {
-              "config": "./webpack.renderer.config.js",
-              "entryPoints": [
-                {
-                  "html": "./public/index.html",
-                  "js": "./src/renderer/renderer.tsx",
-                  "name": "main_window"
-                }
-              ]
-            }
-          }
-        ]
-      ]
-    }
+    "forge": "./forge.config.js"
   },
   "lint-staged": {
     "{,!(node_modules)/**/}*.{ts,tsx,js}": [
@@ -79,9 +47,11 @@
     "@babel/preset-typescript": "^7.10.4",
     "@electron-forge/cli": "6.0.0-beta.51",
     "@electron-forge/maker-deb": "6.0.0-beta.51",
+    "@electron-forge/maker-dmg": "6.0.0-beta.51",
     "@electron-forge/maker-rpm": "6.0.0-beta.51",
     "@electron-forge/maker-squirrel": "6.0.0-beta.51",
     "@electron-forge/maker-zip": "6.0.0-beta.51",
+    "@electron-forge/plugin-auto-unpack-natives": "^6.0.0-beta.53",
     "@electron-forge/plugin-webpack": "6.0.0-beta.51",
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
     "@types/electron-devtools-installer": "^2.2.0",
@@ -99,6 +69,7 @@
     "babel-loader": "^8.1.0",
     "css-loader": "^3.5.3",
     "electron": "9.0.0",
+    "electron-builder": "^22.8.0",
     "electron-devtools-installer": "^3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
@@ -117,6 +88,7 @@
     "lint-staged": "^10.2.9",
     "node-loader": "^0.6.0",
     "node-sass": "^4.14.1",
+    "path": "^0.12.7",
     "prettier": "^2.0.5",
     "sass-loader": "^8.0.2",
     "style-loader": "^0.23.1",
