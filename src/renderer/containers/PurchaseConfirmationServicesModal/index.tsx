@@ -1,7 +1,9 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import axios from 'axios';
 
 import Modal from '@renderer/components/Modal';
+import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {getBankConfigs, getManagedAccounts, getManagedBanks} from '@renderer/selectors';
 import {AppDispatch, BankConfig, BaseValidator} from '@renderer/types';
@@ -84,6 +86,28 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
     [bankConfigs, bankSigningKey, dispatch],
   );
 
+  const testConnection = useCallback(
+    async (address: string) => {
+      const bankConfig = bankConfigs[address];
+
+      try {
+        setConnectionStatus('checking');
+        setSubmitting(true);
+
+        await axios.get(`${address}/validators/${validator.node_identifier}`, {timeout: AXIOS_TIMEOUT_MS});
+
+        setConnectionStatus('connected');
+        setSubmitting(false);
+      } catch (error) {
+        setConnectionStatus('not-connected');
+        setSubmitting(false);
+      }
+
+      return false;
+    },
+    [bankConfigs, validator],
+  );
+
   const validationSchema = useMemo(() => {
     return yup.object().shape({
       amount: yup.number().moreThan(0, 'Amount must be greater than 0').required('Amount is a required field'),
@@ -94,9 +118,10 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
           const managedBank = managedBanks[address];
           return !!(managedBank && managedBank.nid_signing_key);
         })
+        .test('bank-is-connected', '', testConnection)
         .required('This field is required'),
     });
-  }, [managedBanks, testBankHasSigningKey]);
+  }, [managedBanks, testBankHasSigningKey, testConnection]);
 
   return (
     <Modal
