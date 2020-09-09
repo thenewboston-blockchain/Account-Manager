@@ -57,6 +57,23 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
     [managedAccounts],
   );
 
+  const checkConnectionBankToValidator = useCallback(
+    async (bankAddress: string): Promise<void> => {
+      await axios.get(`${bankAddress}/validators/${validator.node_identifier}`, {timeout: AXIOS_TIMEOUT_MS});
+    },
+    [validator],
+  );
+
+  const checkConnectionValidatorToBank = useCallback(
+    async (bankAddress: string): Promise<void> => {
+      const {
+        data: {node_identifier: nodeIdentifier},
+      } = bankConfigs[bankAddress];
+      await axios.get(`${bankAddress}/banks/${nodeIdentifier}`, {timeout: AXIOS_TIMEOUT_MS});
+    },
+    [bankConfigs],
+  );
+
   const testBankHasSigningKey = useCallback(
     async (address: string) => {
       const bankConfig = bankConfigs[address];
@@ -88,13 +105,12 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
 
   const testConnection = useCallback(
     async (address: string) => {
-      const bankConfig = bankConfigs[address];
-
       try {
         setConnectionStatus('checking');
         setSubmitting(true);
 
-        await axios.get(`${address}/validators/${validator.node_identifier}`, {timeout: AXIOS_TIMEOUT_MS});
+        await checkConnectionBankToValidator(address);
+        await checkConnectionValidatorToBank(address);
 
         setConnectionStatus('connected');
         setSubmitting(false);
@@ -105,7 +121,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
 
       return false;
     },
-    [bankConfigs, validator],
+    [checkConnectionBankToValidator, checkConnectionValidatorToBank],
   );
 
   const validationSchema = useMemo(() => {
