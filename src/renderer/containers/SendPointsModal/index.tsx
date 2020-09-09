@@ -43,7 +43,7 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
 
   const initialValues = useMemo(
     () => ({
-      points: 0,
+      points: '',
       recipientAccountNumber: initialRecipient,
       senderAccountNumber: initialSender,
     }),
@@ -86,7 +86,7 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
     let txs: Tx[] = [
       {
         amount:
-          points +
+          parseInt(points, 10) +
           (recipientIsActiveBank ? bankTxFee : 0) +
           (recipientIsActivePrimaryValidator ? primaryValidatorTxFee : 0),
         recipient: recipientAccountNumber,
