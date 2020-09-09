@@ -35,7 +35,7 @@ const AddValidatorSigningKeyModal: FC<ComponentProps> = ({close}) => {
     dispatch(
       setManagedValidator({
         ...managedValidator,
-        signing_key: signingKey,
+        nid_signing_key: signingKey,
       }),
     );
     close();
@@ -44,8 +44,8 @@ const AddValidatorSigningKeyModal: FC<ComponentProps> = ({close}) => {
   const managedValidatorSigningKeys = useMemo(
     () =>
       Object.values(managedValidators)
-        .filter(({signing_key}) => !!signing_key)
-        .map(({signing_key}) => signing_key),
+        .filter(({nid_signing_key}) => !!nid_signing_key)
+        .map(({nid_signing_key}) => nid_signing_key),
     [managedValidators],
   );
 

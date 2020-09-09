@@ -51,7 +51,7 @@ const Validator: FC = () => {
       },
     ];
 
-    const signingKeyOption = !managedValidator.signing_key
+    const signingKeyOption = !managedValidator.nid_signing_key
       ? {
           label: 'Add NID Signing Key',
           onClick: toggleSigningKeyModal,
@@ -70,9 +70,9 @@ const Validator: FC = () => {
       setManagedValidator({
         ip_address: ipAddress,
         nickname: '',
+        nid_signing_key: '',
         port,
         protocol,
-        signing_key: '',
       }),
     );
   };
@@ -81,13 +81,13 @@ const Validator: FC = () => {
     dispatch(
       setManagedValidator({
         ...managedValidator,
-        signing_key: '',
+        nid_signing_key: '',
       }),
     );
   };
 
   const renderAuthenticatedBadge = (): ReactNode => {
-    if (!managedValidator?.signing_key) return null;
+    if (!managedValidator?.nid_signing_key) return null;
     return <Badge color="secondary" text="Authenticated" />;
   };
 

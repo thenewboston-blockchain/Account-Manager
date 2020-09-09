@@ -72,20 +72,20 @@ const SendPointsModalFields: FC<ComponentProps> = ({submitting}) => {
         className="SendPointsModalFields__select"
         disabled={submitting}
         focused
-        required
         label="From"
-        options={getFromOptions}
         name="senderAccountNumber"
+        options={getFromOptions}
+        required
       />
       <FormSelectDetailed
         className="SendPointsModalFields__select"
         creatable
         disabled={submitting}
         hideErrorText={matchError}
-        required
         label="To"
-        options={getToOptions}
         name="recipientAccountNumber"
+        options={getToOptions}
+        required
       />
       <table className="SendPointsModalFields__table">
         <tbody>

@@ -43,7 +43,7 @@ const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustValidator, setEditTrustValidator] = useState<BaseValidator | null>(null);
 
-  const hasSigningKey = useMemo(() => !!managedValidator.signing_key.length, [managedValidator]);
+  const hasSigningKey = useMemo(() => !!managedValidator.nid_signing_key.length, [managedValidator]);
 
   const handleEditTrustButton = useCallback(
     (validator: BaseValidator) => (): void => {

@@ -37,7 +37,7 @@ const BankBanks: FC<ComponentProps> = ({managedBank}) => {
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustBank, setEditTrustBank] = useState<Node | null>(null);
 
-  const hasSigningKey = useMemo(() => !!managedBank.signing_key.length, [managedBank]);
+  const hasSigningKey = useMemo(() => !!managedBank.nid_signing_key.length, [managedBank]);
 
   const handleEditTrustButton = useCallback(
     (bank: Node) => (): void => {

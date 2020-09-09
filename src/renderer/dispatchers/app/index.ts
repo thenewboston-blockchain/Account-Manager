@@ -81,10 +81,10 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
     ip_address: bankConfig.ip_address,
     is_default: true,
     nickname: bankNickname,
+    nid_signing_key: '',
     node_identifier: bankConfig.node_identifier,
     port: bankConfig.port,
     protocol: bankConfig.protocol,
-    signing_key: '',
   };
   dispatch(unsetActiveBank());
   dispatch(setManagedBank(activeBankData));
@@ -93,10 +93,10 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
     ip_address: validatorConfig.ip_address,
     is_default: true,
     nickname: '',
+    nid_signing_key: '',
     node_identifier: validatorConfig.node_identifier,
     port: validatorConfig.port,
     protocol: validatorConfig.protocol,
-    signing_key: '',
   };
   dispatch(unsetActivePrimaryValidator());
   dispatch(setManagedValidator(activePrimaryValidatorData));

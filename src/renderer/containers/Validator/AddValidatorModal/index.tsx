@@ -71,7 +71,7 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
       const formattedData = {
         ...validatorAddressData,
         nickname,
-        signing_key: '',
+        nid_signing_key: '',
       };
 
       dispatch(setManagedValidator(formattedData));

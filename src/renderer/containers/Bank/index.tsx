@@ -31,13 +31,13 @@ import SetAsActiveBankModal from './SetAsActiveBankModal';
 import './Bank.scss';
 
 const Bank: FC = () => {
-  const address = useAddress();
-  const dispatch = useDispatch<AppDispatch>();
   const {path, url} = useRouteMatch();
   const [addSigningKeyModalIsOpen, toggleSigningKeyModal] = useBooleanState(false);
   const [editNicknameModalIsOpen, toggleEditNicknameModal] = useBooleanState(false);
   const [removeBankModalIsOpen, toggleRemoveBankModal] = useBooleanState(false);
   const [setAsActiveBankModalIsOpen, toggleSetAsActiveBankModal] = useBooleanState(false);
+  const address = useAddress();
+  const dispatch = useDispatch<AppDispatch>();
   const isActiveBank = useSelector((state: RootState) => getIsActiveBank(state, address));
   const isManagedBank = useSelector((state: RootState) => getIsManagedBank(state, address));
   const managedBanks = useSelector(getManagedBanks);
@@ -63,7 +63,7 @@ const Bank: FC = () => {
       },
     ];
 
-    const signingKeyOption = !managedBank.signing_key
+    const signingKeyOption = !managedBank.nid_signing_key
       ? {
           label: 'Add NID Signing Key',
           onClick: toggleSigningKeyModal,
@@ -82,9 +82,9 @@ const Bank: FC = () => {
       setManagedBank({
         ip_address: ipAddress,
         nickname: '',
+        nid_signing_key: '',
         port,
         protocol,
-        signing_key: '',
       }),
     );
   };
@@ -93,13 +93,13 @@ const Bank: FC = () => {
     dispatch(
       setManagedBank({
         ...managedBank,
-        signing_key: '',
+        nid_signing_key: '',
       }),
     );
   };
 
   const renderAuthenticatedBadge = (): ReactNode => {
-    if (!managedBank?.signing_key) return null;
+    if (!managedBank?.nid_signing_key) return null;
     return <Badge color="secondary" text="Authenticated" />;
   };
 

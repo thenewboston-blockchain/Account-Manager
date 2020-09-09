@@ -16,16 +16,20 @@ interface ComponentProps {
 }
 
 const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting, validator}) => {
-  const {values} = useFormContext();
+  const {errors, touched, values} = useFormContext();
   const activeBankConfig = useSelector(getActiveBankConfig)!;
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
   const managedBanks = useSelector(getManagedBanks);
 
+  console.info(values);
+  console.warn(touched);
+  console.error(errors);
+
   const getFromOptions = useMemo<InputOption[]>(
     () =>
-      Object.values(managedBanks).map(({ip_address, nickname}) => ({
-        label: nickname,
-        value: ip_address,
+      Object.entries(managedBanks).map(([key, managedBank]) => ({
+        label: managedBank.nickname,
+        value: key,
       })),
     [managedBanks],
   );
@@ -36,7 +40,7 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
         disabled={submitting}
         focused
         label="From: Managed Bank"
-        name="managedBank"
+        name="bankAddress"
         options={getFromOptions}
         required
       />
@@ -49,12 +53,12 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
             </td>
           </tr>
           <tr>
-            <td>Bank Fee</td>
-            <td>{getBankTxFee(activeBankConfig, values?.bankAccountNumber) || '-'}</td>
+            <td>Active Bank Fee</td>
+            <td>{getBankTxFee(activeBankConfig, values?.bankAddress) || '-'}</td>
           </tr>
           <tr>
-            <td>Validator Fee</td>
-            <td>{getPrimaryValidatorTxFee(activePrimaryValidatorConfig, values?.bankAccountNumber) || '-'}</td>
+            <td>Primary Validator Fee</td>
+            <td>{getPrimaryValidatorTxFee(activePrimaryValidatorConfig, values?.bankAddress) || '-'}</td>
           </tr>
           <tr>
             <td>Daily Rate</td>

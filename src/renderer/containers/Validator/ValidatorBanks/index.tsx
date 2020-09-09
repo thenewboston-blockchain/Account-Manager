@@ -35,7 +35,7 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustBank, setEditTrustBank] = useState<Node | null>(null);
 
-  const hasSigningKey = useMemo(() => !!managedValidator.signing_key.length, [managedValidator]);
+  const hasSigningKey = useMemo(() => !!managedValidator.nid_signing_key.length, [managedValidator]);
 
   const handleEditTrustButton = useCallback(
     (bank: ValidatorBank) => (): void => {
