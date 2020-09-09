@@ -1,10 +1,10 @@
-import React, {FC, useMemo, useState} from 'react';
+import React, {FC, useCallback, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
 import Modal from '@renderer/components/Modal';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
-import {getBankConfigs} from '@renderer/selectors';
-import {AppDispatch, BaseValidator} from '@renderer/types';
+import {getBankConfigs, getManagedAccounts, getManagedBanks} from '@renderer/selectors';
+import {AppDispatch, BankConfig, BaseValidator} from '@renderer/types';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import yup from '@renderer/utils/yup';
 
@@ -20,9 +20,12 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
   const [submitting, setSubmitting] = useState<boolean>(false);
   const bankConfigs = useSelector(getBankConfigs);
   const dispatch = useDispatch<AppDispatch>();
+  const managedAccounts = useSelector(getManagedAccounts);
+  const managedBanks = useSelector(getManagedBanks);
 
   const initialValues = useMemo(
     () => ({
+      amount: '',
       bankAddress: '',
     }),
     [],
@@ -41,6 +44,15 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
     }
   };
 
+  const bankSigningKey = useCallback(
+    (bankConfig: BankConfig): string | null => {
+      const bankAccountNumber = bankConfig?.account_number;
+      const managedAccount = managedAccounts[bankAccountNumber];
+      return managedAccount ? managedAccount.signing_key : null;
+    },
+    [managedAccounts],
+  );
+
   const validationSchema = useMemo(() => {
     return yup.object().shape({
       bankAddress: yup
@@ -51,30 +63,30 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
           if (!bankConfig) {
             try {
               setSubmitting(true);
-              const config = await dispatch(fetchBankConfig(address));
+              const {data, error} = await dispatch(fetchBankConfig(address));
 
-              if (config.error) {
-                displayErrorToast(config.error);
+              if (error) {
+                displayErrorToast(error);
                 setSubmitting(false);
                 return false;
               }
+
+              return data ? !!bankSigningKey(data) : false;
             } catch (error) {
-              return false;
-            } finally {
               setSubmitting(false);
+              return false;
             }
           }
 
-          return address === 'http://143.110.137.54';
+          return !!bankSigningKey(bankConfig?.data);
         })
-        .test(
-          'bank-has-nid-sk',
-          'NID signing key required to purchase confirmation services.',
-          (address) => address === 'http://143.110.137.54',
-        )
+        .test('bank-has-nid-sk', 'NID signing key required to purchase confirmation services.', (address) => {
+          const managedBank = managedBanks[address];
+          return !!(managedBank && managedBank.nid_signing_key);
+        })
         .required('This field is required'),
     });
-  }, [bankConfigs, dispatch]);
+  }, [bankConfigs, bankSigningKey, dispatch, managedBanks]);
 
   return (
     <Modal

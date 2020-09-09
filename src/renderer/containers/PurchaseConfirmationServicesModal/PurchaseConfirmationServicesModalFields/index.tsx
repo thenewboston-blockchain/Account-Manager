@@ -16,14 +16,10 @@ interface ComponentProps {
 }
 
 const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting, validator}) => {
-  const {errors, touched, values} = useFormContext();
+  const {values} = useFormContext();
   const activeBankConfig = useSelector(getActiveBankConfig)!;
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
   const managedBanks = useSelector(getManagedBanks);
-
-  console.info(values);
-  console.warn(touched);
-  console.error(errors);
 
   const getFromOptions = useMemo<InputOption[]>(
     () =>
@@ -33,6 +29,14 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
       })),
     [managedBanks],
   );
+
+  const renderTotalDays = (): number | string => {
+    const {daily_confirmation_rate: dailyRate} = validator;
+    const {amount} = values;
+    if (!amount || !dailyRate) return '-';
+    const days = (amount / dailyRate).toFixed(2);
+    return `${days} days`;
+  };
 
   return (
     <>
@@ -70,13 +74,13 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
               <RequiredAsterisk />
             </td>
             <td>
-              <FormInput disabled={submitting} hideErrorBlock name="points" placeholder="0" type="number" />
+              <FormInput disabled={submitting} hideErrorBlock name="amount" placeholder="0" type="number" />
             </td>
           </tr>
           <tr className="PurchaseConfirmationServicesModalFields__time-tr">
             <td>Time</td>
             <td>
-              <b>5.26 days</b>
+              <b>{renderTotalDays()}</b>
             </td>
           </tr>
         </tbody>

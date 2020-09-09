@@ -59,9 +59,9 @@ const SendPointsModalFields: FC<ComponentProps> = ({submitting}) => {
   const renderTotal = (): number | string => {
     const {points, senderAccountNumber} = values;
     if (!points) return '-';
-    const floatBankTxFee = getBankTxFee(activeBankConfig, senderAccountNumber);
-    const floatValidatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidatorConfig, senderAccountNumber);
-    return points + floatBankTxFee + floatValidatorTxFee;
+    const bankTxFee = getBankTxFee(activeBankConfig, senderAccountNumber);
+    const validatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidatorConfig, senderAccountNumber);
+    return points + bankTxFee + validatorTxFee;
   };
 
   return (
