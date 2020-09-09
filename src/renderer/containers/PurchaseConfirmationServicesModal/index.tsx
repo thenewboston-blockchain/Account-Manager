@@ -72,6 +72,8 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
         } catch (error) {
           setSubmitting(false);
           return false;
+        } finally {
+          setSubmitting(false);
         }
       }
 
