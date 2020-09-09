@@ -59,7 +59,15 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
 
   const checkConnectionBankToValidator = useCallback(
     async (bankAddress: string): Promise<void> => {
-      await axios.get(`${bankAddress}/validators/${validator.node_identifier}`, {timeout: AXIOS_TIMEOUT_MS});
+      try {
+        await axios.get(`${bankAddress}/validators/${validator.node_identifier}`, {timeout: AXIOS_TIMEOUT_MS});
+      } catch (error) {
+        await axios.post(`${bankAddress}/validators`, validator, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      }
     },
     [validator],
   );
