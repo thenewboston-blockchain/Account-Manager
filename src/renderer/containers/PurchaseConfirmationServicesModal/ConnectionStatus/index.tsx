@@ -15,11 +15,11 @@ const ConnectionStatus: FC<ComponentProps> = ({status}) => {
     let subTitle;
 
     if (status === 'checking') {
-      icon = IconType.alert;
+      icon = IconType.sync;
       mainTitle = 'Checking Connection';
       subTitle = 'Please wait while we check the connection status';
     } else if (status === 'connected') {
-      icon = IconType.alert;
+      icon = IconType.humanGreeting;
       mainTitle = 'Connected';
       subTitle = 'Purchase Confirmation Services below';
     } else {
