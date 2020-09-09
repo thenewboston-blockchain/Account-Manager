@@ -18,6 +18,7 @@ interface ComponentProps {
 }
 
 const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator}) => {
+  const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'not-connected' | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const bankConfigs = useSelector(getBankConfigs);
   const dispatch = useDispatch<AppDispatch>();
@@ -108,7 +109,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
       submitting={submitting}
       validationSchema={validationSchema}
     >
-      <ConnectionStatus status="checking" />
+      {connectionStatus && <ConnectionStatus status={connectionStatus} />}
       <PurchaseConfirmationServicesModalFields submitting={submitting} validator={validator} />
     </Modal>
   );
