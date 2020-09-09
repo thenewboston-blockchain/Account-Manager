@@ -53,40 +53,46 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
     [managedAccounts],
   );
 
-  const validationSchema = useMemo(() => {
-    return yup.object().shape({
-      bankAddress: yup
-        .string()
-        .test('bank-has-sk', 'Signing key required to purchase confirmation services.', async (address) => {
-          const bankConfig = bankConfigs[address];
+  const testBankHasSigningKey = useCallback(
+    async (address: string) => {
+      const bankConfig = bankConfigs[address];
 
-          if (!bankConfig) {
-            try {
-              setSubmitting(true);
-              const {data, error} = await dispatch(fetchBankConfig(address));
+      if (!bankConfig) {
+        try {
+          setSubmitting(true);
+          const {data, error} = await dispatch(fetchBankConfig(address));
 
-              if (error) {
-                displayErrorToast(error);
-                setSubmitting(false);
-                return false;
-              }
-
-              return data ? !!bankSigningKey(data) : false;
-            } catch (error) {
-              setSubmitting(false);
-              return false;
-            }
+          if (error) {
+            displayErrorToast(error);
+            setSubmitting(false);
+            return false;
           }
 
-          return !!bankSigningKey(bankConfig?.data);
-        })
+          return data ? !!bankSigningKey(data) : false;
+        } catch (error) {
+          setSubmitting(false);
+          return false;
+        }
+      }
+
+      return !!bankSigningKey(bankConfig?.data);
+    },
+    [bankConfigs, bankSigningKey, dispatch],
+  );
+
+  const validationSchema = useMemo(() => {
+    return yup.object().shape({
+      amount: yup.number().moreThan(0, 'Amount must be greater than 0').required('Amount is a required field'),
+      bankAddress: yup
+        .string()
+        .test('bank-has-sk', 'Signing key required to purchase confirmation services.', testBankHasSigningKey)
         .test('bank-has-nid-sk', 'NID signing key required to purchase confirmation services.', (address) => {
           const managedBank = managedBanks[address];
           return !!(managedBank && managedBank.nid_signing_key);
         })
         .required('This field is required'),
     });
-  }, [bankConfigs, bankSigningKey, dispatch, managedBanks]);
+  }, [managedBanks, testBankHasSigningKey]);
 
   return (
     <Modal
