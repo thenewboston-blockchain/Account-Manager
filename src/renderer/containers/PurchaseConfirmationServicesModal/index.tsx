@@ -62,6 +62,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
       try {
         await axios.get(`${bankAddress}/validators/${validator.node_identifier}`, {timeout: AXIOS_TIMEOUT_MS});
       } catch (error) {
+        // TODO: This needs to be a signed request
         await axios.post(`${bankAddress}/validators`, validator, {
           headers: {
             'Content-Type': 'application/json',
