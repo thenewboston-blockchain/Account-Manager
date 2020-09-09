@@ -7,6 +7,7 @@ import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {getBankConfigs, getManagedAccounts, getManagedBanks} from '@renderer/selectors';
 import {AppDispatch, BankConfig, BaseValidator} from '@renderer/types';
+import {formatAddressFromNode} from '@renderer/utils/address';
 import {generateSignedMessage, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import yup from '@renderer/utils/yup';
@@ -93,9 +94,28 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
       const {
         data: {node_identifier: nodeIdentifier},
       } = bankConfigs[bankAddress];
-      await axios.get(`${bankAddress}/banks/${nodeIdentifier}`, {timeout: AXIOS_TIMEOUT_MS});
+      const validatorAddress = formatAddressFromNode(validator);
+
+      try {
+        await axios.get(`${validatorAddress}/banks/${nodeIdentifier}`, {timeout: AXIOS_TIMEOUT_MS});
+      } catch (error) {
+        const managedBank = managedBanks[bankAddress];
+        if (!(managedBank && managedBank.nid_signing_key)) throw new Error('No NID SK');
+        const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(managedBank.nid_signing_key);
+        const connectionRequestData = {
+          ip_address: managedBank.ip_address,
+          port: managedBank.port,
+          protocol: managedBank.protocol,
+        };
+        const signedMessage = generateSignedMessage(connectionRequestData, publicKeyHex, signingKey);
+        await axios.post(`${validatorAddress}/connection_requests`, signedMessage, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      }
     },
-    [bankConfigs],
+    [bankConfigs, managedBanks, validator],
   );
 
   const testBankHasSigningKey = useCallback(
