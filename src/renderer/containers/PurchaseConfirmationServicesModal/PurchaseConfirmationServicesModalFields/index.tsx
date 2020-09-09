@@ -48,6 +48,11 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
         options={getFromOptions}
         required
       />
+      <div className="PurchaseConfirmationServicesModalFields__label">To: Validator</div>
+      <div className="PurchaseConfirmationServicesModalFields__validator-nid">
+        <div>{validator.node_identifier.slice(0, 32)}</div>
+        <div>{validator.node_identifier.slice(32)}</div>
+      </div>
       <table className="PurchaseConfirmationServicesModalFields__table">
         <tbody>
           <tr>

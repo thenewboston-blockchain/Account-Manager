@@ -3,6 +3,12 @@
     color: var(--color-tertiary);
   }
 
+  &__label {
+    color: var(--color-sail-gray-500);
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
   &__table {
     width: 100%;
 
@@ -23,5 +29,10 @@
     td {
       border-top-width: 3px;
     }
+  }
+
+  &__validator-nid {
+    font-family: var(--font-family-mono);
+    margin-bottom: 24px;
   }
 }
