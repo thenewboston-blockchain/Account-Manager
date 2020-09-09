@@ -93,3 +93,6 @@ out/
 
 # VS Code
 .vscode/
+
+# Certificates
+certificates/

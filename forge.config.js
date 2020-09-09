@@ -1,15 +1,27 @@
 const { utils: { fromBuildIdentifier } } = require("@electron-forge/core");
+const appInformation = require("./app-information.json");
+require("dotenv").config();
 
-console.log(process.env.MODE);
+/*
+MODE : beta, alpha, stable
+SUB_VERSION : version for beta, alpha. For stable version, ignore
+*/
+
 module.exports = {
-	buildIdentifier: process.env.MODE, // beta or prod
+	buildIdentifier: appInformation.mode, // beta or prod
 	packagerConfig: {
+		name: appInformation.name,
 		icon: "assets/app-icon/mac/icon.icns",
 		appBundleId: fromBuildIdentifier({
 			beta: "com.beta.thenewboston.account.manager.app",
-			prod: "com.thenewboston.account.manager.app"
-		})
-		// asar: true
+			alpha: "com.alpha.thenewboston.account.manager.app",
+			stable: "com.thenewboston.account.manager.app"
+		}),
+		"hardened-runtime": true,
+		asar: true
+	},
+	hooks: {
+		postPackage: require(__dirname + "/assets/scripts/notarize.js")
 	},
 	makers: [
 		{
@@ -23,12 +35,12 @@ module.exports = {
 		{
 			name: "@electron-forge/maker-dmg",
 			config: {
-				icon: "assets/app-icon/mac/icon.icns"
+				icon: __dirname + "/assets/app-icon/mac/icon.icns"
 			}
 		},
 		{
 			name: "@electron-forge/maker-zip",
-			platforms: [ "darwin" ]
+			platforms: [ "darwin", "win32", "linux" ]
 		},
 		{
 			name: "@electron-forge/maker-deb",
@@ -43,19 +55,19 @@ module.exports = {
 		[
 			"@electron-forge/plugin-webpack",
 			{
-				mainConfig: "./webpack.main.config.js",
+				mainConfig: __dirname + "/webpack.main.config.js",
 				renderer: {
-					config: "./webpack.renderer.config.js",
+					config: __dirname + "/webpack.renderer.config.js",
 					entryPoints: [
 						{
-							html: "./public/index.html",
-							js: "./src/renderer/renderer.tsx",
+							html: __dirname + "/public/index.html",
+							js: __dirname + "/src/renderer/renderer.tsx",
 							name: "main_window"
 						}
 					]
 				}
 			}
-		]
-		// [ "@electron-forge/plugin-auto-unpack-natives" ]
+		],
+		[ "@electron-forge/plugin-auto-unpack-natives" ]
 	]
 };
