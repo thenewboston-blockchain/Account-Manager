@@ -8,6 +8,7 @@ import {AppDispatch, BankConfig, BaseValidator} from '@renderer/types';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import yup from '@renderer/utils/yup';
 
+import ConnectionStatus from './ConnectionStatus';
 import PurchaseConfirmationServicesModalFields from './PurchaseConfirmationServicesModalFields';
 import './PurchaseConfirmationServicesModal.scss';
 
@@ -107,6 +108,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
       submitting={submitting}
       validationSchema={validationSchema}
     >
+      <ConnectionStatus status="checking" />
       <PurchaseConfirmationServicesModalFields submitting={submitting} validator={validator} />
     </Modal>
   );
