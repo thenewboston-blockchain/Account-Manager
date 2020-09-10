@@ -1,5 +1,4 @@
 import {AppNodeAddressData, ManagedAccount, ManagedFriend, ManagedNode} from './app';
-import {NodeType, ProtocolType} from './constants';
 import {BaseFormComponentProps, BaseFormInlineComponentProps, GenericFormValues, InputOption} from './forms';
 import {GenericFunction, GenericVoidFunction} from './generic';
 import {
@@ -15,10 +14,12 @@ import {
   InvalidBlock,
   Node,
   NodeIdentifier,
+  NodeType,
   PaginatedQueryParams,
   PaginatedResults,
   PaginatedResultsWithError,
   PrimaryValidatorConfig,
+  ProtocolType,
   Tx,
   ValidatorAccount,
   ValidatorBank,
