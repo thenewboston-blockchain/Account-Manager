@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import {BankConfig, Dict, ManagedAccount, Tx, ValidatorConfig} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
+import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 
 const createBlock = async (
   activePrimaryValidator: ValidatorConfig,
@@ -11,7 +11,7 @@ const createBlock = async (
   recipientAccountNumber: string,
   senderAccountNumber: string,
   txs: Tx[],
-) => {
+): Promise<string> => {
   const {signing_key: signingKeyHex} = managedAccounts[senderAccountNumber];
   const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
   const balanceLock = await fetchAccountBalanceLock(senderAccountNumber, activePrimaryValidator);
@@ -55,23 +55,17 @@ export const sendBlock = async (
   ];
 
   if (!recipientIsActiveBank) {
-    txs = [
-      ...txs,
-      {
-        amount: bankTxFee,
-        recipient: activeBank.account_number,
-      },
-    ];
+    txs.push({
+      amount: bankTxFee,
+      recipient: activeBank.account_number,
+    });
   }
 
   if (!recipientIsActivePrimaryValidator) {
-    txs = [
-      ...txs,
-      {
-        amount: primaryValidatorTxFee,
-        recipient: activePrimaryValidator.account_number,
-      },
-    ];
+    txs.push({
+      amount: primaryValidatorTxFee,
+      recipient: activePrimaryValidator.account_number,
+    });
   }
 
   txs = txs.filter((tx) => !!tx.amount);
