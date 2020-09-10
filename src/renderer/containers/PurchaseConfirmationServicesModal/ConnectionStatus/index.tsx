@@ -19,11 +19,11 @@ const ConnectionStatus: FC<ComponentProps> = ({status}) => {
       mainTitle = 'Checking Connection';
       subTitle = 'Please wait while we check the connection';
     } else if (status === 'connected') {
-      icon = IconType.humanGreeting;
+      icon = IconType.lanConnect;
       mainTitle = 'Connected';
       subTitle = 'Purchase Confirmation Services below';
     } else {
-      icon = IconType.alert;
+      icon = IconType.lanDisconnect;
       mainTitle = 'Not Connected';
       subTitle = 'Unable to connect to Confirmation Validator';
     }

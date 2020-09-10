@@ -15,7 +15,8 @@ import ChevronRightIcon from 'mdi-react/ChevronRightIcon';
 import CloseIcon from 'mdi-react/CloseIcon';
 import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
 import EarthIcon from 'mdi-react/EarthIcon';
-import HumanGreetingIcon from 'mdi-react/HumanGreetingIcon';
+import LanConnectIcon from 'mdi-react/LanConnectIcon';
+import LanDisconnectIcon from 'mdi-react/LanDisconnectIcon';
 import LoadingIcon from 'mdi-react/LoadingIcon';
 import PencilIcon from 'mdi-react/PencilIcon';
 import PowerIcon from 'mdi-react/PowerIcon';
@@ -45,7 +46,8 @@ export enum IconType {
   close,
   dotsVertical,
   earth,
-  humanGreeting,
+  lanConnect,
+  lanDisconnect,
   loading,
   pencil,
   play,
@@ -126,8 +128,10 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
           return <DotsVerticalIcon {...iconProps} />;
         case IconType.earth:
           return <EarthIcon {...iconProps} />;
-        case IconType.humanGreeting:
-          return <HumanGreetingIcon {...iconProps} />;
+        case IconType.lanConnect:
+          return <LanConnectIcon {...iconProps} />;
+        case IconType.lanDisconnect:
+          return <LanDisconnectIcon {...iconProps} />;
         case IconType.loading:
           return <LoadingIcon {...iconProps} />;
         case IconType.pencil:
