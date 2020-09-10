@@ -29,7 +29,7 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
   const managedAccounts = useSelector(getManagedAccounts);
   const managedBanks = useSelector(getManagedBanks);
 
-  const getBankAccountNumberFromAddress = (bankAddress: string) => {
+  const getBanksAccountNumberFromAddress = (bankAddress: string) => {
     const {
       data: {account_number: accountNumber},
     } = bankConfigs[bankAddress];
@@ -47,7 +47,15 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
 
   const renderActiveBankFee = () => {
     if (!values?.bankAddress) return activeBankConfig.default_transaction_fee;
-    return getBankTxFee(activeBankConfig, getBankAccountNumberFromAddress(values.bankAddress)) || '-';
+    return getBankTxFee(activeBankConfig, getBanksAccountNumberFromAddress(values.bankAddress)) || '-';
+  };
+
+  const renderBanksAccountBalance = (): string => {
+    const {bankAddress} = values;
+    if (!bankAddress) return '-';
+    const accountNumber = getBanksAccountNumberFromAddress(bankAddress);
+    const {balance} = managedAccounts[accountNumber];
+    return balance?.toLocaleString() || '0';
   };
 
   const renderDays = (): number | string => {
@@ -58,20 +66,10 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
     return `${days} days`;
   };
 
-  const renderSenderAccountBalance = (): string => {
-    const {bankAddress} = values;
-    if (!bankAddress) return '-';
-    const {
-      data: {account_number: accountNumber},
-    } = bankConfigs[bankAddress];
-    const {balance} = managedAccounts[accountNumber];
-    return balance?.toLocaleString() || '0';
-  };
-
   const renderTotal = (): number | string => {
     const {amount, bankAddress} = values;
     if (!amount || !bankAddress) return '-';
-    const accountNumber = getBankAccountNumberFromAddress(bankAddress);
+    const accountNumber = getBanksAccountNumberFromAddress(bankAddress);
     const bankTxFee = getBankTxFee(activeBankConfig, accountNumber);
     const validatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidatorConfig, accountNumber);
     return amount + bankTxFee + validatorTxFee;
@@ -98,7 +96,7 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
             <td>Account Balance</td>
             <td>
               <span className="PurchaseConfirmationServicesModalFields__account-balance">
-                {renderSenderAccountBalance()}
+                {renderBanksAccountBalance()}
               </span>
             </td>
           </tr>
