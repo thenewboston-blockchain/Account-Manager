@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 
 import Modal from '@renderer/components/Modal';
+import {INVALID_AMOUNT_ERROR} from '@renderer/containers/SendPointsModal/SendPointsModalFields';
 import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {
@@ -17,6 +18,7 @@ import {formatAddressFromNode} from '@renderer/utils/address';
 import {sendBlock} from '@renderer/utils/blocks';
 import {generateSignedMessage, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
+import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import yup from '@renderer/utils/yup';
 
 import ConnectionStatus from './ConnectionStatus';
@@ -189,9 +191,34 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
     [checkConnectionBankToValidator, checkConnectionValidatorToBank],
   );
 
+  const checkPointsWithBalance = useCallback(
+    (amount: number, bankAddress: string): boolean => {
+      if (!amount || !bankAddress) return true;
+
+      const {
+        data: {account_number: accountNumber},
+      } = bankConfigs[bankAddress];
+      const {balance} = managedAccounts[accountNumber];
+
+      const totalCost =
+        getBankTxFee(activeBank, accountNumber) +
+        getPrimaryValidatorTxFee(activePrimaryValidator, accountNumber) +
+        amount;
+
+      return totalCost <= balance;
+    },
+    [activeBank, activePrimaryValidator, bankConfigs, managedAccounts],
+  );
+
   const validationSchema = useMemo(() => {
+    const bankAddressRef = yup.ref('bankAddress');
+
     return yup.object().shape({
-      amount: yup.number().moreThan(0, 'Amount must be greater than 0').required('Amount is a required field'),
+      amount: yup
+        .number()
+        .callbackWithRef(bankAddressRef, checkPointsWithBalance, INVALID_AMOUNT_ERROR)
+        .moreThan(0, 'Amount must be greater than 0')
+        .required('Amount is a required field'),
       bankAddress: yup
         .string()
         .test('bank-has-sk', 'Signing key required to purchase confirmation services.', testBankHasSigningKey)
@@ -202,7 +229,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
         .test('bank-is-connected', '', testConnection)
         .required('This field is required'),
     });
-  }, [managedBanks, testBankHasSigningKey, testConnection]);
+  }, [managedBanks, checkPointsWithBalance, testBankHasSigningKey, testConnection]);
 
   return (
     <Modal

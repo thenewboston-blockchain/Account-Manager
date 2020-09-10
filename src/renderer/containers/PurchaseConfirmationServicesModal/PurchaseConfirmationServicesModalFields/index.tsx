@@ -4,7 +4,13 @@ import {useSelector} from 'react-redux';
 import {FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import {useFormContext} from '@renderer/hooks';
-import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedBanks} from '@renderer/selectors';
+import {
+  getActiveBankConfig,
+  getActivePrimaryValidatorConfig,
+  getBankConfigs,
+  getManagedAccounts,
+  getManagedBanks,
+} from '@renderer/selectors';
 import {BaseValidator, InputOption} from '@renderer/types';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 
@@ -16,10 +22,14 @@ interface ComponentProps {
 }
 
 const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting, validator}) => {
-  const {values} = useFormContext();
+  const {errors, touched, values} = useFormContext();
   const activeBankConfig = useSelector(getActiveBankConfig)!;
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
+  const bankConfigs = useSelector(getBankConfigs);
+  const managedAccounts = useSelector(getManagedAccounts);
   const managedBanks = useSelector(getManagedBanks);
+
+  const amountError = touched.amount ? errors.amount : '';
 
   const getFromOptions = useMemo<InputOption[]>(
     () =>
@@ -29,6 +39,16 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
       })),
     [managedBanks],
   );
+
+  const renderSenderAccountBalance = (): string => {
+    const {bankAddress} = values;
+    if (!bankAddress) return '-';
+    const {
+      data: {account_number: accountNumber},
+    } = bankConfigs[bankAddress];
+    const {balance} = managedAccounts[accountNumber];
+    return balance?.toLocaleString() || '0';
+  };
 
   const renderTotalDays = (): number | string => {
     const {daily_confirmation_rate: dailyRate} = validator;
@@ -40,6 +60,7 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
 
   return (
     <>
+      {amountError ? <span className="SendPointsModalFields__error">{amountError}</span> : null}
       <FormSelectDetailed
         disabled={submitting}
         focused
@@ -58,7 +79,9 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
           <tr>
             <td>Account Balance</td>
             <td>
-              <span className="PurchaseConfirmationServicesModalFields__account-balance">{`${(1350).toLocaleString()}`}</span>
+              <span className="PurchaseConfirmationServicesModalFields__account-balance">
+                {renderSenderAccountBalance()}
+              </span>
             </td>
           </tr>
           <tr>
