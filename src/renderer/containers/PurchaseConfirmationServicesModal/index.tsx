@@ -30,8 +30,13 @@ interface ComponentProps {
   validator: BaseValidator;
 }
 
+export interface KnownConnectionStatus {
+  [key: string]: boolean;
+}
+
 const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator}) => {
   const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'not-connected' | null>(null);
+  const [knownConnectionStatuses, setKnownConnectionStatuses] = useState<KnownConnectionStatus>({});
   const [submitting, setSubmitting] = useState<boolean>(false);
   const activeBank = useSelector(getActiveBankConfig)!;
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
@@ -143,6 +148,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
 
   const testBankHasSigningKey = useCallback(
     async (address: string) => {
+      if (!address) return true;
       const bankConfig = bankConfigs[address];
 
       if (!bankConfig) {
@@ -172,6 +178,10 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
 
   const testConnection = useCallback(
     async (address: string) => {
+      if (!address) return true;
+      const knownStatus = knownConnectionStatuses[address];
+      if (knownStatus) return knownStatus;
+
       try {
         setConnectionStatus('checking');
         setSubmitting(true);
@@ -180,15 +190,23 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
         await checkConnectionValidatorToBank(address);
 
         setConnectionStatus('connected');
+        setKnownConnectionStatuses({
+          ...knownConnectionStatuses,
+          [address]: true,
+        });
         setSubmitting(false);
       } catch (error) {
         setConnectionStatus('not-connected');
+        setKnownConnectionStatuses({
+          ...knownConnectionStatuses,
+          [address]: false,
+        });
         setSubmitting(false);
       }
 
       return false;
     },
-    [checkConnectionBankToValidator, checkConnectionValidatorToBank],
+    [checkConnectionBankToValidator, checkConnectionValidatorToBank, knownConnectionStatuses],
   );
 
   const checkPointsWithBalance = useCallback(
@@ -223,6 +241,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
         .string()
         .test('bank-has-sk', 'Signing key required to purchase confirmation services.', testBankHasSigningKey)
         .test('bank-has-nid-sk', 'NID signing key required to purchase confirmation services.', (address) => {
+          if (!address) return true;
           const managedBank = managedBanks[address];
           return !!(managedBank && managedBank.nid_signing_key);
         })

@@ -15,9 +15,7 @@ const createBlock = async (
   const {signing_key: signingKeyHex} = managedAccounts[senderAccountNumber];
   const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
   const balanceLock = await fetchAccountBalanceLock(senderAccountNumber, activePrimaryValidator);
-  const block = generateBlock(balanceLock, publicKeyHex, signingKey, txs);
-  console.info(block);
-  return block;
+  return generateBlock(balanceLock, publicKeyHex, signingKey, txs);
 };
 
 const fetchAccountBalanceLock = async (
@@ -87,7 +85,6 @@ export const sendBlock = async (
     senderAccountNumber,
     txs,
   );
-  console.warn(block);
   await axios.post(`${address}/blocks`, block, {
     headers: {
       'Content-Type': 'application/json',

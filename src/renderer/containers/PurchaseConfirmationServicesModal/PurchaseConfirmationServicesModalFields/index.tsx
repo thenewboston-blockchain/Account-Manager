@@ -60,7 +60,7 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
 
   return (
     <>
-      {amountError ? <span className="SendPointsModalFields__error">{amountError}</span> : null}
+      {amountError ? <span className="PurchaseConfirmationServicesModalFields__error">{amountError}</span> : null}
       <FormSelectDetailed
         disabled={submitting}
         focused

@@ -3,6 +3,12 @@
     color: var(--color-tertiary);
   }
 
+  &__error {
+    color: var(--color-danger);
+    display: block;
+    margin-bottom: 16px;
+  }
+
   &__label {
     color: var(--color-sail-gray-500);
     font-weight: bold;
