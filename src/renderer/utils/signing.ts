@@ -31,7 +31,7 @@ export const generateSignature = (message: string, signingKey: Uint8Array) => {
 };
 
 export const generateSignedMessage = (message: object, publicKeyHex: string, signingKey: Uint8Array) => {
-  const strMessage: string = JSON.stringify(message);
+  const strMessage = JSON.stringify(message);
   const signedMessage = {
     message,
     node_identifier: publicKeyHex,
