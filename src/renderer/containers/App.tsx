@@ -8,14 +8,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import Connect from '@renderer/containers/Connect';
 import Layout from '@renderer/containers/Layout';
 import {connect} from '@renderer/dispatchers/app';
+import {useWebSockets} from '@renderer/hooks';
 import {getActiveBank, getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch} from '@renderer/types';
 
 const App: FC = () => {
-  const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch<AppDispatch>();
   const activeBank = useSelector(getActiveBank);
   const activeBankConfig = useSelector(getActiveBankConfig);
+  const [loading, setLoading] = useState<boolean>(true);
+  useWebSockets();
 
   useEffect(() => {
     if (activeBank && !activeBankConfig) {
@@ -40,7 +42,7 @@ const App: FC = () => {
     <Router>
       {renderComponent()}
       <ToastContainer
-        autoClose={5000}
+        autoClose={3000}
         closeOnClick
         draggable
         hideProgressBar

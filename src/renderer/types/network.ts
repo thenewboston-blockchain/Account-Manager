@@ -1,5 +1,3 @@
-import {NodeType, ProtocolType} from './constants';
-
 export interface AccountNumber {
   account_number: string;
 }
@@ -97,6 +95,12 @@ export interface NodeIdentifier {
   node_identifier: string;
 }
 
+export enum NodeType {
+  bank = 'BANK',
+  confirmationValidator = 'CONFIRMATION_VALIDATOR',
+  primaryValidator = 'PRIMARY_VALIDATOR',
+}
+
 export interface PaginatedQueryParams {
   limit?: number;
   offset?: number;
@@ -114,6 +118,8 @@ export type PaginatedResultsWithError<T> = PaginatedResults<T> & Error;
 export interface PrimaryValidatorConfig extends BaseValidator {
   node_type: NodeType.primaryValidator;
 }
+
+export type ProtocolType = 'http' | 'https';
 
 export interface Tx {
   amount: number | string;
