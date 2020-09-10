@@ -25,8 +25,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Package
-        run: npm run deploy:linux
+      - name: release
+        run: npm run release
         env:
           GH_TOKEN: '${{ secrets.GH_TOKEN }}'
           EP_PRE_RELEASE: true
@@ -50,8 +50,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Package
-        run: npm run deploy:mac
+      - name: release
+        run: npm run release
         env:
           GH_TOKEN: '${{ secrets.GH_TOKEN }}'
           EP_PRE_RELEASE: true
@@ -79,8 +79,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Package
-        run: npm run deploy:win
+      - name: release
+        run: npm run release
         env:
           GH_TOKEN: '${{ secrets.GH_TOKEN }}'
           EP_PRE_RELEASE: true
