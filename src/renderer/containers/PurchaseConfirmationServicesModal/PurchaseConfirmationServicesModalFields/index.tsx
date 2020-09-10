@@ -29,6 +29,13 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
   const managedAccounts = useSelector(getManagedAccounts);
   const managedBanks = useSelector(getManagedBanks);
 
+  const getBankAccountNumberFromAddress = (bankAddress: string) => {
+    const {
+      data: {account_number: accountNumber},
+    } = bankConfigs[bankAddress];
+    return accountNumber;
+  };
+
   const getFromOptions = useMemo<InputOption[]>(
     () =>
       Object.entries(managedBanks).map(([key, managedBank]) => ({
@@ -37,6 +44,19 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
       })),
     [managedBanks],
   );
+
+  const renderActiveBankFee = () => {
+    if (!values?.bankAddress) return activeBankConfig.default_transaction_fee;
+    return getBankTxFee(activeBankConfig, getBankAccountNumberFromAddress(values.bankAddress)) || '-';
+  };
+
+  const renderDays = (): number | string => {
+    const {daily_confirmation_rate: dailyRate} = validator;
+    const {amount} = values;
+    if (!amount || !dailyRate) return '-';
+    const days = (amount / dailyRate).toFixed(2);
+    return `${days} days`;
+  };
 
   const renderSenderAccountBalance = (): string => {
     const {bankAddress} = values;
@@ -48,20 +68,10 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
     return balance?.toLocaleString() || '0';
   };
 
-  const renderDays = (): number | string => {
-    const {daily_confirmation_rate: dailyRate} = validator;
-    const {amount} = values;
-    if (!amount || !dailyRate) return '-';
-    const days = (amount / dailyRate).toFixed(2);
-    return `${days} days`;
-  };
-
   const renderTotal = (): number | string => {
     const {amount, bankAddress} = values;
     if (!amount || !bankAddress) return '-';
-    const {
-      data: {account_number: accountNumber},
-    } = bankConfigs[bankAddress];
+    const accountNumber = getBankAccountNumberFromAddress(bankAddress);
     const bankTxFee = getBankTxFee(activeBankConfig, accountNumber);
     const validatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidatorConfig, accountNumber);
     return amount + bankTxFee + validatorTxFee;
@@ -93,18 +103,6 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
             </td>
           </tr>
           <tr>
-            <td>Active Bank Fee</td>
-            <td>{getBankTxFee(activeBankConfig, values?.bankAddress) || '-'}</td>
-          </tr>
-          <tr>
-            <td>Primary Validator Fee</td>
-            <td>{getPrimaryValidatorTxFee(activePrimaryValidatorConfig, values?.bankAddress) || '-'}</td>
-          </tr>
-          <tr>
-            <td>Daily Rate</td>
-            <td>{validator.daily_confirmation_rate}</td>
-          </tr>
-          <tr>
             <td>
               Amount
               <RequiredAsterisk />
@@ -113,16 +111,28 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
               <FormInput disabled={submitting} hideErrorBlock name="amount" placeholder="0" type="number" />
             </td>
           </tr>
-          <tr className="PurchaseConfirmationServicesModalFields__total-tr">
-            <td>Total Tx Cost</td>
-            <td>
-              <b>{renderTotal()}</b>
-            </td>
+          <tr>
+            <td>Daily Rate</td>
+            <td>{validator.daily_confirmation_rate}</td>
           </tr>
-          <tr className="PurchaseConfirmationServicesModalFields__time-tr">
+          <tr>
             <td>Time</td>
             <td>
               <b>{renderDays()}</b>
+            </td>
+          </tr>
+          <tr className="PurchaseConfirmationServicesModalFields__bank-fee-tr">
+            <td>Active Bank Fee</td>
+            <td>{renderActiveBankFee()}</td>
+          </tr>
+          <tr>
+            <td>Primary Validator Fee</td>
+            <td>{getPrimaryValidatorTxFee(activePrimaryValidatorConfig, values?.bankAddress) || '-'}</td>
+          </tr>
+          <tr>
+            <td>Total Tx Cost</td>
+            <td>
+              <b>{renderTotal()}</b>
             </td>
           </tr>
         </tbody>
