@@ -6,6 +6,7 @@ import useFormSelect from './useFormSelect';
 import useNavigationalHistory from './useNavigationalHistory';
 import useNetworkConfigFetcher from './useNetworkConfigFetcher';
 import usePaginatedNetworkDataFetcher from './usePaginatedNetworkDataFetcher';
+import useWebSockets from './useWebSockets';
 
 export {
   useAddress,
@@ -16,4 +17,5 @@ export {
   useNavigationalHistory,
   useNetworkConfigFetcher,
   usePaginatedNetworkDataFetcher,
+  useWebSockets,
 };

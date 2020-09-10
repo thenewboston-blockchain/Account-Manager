@@ -4,12 +4,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import ChangeActiveBankModal from '@renderer/containers/ChangeActiveBankModal';
+import Notifications from '@renderer/containers//Notifications';
 import {clearLocalState} from '@renderer/dispatchers/app';
 import {useBooleanState, useNavigationalHistory} from '@renderer/hooks';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
 import {AppDispatch} from '@renderer/types';
 
-import TopNavNotifications from './TopNavNotifications';
 import './TopNav.scss';
 
 const TopNav: FC = () => {
@@ -39,7 +39,7 @@ const TopNav: FC = () => {
           Change Active Bank
         </span>
         <Icon className="TopNav__icon" icon={IconType.power} onClick={toggleResetAppModal} />
-        <TopNavNotifications />
+        <Notifications />
       </div>
     );
   };
