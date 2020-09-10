@@ -1,3 +1,13 @@
 .ValidatorOverview {
   padding: var(--page-padding);
+
+  &__link {
+    color: var(--color-secondary);
+    text-decoration: none;
+
+    &:focus,
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
