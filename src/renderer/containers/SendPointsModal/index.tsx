@@ -1,15 +1,12 @@
 import React, {FC, ReactNode, useCallback, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
-import axios from 'axios';
 
 import {FormButton} from '@renderer/components/FormComponents';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
-import {Tx} from '@renderer/types';
-import {formatAddress} from '@renderer/utils/address';
+import {sendBlock} from '@renderer/utils/blocks';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
-import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import yup from '@renderer/utils/yup';
 
@@ -23,10 +20,10 @@ interface ComponentProps {
 }
 
 const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSender}) => {
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const activeBank = useSelector(getActiveBankConfig)!;
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
   const managedAccounts = useSelector(getManagedAccounts);
-  const [submitting, setSubmitting] = useState<boolean>(false);
 
   const checkPointsWithBalance = useCallback(
     (points: number, accountNumber: string): boolean => {
@@ -52,72 +49,18 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
 
   type FormValues = typeof initialValues;
 
-  const createBlock = async (recipientAccountNumber: string, senderAccountNumber: string, txs: Tx[]): Promise<void> => {
-    const {signing_key: signingKeyHex} = managedAccounts[senderAccountNumber];
-    const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
-    const balanceLock = await fetchAccountBalanceLock(senderAccountNumber);
-
-    const {ip_address: ipAddress, port, protocol} = activeBank;
-    const address = formatAddress(ipAddress, port, protocol);
-    const block = generateBlock(balanceLock, publicKeyHex, signingKey, txs);
-    await axios.post(`${address}/blocks`, block, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-  };
-
-  const fetchAccountBalanceLock = async (accountNumber: string): Promise<string> => {
-    const {ip_address: ipAddress, port, protocol} = activePrimaryValidator;
-    const address = formatAddress(ipAddress, port, protocol);
-    const {
-      data: {balance_lock: balanceLock},
-    } = await axios.get(`${address}/accounts/${accountNumber}/balance_lock`);
-    return balanceLock;
-  };
-
   const handleSubmit = async ({points, recipientAccountNumber, senderAccountNumber}: FormValues): Promise<void> => {
-    const recipientIsActiveBank = recipientAccountNumber === activeBank.account_number;
-    const recipientIsActivePrimaryValidator = recipientAccountNumber === activePrimaryValidator.account_number;
-
-    const bankTxFee = getBankTxFee(activeBank, senderAccountNumber);
-    const primaryValidatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidator, senderAccountNumber);
-
-    let txs: Tx[] = [
-      {
-        amount:
-          parseInt(points, 10) +
-          (recipientIsActiveBank ? bankTxFee : 0) +
-          (recipientIsActivePrimaryValidator ? primaryValidatorTxFee : 0),
-        recipient: recipientAccountNumber,
-      },
-    ];
-
-    if (!recipientIsActiveBank) {
-      txs = [
-        ...txs,
-        {
-          amount: bankTxFee,
-          recipient: activeBank.account_number,
-        },
-      ];
-    }
-
-    if (!recipientIsActivePrimaryValidator) {
-      txs = [
-        ...txs,
-        {
-          amount: primaryValidatorTxFee,
-          recipient: activePrimaryValidator.account_number,
-        },
-      ];
-    }
-
-    txs = txs.filter((tx) => !!tx.amount);
-
     try {
       setSubmitting(true);
-      await createBlock(recipientAccountNumber, senderAccountNumber, txs);
+      const pointAmount = parseInt(points, 10);
+      await sendBlock(
+        activeBank,
+        activePrimaryValidator,
+        managedAccounts,
+        pointAmount,
+        recipientAccountNumber,
+        senderAccountNumber,
+      );
       displayToast('Your payment has been sent', 'success');
       close();
     } catch (error) {

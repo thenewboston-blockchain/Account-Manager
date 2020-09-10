@@ -5,9 +5,16 @@ import axios from 'axios';
 import Modal from '@renderer/components/Modal';
 import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
-import {getBankConfigs, getManagedAccounts, getManagedBanks} from '@renderer/selectors';
+import {
+  getActiveBankConfig,
+  getActivePrimaryValidatorConfig,
+  getBankConfigs,
+  getManagedAccounts,
+  getManagedBanks,
+} from '@renderer/selectors';
 import {AppDispatch, BankConfig, BaseValidator} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
+import {sendBlock} from '@renderer/utils/blocks';
 import {generateSignedMessage, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import yup from '@renderer/utils/yup';
@@ -24,6 +31,8 @@ interface ComponentProps {
 const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator}) => {
   const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'not-connected' | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const activeBank = useSelector(getActiveBankConfig)!;
+  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
   const bankConfigs = useSelector(getBankConfigs);
   const dispatch = useDispatch<AppDispatch>();
   const managedAccounts = useSelector(getManagedAccounts);
@@ -38,17 +47,6 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
   );
 
   type FormValues = typeof initialValues;
-
-  const handleSubmit = async ({bankAddress}: FormValues): Promise<void> => {
-    try {
-      setSubmitting(true);
-      displayToast(bankAddress, 'success');
-      close();
-    } catch (error) {
-      displayErrorToast(error);
-      setSubmitting(false);
-    }
-  };
 
   const bankSigningKey = useCallback(
     (bankConfig: BankConfig): string | null => {
@@ -117,6 +115,29 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
     },
     [bankConfigs, managedBanks, validator],
   );
+
+  const handleSubmit = async ({amount, bankAddress}: FormValues): Promise<void> => {
+    try {
+      setSubmitting(true);
+      const {
+        data: {account_number: accountNumber},
+      } = bankConfigs[bankAddress];
+      const pointAmount = parseInt(amount, 10);
+      await sendBlock(
+        activeBank,
+        activePrimaryValidator,
+        managedAccounts,
+        pointAmount,
+        validator.account_number,
+        accountNumber,
+      );
+      displayToast('Your payment has been sent', 'success');
+      close();
+    } catch (error) {
+      displayErrorToast(error);
+      setSubmitting(false);
+    }
+  };
 
   const testBankHasSigningKey = useCallback(
     async (address: string) => {
