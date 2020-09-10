@@ -2,12 +2,15 @@
 	"name": "TNB-Account-Manager",
 	"productName": "TNB Account Manager",
 	"version": "1.0.0",
-	"description": "My Electron application description",
-	"main": "./.webpack/main",
+	"description": "Thenewboston Account Manager Electron Application.",
+	"main": "./bundle/main/index.js",
 	"scripts": {
+		"postinstall": "electron-builder install-app-deps",
 		"lint": "tsc --noEmit && eslint './src/**/*.{js,ts,tsx}'",
 		"make": "electron-forge make",
 		"package": "electron-forge package",
+		"build": "yarn package && electron-builder",
+		"release": "yarn package && electron-builder --publish always",
 		"prettier": "prettier --write \"{,!(.webpack|node_modules)/**/}*.{ts,tsx,js,json,css,less,scss}\"",
 		"publish": "electron-forge publish",
 		"start": "electron-forge start",
@@ -21,7 +24,6 @@
 		"windows-store": "node ./buildConfig/windows-store.js",
 		"mas": "./buildConfig/mas.sh",
 		"prepare-release": "npm run package && npm run sign-exe && npm run installer && npm run sign-installer",
-		"release": "node ./buildConfig/release.js"
 	},
 	"keywords": [],
 	"author": {
@@ -29,17 +31,9 @@
 		"email": "justinkim943@gmail.com"
 	},
 	"license": "MIT",
-	"config": {
-		"forge": "./forge.config.js"
-	},
 	"lint-staged": {
-		"{,!(node_modules)/**/}*.{ts,tsx,js}": [
-			"eslint --cache --fix",
-			"prettier --write"
-		],
-		"{,!(node_modules)/**/}*.{css,scss}": [
-			"prettier --write"
-		]
+		"{,!(node_modules)/**/}*.{ts,tsx,js}": [ "eslint --cache --fix", "prettier --write" ],
+		"{,!(node_modules)/**/}*.{css,scss}": [ "prettier --write" ]
 	},
 	"devDependencies": {
 		"@babel/core": "^7.10.5",
@@ -53,7 +47,10 @@
 		"@electron-forge/maker-zip": "6.0.0-beta.51",
 		"@electron-forge/plugin-auto-unpack-natives": "^6.0.0-beta.53",
 		"@electron-forge/plugin-webpack": "6.0.0-beta.51",
+		"@electron-forge/publisher-github": "^6.0.0-beta.53",
+		"@hot-loader/react-dom": "^16.13.0",
 		"@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
+		"@reduxjs/toolkit": "^1.4.0",
 		"@types/electron-devtools-installer": "^2.2.0",
 		"@types/lodash-es": "^4.17.3",
 		"@types/qrcode": "^1.3.4",
@@ -71,7 +68,7 @@
 		"dotenv": "^8.2.0",
 		"electron": "9.0.0",
 		"electron-builder": "^22.8.0",
-		"electron-devtools-installer": "^3.1.0",
+		"electron-devtools-installer": "^3.1.1",
 		"electron-notarize": "^1.0.0",
 		"eslint": "^6.8.0",
 		"eslint-config-airbnb": "^18.1.0",
@@ -87,6 +84,7 @@
 		"husky": "^4.2.5",
 		"identity-obj-proxy": "^3.0.0",
 		"jest": "^26.1.0",
+		"jsonfile": "^6.0.1",
 		"lint-staged": "^10.2.9",
 		"node-loader": "^0.6.0",
 		"node-sass": "^4.14.1",
@@ -99,13 +97,12 @@
 		"typescript": "^3.9.5"
 	},
 	"dependencies": {
-		"@hot-loader/react-dom": "^16.13.0",
-		"@reduxjs/toolkit": "^1.4.0",
 		"axios": "^0.19.2",
 		"clsx": "^1.1.1",
 		"electron-context-menu": "^2.0.1",
 		"electron-squirrel-startup": "^1.0.0",
 		"electron-store": "^5.2.0",
+		"electron-updater": "^4.3.4",
 		"formik": "^2.1.4",
 		"lodash-es": "^4.17.15",
 		"mdi-react": "^7.3.0",
@@ -122,6 +119,7 @@
 		"react-toastify": "^6.0.8",
 		"tweetnacl": "^1.0.3",
 		"typeface-roboto": "0.0.75",
+		"update-electron-app": "^1.5.0",
 		"yup": "^0.29.1"
 	},
 	"husky": {

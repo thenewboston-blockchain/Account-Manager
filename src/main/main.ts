@@ -3,9 +3,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 import { app, BrowserWindow, Menu } from "electron";
+const { autoUpdater } = require("electron-updater");
 import contextMenu from "electron-context-menu";
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from "electron-devtools-installer";
-
 const electronSquirrelStartup = require("electron-squirrel-startup");
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -16,6 +16,8 @@ const isMac = process.platform === "darwin";
 if (electronSquirrelStartup) {
 	app.quit();
 }
+
+autoUpdater.checkForUpdatesAndNotify();
 
 const template = [
 	...(isMac

@@ -36,7 +36,7 @@ npm start
 
 To make an executable package:
 ```
-electron-forge make
+npm run make
 ```
 
 ## Contributing
@@ -50,6 +50,19 @@ You can check your styling by running:
 ```
 npm run lint
 ```
+## Distribution
+
+Update the `app-information.json`. In order to distribute, you need to push the code `master` branch with tag.
+
+```
+{
+	"name": "TNB Account Manager",
+	"version": "X.X.X",									// Must be greater than previous verison
+	"sub-version": "X",									// For `beta` or `alpha` version
+	"mode": "beta"										// `beta`, `alpha`, `stable`
+}
+```
+
 
 ## License
 

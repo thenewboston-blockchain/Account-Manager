@@ -60,6 +60,7 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
+electron-builder.env
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -85,8 +86,10 @@ typings/
 # Webpack
 .webpack/
 
-# Electron-Forge
+# Build resource
 out/
+release/
+bundle/
 
 # Webstorm
 .idea/
@@ -95,4 +98,4 @@ out/
 .vscode/
 
 # Certificates
-certificates/
+credential

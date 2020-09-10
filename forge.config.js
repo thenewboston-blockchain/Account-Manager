@@ -11,7 +11,7 @@ module.exports = {
 	buildIdentifier: appInformation.mode, // beta or prod
 	packagerConfig: {
 		name: appInformation.name,
-		icon: "assets/app-icon/mac/icon.icns",
+		icon: __dirname + "/assets/icon.icns",
 		appBundleId: fromBuildIdentifier({
 			beta: "com.beta.thenewboston.account.manager.app",
 			alpha: "com.alpha.thenewboston.account.manager.app",
@@ -20,22 +20,31 @@ module.exports = {
 		"hardened-runtime": true,
 		asar: true
 	},
-	hooks: {
-		postPackage: require(__dirname + "/assets/scripts/notarize.js")
-	},
+	publishers: [
+		{
+			name: "@electron-forge/publisher-github",
+			config: {
+				repository: {
+					owner: "tpikachu",
+					name: "TNB-Account-Manager"
+				},
+				prerelease: true
+			}
+		}
+	],
 	makers: [
 		{
 			name: "@electron-forge/maker-squirrel",
 			config: {
 				name: "thenewboston",
-				iconUrl: __dirname + "/assets/app-icon/win/icon.ico",
-				setupIcon: __dirname + "/assets/app-icon/win/icon.ico"
+				iconUrl: __dirname + "/assets/icon.ico",
+				setupIcon: __dirname + "/assets/icon.ico"
 			}
 		},
 		{
 			name: "@electron-forge/maker-dmg",
 			config: {
-				icon: __dirname + "/assets/app-icon/mac/icon.icns"
+				icon: __dirname + "/assets/icon.icns"
 			}
 		},
 		{
@@ -67,7 +76,6 @@ module.exports = {
 					]
 				}
 			}
-		],
-		[ "@electron-forge/plugin-auto-unpack-natives" ]
+		]
 	]
 };
