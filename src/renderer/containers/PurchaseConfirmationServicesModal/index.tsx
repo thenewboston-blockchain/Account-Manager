@@ -123,12 +123,20 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
     [bankConfigs, managedBanks, validator],
   );
 
-  const handleSubmit = async ({amount, bankAddress}: FormValues): Promise<void> => {
-    try {
-      setSubmitting(true);
+  const getBanksAccountNumberFromAddress = useCallback(
+    (bankAddress: string) => {
       const {
         data: {account_number: accountNumber},
       } = bankConfigs[bankAddress];
+      return accountNumber;
+    },
+    [bankConfigs],
+  );
+
+  const handleSubmit = async ({amount, bankAddress}: FormValues): Promise<void> => {
+    try {
+      setSubmitting(true);
+      const accountNumber = getBanksAccountNumberFromAddress(bankAddress);
       const pointAmount = parseInt(amount, 10);
       await sendBlock(
         activeBank,
@@ -212,9 +220,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
     (amount: number, bankAddress: string): boolean => {
       if (!amount || !bankAddress) return true;
 
-      const {
-        data: {account_number: accountNumber},
-      } = bankConfigs[bankAddress];
+      const accountNumber = getBanksAccountNumberFromAddress(bankAddress);
       const managedAccount = managedAccounts[accountNumber];
       if (!managedAccount) return false;
 
@@ -225,7 +231,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
 
       return totalCost <= managedAccount.balance;
     },
-    [activeBank, activePrimaryValidator, bankConfigs, managedAccounts],
+    [activeBank, activePrimaryValidator, getBanksAccountNumberFromAddress, managedAccounts],
   );
 
   const validationSchema = useMemo(() => {
@@ -250,16 +256,21 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
           'The account number for this bank matches the validators account number.',
           (address) => {
             if (!address) return true;
-            const {
-              data: {account_number: accountNumber},
-            } = bankConfigs[address];
+            const accountNumber = getBanksAccountNumberFromAddress(address);
             return accountNumber !== validator.account_number;
           },
         )
         .test('bank-is-connected', '', testConnection)
         .required('This field is required'),
     });
-  }, [bankConfigs, managedBanks, checkPointsWithBalance, testBankHasSigningKey, testConnection, validator]);
+  }, [
+    checkPointsWithBalance,
+    getBanksAccountNumberFromAddress,
+    managedBanks,
+    testBankHasSigningKey,
+    testConnection,
+    validator,
+  ]);
 
   return (
     <Modal
