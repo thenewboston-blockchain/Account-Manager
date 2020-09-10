@@ -4,13 +4,19 @@ describe('getCustomClassNames to return the following: ', () => {
   test('empty object when classNames is undefined', () => {
     expect(getCustomClassNames(undefined, '--error', true)).toEqual({});
   });
-  test('correct custom class name when classNames is empty string', () => {
-    expect(getCustomClassNames('', '--error', true)).toEqual({'--error': true});
+  test('correct custom class name when classNames is one class', () => {
+    expect(getCustomClassNames('test', '--error', true)).toEqual({'test--error': true});
   });
-  test('correct custom class name when classNames is not empty', () => {
-    expect(getCustomClassNames('class_a class_b', '--error', true)).toEqual({
-      'class_a--error': true,
-      'class_b--error': true,
+  test('correct custom class name when classNames has multiple classes', () => {
+    expect(getCustomClassNames('class-a class-b', '--error', true)).toEqual({
+      'class-a--error': true,
+      'class-b--error': true,
+    });
+  });
+  test('correct result when boolean is false', () => {
+    expect(getCustomClassNames('class-a class-b', '--error', false)).toEqual({
+      'class-a--error': false,
+      'class-b--error': false,
     });
   });
 });
