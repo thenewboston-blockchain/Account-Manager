@@ -4,7 +4,11 @@ import {setManagedAccountBalance} from '@renderer/store/app';
 import {setConfirmationBlockNotification} from '@renderer/store/notifications';
 import {AppDispatch} from '@renderer/types';
 
-const handleConfirmationBlockNotification = (accountNumbers: string[], dispatch: AppDispatch, notification: any) => {
+const handleConfirmationBlockNotification = (
+  accountNumbers: string[],
+  dispatch: AppDispatch,
+  notification: any,
+): void => {
   const {
     payload: {
       message: {
@@ -31,7 +35,7 @@ const handleConfirmationBlockNotification = (accountNumbers: string[], dispatch:
   );
 };
 
-const processUpdatedBalances = (accountNumbers: string[], dispatch: AppDispatch, updatedBalances: any[]) => {
+const processUpdatedBalances = (accountNumbers: string[], dispatch: AppDispatch, updatedBalances: any[]): void => {
   updatedBalances
     .filter(({account_number: accountNumber}) => accountNumbers.includes(accountNumber))
     .forEach(({account_number: accountNumber, balance}) => {
