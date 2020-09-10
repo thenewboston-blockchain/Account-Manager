@@ -1,5 +1,5 @@
 {
-	"name": "TNB-Account-Manager",
+	"name": "thenewboston",
 	"productName": "TNB Account Manager",
 	"version": "1.0.0",
 	"description": "Thenewboston Account Manager Electron Application.",
@@ -23,7 +23,7 @@
 		"installer": "node ./buildConfig/installer.js",
 		"windows-store": "node ./buildConfig/windows-store.js",
 		"mas": "./buildConfig/mas.sh",
-		"prepare-release": "npm run package && npm run sign-exe && npm run installer && npm run sign-installer",
+		"prepare-release": "npm run package && npm run sign-exe && npm run installer && npm run sign-installer"
 	},
 	"keywords": [],
 	"author": {
