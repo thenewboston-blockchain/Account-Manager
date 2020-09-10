@@ -1,5 +1,6 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
 
+import AccountLink from '@renderer/components/AccountLink';
 import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
@@ -49,7 +50,7 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
     () =>
       validatorBanks.map((bank) => ({
         key: bank.node_identifier,
-        [TableKeys.accountNumber]: bank.account_number,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={bank.account_number} />,
         [TableKeys.confirmationExpiration]: bank.confirmation_expiration,
         [TableKeys.defaultTransactionFee]: bank.default_transaction_fee,
         [TableKeys.ipAddress]: <NodeLink node={bank} urlBase="bank" />,
