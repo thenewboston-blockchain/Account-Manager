@@ -52,16 +52,10 @@ npm run lint
 ```
 ## Distribution
 
-Update the `app-information.json`. In order to distribute, you need to push the code `master` branch with tag.
+Change the `version` field on `package.json`
 
-```
-{
-	"name": "TNB Account Manager",
-	"version": "X.X.X",									// Must be greater than previous verison
-	"sub-version": "X",									// For `beta` or `alpha` version
-	"mode": "beta"										// `beta`, `alpha`, `stable`
-}
-```
+Alpha | Beta: `vX.X.X-alpha.X`, `vX.X.X-beta.X`
+Stable: `vX.X.X`
 
 
 ## License

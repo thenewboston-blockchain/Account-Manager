@@ -1,22 +1,11 @@
 const { utils: { fromBuildIdentifier } } = require("@electron-forge/core");
-const appInformation = require("./app-information.json");
-require("dotenv").config();
-
-/*
-MODE : beta, alpha, stable
-SUB_VERSION : version for beta, alpha. For stable version, ignore
-*/
+const { mode, version, subVersion, appName, appId } = require("./app-information.js");
 
 module.exports = {
-	buildIdentifier: appInformation.mode, // beta or prod
+	buildIdentifier: appId,
 	packagerConfig: {
-		name: appInformation.name,
+		name: appName,
 		icon: __dirname + "/assets/icon.icns",
-		appBundleId: fromBuildIdentifier({
-			beta: "com.beta.thenewboston.account.manager.app",
-			alpha: "com.alpha.thenewboston.account.manager.app",
-			stable: "com.thenewboston.account.manager.app"
-		}),
 		"hardened-runtime": true,
 		asar: true
 	},

@@ -1,21 +1,15 @@
-const appInformation = require("./app-information.json");
-const artifactName =
-	"${productName}-${version}" +
-	(appInformation.mode !== "stable" ? `-${appInformation.mode}.${appInformation["sub-version"]}` : "") +
-	"-${os}.${ext}";
-
-const appId =
-	"com." + (appInformation.mode === "stable" ? "" : appInformation.mode + ".") + "thenewboston.account.manager.app";
+const { mode, subVersion, appName, version, appId } = require("./app-information.js");
+const artifactName = "${productName}-" + version + "-${os}.${ext}";
 
 module.exports = {
-	productName: appInformation.name,
+	productName: appName,
 	appId,
 	directories: {
 		buildResources: "assets",
 		output: "release"
 	},
 	asar: false,
-	files: [ "bundle/**/*", "!build", "!node_modules", "app-information.json" ],
+	files: [ "bundle/**/*", "!build", "!node_modules", "package.json" ],
 	mac: {
 		target: [ "dmg", "zip" ],
 		artifactName

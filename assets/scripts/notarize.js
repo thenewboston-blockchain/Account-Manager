@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const electronNotarize = require("electron-notarize");
-const appInformation = require("../../app-information.json");
+const { mode, version, subVersion, appName, appId } = require("../../app-information.js");
 
 require("dotenv").config();
 
@@ -12,9 +12,6 @@ module.exports = async (params) => {
 	}
 
 	console.log("afterSign hook triggered", params);
-	// Same appId in electron-builder.
-	const appId =
-		"com." + (appInformation.mode === "stable" ? "" : appInformation.mode + ".") + "thenewboston.account.manager.app";
 
 	let appPath = path.join(params.appOutDir, `${params.packager.appInfo.productFilename}.app`);
 	if (!fs.existsSync(appPath)) {
