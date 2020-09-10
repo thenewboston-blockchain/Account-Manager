@@ -215,14 +215,15 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
       const {
         data: {account_number: accountNumber},
       } = bankConfigs[bankAddress];
-      const {balance} = managedAccounts[accountNumber];
+      const managedAccount = managedAccounts[accountNumber];
+      if (!managedAccount) return false;
 
       const totalCost =
         getBankTxFee(activeBank, accountNumber) +
         getPrimaryValidatorTxFee(activePrimaryValidator, accountNumber) +
         amount;
 
-      return totalCost <= balance;
+      return totalCost <= managedAccount.balance;
     },
     [activeBank, activePrimaryValidator, bankConfigs, managedAccounts],
   );

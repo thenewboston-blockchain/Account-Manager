@@ -54,8 +54,8 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
     const {bankAddress} = values;
     if (!bankAddress) return '-';
     const accountNumber = getBanksAccountNumberFromAddress(bankAddress);
-    const {balance} = managedAccounts[accountNumber];
-    return balance?.toLocaleString() || '0';
+    const managedAccount = managedAccounts[accountNumber];
+    return managedAccount?.balance?.toLocaleString() || '0';
   };
 
   const renderDays = (): number | string => {
