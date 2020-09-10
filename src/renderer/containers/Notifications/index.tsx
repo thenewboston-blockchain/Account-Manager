@@ -3,9 +3,9 @@ import {createPortal} from 'react-dom';
 import {useSelector} from 'react-redux';
 import {NavLink, useLocation} from 'react-router-dom';
 import clsx from 'clsx';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import reverse from 'lodash/reverse';
 import sortBy from 'lodash/sortBy';
-import TimeAgo from 'timeago-react';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState} from '@renderer/hooks';
@@ -124,7 +124,7 @@ const Notifications: FC = () => {
                       'Notifications__time--read': read,
                     })}
                   >
-                    <TimeAgo datetime={notificationTime} />
+                    {formatDistanceToNow(notificationTime, {includeSeconds: true})} ago
                   </div>
                 </div>
                 <div className="Notifications__amount">+ {amount}</div>
