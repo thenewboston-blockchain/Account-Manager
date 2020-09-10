@@ -30,13 +30,13 @@ interface ComponentProps {
   validator: BaseValidator;
 }
 
-export interface KnownConnectionStatus {
+export interface KnownStatus {
   [key: string]: boolean;
 }
 
 const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator}) => {
   const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'not-connected' | null>(null);
-  const [knownConnectionStatuses, setKnownConnectionStatuses] = useState<KnownConnectionStatus>({});
+  const [knownStatuses, setKnownStatuses] = useState<KnownStatus>({});
   const [submitting, setSubmitting] = useState<boolean>(false);
   const activeBank = useSelector(getActiveBankConfig)!;
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
@@ -179,26 +179,25 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
   const testConnection = useCallback(
     async (address: string) => {
       if (!address) return true;
-      const knownStatus = knownConnectionStatuses[address];
+      const knownStatus = knownStatuses[address];
       if (knownStatus) return knownStatus;
 
       try {
         setConnectionStatus('checking');
         setSubmitting(true);
 
-        await checkConnectionBankToValidator(address);
-        await checkConnectionValidatorToBank(address);
+        await Promise.all([checkConnectionBankToValidator(address), checkConnectionValidatorToBank(address)]);
 
         setConnectionStatus('connected');
-        setKnownConnectionStatuses({
-          ...knownConnectionStatuses,
+        setKnownStatuses({
+          ...knownStatuses,
           [address]: true,
         });
         setSubmitting(false);
       } catch (error) {
         setConnectionStatus('not-connected');
-        setKnownConnectionStatuses({
-          ...knownConnectionStatuses,
+        setKnownStatuses({
+          ...knownStatuses,
           [address]: false,
         });
         setSubmitting(false);
@@ -206,7 +205,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
 
       return false;
     },
-    [checkConnectionBankToValidator, checkConnectionValidatorToBank, knownConnectionStatuses],
+    [checkConnectionBankToValidator, checkConnectionValidatorToBank, knownStatuses],
   );
 
   const checkPointsWithBalance = useCallback(
