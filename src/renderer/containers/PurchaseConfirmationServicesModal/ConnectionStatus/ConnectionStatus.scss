@@ -1,3 +1,12 @@
+@keyframes spin {
+  0% {
+    transform: rotateZ(0);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
 .ConnectionStatus {
   border-radius: 3px;
   margin-bottom: 24px;
@@ -24,6 +33,10 @@
 
   &__icon {
     margin-right: 16px;
+  }
+
+  &__icon--spin {
+    animation: spin 1.5s linear infinite;
   }
 
   &__main-title {

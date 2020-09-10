@@ -17,7 +17,7 @@ const ConnectionStatus: FC<ComponentProps> = ({status}) => {
     if (status === 'checking') {
       icon = IconType.sync;
       mainTitle = 'Checking Connection';
-      subTitle = 'Please wait while we check the connection status';
+      subTitle = 'Please wait while we check the connection';
     } else if (status === 'connected') {
       icon = IconType.humanGreeting;
       mainTitle = 'Connected';
@@ -31,7 +31,13 @@ const ConnectionStatus: FC<ComponentProps> = ({status}) => {
     return (
       <div className="ConnectionStatus__badge">
         <div>
-          <Icon className="ConnectionStatus__icon" icon={icon} size={32} />
+          <Icon
+            className={clsx('ConnectionStatus__icon', {
+              'ConnectionStatus__icon--spin': status === 'checking',
+            })}
+            icon={icon}
+            size={32}
+          />
         </div>
         <div>
           <div className="ConnectionStatus__main-title">{mainTitle}</div>
