@@ -1,10 +1,7 @@
-const { utils: { fromBuildIdentifier } } = require("@electron-forge/core");
-const { mode, version, subVersion, appName, appId } = require("./app-information.js");
-
 module.exports = {
-	buildIdentifier: appId,
+	buildIdentifier: "com.thenewboston.account.manager.app",
 	packagerConfig: {
-		name: appName,
+		name: "TNB Account Manager",
 		icon: __dirname + "/assets/icon.icns",
 		"hardened-runtime": true,
 		asar: true

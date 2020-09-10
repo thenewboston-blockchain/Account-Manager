@@ -1,0 +1,27 @@
+{
+	"productName": "TNB Account Manager",
+	"appId": "com.thenewboston.account.manager.app",
+	"directories": {
+		"buildResources": "assets",
+		"output": "release"
+	},
+	"asar": true,
+	"files": [ "bundle/**/*", "!build", "!node_modules", "package.json", "app-information" ],
+	"mac": {
+		"target": [ "dmg", "zip" ],
+		"artifactName": "${productName}-${version}-${os}.${ext}"
+	},
+	"win": {
+		"target": [ "nsis", "zip" ],
+		"artifactName": "${productName}-${version}-${os}.${ext}"
+	},
+	"linux": {
+		"target": [ "AppImage" ],
+		"artifactName": "${productName}-${version}-${os}.${ext}"
+	},
+	"dmg": {
+		"title": "${productName}-${version}"
+	},
+	"afterSign": "./assets/scripts/notarize.js",
+	"extends": null
+}

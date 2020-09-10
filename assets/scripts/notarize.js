@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const electronNotarize = require("electron-notarize");
-const { mode, version, subVersion, appName, appId } = require("../../app-information.js");
+const { appId } = require("../../app-information.js");
 
 require("dotenv").config();
 
