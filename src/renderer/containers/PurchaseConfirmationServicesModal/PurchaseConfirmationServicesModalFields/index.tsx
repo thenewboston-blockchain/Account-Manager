@@ -22,14 +22,12 @@ interface ComponentProps {
 }
 
 const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting, validator}) => {
-  const {errors, touched, values} = useFormContext();
+  const {values} = useFormContext();
   const activeBankConfig = useSelector(getActiveBankConfig)!;
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
   const bankConfigs = useSelector(getBankConfigs);
   const managedAccounts = useSelector(getManagedAccounts);
   const managedBanks = useSelector(getManagedBanks);
-
-  const amountError = touched.amount ? errors.amount : '';
 
   const getFromOptions = useMemo<InputOption[]>(
     () =>
@@ -50,7 +48,7 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
     return balance?.toLocaleString() || '0';
   };
 
-  const renderTotalDays = (): number | string => {
+  const renderDays = (): number | string => {
     const {daily_confirmation_rate: dailyRate} = validator;
     const {amount} = values;
     if (!amount || !dailyRate) return '-';
@@ -58,9 +56,19 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
     return `${days} days`;
   };
 
+  const renderTotal = (): number | string => {
+    const {amount, bankAddress} = values;
+    if (!amount || !bankAddress) return '-';
+    const {
+      data: {account_number: accountNumber},
+    } = bankConfigs[bankAddress];
+    const bankTxFee = getBankTxFee(activeBankConfig, accountNumber);
+    const validatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidatorConfig, accountNumber);
+    return amount + bankTxFee + validatorTxFee;
+  };
+
   return (
     <>
-      {amountError ? <span className="PurchaseConfirmationServicesModalFields__error">{amountError}</span> : null}
       <FormSelectDetailed
         disabled={submitting}
         focused
@@ -105,10 +113,16 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
               <FormInput disabled={submitting} hideErrorBlock name="amount" placeholder="0" type="number" />
             </td>
           </tr>
+          <tr className="PurchaseConfirmationServicesModalFields__total-tr">
+            <td>Total Tx Cost</td>
+            <td>
+              <b>{renderTotal()}</b>
+            </td>
+          </tr>
           <tr className="PurchaseConfirmationServicesModalFields__time-tr">
             <td>Time</td>
             <td>
-              <b>{renderTotalDays()}</b>
+              <b>{renderDays()}</b>
             </td>
           </tr>
         </tbody>

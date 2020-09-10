@@ -245,10 +245,21 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
           const managedBank = managedBanks[address];
           return !!(managedBank && managedBank.nid_signing_key);
         })
+        .test(
+          'bank-has-unique-account-number',
+          'The account number for this bank matches the validators account number.',
+          (address) => {
+            if (!address) return true;
+            const {
+              data: {account_number: accountNumber},
+            } = bankConfigs[address];
+            return accountNumber !== validator.account_number;
+          },
+        )
         .test('bank-is-connected', '', testConnection)
         .required('This field is required'),
     });
-  }, [managedBanks, checkPointsWithBalance, testBankHasSigningKey, testConnection]);
+  }, [bankConfigs, managedBanks, checkPointsWithBalance, testBankHasSigningKey, testConnection, validator]);
 
   return (
     <Modal
