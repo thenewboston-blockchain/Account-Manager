@@ -24,7 +24,8 @@ export const formatPathFromNode = (node: AddressData): string => {
   return formatPath(node.ip_address, node.port, node.protocol);
 };
 
-export const formatSocketAddress = (ipAddress: string, port: number | string | null): string => {
+export const formatSocketAddress = (node: AddressData): string => {
+  const {ip_address: ipAddress, port} = node;
   const portNumber = Number(port);
   const formattedPort = portNumber && portNumber !== 80 ? `:${port}` : '';
   return `ws://${ipAddress}${formattedPort}`;
