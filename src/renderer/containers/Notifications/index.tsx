@@ -1,4 +1,4 @@
-import React, {FC, ReactNode, useEffect, useRef, useState} from 'react';
+import React, {FC, ReactNode, useEffect, useMemo, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import {useSelector} from 'react-redux';
 import {NavLink, useLocation} from 'react-router-dom';
@@ -26,13 +26,20 @@ const Notifications: FC = () => {
   const managedFriends = useSelector(getManagedFriends);
   const notifications = useSelector(getNotifications);
 
-  const managedAccountNumbers = Object.values(managedAccounts)
-    .map(({account_number}) => account_number)
-    .sort()
-    .join('-');
+  const managedAccountNumbersString = useMemo(
+    () =>
+      Object.values(managedAccounts)
+        .map(({account_number}) => account_number)
+        .sort()
+        .join('-'),
+    [managedAccounts],
+  );
+  const managedAccountNumbers = useMemo(() => managedAccountNumbersString.split('-'), [managedAccountNumbersString]);
 
-  const unreadNotificationsLength = notifications.filter(({notificationTime}) => lastReadTime < notificationTime)
-    .length;
+  const unreadNotificationsLength = useMemo(
+    () => notifications.filter(({notificationTime}) => lastReadTime < notificationTime).length,
+    [lastReadTime, notifications],
+  );
 
   useEffect(() => {
     closeMenu();
@@ -71,8 +78,6 @@ const Notifications: FC = () => {
   };
 
   const renderNotifications = (): ReactNode[] => {
-    const accountNumbers = managedAccountNumbers.split('-');
-
     let confirmationBlockNotifications = notifications.filter(
       ({notificationType}) => notificationType === NotificationType.confirmationBlockNotification,
     );
@@ -90,8 +95,8 @@ const Notifications: FC = () => {
       } = payload;
 
       return txs
-        .filter(({recipient}: any) => accountNumbers.includes(recipient))
-        .map(({amount, recipient}: any) => {
+        .filter(({recipient}) => managedAccountNumbers.includes(recipient))
+        .map(({amount, recipient}) => {
           const read = lastReadTime > notificationTime;
 
           return (
@@ -136,7 +141,7 @@ const Notifications: FC = () => {
     ) : null;
   };
 
-  const truncate = (str: string, size: number) => {
+  const truncate = (str: string, size: number): string => {
     return str.length <= size ? str : `${str.slice(0, size)}...`;
   };
 

@@ -13,10 +13,15 @@ const useWebSockets = (): void => {
   const managedAccounts = useSelector(getManagedAccounts);
   const bankSocketAddress = activeBank ? formatSocketAddress(activeBank) : '';
 
-  const managedAccountNumbers = useMemo(
-    () => Object.values(managedAccounts).map(({account_number}) => account_number),
+  const managedAccountNumbersString = useMemo(
+    () =>
+      Object.values(managedAccounts)
+        .map(({account_number}) => account_number)
+        .sort()
+        .join('-'),
     [managedAccounts],
   );
+  const managedAccountNumbers = useMemo(() => managedAccountNumbersString.split('-'), [managedAccountNumbersString]);
 
   useEffect(() => {
     if (!bankSocketAddress) return;
