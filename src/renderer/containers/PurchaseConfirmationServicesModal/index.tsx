@@ -25,6 +25,13 @@ import ConnectionStatus from './ConnectionStatus';
 import PurchaseConfirmationServicesModalFields from './PurchaseConfirmationServicesModalFields';
 import './PurchaseConfirmationServicesModal.scss';
 
+const initialValues = {
+  amount: '',
+  bankAddress: '',
+};
+
+type FormValues = typeof initialValues;
+
 interface ComponentProps {
   close(): void;
   validator: BaseValidator;
@@ -45,20 +52,10 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
   const managedAccounts = useSelector(getManagedAccounts);
   const managedBanks = useSelector(getManagedBanks);
 
-  const initialValues = useMemo(
-    () => ({
-      amount: '',
-      bankAddress: '',
-    }),
-    [],
-  );
-
-  type FormValues = typeof initialValues;
-
   const bankSigningKey = useCallback(
     (bankConfig: BankConfig): string | null => {
-      const bankAccountNumber = bankConfig?.account_number;
-      const managedAccount = managedAccounts[bankAccountNumber];
+      const bankAccountNumber = bankConfig?.account_number || '';
+      const managedAccount = bankAccountNumber ? managedAccounts[bankAccountNumber] : null;
       return managedAccount ? managedAccount.signing_key : null;
     },
     [managedAccounts],
