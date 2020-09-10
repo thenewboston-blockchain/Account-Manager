@@ -45,6 +45,14 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
   const [purchaseServicesValidator, setPurchaseServicesValidator] = useState<BaseValidator | null>(null);
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
 
+  const handleEditTrustButton = useCallback(
+    (validator: BaseValidator) => (): void => {
+      setEditTrustValidator(validator);
+      toggleEditTrustModal();
+    },
+    [setEditTrustValidator, toggleEditTrustModal],
+  );
+
   const handlePurchaseServicesClick = useCallback(
     (validator: BaseValidator) => (): void => {
       setPurchaseServicesValidator(validator);
@@ -55,26 +63,20 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
 
   const hasSigningKey = useMemo(() => !!managedBank.nid_signing_key.length, [managedBank]);
 
-  const handleEditTrustButton = useCallback(
-    (validator: BaseValidator) => (): void => {
-      setEditTrustValidator(validator);
-      toggleEditTrustModal();
-    },
-    [setEditTrustValidator, toggleEditTrustModal],
-  );
-
   const renderValidatorDailyRate = useCallback(
     (validator) => {
       if (activePrimaryValidator?.node_identifier === validator.node_identifier || !validator.daily_confirmation_rate) {
         return '-';
       }
-      return (
+      return hasSigningKey ? (
         <span className="BankValidators__clickable-text" onClick={handlePurchaseServicesClick(validator)}>
           {validator.daily_confirmation_rate}
         </span>
+      ) : (
+        validator.daily_confirmation_rate
       );
     },
-    [activePrimaryValidator, handlePurchaseServicesClick],
+    [activePrimaryValidator, handlePurchaseServicesClick, hasSigningKey],
   );
 
   const bankValidatorsTableData = useMemo<PageTableData[]>(
