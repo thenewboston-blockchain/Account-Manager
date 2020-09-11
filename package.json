@@ -111,7 +111,9 @@
 		"tweetnacl": "^1.0.3",
 		"typeface-roboto": "0.0.75",
 		"update-electron-app": "^1.5.0",
-		"yup": "^0.29.1"
+		"yup": "^0.29.1",
+		"date-fns": "^2.16.1",
+		"reconnecting-websocket": "^4.4.0"
 	},
 	"husky": {
 		"hooks": {
