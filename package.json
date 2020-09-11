@@ -1,7 +1,7 @@
 {
 	"name": "thenewboston",
 	"productName": "TNB Account Manager",
-	"version": "1.0.0-beta.3",
+	"version": "1.0.0-beta.4",
 	"description": "Thenewboston Account Manager Electron Application.",
 	"main": "./bundle/main/index.js",
 	"scripts": {
