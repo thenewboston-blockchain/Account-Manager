@@ -1,7 +1,6 @@
 import React, {FC, ReactNode, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 
-import Icon, {IconType} from '@renderer/components/Icon';
 import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import AddBankModal from '@renderer/containers/Bank/AddBankModal';
 import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
@@ -37,14 +36,9 @@ const LeftMenuSelector = (state: RootState) => {
 };
 
 const LeftMenu: FC = () => {
-  const {
-    activePrimaryValidator,
-    managedAccounts,
-    managedBanks,
-    managedFriends,
-    managedValidators,
-    pointBalance,
-  } = useSelector(LeftMenuSelector);
+  const {managedAccounts, managedBanks, managedFriends, managedValidators, pointBalance} = useSelector(
+    LeftMenuSelector,
+  );
   const [addBankModalIsOpen, toggleAddBankModal] = useBooleanState(false);
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
   const [addValidatorModalIsOpen, toggleAddValidatorModal] = useBooleanState(false);
@@ -100,24 +94,6 @@ const LeftMenu: FC = () => {
     [managedFriends],
   );
 
-  const networkMenuItems = useMemo<ReactNode[]>(() => {
-    if (!activePrimaryValidator) return [];
-    return [
-      {
-        baseUrl: `/validator/${formatPathFromNode(activePrimaryValidator)}/banks`,
-        key: 'Banks',
-        label: 'Banks',
-        to: `/validator/${formatPathFromNode(activePrimaryValidator)}/banks`,
-      },
-      {
-        baseUrl: `/validator/${formatPathFromNode(activePrimaryValidator)}/validators`,
-        key: 'Validators',
-        label: 'Validators',
-        to: `/validator/${formatPathFromNode(activePrimaryValidator)}/validators`,
-      },
-    ].map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />);
-  }, [activePrimaryValidator]);
-
   const validatorMenuItems = useMemo<ReactNode[]>(
     () =>
       Object.values(managedValidators)
@@ -148,7 +124,6 @@ const LeftMenu: FC = () => {
         <div className="points__title">Points</div>
         <div className="points__amount">{pointBalance.toLocaleString()}</div>
       </div>
-      <LeftSubmenu leftIcon={<Icon icon={IconType.earth} size={16} />} menuItems={networkMenuItems} title="Network" />
       <LeftSubmenu menuItems={accountItems} rightOnClick={toggleCreateAccountModal} title="Accounts" />
       <LeftSubmenu menuItems={friendMenuItems} rightOnClick={toggleAddFriendModal} title="Friends" />
       <LeftSubmenu menuItems={bankMenuItems} rightOnClick={toggleAddBankModal} title="Managed Banks" />
