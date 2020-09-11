@@ -44,7 +44,7 @@ const ValidatorOverview: FC = () => {
               value: validatorConfig.version,
             },
             {
-              key: 'Transaction Fee',
+              key: 'Tx Fee',
               value: validatorConfig.default_transaction_fee,
             },
             {

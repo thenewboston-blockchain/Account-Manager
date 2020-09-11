@@ -94,7 +94,7 @@ export function setLocalAndAddressReducer<T extends AddressData>(sliceName: stri
   return (state: any, {payload}: PayloadAction<T>) => {
     const address = formatAddressFromNode(payload);
     const node = state[address];
-    state[address] = node ? {node, ...payload} : payload;
+    state[address] = node ? {...node, ...payload} : payload;
     localStore.set(getStateName(sliceName), state);
   };
 }

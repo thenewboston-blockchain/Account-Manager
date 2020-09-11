@@ -36,7 +36,7 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustBank, setEditTrustBank] = useState<Node | null>(null);
 
-  const hasSigningKey = useMemo(() => !!managedValidator.signing_key.length, [managedValidator]);
+  const hasSigningKey = useMemo(() => !!managedValidator.nid_signing_key.length, [managedValidator]);
 
   const handleEditTrustButton = useCallback(
     (bank: ValidatorBank) => (): void => {
@@ -81,7 +81,7 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
       headers: {
         [TableKeys.accountNumber]: 'Account Number',
         [TableKeys.confirmationExpiration]: 'Confirmation Expiration',
-        [TableKeys.defaultTransactionFee]: 'Transaction Fee',
+        [TableKeys.defaultTransactionFee]: 'Tx Fee',
         [TableKeys.ipAddress]: 'IP Address',
         [TableKeys.nodeIdentifier]: 'NID',
         [TableKeys.port]: 'Port',

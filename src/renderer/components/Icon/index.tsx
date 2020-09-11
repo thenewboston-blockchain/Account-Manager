@@ -15,6 +15,8 @@ import ChevronRightIcon from 'mdi-react/ChevronRightIcon';
 import CloseIcon from 'mdi-react/CloseIcon';
 import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
 import EarthIcon from 'mdi-react/EarthIcon';
+import LanConnectIcon from 'mdi-react/LanConnectIcon';
+import LanDisconnectIcon from 'mdi-react/LanDisconnectIcon';
 import LoadingIcon from 'mdi-react/LoadingIcon';
 import PencilIcon from 'mdi-react/PencilIcon';
 import PowerIcon from 'mdi-react/PowerIcon';
@@ -23,6 +25,7 @@ import PlusIcon from 'mdi-react/PlusIcon';
 import RadioboxBlankIcon from 'mdi-react/RadioboxBlankIcon';
 import RadioboxMarkedIcon from 'mdi-react/RadioboxMarkedIcon';
 import RefreshIcon from 'mdi-react/RefreshIcon';
+import SyncIcon from 'mdi-react/SyncIcon';
 import ThumbsUpIcon from 'mdi-react/ThumbsUpIcon';
 
 import {getCustomClassNames} from '@renderer/utils/components';
@@ -43,6 +46,8 @@ export enum IconType {
   close,
   dotsVertical,
   earth,
+  lanConnect,
+  lanDisconnect,
   loading,
   pencil,
   play,
@@ -51,6 +56,7 @@ export enum IconType {
   radioboxBlank,
   radioboxMarked,
   refresh,
+  sync,
   thumbsUp,
   tnb,
 }
@@ -122,6 +128,10 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
           return <DotsVerticalIcon {...iconProps} />;
         case IconType.earth:
           return <EarthIcon {...iconProps} />;
+        case IconType.lanConnect:
+          return <LanConnectIcon {...iconProps} />;
+        case IconType.lanDisconnect:
+          return <LanDisconnectIcon {...iconProps} />;
         case IconType.loading:
           return <LoadingIcon {...iconProps} />;
         case IconType.pencil:
@@ -138,6 +148,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
           return <RadioboxMarkedIcon {...iconProps} />;
         case IconType.refresh:
           return <RefreshIcon {...iconProps} />;
+        case IconType.sync:
+          return <SyncIcon {...iconProps} />;
         case IconType.thumbsUp:
           return <ThumbsUpIcon {...iconProps} />;
         case IconType.tnb:

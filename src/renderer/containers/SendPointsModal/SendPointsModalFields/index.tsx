@@ -13,15 +13,23 @@ import {
 import {InputOption} from '@renderer/types';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 
+import './SendPointsModalFields.scss';
+
 export const INVALID_AMOUNT_ERROR = 'Invalid amount';
 export const MATCH_ERROR = 'Sender and recipient can not match';
+
+export interface FormValues {
+  points: string;
+  recipientAccountNumber: string;
+  senderAccountNumber: string;
+}
 
 interface ComponentProps {
   submitting: boolean;
 }
 
 const SendPointsModalFields: FC<ComponentProps> = ({submitting}) => {
-  const {errors, touched, values} = useFormContext();
+  const {errors, touched, values} = useFormContext<FormValues>();
   const activeBankConfig = useSelector(getActiveBankConfig)!;
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
   const managedAccounts = useSelector(getManagedAccounts);
@@ -51,47 +59,46 @@ const SendPointsModalFields: FC<ComponentProps> = ({submitting}) => {
     const {senderAccountNumber} = values;
     if (!senderAccountNumber) return '-';
     const {balance} = managedAccounts[senderAccountNumber];
-    return balance?.toLocaleString() || '0.00';
+    return balance?.toLocaleString() || '0';
   };
 
-  const renderTotal = (): number | string => {
+  const renderTotal = (): string => {
     const {points, senderAccountNumber} = values;
     if (!points) return '-';
-    const floatBalance = parseFloat(points);
-    const floatBankTxFee = getBankTxFee(activeBankConfig, senderAccountNumber);
-    const floatValidatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidatorConfig, senderAccountNumber);
-    return floatBalance + floatBankTxFee + floatValidatorTxFee;
+    const bankTxFee = getBankTxFee(activeBankConfig, senderAccountNumber);
+    const validatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidatorConfig, senderAccountNumber);
+    return (parseInt(points, 10) + bankTxFee + validatorTxFee).toLocaleString();
   };
 
   return (
     <>
-      {matchError ? <span className="SendPointsModal__error">{MATCH_ERROR}</span> : null}
-      {pointsError ? <span className="SendPointsModal__error">{pointsError}</span> : null}
+      {matchError ? <span className="SendPointsModalFields__error">{MATCH_ERROR}</span> : null}
+      {pointsError ? <span className="SendPointsModalFields__error">{pointsError}</span> : null}
       <FormSelectDetailed
-        className="SendPointsModal__select"
+        className="SendPointsModalFields__select"
         disabled={submitting}
         focused
-        required
         label="From"
-        options={getFromOptions}
         name="senderAccountNumber"
+        options={getFromOptions}
+        required
       />
       <FormSelectDetailed
-        className="SendPointsModal__select"
+        className="SendPointsModalFields__select"
         creatable
         disabled={submitting}
         hideErrorText={matchError}
-        required
         label="To"
-        options={getToOptions}
         name="recipientAccountNumber"
+        options={getToOptions}
+        required
       />
-      <table className="SendPointsModal__table">
+      <table className="SendPointsModalFields__table">
         <tbody>
           <tr>
             <td>Account Balance</td>
             <td>
-              <span className="SendPointsModal__account-balance">{renderSenderAccountBalance()}</span>
+              <span className="SendPointsModalFields__account-balance">{renderSenderAccountBalance()}</span>
             </td>
           </tr>
           <tr>
@@ -100,14 +107,7 @@ const SendPointsModalFields: FC<ComponentProps> = ({submitting}) => {
               <RequiredAsterisk />
             </td>
             <td>
-              <FormInput
-                className="SendPointsModal__points-input"
-                disabled={submitting}
-                hideErrorBlock
-                name="points"
-                placeholder="0.00"
-                type="number"
-              />
+              <FormInput disabled={submitting} hideErrorBlock name="points" placeholder="0" type="number" />
             </td>
           </tr>
           <tr>
@@ -118,7 +118,7 @@ const SendPointsModalFields: FC<ComponentProps> = ({submitting}) => {
             <td>Validator Fee</td>
             <td>{getPrimaryValidatorTxFee(activePrimaryValidatorConfig, values?.senderAccountNumber) || '-'}</td>
           </tr>
-          <tr className="SendPointsModal__total-tr">
+          <tr className="SendPointsModalFields__total-tr">
             <td>Total</td>
             <td>
               <b>{renderTotal()}</b>

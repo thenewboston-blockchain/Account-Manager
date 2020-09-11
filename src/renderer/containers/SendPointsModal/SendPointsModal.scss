@@ -1,55 +1,16 @@
 .SendPointsModal {
   width: 384px;
 
-  &__account-balance {
-    color: var(--color-sail-gray-500);
-  }
-
   &__default-submit {
     display: flex;
     height: 35.5px;
-  }
-
-  &__error {
-    color: var(--color-danger);
-    display: block;
-
-    &:last-of-type {
-      margin-bottom: 6px;
-    }
   }
 
   &__points-input {
     margin-left: -7px;
   }
 
-  &__select {
-    margin-bottom: 3px;
-  }
-
   &__submit-icon {
     margin-left: 6px;
-  }
-
-  &__table {
-    width: 100%;
-
-    td {
-      border-top: 1px solid var(--color-sail-gray-100);
-      min-width: 150px;
-      padding: 6px 0;
-      text-align: left;
-
-      &:nth-child(1) {
-        color: var(--color-sail-gray-500);
-        font-weight: 500;
-      }
-    }
-  }
-
-  &__total-tr {
-    td {
-      border-top-width: 3px;
-    }
   }
 }
