@@ -18,12 +18,18 @@ import './SendPointsModalFields.scss';
 export const INVALID_AMOUNT_ERROR = 'Invalid amount';
 export const MATCH_ERROR = 'Sender and recipient can not match';
 
+export interface FormValues {
+  points: string;
+  recipientAccountNumber: string;
+  senderAccountNumber: string;
+}
+
 interface ComponentProps {
   submitting: boolean;
 }
 
 const SendPointsModalFields: FC<ComponentProps> = ({submitting}) => {
-  const {errors, touched, values} = useFormContext();
+  const {errors, touched, values} = useFormContext<FormValues>();
   const activeBankConfig = useSelector(getActiveBankConfig)!;
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
   const managedAccounts = useSelector(getManagedAccounts);
@@ -56,12 +62,12 @@ const SendPointsModalFields: FC<ComponentProps> = ({submitting}) => {
     return balance?.toLocaleString() || '0';
   };
 
-  const renderTotal = (): number | string => {
+  const renderTotal = (): string => {
     const {points, senderAccountNumber} = values;
     if (!points) return '-';
     const bankTxFee = getBankTxFee(activeBankConfig, senderAccountNumber);
     const validatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidatorConfig, senderAccountNumber);
-    return points + bankTxFee + validatorTxFee;
+    return (parseInt(points, 10) + bankTxFee + validatorTxFee).toLocaleString();
   };
 
   return (

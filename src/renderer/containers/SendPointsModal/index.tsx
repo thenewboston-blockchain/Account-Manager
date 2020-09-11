@@ -10,7 +10,7 @@ import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import yup from '@renderer/utils/yup';
 
-import SendPointsModalFields, {INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendPointsModalFields';
+import SendPointsModalFields, {FormValues, INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendPointsModalFields';
 import './SendPointsModal.scss';
 
 interface ComponentProps {
@@ -46,8 +46,6 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
     }),
     [initialRecipient, initialSender],
   );
-
-  type FormValues = typeof initialValues;
 
   const handleSubmit = async ({points, recipientAccountNumber, senderAccountNumber}: FormValues): Promise<void> => {
     try {
