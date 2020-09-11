@@ -26,5 +26,5 @@ export const getActivePrimaryValidatorConfig = createSelector(
 );
 
 export const getPointBalance = createSelector([getManagedAccounts], (managedAccounts) => {
-  return Object.values(managedAccounts).reduce((acc, account) => acc + (parseFloat(account.balance) || 0), 0);
+  return Object.values(managedAccounts).reduce((acc, account) => acc + (account.balance || 0), 0);
 });

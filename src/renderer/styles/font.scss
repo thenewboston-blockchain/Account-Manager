@@ -1,14 +1,21 @@
 @font-face {
-  font-family: 'JetBrainsMono';
-  src: url('./fonts/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2') format('woff2'),
+  font-family: Inter;
+  src: url('./fonts/Inter/ttf/Inter-Regular.ttf') format('truetype'),
+    url('./fonts/Inter/web/woff/Inter-Regular.woff') format('woff'),
+    url('./fonts/Inter/web/woff2/Inter-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: JetBrainsMono;
+  src: url('./fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf') format('truetype'),
     url('./fonts/JetBrainsMono/web/woff/JetBrainsMono-Regular.woff') format('woff'),
-    url('./fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf') format('truetype');
+    url('./fonts/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2') format('woff2');
 }
 
 :root {
-  --font-family-default: Helvetica Neue, serif;
+  --font-family-default: Inter, serif;
   --font-family-icon: 'Material Icons';
-  --font-family-mono: 'JetBrainsMono', monospace;
+  --font-family-mono: JetBrainsMono, monospace;
   --font-size-large: 24px;
   --font-size-medium: 20px;
   --font-size-regular: 14px;

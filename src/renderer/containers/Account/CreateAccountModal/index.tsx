@@ -59,15 +59,15 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
   };
 
   const handleSubmit = async ({nickname, signingKey, type}: FormValues): Promise<void> => {
-    let [accountNumberStr, balanceStr, signingKeyStr] = ['', '0', ''];
+    let [accountNumberStr, balance, signingKeyStr] = ['', 0, ''];
 
     if (type === 'add') {
       try {
         const {publicKeyHex, signingKeyHex} = getKeyPairFromSigningKeyHex(signingKey);
         accountNumberStr = publicKeyHex;
         signingKeyStr = signingKeyHex;
-        const {balance} = await fetchAccountBalance(accountNumberStr);
-        balanceStr = balance;
+        const {balance: accountBalance} = await fetchAccountBalance(accountNumberStr);
+        balance = accountBalance;
         displayToast('You successfully created an account!', 'success');
       } catch (error) {
         displayErrorToast(error);
@@ -85,7 +85,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
     dispatch(
       setManagedAccount({
         account_number: accountNumberStr,
-        balance: balanceStr || '0',
+        balance: balance || 0,
         nickname,
         signing_key: signingKeyStr,
       }),

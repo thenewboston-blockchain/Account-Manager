@@ -1,14 +1,4 @@
 .DetailPanel {
-  a {
-    color: var(--color-secondary);
-    text-decoration: none;
-
-    &:focus,
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
   &__table {
     td,
     th {

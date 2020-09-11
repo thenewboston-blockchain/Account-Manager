@@ -44,7 +44,7 @@ const ValidatorOverview: FC = () => {
               value: validatorConfig.version,
             },
             {
-              key: 'Transaction Fee',
+              key: 'Tx Fee',
               value: validatorConfig.default_transaction_fee,
             },
             {
@@ -53,7 +53,11 @@ const ValidatorOverview: FC = () => {
             },
             {
               key: 'Root Account File',
-              value: <A href={validatorConfig.root_account_file}>{validatorConfig.root_account_file}</A>,
+              value: (
+                <A className="ValidatorOverview__link" href={validatorConfig.root_account_file}>
+                  {validatorConfig.root_account_file}
+                </A>
+              ),
             },
             {
               key: 'Root Account File Hash',

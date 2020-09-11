@@ -1,5 +1,4 @@
 import {AppNodeAddressData, ManagedAccount, ManagedFriend, ManagedNode} from './app';
-import {NodeType, ProtocolType} from './constants';
 import {BaseFormComponentProps, BaseFormInlineComponentProps, GenericFormValues, InputOption} from './forms';
 import {GenericFunction, GenericVoidFunction} from './generic';
 import {
@@ -15,10 +14,12 @@ import {
   InvalidBlock,
   Node,
   NodeIdentifier,
+  NodeType,
   PaginatedQueryParams,
   PaginatedResults,
   PaginatedResultsWithError,
   PrimaryValidatorConfig,
+  ProtocolType,
   Tx,
   ValidatorAccount,
   ValidatorBank,
@@ -26,6 +27,7 @@ import {
   ValidatorConfirmationBlock,
   ValidatorConfirmationService,
 } from './network';
+import {Notification, NotificationType} from './notifications';
 import {
   AppDispatch,
   Dict,
@@ -63,6 +65,8 @@ export {
   Node,
   NodeIdentifier,
   NodeType,
+  Notification,
+  NotificationType,
   PaginatedQueryParams,
   PaginatedResults,
   PaginatedResultsWithError,

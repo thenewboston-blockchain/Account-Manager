@@ -37,7 +37,7 @@ const BankBanks: FC<ComponentProps> = ({managedBank}) => {
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustBank, setEditTrustBank] = useState<Node | null>(null);
 
-  const hasSigningKey = useMemo(() => !!managedBank.signing_key.length, [managedBank]);
+  const hasSigningKey = useMemo(() => !!managedBank.nid_signing_key.length, [managedBank]);
 
   const handleEditTrustButton = useCallback(
     (bank: Node) => (): void => {
@@ -80,7 +80,7 @@ const BankBanks: FC<ComponentProps> = ({managedBank}) => {
       data: bankBanksTableData,
       headers: {
         [TableKeys.accountNumber]: 'Account Number',
-        [TableKeys.defaultTransactionFee]: 'Default Tx Fee',
+        [TableKeys.defaultTransactionFee]: 'Tx Fee',
         [TableKeys.ipAddress]: 'IP Address',
         [TableKeys.nodeIdentifier]: 'Network ID',
         [TableKeys.port]: 'Port',

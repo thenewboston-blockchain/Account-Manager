@@ -1,5 +1,3 @@
-import {NodeType, ProtocolType} from './constants';
-
 export interface AccountNumber {
   account_number: string;
 }
@@ -11,7 +9,7 @@ export interface AddressData {
 }
 
 export interface Balance {
-  balance: string;
+  balance: number;
 }
 
 export interface BankAccount extends AccountNumber, CreatedModified, Id {
@@ -32,7 +30,7 @@ export interface BankConfirmationBlock extends CreatedModified, Id {
 
 export interface BankTransaction extends Id {
   block: BlockResponse;
-  amount: string;
+  amount: number;
   recipient: string;
 }
 
@@ -40,7 +38,7 @@ export interface BaseValidator extends Node {
   root_account_file: string;
   root_account_file_hash: string;
   seed_block_identifier: string;
-  daily_confirmation_rate: string | null;
+  daily_confirmation_rate: number | null;
 }
 
 interface BlockMessage {
@@ -87,7 +85,7 @@ export interface InvalidBlock extends CreatedModified, Id {
 }
 
 export interface Node extends AccountNumber, AddressData, NodeIdentifier {
-  default_transaction_fee: string;
+  default_transaction_fee: number;
   node_type: NodeType;
   trust: string;
   version: string;
@@ -95,6 +93,12 @@ export interface Node extends AccountNumber, AddressData, NodeIdentifier {
 
 export interface NodeIdentifier {
   node_identifier: string;
+}
+
+export enum NodeType {
+  bank = 'BANK',
+  confirmationValidator = 'CONFIRMATION_VALIDATOR',
+  primaryValidator = 'PRIMARY_VALIDATOR',
 }
 
 export interface PaginatedQueryParams {
@@ -115,8 +119,10 @@ export interface PrimaryValidatorConfig extends BaseValidator {
   node_type: NodeType.primaryValidator;
 }
 
+export type ProtocolType = 'http' | 'https';
+
 export interface Tx {
-  amount: number | string;
+  amount: number;
   recipient: string;
 }
 

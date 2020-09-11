@@ -70,7 +70,7 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       const formattedData = {
         ...bankAddressData,
         nickname,
-        signing_key: '',
+        nid_signing_key: '',
       };
 
       dispatch(setManagedBank(formattedData));

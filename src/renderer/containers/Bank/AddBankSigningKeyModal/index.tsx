@@ -35,7 +35,7 @@ const AddBankSigningKeyModal: FC<ComponentProps> = ({close}) => {
     dispatch(
       setManagedBank({
         ...managedBank,
-        signing_key: signingKey,
+        nid_signing_key: signingKey,
       }),
     );
     close();
@@ -44,8 +44,8 @@ const AddBankSigningKeyModal: FC<ComponentProps> = ({close}) => {
   const managedBankSigningKeys = useMemo(
     () =>
       Object.values(managedBanks)
-        .filter(({signing_key}) => !!signing_key)
-        .map(({signing_key}) => signing_key),
+        .filter(({nid_signing_key}) => !!nid_signing_key)
+        .map(({nid_signing_key}) => nid_signing_key),
     [managedBanks],
   );
 

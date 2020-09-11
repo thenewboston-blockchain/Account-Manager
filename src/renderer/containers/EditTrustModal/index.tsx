@@ -35,7 +35,7 @@ const EditTrustModal: FC<ComponentProps> = ({close, requestingNode, targetIdenti
   const handleSubmit = async (values: FormValues): Promise<void> => {
     try {
       setSubmitting(true);
-      const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(requestingNode.signing_key);
+      const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(requestingNode.nid_signing_key);
       const requestData = {
         message: values,
         node_identifier: publicKeyHex,

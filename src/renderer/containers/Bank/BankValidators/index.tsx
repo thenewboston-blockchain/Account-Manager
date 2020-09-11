@@ -1,4 +1,5 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
+import {useSelector} from 'react-redux';
 
 import AccountLink from '@renderer/components/AccountLink';
 import Icon, {IconType} from '@renderer/components/Icon';
@@ -6,8 +7,10 @@ import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
+import PurchaseConfirmationServicesModal from '@renderer/containers/PurchaseConfirmationServicesModal';
 import {BANK_VALIDATORS} from '@renderer/constants';
 import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
 import {BaseValidator, ManagedNode} from '@renderer/types';
 
 import './BankValidators.scss';
@@ -38,8 +41,9 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
   >(BANK_VALIDATORS, address);
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustValidator, setEditTrustValidator] = useState<BaseValidator | null>(null);
-
-  const hasSigningKey = useMemo(() => !!managedBank.signing_key.length, [managedBank]);
+  const [purchaseServicesModalIsOpen, togglePurchaseServicesModal] = useBooleanState(false);
+  const [purchaseServicesValidator, setPurchaseServicesValidator] = useState<BaseValidator | null>(null);
+  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
 
   const handleEditTrustButton = useCallback(
     (validator: BaseValidator) => (): void => {
@@ -49,12 +53,38 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
     [setEditTrustValidator, toggleEditTrustModal],
   );
 
+  const handlePurchaseServicesClick = useCallback(
+    (validator: BaseValidator) => (): void => {
+      setPurchaseServicesValidator(validator);
+      togglePurchaseServicesModal();
+    },
+    [setPurchaseServicesValidator, togglePurchaseServicesModal],
+  );
+
+  const hasSigningKey = useMemo(() => !!managedBank.nid_signing_key.length, [managedBank]);
+
+  const renderValidatorDailyRate = useCallback(
+    (validator) => {
+      if (activePrimaryValidator?.node_identifier === validator.node_identifier || !validator.daily_confirmation_rate) {
+        return '-';
+      }
+      return hasSigningKey ? (
+        <span className="BankValidators__clickable-text" onClick={handlePurchaseServicesClick(validator)}>
+          {validator.daily_confirmation_rate}
+        </span>
+      ) : (
+        validator.daily_confirmation_rate
+      );
+    },
+    [activePrimaryValidator, handlePurchaseServicesClick, hasSigningKey],
+  );
+
   const bankValidatorsTableData = useMemo<PageTableData[]>(
     () =>
       bankValidators.map((validator) => ({
         key: validator.node_identifier,
         [TableKeys.accountNumber]: <AccountLink accountNumber={validator.account_number} />,
-        [TableKeys.dailyConfirmationRate]: validator.daily_confirmation_rate,
+        [TableKeys.dailyConfirmationRate]: renderValidatorDailyRate(validator),
         [TableKeys.defaultTransactionFee]: validator.default_transaction_fee,
         [TableKeys.ipAddress]: <NodeLink node={validator} urlBase="validator" />,
         [TableKeys.nodeIdentifier]: validator.node_identifier,
@@ -78,7 +108,7 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
         ),
         [TableKeys.version]: validator.version,
       })) || [],
-    [bankValidators, handleEditTrustButton, hasSigningKey],
+    [bankValidators, handleEditTrustButton, hasSigningKey, renderValidatorDailyRate],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -86,8 +116,8 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
       data: bankValidatorsTableData,
       headers: {
         [TableKeys.accountNumber]: 'Account Number',
-        [TableKeys.dailyConfirmationRate]: 'Daily Confirmation Rate',
-        [TableKeys.defaultTransactionFee]: 'Default Tx Fee',
+        [TableKeys.dailyConfirmationRate]: 'Daily Rate',
+        [TableKeys.defaultTransactionFee]: 'Tx Fee',
         [TableKeys.ipAddress]: 'IP Address',
         [TableKeys.nodeIdentifier]: 'Network ID',
         [TableKeys.port]: 'Port',
@@ -128,6 +158,9 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
           targetType="validators"
           trust={editTrustValidator.trust}
         />
+      )}
+      {purchaseServicesModalIsOpen && !!purchaseServicesValidator && (
+        <PurchaseConfirmationServicesModal close={togglePurchaseServicesModal} validator={purchaseServicesValidator} />
       )}
     </div>
   );

@@ -30,6 +30,16 @@ export const generateSignature = (message: string, signingKey: Uint8Array) => {
   return signature.substring(0, 128);
 };
 
+export const generateSignedMessage = (message: object, publicKeyHex: string, signingKey: Uint8Array) => {
+  const strMessage = JSON.stringify(message);
+  const signedMessage = {
+    message,
+    node_identifier: publicKeyHex,
+    signature: generateSignature(strMessage, signingKey),
+  };
+  return JSON.stringify(signedMessage);
+};
+
 export const getKeyPairDetails = (keyPair: SignKeyPair) => {
   const {publicKey, secretKey: signingKey} = keyPair;
   const publicKeyHex = Buffer.from(publicKey).toString('hex');

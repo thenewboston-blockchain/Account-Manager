@@ -43,7 +43,7 @@ const BankOverview: FC = () => {
               value: bankConfig.version,
             },
             {
-              key: 'Transaction Fee',
+              key: 'Tx Fee',
               value: bankConfig.default_transaction_fee,
             },
             {

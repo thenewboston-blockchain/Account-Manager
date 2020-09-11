@@ -1,5 +1,6 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
 
+import AccountLink from '@renderer/components/AccountLink';
 import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
@@ -35,7 +36,7 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustBank, setEditTrustBank] = useState<Node | null>(null);
 
-  const hasSigningKey = useMemo(() => !!managedValidator.signing_key.length, [managedValidator]);
+  const hasSigningKey = useMemo(() => !!managedValidator.nid_signing_key.length, [managedValidator]);
 
   const handleEditTrustButton = useCallback(
     (bank: ValidatorBank) => (): void => {
@@ -49,7 +50,7 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
     () =>
       validatorBanks.map((bank) => ({
         key: bank.node_identifier,
-        [TableKeys.accountNumber]: bank.account_number,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={bank.account_number} />,
         [TableKeys.confirmationExpiration]: bank.confirmation_expiration,
         [TableKeys.defaultTransactionFee]: bank.default_transaction_fee,
         [TableKeys.ipAddress]: <NodeLink node={bank} urlBase="bank" />,
@@ -80,7 +81,7 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
       headers: {
         [TableKeys.accountNumber]: 'Account Number',
         [TableKeys.confirmationExpiration]: 'Confirmation Expiration',
-        [TableKeys.defaultTransactionFee]: 'Transaction Fee',
+        [TableKeys.defaultTransactionFee]: 'Tx Fee',
         [TableKeys.ipAddress]: 'IP Address',
         [TableKeys.nodeIdentifier]: 'NID',
         [TableKeys.port]: 'Port',

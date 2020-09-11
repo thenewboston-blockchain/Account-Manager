@@ -1,5 +1,6 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
 
+import AccountLink from '@renderer/components/AccountLink';
 import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
@@ -43,7 +44,7 @@ const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustValidator, setEditTrustValidator] = useState<BaseValidator | null>(null);
 
-  const hasSigningKey = useMemo(() => !!managedValidator.signing_key.length, [managedValidator]);
+  const hasSigningKey = useMemo(() => !!managedValidator.nid_signing_key.length, [managedValidator]);
 
   const handleEditTrustButton = useCallback(
     (validator: BaseValidator) => (): void => {
@@ -57,7 +58,7 @@ const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
     () =>
       validatorValidators.map((validator) => ({
         key: validator.node_identifier,
-        [TableKeys.accountNumber]: validator.account_number,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={validator.account_number} />,
         [TableKeys.dailyConfirmationRate]: validator.daily_confirmation_rate,
         [TableKeys.defaultTransactionFee]: validator.default_transaction_fee,
         [TableKeys.ipAddress]: <NodeLink node={validator} urlBase="validator" />,
@@ -90,8 +91,8 @@ const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
       data: validatorValidatorsTableData,
       headers: {
         [TableKeys.accountNumber]: 'Account Number',
-        [TableKeys.dailyConfirmationRate]: 'Daily Confirmation Rate',
-        [TableKeys.defaultTransactionFee]: 'Transaction Fee',
+        [TableKeys.dailyConfirmationRate]: 'Daily Rate',
+        [TableKeys.defaultTransactionFee]: 'Tx Fee',
         [TableKeys.ipAddress]: 'IP Address',
         [TableKeys.nodeIdentifier]: 'NID',
         [TableKeys.port]: 'Port',
