@@ -57,7 +57,7 @@ const AccountOverview: FC = () => {
     const items = [
       {
         key: 'Balance',
-        value: loading ? '-' : managedAccount?.balance || balance || '0',
+        value: renderBalance(),
       },
       {
         key: 'Account Number',
@@ -73,6 +73,14 @@ const AccountOverview: FC = () => {
     }
 
     return items;
+  };
+
+  const renderBalance = (): ReactNode => {
+    let Balance: any = loading ? '-' : managedAccount?.balance || balance || '0';
+    if (typeof Balance === 'number') {
+      Balance = Balance.toLocaleString();
+    }
+    return <span className="AccountOverview__balance">{Balance}</span>;
   };
 
   const renderAccountNumber = (): ReactNode => (
