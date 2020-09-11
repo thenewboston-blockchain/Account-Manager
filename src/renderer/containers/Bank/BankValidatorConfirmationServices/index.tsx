@@ -5,6 +5,7 @@ import Pagination from '@renderer/components/Pagination';
 import {BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants';
 import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {ValidatorConfirmationService} from '@renderer/types';
+import {formatDate} from '@renderer/utils/dates';
 
 enum TableKeys {
   createdDate,
@@ -30,10 +31,10 @@ const BankValidatorConfirmationServices: FC = () => {
     () =>
       bankValidatorConfirmationServices.map((validatorConfirmationService) => ({
         key: validatorConfirmationService.id,
-        [TableKeys.createdDate]: validatorConfirmationService.created_date,
+        [TableKeys.createdDate]: formatDate(validatorConfirmationService.created_date),
         [TableKeys.end]: validatorConfirmationService.end,
         [TableKeys.id]: validatorConfirmationService.id,
-        [TableKeys.modifiedDate]: validatorConfirmationService.modified_date,
+        [TableKeys.modifiedDate]: formatDate(validatorConfirmationService.modified_date),
         [TableKeys.start]: validatorConfirmationService.start,
         [TableKeys.validator]: validatorConfirmationService.validator,
       })) || [],

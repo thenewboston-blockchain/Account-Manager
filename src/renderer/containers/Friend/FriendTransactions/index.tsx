@@ -9,6 +9,7 @@ import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {getActiveBankConfig} from '@renderer/selectors';
 import {BankTransaction} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
+import {formatDate} from '@renderer/utils/dates';
 
 enum TableKeys {
   senderAccountNumber,
@@ -33,7 +34,7 @@ const FriendTransactions: FC = () => {
         key: bankTransaction.id,
         [TableKeys.amount]: bankTransaction.amount,
         [TableKeys.balanceKey]: bankTransaction.block.balance_key,
-        [TableKeys.dateCreated]: bankTransaction.block.created_date,
+        [TableKeys.dateCreated]: formatDate(bankTransaction.block.created_date),
         [TableKeys.recipientAccountNumber]: bankTransaction.recipient,
         [TableKeys.senderAccountNumber]: bankTransaction.block.sender,
         [TableKeys.signature]: bankTransaction.block.signature,
