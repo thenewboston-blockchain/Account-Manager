@@ -6,6 +6,7 @@ import Pagination from '@renderer/components/Pagination';
 import {BANK_BLOCKS} from '@renderer/constants';
 import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BlockResponse} from '@renderer/types';
+import {formatDate} from '@renderer/utils/dates';
 
 enum TableKeys {
   id,
@@ -27,9 +28,9 @@ const BankBlocks: FC = () => {
       bankBlocks.map((block) => ({
         key: block.id,
         [TableKeys.balanceKey]: block.balance_key,
-        [TableKeys.createdDate]: block.created_date,
+        [TableKeys.createdDate]: formatDate(block.created_date),
         [TableKeys.id]: block.id,
-        [TableKeys.modifiedDate]: block.modified_date,
+        [TableKeys.modifiedDate]: formatDate(block.modified_date),
         [TableKeys.sender]: <AccountLink accountNumber={block.sender} />,
         [TableKeys.signature]: block.signature,
       })) || [],
