@@ -1,4 +1,9 @@
 {
+	"publish": {
+		"provider": "github",
+		"owner": "tpikachu",
+		"repo": "TNB-Account-Manager"
+	},
 	"productName": "TNB Account Manager",
 	"appId": "com.thenewboston.account.manager.app",
 	"directories": {
