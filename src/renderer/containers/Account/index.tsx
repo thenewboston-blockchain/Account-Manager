@@ -26,16 +26,18 @@ const Account: FC = () => {
   const managedAccounts = useSelector(getManagedAccounts);
   const managedAccount = managedAccounts[accountNumber];
 
-  const dropdownMenuOptions: DropdownMenuOption[] = [
-    {
-      label: 'Edit Nickname',
-      onClick: toggleEditModal,
-    },
-    {
-      label: 'Delete Account',
-      onClick: toggleDeleteModal,
-    },
-  ];
+  const dropdownMenuOptions: DropdownMenuOption[] = managedAccount
+    ? [
+        {
+          label: 'Edit Nickname',
+          onClick: toggleEditModal,
+        },
+        {
+          label: 'Delete Account',
+          onClick: toggleDeleteModal,
+        },
+      ]
+    : [];
 
   const renderRightPageHeaderButtons = (): ReactNode => <Button onClick={toggleSendPointsModal}>Send Points</Button>;
 

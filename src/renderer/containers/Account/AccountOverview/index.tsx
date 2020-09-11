@@ -54,7 +54,7 @@ const AccountOverview: FC = () => {
   }, [accountNumber, activePrimaryValidator, dispatch, managedAccount]);
 
   const getItems = () => {
-    let items = [
+    const items = [
       {
         key: 'Balance',
         value: loading ? '-' : managedAccount?.balance || balance || '0',
@@ -66,13 +66,10 @@ const AccountOverview: FC = () => {
     ];
 
     if (managedAccount) {
-      items = [
-        ...items,
-        {
-          key: 'Signing Key',
-          value: renderSigningKey(),
-        },
-      ];
+      items.push({
+        key: 'Signing Key',
+        value: renderSigningKey(),
+      });
     }
 
     return items;

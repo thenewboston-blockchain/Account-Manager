@@ -14,7 +14,6 @@ import ChevronLeftIcon from 'mdi-react/ChevronLeftIcon';
 import ChevronRightIcon from 'mdi-react/ChevronRightIcon';
 import CloseIcon from 'mdi-react/CloseIcon';
 import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
-import EarthIcon from 'mdi-react/EarthIcon';
 import LanConnectIcon from 'mdi-react/LanConnectIcon';
 import LanDisconnectIcon from 'mdi-react/LanDisconnectIcon';
 import LoadingIcon from 'mdi-react/LoadingIcon';
@@ -45,7 +44,6 @@ export enum IconType {
   chevronRight,
   close,
   dotsVertical,
-  earth,
   lanConnect,
   lanDisconnect,
   loading,
@@ -126,8 +124,6 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
           return <CloseIcon {...iconProps} />;
         case IconType.dotsVertical:
           return <DotsVerticalIcon {...iconProps} />;
-        case IconType.earth:
-          return <EarthIcon {...iconProps} />;
         case IconType.lanConnect:
           return <LanConnectIcon {...iconProps} />;
         case IconType.lanDisconnect:
