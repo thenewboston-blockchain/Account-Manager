@@ -14,16 +14,7 @@
 		"prettier": "prettier --write \"{,!(.webpack|node_modules)/**/}*.{ts,tsx,js,json,css,less,scss}\"",
 		"publish": "electron-forge publish",
 		"start": "electron-forge start",
-		"test": "jest",
-		"sign-exe": "signcode './out/make/squirrel.windows/x64/thenewboston-1.0.0\\ Setup.exe' --cert ~/electron-api-demos.p12 --prompt --name 'Electron API Demos' --url 'https://www.thenewboston.com/'",
-		"sign-installer": "signcode './out/make/squirrel.windows/x64/thenewboston-1.0.0\\ Setup.exe' --cert ~/electron-api-demos.p12 --prompt --name 'Electron API Demos' --url 'https://www.thenewboston.com/'",
-		"pack-mac": "electron-packager . --asar --asar-unpack=protocol-link.html --overwrite --platform=darwin --arch=x64 --icon=assets/app-icon/mac/app.icns --prune=true --out=out --osx-sign.identity='Developer ID Application: GitHub' --extend-info=assets/mac/info.plist",
-		"pack-win": "electron-packager . ElectronAPIDemos --asar --asar-unpack=protocol-link.html --overwrite --platform=win32 --arch=ia32 --icon=assets/app-icon/win/app.ico --prune=true --out=out --version-string.CompanyName='GitHub, Inc.' --version-string.FileDescription='Electron API Demos' --version-string.ProductName='Electron API Demos'",
-		"pack-linux": "electron-packager . --asar --asar-unpack=protocol-link.html --overwrite --platform=linux --arch=x64 --icon=assets/app-icon/png/64.png --prune=true --out=out",
-		"installer": "node ./buildConfig/installer.js",
-		"windows-store": "node ./buildConfig/windows-store.js",
-		"mas": "./buildConfig/mas.sh",
-		"prepare-release": "npm run package && npm run sign-exe && npm run installer && npm run sign-installer"
+		"test": "jest"
 	},
 	"keywords": [],
 	"author": {
