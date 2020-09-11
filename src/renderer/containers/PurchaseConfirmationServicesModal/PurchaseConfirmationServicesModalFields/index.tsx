@@ -16,13 +16,18 @@ import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactio
 
 import './PurchaseConfirmationServicesModalFields.scss';
 
+export interface FormValues {
+  amount: string;
+  bankAddress: string;
+}
+
 interface ComponentProps {
   submitting: boolean;
   validator: BaseValidator;
 }
 
 const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting, validator}) => {
-  const {values} = useFormContext();
+  const {values} = useFormContext<FormValues>();
   const activeBankConfig = useSelector(getActiveBankConfig)!;
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
   const bankConfigs = useSelector(getBankConfigs);
@@ -45,9 +50,9 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
     [managedBanks],
   );
 
-  const renderActiveBankFee = () => {
-    if (!values?.bankAddress) return activeBankConfig.default_transaction_fee;
-    return getBankTxFee(activeBankConfig, getBanksAccountNumberFromAddress(values.bankAddress)) || '-';
+  const renderActiveBankFee = (): string => {
+    if (!values?.bankAddress) return activeBankConfig.default_transaction_fee.toLocaleString();
+    return getBankTxFee(activeBankConfig, getBanksAccountNumberFromAddress(values.bankAddress)).toLocaleString() || '-';
   };
 
   const renderBanksAccountBalance = (): string => {
@@ -58,21 +63,21 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
     return managedAccount?.balance?.toLocaleString() || '0';
   };
 
-  const renderDays = (): number | string => {
+  const renderDays = (): string => {
     const {daily_confirmation_rate: dailyRate} = validator;
     const {amount} = values;
     if (!amount || !dailyRate) return '-';
-    const days = (amount / dailyRate).toFixed(2);
+    const days = (parseInt(amount, 10) / dailyRate).toFixed(2);
     return `${days} days`;
   };
 
-  const renderTotal = (): number | string => {
+  const renderTotal = (): string => {
     const {amount, bankAddress} = values;
     if (!amount || !bankAddress) return '-';
     const accountNumber = getBanksAccountNumberFromAddress(bankAddress);
     const bankTxFee = getBankTxFee(activeBankConfig, accountNumber);
     const validatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidatorConfig, accountNumber);
-    return amount + bankTxFee + validatorTxFee;
+    return (parseInt(amount, 10) + bankTxFee + validatorTxFee).toLocaleString();
   };
 
   return (

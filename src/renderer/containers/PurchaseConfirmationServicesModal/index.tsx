@@ -21,9 +21,14 @@ import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import yup from '@renderer/utils/yup';
 
-import ConnectionStatus from './ConnectionStatus';
-import PurchaseConfirmationServicesModalFields from './PurchaseConfirmationServicesModalFields';
+import ConnectionStatus, {Status} from './ConnectionStatus';
+import PurchaseConfirmationServicesModalFields, {FormValues} from './PurchaseConfirmationServicesModalFields';
 import './PurchaseConfirmationServicesModal.scss';
+
+const initialValues = {
+  amount: '',
+  bankAddress: '',
+};
 
 interface ComponentProps {
   close(): void;
@@ -35,7 +40,7 @@ export interface KnownStatus {
 }
 
 const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator}) => {
-  const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'not-connected' | null>(null);
+  const [connectionStatus, setConnectionStatus] = useState<Status | null>(null);
   const [knownStatuses, setKnownStatuses] = useState<KnownStatus>({});
   const [submitting, setSubmitting] = useState<boolean>(false);
   const activeBank = useSelector(getActiveBankConfig)!;
@@ -45,20 +50,10 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
   const managedAccounts = useSelector(getManagedAccounts);
   const managedBanks = useSelector(getManagedBanks);
 
-  const initialValues = useMemo(
-    () => ({
-      amount: '',
-      bankAddress: '',
-    }),
-    [],
-  );
-
-  type FormValues = typeof initialValues;
-
   const bankSigningKey = useCallback(
     (bankConfig: BankConfig): string | null => {
-      const bankAccountNumber = bankConfig?.account_number;
-      const managedAccount = managedAccounts[bankAccountNumber];
+      const bankAccountNumber = bankConfig?.account_number || '';
+      const managedAccount = bankAccountNumber ? managedAccounts[bankAccountNumber] : null;
       return managedAccount ? managedAccount.signing_key : null;
     },
     [managedAccounts],
