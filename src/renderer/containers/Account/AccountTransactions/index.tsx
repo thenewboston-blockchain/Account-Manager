@@ -2,6 +2,7 @@ import React, {FC, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 
+import AccountLink from '@renderer/components/AccountLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {BANK_BANK_TRANSACTIONS} from '@renderer/constants';
@@ -35,8 +36,8 @@ const AccountTransactions: FC = () => {
         [TableKeys.amount]: bankTransaction.amount,
         [TableKeys.balanceKey]: bankTransaction.block.balance_key,
         [TableKeys.dateCreated]: formatDate(bankTransaction.block.created_date),
-        [TableKeys.recipientAccountNumber]: bankTransaction.recipient,
-        [TableKeys.senderAccountNumber]: bankTransaction.block.sender,
+        [TableKeys.recipientAccountNumber]: <AccountLink accountNumber={bankTransaction.recipient} />,
+        [TableKeys.senderAccountNumber]: <AccountLink accountNumber={bankTransaction.block.sender} />,
         [TableKeys.signature]: bankTransaction.block.signature,
       })) || [],
     [bankTransactions],
