@@ -1,7 +1,6 @@
 import React, {FC, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
-import {format, parseISO} from 'date-fns';
 
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
@@ -10,6 +9,7 @@ import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {getActiveBankConfig} from '@renderer/selectors';
 import {BankTransaction} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
+import {formatDate} from '@renderer/utils/dates';
 
 enum TableKeys {
   senderAccountNumber,
@@ -34,7 +34,7 @@ const AccountTransactions: FC = () => {
         key: bankTransaction.id,
         [TableKeys.amount]: bankTransaction.amount,
         [TableKeys.balanceKey]: bankTransaction.block.balance_key,
-        [TableKeys.dateCreated]: format(parseISO(bankTransaction.block.created_date), 'yyyy-MM-dd hh-mm-ss a'),
+        [TableKeys.dateCreated]: formatDate(bankTransaction.block.created_date),
         [TableKeys.recipientAccountNumber]: bankTransaction.recipient,
         [TableKeys.senderAccountNumber]: bankTransaction.block.sender,
         [TableKeys.signature]: bankTransaction.block.signature,
