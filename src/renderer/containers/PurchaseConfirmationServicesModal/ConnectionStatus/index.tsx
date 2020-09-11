@@ -4,8 +4,10 @@ import clsx from 'clsx';
 import Icon, {IconType} from '@renderer/components/Icon';
 import './ConnectionStatus.scss';
 
+export type Status = 'checking' | 'connected' | 'not-connected';
+
 interface ComponentProps {
-  status: 'checking' | 'connected' | 'not-connected';
+  status: Status;
 }
 
 const ConnectionStatus: FC<ComponentProps> = ({status}) => {

@@ -21,16 +21,14 @@ import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import yup from '@renderer/utils/yup';
 
-import ConnectionStatus from './ConnectionStatus';
-import PurchaseConfirmationServicesModalFields from './PurchaseConfirmationServicesModalFields';
+import ConnectionStatus, {Status} from './ConnectionStatus';
+import PurchaseConfirmationServicesModalFields, {FormValues} from './PurchaseConfirmationServicesModalFields';
 import './PurchaseConfirmationServicesModal.scss';
 
 const initialValues = {
   amount: '',
   bankAddress: '',
 };
-
-type FormValues = typeof initialValues;
 
 interface ComponentProps {
   close(): void;
@@ -42,7 +40,7 @@ export interface KnownStatus {
 }
 
 const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator}) => {
-  const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'not-connected' | null>(null);
+  const [connectionStatus, setConnectionStatus] = useState<Status | null>(null);
   const [knownStatuses, setKnownStatuses] = useState<KnownStatus>({});
   const [submitting, setSubmitting] = useState<boolean>(false);
   const activeBank = useSelector(getActiveBankConfig)!;
