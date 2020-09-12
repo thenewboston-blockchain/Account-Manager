@@ -53,11 +53,16 @@ const AccountOverview: FC = () => {
     fetchData();
   }, [accountNumber, activePrimaryValidator, dispatch, managedAccount]);
 
+  const getBalance = (): string => {
+    if (loading) return '-';
+    return (managedAccount?.balance || balance || 0).toLocaleString();
+  };
+
   const getItems = () => {
     const items = [
       {
         key: 'Balance',
-        value: loading ? '-' : managedAccount?.balance || balance || '0',
+        value: <span className="AccountOverview__balance">{getBalance()}</span>,
       },
       {
         key: 'Account Number',
