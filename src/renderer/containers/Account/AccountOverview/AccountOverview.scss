@@ -1,10 +1,6 @@
 .AccountOverview {
   padding: var(--page-padding);
 
-  &__balance {
-    color: var(--color-tertiary);
-  }
-
   &__qr {
     margin-top: 6px;
   }
@@ -12,6 +8,6 @@
   &__signing-key-toggle {
     color: var(--color-secondary);
     cursor: pointer;
-    margin-left: 12px;
+    margin-top: 2px;
   }
 }

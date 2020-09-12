@@ -42,7 +42,7 @@ const processUpdatedBalances = (accountNumbers: string[], dispatch: AppDispatch,
       dispatch(
         setManagedAccountBalance({
           account_number: accountNumber,
-          balance: balance || '0',
+          balance: balance || 0,
         }),
       );
     });

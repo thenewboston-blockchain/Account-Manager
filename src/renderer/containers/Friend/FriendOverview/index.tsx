@@ -4,6 +4,7 @@ import {useParams} from 'react-router-dom';
 import axios from 'axios';
 
 import DetailPanel from '@renderer/components/DetailPanel';
+import OverviewBalance from '@renderer/components/OverviewBalance';
 import Qr from '@renderer/components/Qr';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
 import {formatAddress} from '@renderer/utils/address';
@@ -36,7 +37,7 @@ const FriendOverview: FC = () => {
     return [
       {
         key: 'Balance',
-        value: loading ? '-' : balance || '0',
+        value: <OverviewBalance balance={balance} loading={loading} />,
       },
       {
         key: 'Account Number',

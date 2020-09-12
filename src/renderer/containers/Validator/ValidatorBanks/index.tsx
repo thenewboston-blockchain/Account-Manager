@@ -25,7 +25,7 @@ enum TableKeys {
 }
 
 interface ComponentProps {
-  managedValidator: ManagedNode;
+  managedValidator?: ManagedNode;
 }
 
 const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
@@ -36,7 +36,7 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustBank, setEditTrustBank] = useState<Node | null>(null);
 
-  const hasSigningKey = useMemo(() => !!managedValidator.nid_signing_key.length, [managedValidator]);
+  const hasSigningKey = useMemo(() => !!managedValidator?.nid_signing_key.length, [managedValidator]);
 
   const handleEditTrustButton = useCallback(
     (bank: ValidatorBank) => (): void => {
@@ -108,7 +108,7 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
     <div className="ValidatorBanks">
       <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
       <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-      {editTrustModalIsOpen && !!editTrustBank && (
+      {editTrustModalIsOpen && !!editTrustBank && !!managedValidator && (
         <EditTrustModal
           close={toggleEditTrustModal}
           requestingNode={managedValidator}

@@ -21,7 +21,7 @@ enum TableKeys {
 }
 
 interface ComponentProps {
-  managedBank: ManagedNode;
+  managedBank?: ManagedNode;
 }
 
 const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
@@ -32,7 +32,7 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustAccount, setEditTrustAccount] = useState<BankAccount | null>(null);
 
-  const hasSigningKey = useMemo(() => !!managedBank.nid_signing_key.length, [managedBank]);
+  const hasSigningKey = useMemo(() => !!managedBank?.nid_signing_key.length, [managedBank]);
 
   const handleEditTrustButton = useCallback(
     (account: BankAccount) => (): void => {
@@ -92,7 +92,7 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
     <div className="BankAccounts">
       <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
       <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-      {editTrustModalIsOpen && !!editTrustAccount && (
+      {editTrustModalIsOpen && !!editTrustAccount && !!managedBank && (
         <EditTrustModal
           close={toggleEditTrustModal}
           requestingNode={managedBank}
