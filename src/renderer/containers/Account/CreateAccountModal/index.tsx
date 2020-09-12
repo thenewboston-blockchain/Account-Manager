@@ -119,7 +119,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
       ignoreDirty
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      submitButton="Create"
+      submitButton="Add"
       validationSchema={validationSchema}
     >
       <CreateAccountModalFields />

@@ -73,7 +73,7 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
       ignoreDirty
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      submitButton="Create"
+      submitButton="Add"
       validationSchema={validationSchema}
     >
       <FormInput focused label="Nickname" name="nickname" />
