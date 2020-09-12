@@ -8,7 +8,7 @@ export function sortByBooleanKey<T>(key: keyof T) {
   };
 }
 
-export function sortByPreferredKey<T>(items: Dict<T>, fallbackKey: keyof T, preferredKey: keyof T) {
+export function sortByPreferredKey<T>(items: Dict<T>, fallbackKey: keyof T, preferredKey: keyof T): T[] {
   const fallbackItems: T[] = [];
   const preferredItems: T[] = [];
 
