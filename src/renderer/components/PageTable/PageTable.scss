@@ -1,6 +1,6 @@
 .PageTable {
   font-family: var(--font-family-mono);
-  padding: var(--page-padding);
+  padding: var(--page-table-padding);
   width: 100%;
 
   td,
@@ -14,7 +14,7 @@
   }
 
   &__PaginationSummary {
-    margin-bottom: 12px;
+    margin: 12px 0;
     padding: 2px 12px;
   }
 
