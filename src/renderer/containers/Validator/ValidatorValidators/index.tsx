@@ -28,7 +28,7 @@ enum TableKeys {
 }
 
 interface ComponentProps {
-  managedValidator: ManagedNode;
+  managedValidator?: ManagedNode;
 }
 
 const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
@@ -44,7 +44,7 @@ const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustValidator, setEditTrustValidator] = useState<BaseValidator | null>(null);
 
-  const hasSigningKey = useMemo(() => !!managedValidator.nid_signing_key.length, [managedValidator]);
+  const hasSigningKey = useMemo(() => !!managedValidator?.nid_signing_key.length, [managedValidator]);
 
   const handleEditTrustButton = useCallback(
     (validator: BaseValidator) => (): void => {
@@ -125,7 +125,7 @@ const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
     <div className="ValidatorValidators">
       <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
       <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-      {editTrustModalIsOpen && !!editTrustValidator && (
+      {editTrustModalIsOpen && !!editTrustValidator && !!managedValidator && (
         <EditTrustModal
           close={toggleEditTrustModal}
           requestingNode={managedValidator}
