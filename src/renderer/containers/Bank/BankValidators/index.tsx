@@ -31,7 +31,7 @@ enum TableKeys {
 }
 
 interface ComponentProps {
-  managedBank: ManagedNode;
+  managedBank?: ManagedNode;
 }
 
 const BankValidators: FC<ComponentProps> = ({managedBank}) => {
@@ -61,7 +61,7 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
     [setPurchaseServicesValidator, togglePurchaseServicesModal],
   );
 
-  const hasSigningKey = useMemo(() => !!managedBank.nid_signing_key.length, [managedBank]);
+  const hasSigningKey = useMemo(() => !!managedBank?.nid_signing_key.length, [managedBank]);
 
   const renderValidatorDailyRate = useCallback(
     (validator) => {
@@ -150,7 +150,7 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
     <div className="BankValidators">
       <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
       <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-      {editTrustModalIsOpen && !!editTrustValidator && (
+      {editTrustModalIsOpen && !!editTrustValidator && !!managedBank && (
         <EditTrustModal
           close={toggleEditTrustModal}
           requestingNode={managedBank}
