@@ -19,16 +19,16 @@
     transition: all 0.1s;
 
     &:hover {
-      background: var(--color-sail-gray-100);
+      background: var(--color-tnb-gray-100);
     }
 
     &--active {
-      background: var(--color-sail-gray-100);
+      background: var(--color-tnb-gray-100);
       color: var(--color-primary);
     }
 
     &--disabled {
-      color: var(--color-sail-gray-700);
+      color: var(--color-tnb-gray-700);
       cursor: default;
 
       &:hover {

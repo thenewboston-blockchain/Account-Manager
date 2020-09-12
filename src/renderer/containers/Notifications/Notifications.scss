@@ -2,7 +2,7 @@
   $left-spacing: 32px;
 
   &--active {
-    background: var(--color-sail-gray-100);
+    background: var(--color-tnb-gray-100);
   }
 
   &__amount {
@@ -22,7 +22,7 @@
     min-width: $left-spacing;
 
     &--offline {
-      color: var(--color-sail-gray-300);
+      color: var(--color-tnb-gray-300);
     }
 
     &--read {
@@ -36,6 +36,7 @@
 
   &__NavLink {
     color: var(--color-primary);
+    font-family: var(--font-family-inter-medium);
     font-weight: 500;
     text-decoration: none;
 
@@ -45,7 +46,7 @@
   }
 
   &__notification {
-    border-bottom: 1px solid var(--color-sail-gray-100);
+    border-bottom: 1px solid var(--color-tnb-gray-100);
     display: flex;
     padding: 12px 0;
   }

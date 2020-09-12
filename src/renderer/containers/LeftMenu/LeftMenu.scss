@@ -9,14 +9,15 @@
       align-items: center;
       color: var(--color-tertiary);
       display: flex;
-      font-size: var(--font-size-medium);
+      font-family: var(--font-family-inter-medium);
+      font-size: var(--font-size-large);
       font-weight: 500;
     }
 
     &__title {
-      color: var(--color-sail-gray-500);
+      color: var(--color-tnb-gray-500);
       cursor: default;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
   }
 }
