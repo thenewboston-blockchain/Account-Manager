@@ -95,15 +95,15 @@ const AccountOverview: FC = () => {
 
   const renderSigningKeyDisplay = () => {
     const {signing_key: signingKey} = managedAccount;
-    return signingKeyVisible ? signingKey : '*'.repeat(64);
+    return <div>{signingKeyVisible ? signingKey : '*'.repeat(64)}</div>;
   };
 
   const renderSigningKeyToggle = () => {
     const toggleText = signingKeyVisible ? 'Hide' : 'Show';
     return (
-      <span className="AccountOverview__signing-key-toggle" onClick={toggleSigningKeyVisible}>
+      <div className="AccountOverview__signing-key-toggle" onClick={toggleSigningKeyVisible}>
         {toggleText}
-      </span>
+      </div>
     );
   };
 
