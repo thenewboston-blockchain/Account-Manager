@@ -1,6 +1,5 @@
 import React, {FC, ReactNode, useMemo} from 'react';
 import {useSelector} from 'react-redux';
-import sortBy from 'lodash/sortBy';
 
 import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import AddBankModal from '@renderer/containers/Bank/AddBankModal';
@@ -17,9 +16,9 @@ import {
   getManagedValidators,
   getPointBalance,
 } from '@renderer/selectors';
-import {ManagedNode, RootState} from '@renderer/types';
+import {ManagedAccount, ManagedFriend, ManagedNode, RootState} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
-import {sortByBooleanKey} from '@renderer/utils/sort';
+import {sortByBooleanKey, sortByPreferredKey} from '@renderer/utils/sort';
 
 import LeftSubmenu from './LeftSubmenu';
 
@@ -45,21 +44,9 @@ const LeftMenu: FC = () => {
   const [addValidatorModalIsOpen, toggleAddValidatorModal] = useBooleanState(false);
   const [createAccountModalIsOpen, toggleCreateAccountModal] = useBooleanState(false);
 
-  const sortMenuItems = (items: object, fallbackKey: string, preferredKey: string) => {
-    const fallbackItems: any[] = [];
-    const preferredItems: any[] = [];
-
-    Object.values(items).forEach((item) => {
-      const group = item[preferredKey] ? preferredItems : fallbackItems;
-      group.push(item);
-    });
-
-    return [...sortBy(preferredItems, [preferredKey]), ...sortBy(fallbackItems, [fallbackKey])];
-  };
-
   const accountItems = useMemo<ReactNode[]>(
     () =>
-      sortMenuItems(managedAccounts, 'account_number', 'nickname')
+      sortByPreferredKey<ManagedAccount>(managedAccounts, 'account_number', 'nickname')
         .map(({account_number, nickname}) => ({
           baseUrl: `/account/${account_number}`,
           key: account_number,
@@ -72,7 +59,7 @@ const LeftMenu: FC = () => {
 
   const bankMenuItems = useMemo<ReactNode[]>(
     () =>
-      sortMenuItems(managedBanks, 'ip_address', 'nickname')
+      sortByPreferredKey<ManagedNode>(managedBanks, 'ip_address', 'nickname')
         .sort(sortByBooleanKey<ManagedNode>('is_default'))
         .map((managedBank) => ({
           baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
@@ -96,7 +83,7 @@ const LeftMenu: FC = () => {
 
   const friendMenuItems = useMemo<ReactNode[]>(
     () =>
-      sortMenuItems(managedFriends, 'account_number', 'nickname')
+      sortByPreferredKey<ManagedFriend>(managedFriends, 'account_number', 'nickname')
         .map(({account_number, nickname}) => ({
           baseUrl: `/friend/${account_number}`,
           key: account_number,
@@ -109,7 +96,7 @@ const LeftMenu: FC = () => {
 
   const validatorMenuItems = useMemo<ReactNode[]>(
     () =>
-      sortMenuItems(managedValidators, 'ip_address', 'nickname')
+      sortByPreferredKey<ManagedNode>(managedValidators, 'ip_address', 'nickname')
         .sort(sortByBooleanKey<ManagedNode>('is_default'))
         .map((managedValidator) => ({
           baseUrl: `/validator/${formatPathFromNode(managedValidator)}`,
