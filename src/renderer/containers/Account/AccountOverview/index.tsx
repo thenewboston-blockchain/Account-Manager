@@ -58,7 +58,7 @@ const AccountOverview: FC = () => {
     const items = [
       {
         key: 'Balance',
-        value: <OverviewBalance balance={balance} loading={loading} managedAccount={managedAccount} />,
+        value: <OverviewBalance balance={balance} loading={loading} managedAccountBalance={managedAccount?.balance} />,
       },
       {
         key: 'Account Number',
