@@ -6,19 +6,19 @@
   transition: background-color 0.3s, color 0.3s;
 
   &:focus {
-    background: var(--color-tnb-gray-100);
+    background: var(--color-gray-100);
   }
 
   &--button {
     cursor: pointer;
 
     &:hover {
-      background: var(--color-tnb-gray-100);
+      background: var(--color-gray-100);
     }
   }
 
   &--disabled {
-    color: var(--color-tnb-gray-300);
+    color: var(--color-gray-300);
     cursor: default;
 
     &:hover {

@@ -5,7 +5,7 @@
 
   td,
   th {
-    border-bottom: 1px solid var(--color-tnb-gray-100);
+    border-bottom: 1px solid var(--color-gray-100);
   }
 
   &__ArrowToggle {
@@ -41,7 +41,7 @@
   }
 
   &__thead {
-    color: var(--color-tnb-gray-500);
+    color: var(--color-gray-500);
     font-weight: 500;
     text-align: left;
 

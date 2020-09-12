@@ -28,7 +28,7 @@
 
     #{$self}__control {
       border-radius: 3px;
-      border: 1px solid var(--color-tnb-gray-300);
+      border: 1px solid var(--color-gray-300);
       box-shadow: unset !important;
       height: 100%;
       min-height: unset;
@@ -41,26 +41,26 @@
 
       &--is-disabled {
         background: var(--color-white);
-        border-color: var(--color-tnb-gray-300);
+        border-color: var(--color-gray-300);
 
         &:hover {
-          border-color: var(--color-tnb-gray-300);
+          border-color: var(--color-gray-300);
         }
 
         #{$self}__indicator {
-          color: var(--color-tnb-gray-300);
+          color: var(--color-gray-300);
 
           &:hover {
-            color: var(--color-tnb-gray-300);
+            color: var(--color-gray-300);
           }
         }
 
         #{$self}__single-value {
-          color: var(--color-tnb-gray-300);
+          color: var(--color-gray-300);
         }
 
         #{$self}__placeholder {
-          color: var(--color-tnb-gray-500);
+          color: var(--color-gray-500);
         }
       }
     }
@@ -88,7 +88,7 @@
     }
 
     #{$self}__placeholder {
-      color: var(--color-tnb-gray-500);
+      color: var(--color-gray-500);
       margin: 0;
     }
 
@@ -106,7 +106,7 @@
     }
 
     #{$self}__indicator {
-      color: var(--color-tnb-gray-500);
+      color: var(--color-gray-500);
 
       &:hover {
         color: var(--color-secondary);
@@ -128,15 +128,15 @@
     position: relative;
 
     &--is-focused {
-      background: var(--color-tnb-gray-050);
+      background: var(--color-gray-050);
     }
 
     &--is-selected {
-      background: var(--color-tnb-gray-100);
+      background: var(--color-gray-100);
     }
 
     &--is-disabled {
-      color: var(--color-tnb-gray-300);
+      color: var(--color-gray-300);
 
       #{$self}--is-focused {
         color: var(--color-white);

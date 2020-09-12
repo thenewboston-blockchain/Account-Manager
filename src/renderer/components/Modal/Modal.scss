@@ -28,7 +28,7 @@ $modal-footer-height: 60px;
   }
 
   &__content {
-    background: var(--color-tnb-gray-050);
+    background: var(--color-gray-050);
     max-height: calc(85vh - #{$modal-header-height} - #{$modal-footer-height});
     overflow-y: auto;
     padding: 12px;

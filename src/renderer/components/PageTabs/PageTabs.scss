@@ -5,7 +5,7 @@
   text-transform: uppercase;
 
   &__tab {
-    color: var(--color-tnb-gray-500);
+    color: var(--color-gray-500);
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -15,8 +15,8 @@
 
     &:focus:not(&--active) {
       #{$self}__tab-indicator {
-        background: var(--color-tnb-gray-300);
-        color: var(--color-tnb-gray-300);
+        background: var(--color-gray-300);
+        color: var(--color-gray-300);
       }
     }
 
@@ -65,7 +65,7 @@
 
       &--active,
       &--active:hover {
-        background: var(--color-tnb-gray-100);
+        background: var(--color-gray-100);
       }
     }
 

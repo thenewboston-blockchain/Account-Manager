@@ -20,13 +20,13 @@
     width: 100%;
 
     td {
-      border-top: 1px solid var(--color-tnb-gray-100);
+      border-top: 1px solid var(--color-gray-100);
       min-width: 150px;
       padding: 6px 0;
       text-align: left;
 
       &:nth-child(1) {
-        color: var(--color-tnb-gray-500);
+        color: var(--color-gray-500);
         font-weight: 500;
       }
     }

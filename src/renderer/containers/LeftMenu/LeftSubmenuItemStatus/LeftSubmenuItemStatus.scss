@@ -11,12 +11,12 @@
 
   &:focus:not(&--active),
   &:hover {
-    background: var(--color-tnb-gray-050);
+    background: var(--color-gray-050);
   }
 
   &--active,
   &--active:hover {
-    background: var(--color-tnb-gray-100);
+    background: var(--color-gray-100);
   }
 
   &__Icon {
@@ -24,7 +24,7 @@
     min-width: $left-spacing;
 
     &--offline {
-      color: var(--color-tnb-gray-300);
+      color: var(--color-gray-300);
     }
 
     &--online {
