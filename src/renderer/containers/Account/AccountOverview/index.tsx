@@ -53,11 +53,16 @@ const AccountOverview: FC = () => {
     fetchData();
   }, [accountNumber, activePrimaryValidator, dispatch, managedAccount]);
 
+  const getBalance = (): string => {
+    if (loading) return '-';
+    return (managedAccount?.balance || balance || 0).toLocaleString();
+  };
+
   const getItems = () => {
     const items = [
       {
         key: 'Balance',
-        value: renderBalance(),
+        value: <span className="AccountOverview__balance">{getBalance()}</span>,
       },
       {
         key: 'Account Number',
@@ -73,14 +78,6 @@ const AccountOverview: FC = () => {
     }
 
     return items;
-  };
-
-  const renderBalance = (): ReactNode => {
-    let Balance: any = loading ? '-' : managedAccount?.balance || balance || '0';
-    if (typeof Balance === 'number') {
-      Balance = Balance.toLocaleString();
-    }
-    return <span className="AccountOverview__balance">{Balance}</span>;
   };
 
   const renderAccountNumber = (): ReactNode => (
