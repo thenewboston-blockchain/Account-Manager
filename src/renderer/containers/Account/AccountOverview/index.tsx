@@ -4,6 +4,7 @@ import {useParams} from 'react-router-dom';
 import axios from 'axios';
 
 import DetailPanel from '@renderer/components/DetailPanel';
+import OverviewBalance from '@renderer/components/OverviewBalance';
 import Qr from '@renderer/components/Qr';
 import {useBooleanState} from '@renderer/hooks';
 import {getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
@@ -41,7 +42,7 @@ const AccountOverview: FC = () => {
         dispatch(
           setManagedAccountBalance({
             account_number: managedAccount.account_number,
-            balance: data.balance || '0',
+            balance: data.balance || 0,
           }),
         );
       }
@@ -53,16 +54,11 @@ const AccountOverview: FC = () => {
     fetchData();
   }, [accountNumber, activePrimaryValidator, dispatch, managedAccount]);
 
-  const getBalance = (): string => {
-    if (loading) return '-';
-    return (managedAccount?.balance || balance || 0).toLocaleString();
-  };
-
   const getItems = () => {
     const items = [
       {
         key: 'Balance',
-        value: <span className="AccountOverview__balance">{getBalance()}</span>,
+        value: <OverviewBalance balance={balance} loading={loading} managedAccount={managedAccount} />,
       },
       {
         key: 'Account Number',
