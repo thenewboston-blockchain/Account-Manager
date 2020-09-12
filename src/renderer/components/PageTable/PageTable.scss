@@ -1,11 +1,11 @@
 .PageTable {
   font-family: var(--font-family-mono);
-  padding: var(--page-padding);
+  padding: var(--page-table-padding);
   width: 100%;
 
   td,
   th {
-    border-bottom: 1px solid var(--color-sail-gray-100);
+    border-bottom: 1px solid var(--color-gray-100);
   }
 
   &__ArrowToggle {
@@ -14,7 +14,7 @@
   }
 
   &__PaginationSummary {
-    margin-bottom: 12px;
+    margin: 12px 0;
     padding: 2px 12px;
   }
 
@@ -41,7 +41,7 @@
   }
 
   &__thead {
-    color: var(--color-sail-gray-500);
+    color: var(--color-gray-500);
     font-weight: 500;
     text-align: left;
 

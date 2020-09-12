@@ -4,7 +4,7 @@ $button-height: 24px;
   $self: &;
 
   &--active {
-    background: var(--color-sail-gray-100);
+    background: var(--color-gray-100);
   }
 
   &__menu {
@@ -24,19 +24,19 @@ $button-height: 24px;
     white-space: nowrap;
 
     &:focus {
-      background: var(--color-sail-gray-100);
+      background: var(--color-gray-100);
     }
 
     &:not(&--disabled) {
       cursor: pointer;
 
       &:hover {
-        background: var(--color-sail-gray-100);
+        background: var(--color-gray-100);
       }
     }
 
     &--disabled {
-      color: var(--color-sail-gray-300);
+      color: var(--color-gray-300);
       cursor: default;
     }
   }

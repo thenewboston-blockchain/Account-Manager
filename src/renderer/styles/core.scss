@@ -5,11 +5,16 @@
 }
 
 body {
-  background: var(--color-sail-gray-050);
+  background: var(--color-gray-050);
   color: var(--color-primary);
-  font-family: var(--font-family-default);
+  font-family: var(--font-family-inter-regular);
   font-size: var(--font-size-regular);
   margin: auto;
+}
+
+b {
+  font-family: var(--font-family-inter-bold);
+  font-weight: 700;
 }
 
 h1,
@@ -23,18 +28,27 @@ h6 {
 }
 
 h1 {
-  font-size: var(--font-size-large);
+  font-family: var(--font-family-inter-regular);
+  font-size: var(--font-size-extra-large);
   font-weight: normal;
 }
 
 h2 {
-  font-size: var(--font-size-medium);
+  font-family: var(--font-family-inter-medium);
+  font-size: var(--font-size-large);
   font-weight: 500;
 }
 
 h3 {
+  font-family: var(--font-family-inter-medium);
+  font-size: var(--font-size-medium);
+  font-weight: 500;
+}
+
+h4 {
+  font-family: var(--font-family-inter-bold);
   font-size: var(--font-size-regular);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 p {

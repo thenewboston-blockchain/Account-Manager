@@ -13,18 +13,18 @@
   padding: 10px 18px;
 
   &--checking {
-    background: var(--color-sail-yellow-100);
-    color: var(--color-sail-yellow-500);
+    background: var(--color-yellow-100);
+    color: var(--color-yellow-500);
   }
 
   &--connected {
-    background: var(--color-sail-green-100);
-    color: var(--color-sail-green-500);
+    background: var(--color-green-100);
+    color: var(--color-green-500);
   }
 
   &--not-connected {
-    background: var(--color-sail-red-100);
-    color: var(--color-sail-red-500);
+    background: var(--color-red-100);
+    color: var(--color-red-500);
   }
 
   &__badge {
