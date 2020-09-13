@@ -16,9 +16,9 @@ import {
   getManagedValidators,
   getPointBalance,
 } from '@renderer/selectors';
-import {ManagedNode, RootState} from '@renderer/types';
+import {ManagedAccount, ManagedFriend, ManagedNode, RootState} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
-import {sortByBooleanKey} from '@renderer/utils/sort';
+import {sortByBooleanKey, sortDictValuesByPreferredKey} from '@renderer/utils/sort';
 
 import LeftSubmenu from './LeftSubmenu';
 
@@ -46,7 +46,7 @@ const LeftMenu: FC = () => {
 
   const accountItems = useMemo<ReactNode[]>(
     () =>
-      Object.values(managedAccounts)
+      sortDictValuesByPreferredKey<ManagedAccount>(managedAccounts, 'nickname', 'account_number')
         .map(({account_number, nickname}) => ({
           baseUrl: `/account/${account_number}`,
           key: account_number,
@@ -59,7 +59,7 @@ const LeftMenu: FC = () => {
 
   const bankMenuItems = useMemo<ReactNode[]>(
     () =>
-      Object.values(managedBanks)
+      sortDictValuesByPreferredKey<ManagedNode>(managedBanks, 'nickname', 'ip_address')
         .sort(sortByBooleanKey<ManagedNode>('is_default'))
         .map((managedBank) => ({
           baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
@@ -83,7 +83,7 @@ const LeftMenu: FC = () => {
 
   const friendMenuItems = useMemo<ReactNode[]>(
     () =>
-      Object.values(managedFriends)
+      sortDictValuesByPreferredKey<ManagedFriend>(managedFriends, 'nickname', 'account_number')
         .map(({account_number, nickname}) => ({
           baseUrl: `/friend/${account_number}`,
           key: account_number,
@@ -96,7 +96,7 @@ const LeftMenu: FC = () => {
 
   const validatorMenuItems = useMemo<ReactNode[]>(
     () =>
-      Object.values(managedValidators)
+      sortDictValuesByPreferredKey<ManagedNode>(managedValidators, 'nickname', 'ip_address')
         .sort(sortByBooleanKey<ManagedNode>('is_default'))
         .map((managedValidator) => ({
           baseUrl: `/validator/${formatPathFromNode(managedValidator)}`,
