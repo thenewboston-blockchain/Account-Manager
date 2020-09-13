@@ -3,20 +3,24 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 import { app, BrowserWindow, Menu } from "electron";
-const { autoUpdater } = require("electron-updater");
+import { autoUpdater } from "electron-updater";
+// const { autoUpdater } = require("electron-updater");
 import contextMenu from "electron-context-menu";
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from "electron-devtools-installer";
-const electronSquirrelStartup = require("electron-squirrel-startup");
+
+// No need to use Squirrel on NSIS mode for Windows
+// const electronSquirrelStartup = require("electron-squirrel-startup");
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
 const isMac = process.platform === "darwin";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (electronSquirrelStartup) {
-	app.quit();
-}
+// if (electronSquirrelStartup) {
+// 	app.quit();
+// }
 
+// TODO: Autoupdate
 autoUpdater.checkForUpdatesAndNotify();
 
 const template = [
@@ -94,7 +98,7 @@ const template = [
 			{
 				click: async () => {
 					const { shell } = require("electron");
-					await shell.openExternal("https://electronjs.org");
+					await shell.openExternal("https://thenewboston.com");
 				},
 				label: "Learn More"
 			}
