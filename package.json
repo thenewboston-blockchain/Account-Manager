@@ -11,7 +11,7 @@
     "package": "electron-forge package",
     "build": "yarn package && electron-builder",
     "release": "yarn package && electron-builder --publish always",
-    "prettier": "prettier --write \"{,!(.webpack|node_modules)/**/}*.{ts,tsx,js,json,css,less,scss}\"",
+    "prettier": "prettier --write \"{,!(.webpack|bundle|node_modules|out|release)/**/}*.{ts,tsx,js,json,css,less,scss}\"",
     "publish": "electron-forge publish",
     "start": "electron-forge start",
     "test": "jest"
@@ -95,6 +95,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "clsx": "^1.1.1",
+    "date-fns": "^2.16.1",
     "electron-context-menu": "^2.0.1",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^5.2.0",
@@ -113,12 +114,11 @@
     "react-scripts": "^3.4.1",
     "react-select": "^3.1.0",
     "react-toastify": "^6.0.8",
+    "reconnecting-websocket": "^4.4.0",
     "tweetnacl": "^1.0.3",
     "typeface-roboto": "0.0.75",
     "update-electron-app": "^1.5.0",
-    "yup": "^0.29.1",
-    "date-fns": "^2.16.1",
-    "reconnecting-websocket": "^4.4.0"
+    "yup": "^0.29.1"
   },
   "husky": {
     "hooks": {
