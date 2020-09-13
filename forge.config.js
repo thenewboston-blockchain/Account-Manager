@@ -11,8 +11,8 @@ module.exports = {
       name: '@electron-forge/publisher-github',
       config: {
         repository: {
-          owner: 'tpikachu',
-          name: 'TNB-Account-Manager',
+          name: 'Account-Manager',
+          owner: 'thenewboston-developers',
         },
         prerelease: true,
       },
