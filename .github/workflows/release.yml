@@ -14,7 +14,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: '${{ runner.os }}-node-${{ hashFiles("**/package-lock.json") }}'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install Dependencies
@@ -23,7 +23,7 @@ jobs:
         run: npm run release
         env:
           EP_PRE_RELEASE: true
-          GH_TOKEN: '${{ secrets.GH_TOKEN }}'
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
   mac_build:
     name: MacOS Build
     runs-on: macos-latest
@@ -34,7 +34,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: '${{ runner.os }}-node-${{ hashFiles("**/package-lock.json") }}'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install Dependencies
@@ -42,12 +42,12 @@ jobs:
       - name: release
         run: npm run release
         env:
-          APPLE_ID: '${{ secrets.APPLE_ID }}'
-          APPLE_PWD: '${{ secrets.APPLE_PWD }}'
-          CSC_KEY_PASSWORD: '${{ secrets.MAC_CSC_KEY_PASSWORD }}'
-          CSC_LINK: '${{ secrets.MAC_CSC_LINK }}'
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PWD: ${{ secrets.APPLE_PWD }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
+          CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
           EP_PRE_RELEASE: true
-          GH_TOKEN: '${{ secrets.GH_TOKEN }}'
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
   win_build:
     name: Windows Build
     runs-on: windows-latest
@@ -58,7 +58,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: '${{ runner.os }}-node-${{ hashFiles("**/package-lock.json") }}'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install Dependencies
@@ -67,4 +67,4 @@ jobs:
         run: npm run release
         env:
           EP_PRE_RELEASE: true
-          GH_TOKEN: '${{ secrets.GH_TOKEN }}'
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
