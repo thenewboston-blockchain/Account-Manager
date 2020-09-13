@@ -5,7 +5,7 @@ const rules = [
     use: 'node-loader',
   },
   {
-    exclude: /(.webpack|node_modules)/,
+    exclude: /(bundle|node_modules)/,
     parser: {amd: false},
     test: /\.(m?js|node)$/,
     use: {
@@ -16,7 +16,7 @@ const rules = [
     },
   },
   {
-    exclude: /(node_modules|.webpack)/,
+    exclude: /(node_modules|bundle)/,
     loaders: [
       {
         loader: 'babel-loader',

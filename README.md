@@ -36,7 +36,7 @@ npm start
 
 To make an executable package:
 ```
-electron-forge make
+npm run make
 ```
 
 ## Contributing
@@ -50,6 +50,13 @@ You can check your styling by running:
 ```
 npm run lint
 ```
+## Distribution
+
+Change the `version` field on `package.json`
+
+Alpha | Beta: `vX.X.X-alpha.X`, `vX.X.X-beta.X`
+Stable: `vX.X.X`
+
 
 ## License
 
