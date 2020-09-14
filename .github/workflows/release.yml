@@ -68,3 +68,5 @@ jobs:
         env:
           EP_PRE_RELEASE: true
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+          CSC_LINK: ${{ secrets.WIN_CSC_LINK }}

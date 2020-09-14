@@ -1,18 +1,16 @@
 {
   "name": "thenewboston",
   "productName": "TNB Account Manager",
-  "version": "v1.0.0-alpha.3",
+  "version": "1.0.0-alpha.3",
   "description": "Thenewboston Account Manager Electron Application.",
   "main": "./bundle/main/index.js",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "lint": "tsc --noEmit && eslint './src/**/*.{js,ts,tsx}'",
-    "make": "electron-forge make",
     "package": "electron-forge package",
     "build": "yarn package && electron-builder",
     "release": "yarn package && electron-builder --publish always",
     "prettier": "prettier --write \"{,!(.webpack|bundle|node_modules|out|release)/**/}*.{ts,tsx,js,json,css,less,scss}\"",
-    "publish": "electron-forge publish",
     "start": "electron-forge start",
     "test": "jest"
   },

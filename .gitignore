@@ -90,6 +90,7 @@ electron-builder.env
 out/
 release/
 bundle/
+dist/
 
 # Webstorm
 .idea/
@@ -99,3 +100,7 @@ bundle/
 
 # Certificates
 credential
+
+# Lock files
+yarn.lock
+package-lock.json
