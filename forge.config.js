@@ -1,7 +1,7 @@
 module.exports = {
   buildIdentifier: 'com.thenewboston.account.manager.app',
   packagerConfig: {
-    name: 'TNB Account Manager',
+    name: 'Account Manager',
     icon: __dirname + '/assets/icon.icns',
     'hardened-runtime': true,
     asar: true,
