@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-console */
+/* eslint-disable prefer-destructuring */
+
 const createWindowsInstaller = require('electron-winstaller').createWindowsInstaller;
 const path = require('path');
 const rimraf = require('rimraf');
@@ -11,6 +15,18 @@ deleteOutputFolder()
     console.error(error.message || error);
     process.exit(1);
   });
+
+function deleteOutputFolder() {
+  return new Promise((resolve, reject) => {
+    rimraf(path.join(__dirname, '..', 'out', 'windows-installer'), (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+}
 
 function getInstallerConfig() {
   const rootPath = path.join(__dirname, '..');
@@ -28,13 +44,5 @@ function getInstallerConfig() {
     setupExe: 'ElectronAPIDemosSetup.exe',
     setupIcon: path.join(rootPath, 'assets', 'app-icon', 'win', 'app.ico'),
     skipUpdateIcon: true,
-  });
-}
-
-function deleteOutputFolder() {
-  return new Promise((resolve, reject) => {
-    rimraf(path.join(__dirname, '..', 'out', 'windows-installer'), (error) => {
-      error ? reject(error) : resolve();
-    });
   });
 }
