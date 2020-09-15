@@ -8,12 +8,12 @@
 
 ## Overview
 
-Source code for thenewboston account manager desktop application. This app allows users to connect to the digital 
-currency network, create accounts, send and receive funds, manage your nodes, and more. 
+Source code for thenewboston account manager desktop application. This app allows users to connect to the digital
+currency network, create accounts, send and receive funds, manage your nodes, and more.
 
 ## Community
 
-Join the community to stay updated on the most recent developments, project roadmaps, and random discussions about 
+Join the community to stay updated on the most recent developments, project roadmaps, and random discussions about
 completely unrelated topics.
 
 - [thenewboston.com](https://thenewboston.com/)
@@ -25,18 +25,21 @@ completely unrelated topics.
 ## Project Setup
 
 Install required packages:
+
 ```
 npm install
 ```
 
 Start the app:
+
 ```
 npm start
 ```
 
 To make an executable package:
+
 ```
-electron-forge make
+npm run make
 ```
 
 ## Contributing
@@ -46,10 +49,20 @@ If you are contributing to this project, please make sure your code follows thes
 - [React / JSX Style Guide](https://thenewboston.com/style-guide/react)
 - [CSS / SASS Style Guide](https://thenewboston.com/style-guide/css)
 
-You can check your styling by running: 
+You can check your styling by running:
+
 ```
 npm run lint
 ```
+
+## Distribution
+
+Change the `version` field on `package.json`
+
+Alpha | Beta: `X.X.X-alpha.X`, `X.X.X-beta.X`
+Stable: `X.X.X`
+
+Tag Name format: `X.X.X-alpha.X`
 
 ## License
 
