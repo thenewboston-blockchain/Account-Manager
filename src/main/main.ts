@@ -107,7 +107,7 @@ const createWindow = (): void => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 };
 
-app.setName('Account Manager');
+app.setName('TNB Account Manager');
 
 app.whenReady().then(() => {
   installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
