@@ -16,7 +16,7 @@ const rules = [
     },
   },
   {
-    exclude: /(node_modules|bundle)/,
+    exclude: /(bundle|node_modules)/,
     loaders: [
       {
         loader: 'babel-loader',

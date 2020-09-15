@@ -39,7 +39,7 @@ npm start
 To make an executable package:
 
 ```
-npm run make
+npm run build
 ```
 
 ## Contributing
@@ -54,15 +54,6 @@ You can check your styling by running:
 ```
 npm run lint
 ```
-
-## Distribution
-
-Change the `version` field on `package.json`
-
-Alpha | Beta: `X.X.X-alpha.X`, `X.X.X-beta.X`
-Stable: `X.X.X`
-
-Tag Name format: `X.X.X-alpha.X`
 
 ## License
 
