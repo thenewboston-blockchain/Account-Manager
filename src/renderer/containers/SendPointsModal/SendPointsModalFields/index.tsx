@@ -16,7 +16,7 @@ import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactio
 import './SendPointsModalFields.scss';
 
 export const INVALID_AMOUNT_ERROR = 'Invalid amount';
-export const MATCH_ERROR = 'Sender and receiver cannot be same';
+export const MATCH_ERROR = 'Sender and recipient cannot be same';
 
 export interface FormValues {
   points: string;
