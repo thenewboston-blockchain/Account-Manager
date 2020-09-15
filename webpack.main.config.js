@@ -11,11 +11,11 @@ module.exports = {
   devtool: 'source-map',
   entry: './src/main/main.ts',
   mode: 'development',
-  output: {
-    path: path.join(__dirname, 'bundle', 'main'),
-  },
   module: {
     rules,
+  },
+  output: {
+    path: path.join(__dirname, 'bundle', 'main'),
   },
   resolve: {
     alias: {

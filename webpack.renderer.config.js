@@ -10,11 +10,11 @@ function srcPaths(src) {
 module.exports = {
   devtool: 'source-map',
   mode: 'development',
-  output: {
-    path: path.join(__dirname, 'bundle', 'renderer'),
-  },
   module: {
     rules,
+  },
+  output: {
+    path: path.join(__dirname, 'bundle', 'renderer'),
   },
   resolve: {
     alias: {
