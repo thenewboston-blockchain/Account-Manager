@@ -62,7 +62,7 @@ Change the `version` field on `package.json`
 Alpha | Beta: `X.X.X-alpha.X`, `X.X.X-beta.X`
 Stable: `X.X.X`
 
-Tag Name fornat: `vX.X.X-alpha.X`
+Tag Name format: `X.X.X-alpha.X`
 
 ## License
 
