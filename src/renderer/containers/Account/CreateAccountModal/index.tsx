@@ -118,8 +118,8 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
       close={close}
       disableOverlayClick={isGetStartedModal}
       displayCancelButton={!isGetStartedModal}
+      displayCloseButton={!isGetStartedModal}
       header={isGetStartedModal ? 'Get Started' : 'Create/Add Account'}
-      hideCloseButton={isGetStartedModal}
       ignoreDirty
       initialValues={initialValues}
       onSubmit={handleSubmit}

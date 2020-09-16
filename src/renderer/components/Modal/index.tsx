@@ -22,10 +22,10 @@ interface ComponentProps {
   close(): void;
   disableOverlayClick?: boolean;
   displayCancelButton?: boolean;
+  displayCloseButton?: boolean;
   displaySubmitButton?: boolean;
   footer?: ReactNode;
   header?: ReactNode;
-  hideCloseButton?: boolean;
   ignoreDirty?: boolean;
   initialValues?: GenericFormValues;
   onSubmit: GenericFunction;
@@ -45,7 +45,7 @@ const Modal: FC<ComponentProps> = ({
   displaySubmitButton = true,
   footer,
   header,
-  hideCloseButton = false,
+  displayCloseButton = true,
   ignoreDirty: ignoreDirtyProps = false,
   initialValues = {},
   onSubmit,
@@ -163,7 +163,7 @@ const Modal: FC<ComponentProps> = ({
       >
         <div className={clsx('Modal__header', {...getCustomClassNames(className, '__header', true)})}>
           {typeof header === 'string' ? <h2>{header}</h2> : header}
-          {!hideCloseButton && (
+          {displayCloseButton && (
             <Icon
               className={clsx('Modal__close-icon', {
                 'Modal__close-icon--submitting': submitting,
