@@ -27,9 +27,10 @@ type FormValues = typeof initialValues;
 
 interface ComponentProps {
   close(): void;
+  isGetStartedModal?: boolean;
 }
 
-const CreateAccountModal: FC<ComponentProps> = ({close}) => {
+const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = false}) => {
   const activePrimaryValidator = useSelector(getActivePrimaryValidator)!;
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
@@ -115,7 +116,10 @@ const CreateAccountModal: FC<ComponentProps> = ({close}) => {
     <Modal
       className="CreateAccountModal"
       close={close}
-      header="Create/Add Account"
+      disableOverlayClick={isGetStartedModal}
+      displayCancelButton={!isGetStartedModal}
+      header={isGetStartedModal ? 'Get Started' : 'Create/Add Account'}
+      hideCloseButton={isGetStartedModal}
       ignoreDirty
       initialValues={initialValues}
       onSubmit={handleSubmit}
