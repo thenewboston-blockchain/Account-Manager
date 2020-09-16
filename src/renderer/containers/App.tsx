@@ -5,17 +5,26 @@ import {MemoryRouter as Router} from 'react-router-dom';
 import {Flip, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import Connect from '@renderer/containers/Connect';
 import Layout from '@renderer/containers/Layout';
-import {connect} from '@renderer/dispatchers/app';
-import {useWebSockets} from '@renderer/hooks';
+import {connect, connectAndStoreLocalData} from '@renderer/dispatchers/app';
+import {useBooleanState, useWebSockets} from '@renderer/hooks';
 import {getActiveBank, getActiveBankConfig} from '@renderer/selectors';
-import {AppDispatch} from '@renderer/types';
+import {AppDispatch, ProtocolType} from '@renderer/types';
+import {displayErrorToast, displayToast} from '@renderer/utils/toast';
+
+const DEFAULT_BANK = {
+  ip_address: '143.110.137.54',
+  port: null,
+  protocol: 'http' as ProtocolType,
+};
 
 const App: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const activeBank = useSelector(getActiveBank);
   const activeBankConfig = useSelector(getActiveBankConfig);
+  const [getStartedModalIsOpen, toggleGetStartedModal, openGetStartedModal] = useBooleanState(false);
   const [loading, setLoading] = useState<boolean>(true);
   useWebSockets();
 
@@ -23,14 +32,36 @@ const App: FC = () => {
     if (activeBank && !activeBankConfig) {
       setLoading(true);
       const fetchData = async (): Promise<void> => {
-        await dispatch(connect(activeBank));
-        setLoading(false);
+        try {
+          await dispatch(connect(activeBank));
+        } catch (error) {
+          displayToast('An error occurred');
+        } finally {
+          setLoading(false);
+        }
       };
       fetchData();
+    } else if (!activeBank && !activeBankConfig) {
+      setLoading(true);
+      const fetchDefaultBankData = async (): Promise<void> => {
+        try {
+          const response = await dispatch(connectAndStoreLocalData(DEFAULT_BANK, 'My Active Bank'));
+          if (response?.error) {
+            displayErrorToast(response.error);
+            return;
+          }
+          openGetStartedModal();
+        } catch (error) {
+          displayToast('An error occurred');
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchDefaultBankData();
     } else {
       setLoading(false);
     }
-  }, [activeBank, activeBankConfig, dispatch]);
+  }, [activeBank, activeBankConfig, dispatch, openGetStartedModal]);
 
   const renderComponent = (): ReactNode => {
     if (loading) return null;
@@ -53,6 +84,7 @@ const App: FC = () => {
         rtl={false}
         transition={Flip}
       />
+      {getStartedModalIsOpen && <CreateAccountModal close={toggleGetStartedModal} isGetStartedModal />}
     </Router>
   );
 };
