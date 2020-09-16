@@ -24,7 +24,7 @@ const App: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const activeBank = useSelector(getActiveBank);
   const activeBankConfig = useSelector(getActiveBankConfig);
-  const [getStartedModalIsOpen, toggleGetStartedModal] = useBooleanState(false);
+  const [getStartedModalIsOpen, toggleGetStartedModal, openGetStartedModal] = useBooleanState(false);
   const [loading, setLoading] = useState<boolean>(true);
   useWebSockets();
 
@@ -48,8 +48,9 @@ const App: FC = () => {
           const response = await dispatch(connectAndStoreLocalData(DEFAULT_BANK, 'My Active Bank'));
           if (response?.error) {
             displayErrorToast(response.error);
+            return;
           }
-          toggleGetStartedModal();
+          openGetStartedModal();
         } catch (error) {
           displayToast('An error occurred');
         } finally {
@@ -60,7 +61,7 @@ const App: FC = () => {
     } else {
       setLoading(false);
     }
-  }, [activeBank, activeBankConfig, dispatch, toggleGetStartedModal]);
+  }, [activeBank, activeBankConfig, dispatch, openGetStartedModal]);
 
   const renderComponent = (): ReactNode => {
     if (loading) return null;
