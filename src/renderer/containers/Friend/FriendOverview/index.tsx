@@ -1,11 +1,9 @@
-import React, {FC, ReactNode, useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
 
-import DetailPanel from '@renderer/components/DetailPanel';
-import OverviewBalance from '@renderer/components/OverviewBalance';
-import Qr from '@renderer/components/Qr';
+import {TileAccountBalance, TileAccountNumber} from '@renderer/components/Tiles';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
 import {formatAddress} from '@renderer/utils/address';
 
@@ -33,29 +31,10 @@ const FriendOverview: FC = () => {
     fetchData();
   }, [accountNumber, activePrimaryValidator]);
 
-  const getItems = () => {
-    return [
-      {
-        key: 'Balance',
-        value: <OverviewBalance balance={balance} loading={loading} />,
-      },
-      {
-        key: 'Account Number',
-        value: renderAccountNumber(),
-      },
-    ];
-  };
-
-  const renderAccountNumber = (): ReactNode => (
-    <>
-      <div>{loading ? '-' : accountNumber}</div>
-      <Qr className="FriendOverview__qr" text={accountNumber} width={120} />
-    </>
-  );
-
   return (
     <div className="FriendOverview">
-      <DetailPanel className="FriendOverview__DetailPanel" items={getItems()} title="Friend Information" />
+      <TileAccountBalance balance={balance || 0} loading={loading} type="account" />
+      <TileAccountNumber accountNumber={accountNumber} type="account" />
     </div>
   );
 };
