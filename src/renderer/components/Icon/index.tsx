@@ -13,6 +13,7 @@ import CheckboxBlankCircleOutlineIcon from 'mdi-react/CheckboxBlankCircleOutline
 import ChevronLeftIcon from 'mdi-react/ChevronLeftIcon';
 import ChevronRightIcon from 'mdi-react/ChevronRightIcon';
 import CloseIcon from 'mdi-react/CloseIcon';
+import ContentCopyIcon from 'mdi-react/ContentCopyIcon';
 import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
 import LanConnectIcon from 'mdi-react/LanConnectIcon';
 import LanDisconnectIcon from 'mdi-react/LanDisconnectIcon';
@@ -43,6 +44,7 @@ export enum IconType {
   chevronLeft,
   chevronRight,
   close,
+  contentCopy,
   dotsVertical,
   lanConnect,
   lanDisconnect,
@@ -122,6 +124,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
           return <ChevronRightIcon {...iconProps} />;
         case IconType.close:
           return <CloseIcon {...iconProps} />;
+        case IconType.contentCopy:
+          return <ContentCopyIcon {...iconProps} />;
         case IconType.dotsVertical:
           return <DotsVerticalIcon {...iconProps} />;
         case IconType.lanConnect:

@@ -1,0 +1,31 @@
+.TileSigningKey {
+  &__amount {
+    color: var(--color-tertiary);
+    font-size: var(--font-size-large);
+  }
+
+  &__signing-key {
+    word-wrap: break-word;
+  }
+
+  &__title {
+    color: var(--color-gray-500);
+    margin-bottom: 6px;
+  }
+
+  &__toggle {
+    color: var(--color-secondary);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__top {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+}

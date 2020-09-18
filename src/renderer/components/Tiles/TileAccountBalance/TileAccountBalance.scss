@@ -1,0 +1,11 @@
+.TileAccountBalance {
+  &__amount {
+    color: var(--color-tertiary);
+    font-size: var(--font-size-large);
+  }
+
+  &__title {
+    color: var(--color-gray-500);
+    margin-bottom: 6px;
+  }
+}
