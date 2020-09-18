@@ -23,7 +23,7 @@ const TileAccountNumber: FC<ComponentProps> = ({accountNumber, className, type})
   }, [type]);
 
   const handleCopy = (): void => {
-    displayToast('Account Number copied to the clipboard!', 'success');
+    displayToast('Account Number copied to the clipboard', 'success');
   };
 
   return (
