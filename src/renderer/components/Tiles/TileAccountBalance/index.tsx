@@ -15,7 +15,7 @@ interface ComponentProps {
 
 const TileAccountBalance: FC<ComponentProps> = ({balance, className, loading, type}) => {
   const title = useMemo(() => {
-    const prefix = type === 'account' ? 'Your' : "Friend's";
+    const prefix = type === 'account' ? 'My' : "Friend's";
     return `${prefix} Account Balance`;
   }, [type]);
 

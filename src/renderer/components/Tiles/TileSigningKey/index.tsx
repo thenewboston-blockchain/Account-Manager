@@ -31,7 +31,7 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, 
       <>
         <div className={clsx('TileAccountNumber__top', {...getCustomClassNames(className, '__top', true)})}>
           <div className={clsx('TileSigningKey__title', {...getCustomClassNames(className, '__title', true)})}>
-            Your Signing Key
+            My Signing Key
           </div>
           <div
             className={clsx('TileSigningKey__toggle', {...getCustomClassNames(className, '__title', true)})}

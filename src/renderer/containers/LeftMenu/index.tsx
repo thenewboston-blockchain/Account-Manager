@@ -126,8 +126,8 @@ const LeftMenu: FC = () => {
       </div>
       <LeftSubmenu menuItems={validatorMenuItems} rightOnClick={toggleAddValidatorModal} title="Validators" />
       <LeftSubmenu menuItems={bankMenuItems} rightOnClick={toggleAddBankModal} title="Banks" />
-      <LeftSubmenu menuItems={accountItems} rightOnClick={toggleCreateAccountModal} title="Accounts" />
-      <LeftSubmenu menuItems={friendMenuItems} rightOnClick={toggleAddFriendModal} title="Friends" />
+      <LeftSubmenu menuItems={accountItems} rightOnClick={toggleCreateAccountModal} title="My Accounts" />
+      <LeftSubmenu menuItems={friendMenuItems} rightOnClick={toggleAddFriendModal} title="My Friends" />
       {addFriendModalIsOpen && <AddFriendModal close={toggleAddFriendModal} />}
       {addBankModalIsOpen && <AddBankModal close={toggleAddBankModal} />}
       {addValidatorModalIsOpen && <AddValidatorModal close={toggleAddValidatorModal} />}
