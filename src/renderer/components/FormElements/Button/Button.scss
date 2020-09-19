@@ -14,6 +14,7 @@
 
   &--contained {
     color: var(--color-white);
+    filter: drop-shadow(0 4px 4px rgba(4, 34, 53, 0.25));
 
     &#{$self}--primary {
       background: var(--color-primary);
