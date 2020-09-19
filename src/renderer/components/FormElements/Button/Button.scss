@@ -13,6 +13,7 @@
   }
 
   &--contained {
+    box-shadow: 0 4px 4px rgba(4, 34, 53, 0.25);
     color: var(--color-white);
 
     &#{$self}--primary {
