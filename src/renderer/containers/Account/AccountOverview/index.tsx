@@ -50,7 +50,9 @@ const AccountOverview: FC = () => {
     <div className="AccountOverview">
       <TileAccountBalance balance={managedAccount?.balance || balance || 0} loading={loading} type="account" />
       <TileAccountNumber accountNumber={accountNumber} type="account" />
-      <TileSigningKey accountNumber={accountNumber} loading={loading} signingKey={managedAccount.signing_key} />
+      {managedAccount && (
+        <TileSigningKey accountNumber={accountNumber} loading={loading} signingKey={managedAccount.signing_key} />
+      )}
     </div>
   );
 };
