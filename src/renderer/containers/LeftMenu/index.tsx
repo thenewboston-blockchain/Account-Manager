@@ -121,12 +121,12 @@ const LeftMenu: FC = () => {
   return (
     <div className="LeftMenu">
       <div className="points">
-        <div className="points__title">Balance</div>
+        <div className="points__title">My Balance</div>
         <div className="points__amount">{pointBalance.toLocaleString()}</div>
       </div>
       <LeftSubmenu menuItems={validatorMenuItems} rightOnClick={toggleAddValidatorModal} title="Validators" />
       <LeftSubmenu menuItems={bankMenuItems} rightOnClick={toggleAddBankModal} title="Banks" />
-      <LeftSubmenu menuItems={accountItems} rightOnClick={toggleCreateAccountModal} title="Accounts" />
+      <LeftSubmenu menuItems={accountItems} rightOnClick={toggleCreateAccountModal} title="My Accounts" />
       <LeftSubmenu menuItems={friendMenuItems} rightOnClick={toggleAddFriendModal} title="Friends" />
       {addFriendModalIsOpen && <AddFriendModal close={toggleAddFriendModal} />}
       {addBankModalIsOpen && <AddBankModal close={toggleAddBankModal} />}

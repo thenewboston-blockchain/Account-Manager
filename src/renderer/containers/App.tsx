@@ -45,7 +45,7 @@ const App: FC = () => {
       setLoading(true);
       const fetchDefaultBankData = async (): Promise<void> => {
         try {
-          const response = await dispatch(connectAndStoreLocalData(DEFAULT_BANK, 'My Active Bank'));
+          const response = await dispatch(connectAndStoreLocalData(DEFAULT_BANK, DEFAULT_BANK.ip_address));
           if (response?.error) {
             displayErrorToast(response.error);
             return;

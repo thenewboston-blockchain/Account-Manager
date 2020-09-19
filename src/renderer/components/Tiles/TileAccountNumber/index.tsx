@@ -18,7 +18,7 @@ interface ComponentProps {
 
 const TileAccountNumber: FC<ComponentProps> = ({accountNumber, className, type}) => {
   const title = useMemo(() => {
-    const prefix = type === 'account' ? 'Your' : "Friend's";
+    const prefix = type === 'account' ? 'My' : "Friend's";
     return `${prefix} Account Number`;
   }, [type]);
 
