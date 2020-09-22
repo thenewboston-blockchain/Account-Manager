@@ -1,0 +1,66 @@
+.LeftSubmenuItemStatus {
+  $left-spacing: 36px;
+
+  align-items: center;
+  color: var(--color-primary);
+  display: flex;
+  overflow: hidden;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:focus:not(&--active),
+  &:hover {
+    background: var(--color-gray-050);
+  }
+
+  &--active,
+  &--active:hover {
+    background: var(--color-gray-100);
+  }
+
+  &__Icon {
+    flex-basis: $left-spacing;
+    min-width: $left-spacing;
+
+    &--offline {
+      color: var(--color-gray-300);
+    }
+
+    &--online {
+      color: var(--color-tertiary);
+    }
+  }
+
+  &__badge {
+    align-items: center;
+    border-radius: 12px;
+    color: var(--color-white);
+    display: flex;
+    font-size: 11px;
+    justify-content: center;
+    line-height: 12px;
+    margin-right: 10px;
+    padding: 3px 6px;
+
+    &--active-bank {
+      background: var(--color-secondary);
+    }
+
+    &--primary-validator {
+      background: var(--color-tertiary);
+    }
+  }
+
+  &__label {
+    line-height: 24px;
+    overflow: hidden;
+    padding-right: 12px;
+    text-overflow: ellipsis;
+    width: calc(var(--left-menu-width) - #{$left-spacing});
+
+    &--with-badge {
+      padding-right: 8px;
+    }
+  }
+}

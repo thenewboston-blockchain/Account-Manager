@@ -1,0 +1,52 @@
+.NotificationsMenu {
+  $left-spacing: 32px;
+
+  background: var(--color-white);
+  border-radius: 3px;
+  box-shadow: 0 3px 12px 1px rgba(4, 34, 53, 0.24);
+  max-height: 60%;
+  max-width: 440px;
+  min-width: 400px;
+  overflow-y: auto;
+  position: fixed;
+  right: 12px;
+  top: 40px;
+
+  &__count {
+    color: var(--color-alert);
+    font-size: 10px;
+    font-weight: 500;
+    margin-left: 12px;
+  }
+
+  &__empty {
+    align-items: center;
+    display: flex;
+    font-size: 36px;
+    font-weight: 300;
+    justify-content: center;
+    height: 300px;
+  }
+
+  &__header {
+    align-items: baseline;
+    display: flex;
+    border-bottom: 1px solid var(--color-gray-100);
+    justify-content: space-between;
+    padding: 12px 12px 18px $left-spacing;
+  }
+
+  &__header-left {
+    align-items: baseline;
+    display: flex;
+  }
+
+  &__mark-as-read {
+    color: var(--color-secondary);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

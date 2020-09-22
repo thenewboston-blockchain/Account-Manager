@@ -1,48 +1,68 @@
-import axios from 'axios';
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
-import * as Yup from 'yup';
 
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
-import {SelectOption} from '@renderer/types/forms';
-import {formatAddress} from '@renderer/utils/format';
+import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
+import {getActiveBankConfig} from '@renderer/selectors';
+import {AppDispatch, InputOption, ProtocolType} from '@renderer/types';
+import {formatPathFromNode} from '@renderer/utils/address';
+import {displayErrorToast, displayToast} from '@renderer/utils/toast';
+import yup from '@renderer/utils/yup';
 
 import './Connect.scss';
 
 const initialValues = {
-  protocol: 'http',
-  ipAddress: '',
-  port: '80',
+  ipAddress: '143.110.137.54',
+  nickname: '',
+  port: '',
+  protocol: 'http' as ProtocolType,
 };
 
 type FormValues = typeof initialValues;
 
-const protocolOptions: SelectOption[] = [{value: 'http'}, {value: 'https'}];
+const protocolOptions: InputOption[] = [{value: 'http'}, {value: 'https'}];
 
 const genericIpAddressRegex = /([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(\d{1,3}\.){3}\d{1,3}/;
 
-const validationSchema = Yup.object().shape({
-  protocol: Yup.string().required(),
-  ipAddress: Yup.string()
+const validationSchema = yup.object().shape({
+  ipAddress: yup
+    .string()
     .required('This field is required')
-    .matches(genericIpAddressRegex, {message: 'IPv4 or IPv6 addresses only', excludeEmptyString: true}),
-  port: Yup.number().integer(),
+    .matches(genericIpAddressRegex, {excludeEmptyString: true, message: 'IPv4 or IPv6 addresses only'}),
+  nickname: yup.string(),
+  port: yup.number().integer(),
+  protocol: yup.string().required(),
 });
 
 const Connect: FC = () => {
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const activeBankConfig = useSelector(getActiveBankConfig);
+  const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
 
-  const goToMain = () => {
-    history.push('/bank');
-  };
+  useEffect(() => {
+    if (activeBankConfig) history.push(`/bank/${formatPathFromNode(activeBankConfig)}/overview`);
+  }, [activeBankConfig, history]);
 
-  const handleSubmit = async (values: FormValues) => {
-    const {ipAddress, port, protocol} = values;
-    const address = formatAddress(ipAddress, port, protocol);
-    const response = await axios.get(`${address}/config`);
-    console.warn(response);
-    // history.push('/bank');
+  const handleSubmit = async ({ipAddress, nickname, port, protocol}: FormValues): Promise<void> => {
+    try {
+      setSubmitting(true);
+      const bankAddressData = {
+        ip_address: ipAddress,
+        port: port ? parseInt(port, 10) : null,
+        protocol,
+      };
+      const response = await dispatch(connectAndStoreLocalData(bankAddressData, nickname));
+      if (response?.error) {
+        displayErrorToast(response.error);
+      }
+    } catch (error) {
+      displayToast('An error occurred');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -60,18 +80,19 @@ const Connect: FC = () => {
       >
         <FormSelect
           className="Connect__field"
-          isSearchable={false}
+          focused
           label="Protocol"
           name="protocol"
           options={protocolOptions}
           required
+          searchable={false}
         />
         <FormInput className="Connect__field" label="IP Address" name="ipAddress" required />
         <FormInput className="Connect__field" label="Port" name="port" type="number" />
+        <FormInput className="Connect__field" label="Nickname" name="nickname" />
 
-        <FormButton type="submit">Connect</FormButton>
-        <FormButton className="Connect__go" onClick={goToMain}>
-          Go (dev only)
+        <FormButton ignoreDirty submitting={submitting} type="submit">
+          Connect
         </FormButton>
       </Form>
     </div>

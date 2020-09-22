@@ -1,6 +1,8 @@
+/* eslint-disable react/jsx-props-no-spreading */
+
 import React, {FC, useMemo} from 'react';
 import {useFormikContext} from 'formik';
-import {BaseButtonProps, Button} from '@renderer/components/FormElements';
+import {BaseButtonProps, Button, Loader} from '@renderer/components/FormElements';
 
 export interface FormButtonProps extends BaseButtonProps {
   ignoreDirty?: boolean;
@@ -20,7 +22,7 @@ const FormButton: FC<FormButtonProps> = ({children, ignoreDirty = false, submitt
       default:
         return disabled || submitting;
     }
-  }, [disabled, dirty, isValid, submitting]);
+  }, [disabled, dirty, ignoreDirty, isValid, submitting, type]);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     e?.preventDefault();
@@ -35,7 +37,7 @@ const FormButton: FC<FormButtonProps> = ({children, ignoreDirty = false, submitt
 
   return (
     <Button {...baseButtonProps} disabled={buttonIsDisabled} onClick={handleClick}>
-      {children}
+      {type === 'submit' && submitting ? <Loader /> : children}
     </Button>
   );
 };

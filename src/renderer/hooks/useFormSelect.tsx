@@ -1,21 +1,56 @@
-import React, {useMemo} from 'react';
-import useFormContext from '@renderer/hooks/useFormContext';
-import {SelectOption} from '@renderer/types/forms';
+import {useMemo} from 'react';
 
-const useFormSelect = (name: string, options: SelectOption[]) => {
-  const {error, setFieldTouched, setFieldValue, values} = useFormContext(name);
+import {BaseSelectProps} from '@renderer/components/FormElements';
+import useFormContext from '@renderer/hooks/useFormContext';
+import {InputOption} from '@renderer/types';
+
+interface UseFormSelectOutput {
+  error: boolean;
+  handleBlur(e: any): void;
+  handleChange(option: InputOption | null): void;
+  selectedOption: InputOption | null;
+}
+
+const useFormSelect = (name: string, options: InputOption[], selectProps: BaseSelectProps): UseFormSelectOutput => {
+  const {creatable} = selectProps;
+  const {errors, setFieldTouched, setFieldValue, touched, values} = useFormContext();
+  const error = !!errors[name] && !!touched[name];
 
   const selectedOption = useMemo(() => {
     const value = values[name];
-    return options.find((option) => option.value === value) || null;
+    if (!value) return null;
+
+    return options.find((option) => option.value === value) || {label: value, value};
   }, [name, options, values]);
 
-  const handleBlur = (): void => {
+  const handleBlur = (e: any): void => {
     setFieldTouched(name, true);
+
+    const newValue = e.target.value;
+    if (!newValue.length) return;
+
+    const associatedOptions = options.filter((option) => [option.label, option.value].includes(newValue));
+
+    if (associatedOptions.length === 1) {
+      const option = associatedOptions[0];
+
+      if (!option.disabled) {
+        setFieldValue(name, option.value);
+      }
+      return;
+    }
+
+    if (creatable) {
+      setFieldValue(name, newValue);
+    }
   };
 
-  const handleChange = (option: SelectOption): void => {
-    setFieldValue(name, option.value);
+  const handleChange = (option: InputOption | null): void => {
+    if (!option) {
+      setFieldValue(name, '');
+    } else {
+      setFieldValue(name, option.value);
+    }
   };
 
   return {

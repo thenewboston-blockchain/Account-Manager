@@ -1,0 +1,40 @@
+.SendPointsModalFields {
+  &__account-balance {
+    color: var(--color-tertiary);
+  }
+
+  &__error {
+    color: var(--color-danger);
+    display: block;
+
+    &:last-of-type {
+      margin-bottom: 6px;
+    }
+  }
+
+  &__select {
+    margin-bottom: 3px;
+  }
+
+  &__table {
+    width: 100%;
+
+    td {
+      border-top: 1px solid var(--color-gray-100);
+      min-width: 150px;
+      padding: 6px 0;
+      text-align: left;
+
+      &:nth-child(1) {
+        color: var(--color-gray-500);
+        font-weight: 500;
+      }
+    }
+  }
+
+  &__total-tr {
+    td {
+      border-top-width: 3px;
+    }
+  }
+}

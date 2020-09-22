@@ -1,0 +1,16 @@
+.SendPointsModal {
+  width: 384px;
+
+  &__default-submit {
+    display: flex;
+    height: 35.5px;
+  }
+
+  &__points-input {
+    margin-left: -7px;
+  }
+
+  &__submit-icon {
+    margin-left: 6px;
+  }
+}

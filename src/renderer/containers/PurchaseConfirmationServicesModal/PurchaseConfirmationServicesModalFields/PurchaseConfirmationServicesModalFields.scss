@@ -1,0 +1,38 @@
+.PurchaseConfirmationServicesModalFields {
+  &__account-balance {
+    color: var(--color-tertiary);
+  }
+
+  &__label {
+    color: var(--color-gray-500);
+    font-weight: bold;
+    margin: 8px 0 6px 0;
+  }
+
+  &__table {
+    width: 100%;
+
+    td {
+      border-top: 1px solid var(--color-gray-100);
+      min-width: 150px;
+      padding: 6px 0;
+      text-align: left;
+
+      &:nth-child(1) {
+        color: var(--color-gray-500);
+        font-weight: 500;
+      }
+    }
+  }
+
+  &__bank-fee-tr {
+    td {
+      border-top-width: 3px;
+    }
+  }
+
+  &__validator-nid {
+    font-family: var(--font-family-mono);
+    margin-bottom: 24px;
+  }
+}

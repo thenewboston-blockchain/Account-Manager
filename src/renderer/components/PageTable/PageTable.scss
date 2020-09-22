@@ -1,27 +1,35 @@
 .PageTable {
   font-family: var(--font-family-mono);
-  padding: 4px 0 0 12px;
+  padding: var(--page-table-padding);
   width: 100%;
 
   td,
   th {
-    border-bottom: 1px solid var(--color-neutral-400);
-    padding: 6px 4px;
+    border-bottom: 1px solid var(--color-gray-100);
   }
 
-  &__thead {
-    color: var(--color-blue-gray-500);
-    font-weight: 500;
-    text-align: left;
+  &__ArrowToggle {
+    height: 16px;
+    width: 16px;
+  }
+
+  &__PaginationSummary {
+    margin: 12px 0;
+    padding: 2px 12px;
   }
 
   &__row {
     td {
       max-width: 120px;
       overflow: hidden;
+      padding: 6px 4px;
       text-overflow: ellipsis;
       vertical-align: top;
       white-space: nowrap;
+
+      &:first-of-type {
+        width: 32px;
+      }
     }
 
     &--expanded {
@@ -29,6 +37,17 @@
         white-space: normal;
         word-wrap: break-word;
       }
+    }
+  }
+
+  &__thead {
+    color: var(--color-gray-500);
+    font-weight: 500;
+    text-align: left;
+
+    td {
+      padding: 0 4px 6px;
+      white-space: nowrap;
     }
   }
 }

@@ -1,178 +1,104 @@
-import React, {FC, useState} from 'react';
-import noop from 'lodash/noop';
+import React, {FC, ReactNode} from 'react';
+import {useSelector} from 'react-redux';
+import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
 
-import {Button} from '@renderer/components/FormElements';
-import DetailPanel from '@renderer/components/DetailPanel';
-import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-import Icon, {IconType} from '@renderer/components/Icon';
-import Modal from '@renderer/components/Modal';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
-import PageTable from '@renderer/components/PageTable';
 import PageTabs from '@renderer/components/PageTabs';
-import Pagination from '@renderer/components/Pagination';
-import QR from '@renderer/components/QR';
+import {Button} from '@renderer/components/FormElements';
+import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import SendPointsModal from '@renderer/containers/SendPointsModal';
+import {useBooleanState} from '@renderer/hooks';
+import {getManagedAccounts} from '@renderer/selectors';
 
-import useBooleanState from '@renderer/hooks/useBooleanState';
-import transactionSampleData from '@renderer/mock/TransactionSampleData';
-
-import SendPointsModal from './SendPointsModal';
-
+import AccountOverview from './AccountOverview';
+import AccountTransactions from './AccountTransactions';
+import DeleteAccountModal from './DeleteAccountModal';
+import EditAccountNicknameModal from './EditAccountNicknameModal';
 import './Account.scss';
 
-enum Tabs {
-  OVERVIEW = 'Overview',
-  TRANSACTIONS = 'Transactions',
-}
-const tabs = [Tabs.OVERVIEW, Tabs.TRANSACTIONS];
-
 const Account: FC = () => {
-  const [activeTab, setActiveTab] = useState(tabs[0]);
+  const {accountNumber} = useParams();
+  const {path, url} = useRouteMatch();
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
+  const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
   const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
-  const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
+  const managedAccounts = useSelector(getManagedAccounts);
+  const managedAccount = managedAccounts[accountNumber];
 
-  const dropdownMenuOptions: DropdownMenuOption[] = [
-    {
-      label: 'Edit',
-      onClick: noop,
-    },
-    {
-      label: 'Delete Account',
-      onClick: toggleDeleteModal,
-    },
-  ];
+  const dropdownMenuOptions: DropdownMenuOption[] = managedAccount
+    ? [
+        {
+          label: 'Edit Nickname',
+          onClick: toggleEditModal,
+        },
+        {
+          label: 'Delete Account',
+          onClick: toggleDeleteModal,
+        },
+      ]
+    : [];
 
-  const handleDeleteAccountFromModal = async (): Promise<void> => {
-    try {
-      setSubmittingDeleteModalTrue();
-      setTimeout(() => {
-        setSubmittingDeleteModalFalse();
-        toggleDeleteModal();
-      }, 1000);
-    } catch (error) {
-      console.log('ERROR', error);
-    }
-  };
+  const renderRightPageHeaderButtons = (): ReactNode => <Button onClick={toggleSendPointsModal}>Send Points</Button>;
 
-  const renderDeleteModal = () => (
-    <Modal
-      cancelButton="Cancel"
-      className="AccountDeleteModal"
-      close={toggleDeleteModal}
-      header={
-        <>
-          <Icon className="AccountDeleteModal__icon" icon={IconType.alert} />
-          <h2 className="AccountDeleteModal__title">Delete Account</h2>
-        </>
-      }
-      onSubmit={handleDeleteAccountFromModal}
-      submitButton="Yes"
-      submitting={submittingDeleteModal}
-    >
-      <>
-        <span className="AccountDeleteModal__warning-span">Warning: </span> If you delete your account, you will lose
-        all the points in your account as well as your signing key. Are you sure you want to delete your account?
-      </>
-    </Modal>
-  );
+  const renderTabContent = (): ReactNode => {
+    const tabContentRoutes = [
+      {
+        content: <AccountOverview />,
+        page: 'overview',
+      },
+      {
+        content: <AccountTransactions />,
+        page: 'transactions',
+      },
+    ];
 
-  const renderDetailPanels = () => {
     return (
-      <div className="Account__panels">
-        <DetailPanel
-          className="Account__DetailPanel"
-          items={[
-            {
-              key: 'Balance',
-              value: '184.35',
-            },
-            {
-              key: 'Account Number',
-              value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
-            },
-            {
-              key: 'Signing Key',
-              value: '**************************',
-            },
-            {
-              key: 'QR Code',
-              value: <QR text="0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb" />,
-            },
-          ]}
-          title="Account Info"
-        />
-        <DetailPanel
-          className="Account__DetailPanel"
-          items={[
-            {
-              key: 'Network ID',
-              value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
-            },
-            {
-              key: 'Account Number',
-              value: 'Account Number',
-            },
-            {
-              key: 'Protocol',
-              value: 'http',
-            },
-          ]}
-          title="Bank Info"
-        />
-      </div>
+      <Switch>
+        {tabContentRoutes.map(({content, page}) => (
+          <Route key={page} path={`${path}/${page}`}>
+            {content}
+          </Route>
+        ))}
+      </Switch>
     );
   };
 
-  const renderLeftTools = () => {
-    return <DropdownMenuButton options={dropdownMenuOptions} />;
-  };
-
-  const renderPageTable = () => (
-    <>
-      <PageTable items={transactionSampleData} />
-      <Pagination />
-    </>
-  );
-
-  const renderRightPageHeaderButtons = () => (
-    <>
-      <Button onClick={toggleSendPointsModal}>Send Points</Button>
-    </>
-  );
-
-  const renderTabContent = (activeTab: Tabs) => {
-    const tabContent = {
-      [Tabs.OVERVIEW]: renderDetailPanels(),
-      [Tabs.TRANSACTIONS]: renderPageTable(),
-    };
-    return tabContent[activeTab] || null;
-  };
-
-  const renderTop = () => (
+  const renderTop = (): ReactNode => (
     <>
       <PageHeader
-        leftTools={renderLeftTools()}
+        dropdownMenuOptions={dropdownMenuOptions}
         rightContent={renderRightPageHeaderButtons()}
-        title="Donations (43hawrjkef243d)"
+        title={managedAccount?.nickname || accountNumber}
       />
       <PageTabs
-        items={tabs.map((item) => ({
-          name: item.toString(),
-          active: activeTab === item,
-          onClick: (name) => {
-            setActiveTab(name as Tabs);
+        baseUrl={url}
+        items={[
+          {
+            name: 'Overview',
+            page: 'overview',
           },
-        }))}
+          {
+            name: 'Transactions',
+            page: 'transactions',
+          },
+        ]}
       />
     </>
   );
 
   return (
     <div className="Account">
-      <PageLayout content={renderTabContent(activeTab)} top={renderTop()} />
-      {deleteModalIsOpen && renderDeleteModal()}
-      {sendPointsModalIsOpen && <SendPointsModal close={toggleSendPointsModal} />}
+      <PageLayout content={renderTabContent()} top={renderTop()} />
+      {deleteModalIsOpen && <DeleteAccountModal close={toggleDeleteModal} managedAccount={managedAccount} />}
+      {editModalIsOpen && <EditAccountNicknameModal close={toggleEditModal} managedAccount={managedAccount} />}
+      {sendPointsModalIsOpen && (
+        <SendPointsModal
+          close={toggleSendPointsModal}
+          initialRecipient={managedAccount ? '' : accountNumber}
+          initialSender={managedAccount ? accountNumber : ''}
+        />
+      )}
     </div>
   );
 };

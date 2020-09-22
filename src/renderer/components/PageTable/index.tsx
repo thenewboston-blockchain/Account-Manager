@@ -1,37 +1,49 @@
-import React, {FC, useState} from 'react';
+import React, {FC, ReactNode, useState} from 'react';
 import clsx from 'clsx';
 
 import ArrowToggle from '@renderer/components/ArrowToggle';
+import Loader from '@renderer/components/FormElements/Loader';
+import PaginationSummary from '@renderer/components/PaginationSummary';
 import {getCustomClassNames} from '@renderer/utils/components';
 
 import './PageTable.scss';
 
 interface Header {
-  [key: string]: string;
+  [tableKey: string]: string;
 }
 
-interface Data {
-  id: string;
-  [key: string]: string | number;
+export interface PageTableData {
+  key: string;
+  [tableKey: string]: ReactNode;
 }
 
-interface PageTableItems {
-  header: Header;
-  data: Data[];
+export interface PageTableItems {
+  orderedKeys: number[];
+  headers: Header;
+  data: PageTableData[];
 }
 
 interface ComponentProps {
   className?: string;
+  count: number;
+  currentPage: number;
   items: PageTableItems;
+  loading: boolean;
 }
 
-const PageTable: FC<ComponentProps> = ({className, items}) => {
-  const {header, data} = items;
-  const [expanded, setExpanded] = useState<boolean[]>(data.map(() => false));
+const PageTable: FC<ComponentProps> = ({className, count, currentPage, items, loading}) => {
+  const {headers, data, orderedKeys} = items;
+  const [expanded, setExpanded] = useState<number[]>([]);
 
-  const renderSampleRows = () => {
+  const toggleExpanded = (indexToToggle: number) => (): void => {
+    setExpanded(
+      expanded.includes(indexToToggle) ? expanded.filter((i) => i !== indexToToggle) : [...expanded, indexToToggle],
+    );
+  };
+
+  const renderRows = (): ReactNode => {
     return data.map((item, dataIndex) => {
-      const rowIsExpanded = expanded[dataIndex];
+      const rowIsExpanded = expanded.includes(dataIndex);
 
       return (
         <tr
@@ -40,7 +52,7 @@ const PageTable: FC<ComponentProps> = ({className, items}) => {
             ...getCustomClassNames(className, '__row', true),
             ...getCustomClassNames(className, '__row--expanded', rowIsExpanded),
           })}
-          key={item.id}
+          key={item.key}
         >
           <td>
             <ArrowToggle
@@ -49,30 +61,31 @@ const PageTable: FC<ComponentProps> = ({className, items}) => {
               onClick={toggleExpanded(dataIndex)}
             />
           </td>
-          {Object.keys(header).map((key, headerIndex) => (
-            <td key={headerIndex}>{item[key]}</td>
+          {orderedKeys.map((key) => (
+            <td key={key}>{item[key] || '-'}</td>
           ))}
         </tr>
       );
     });
   };
 
-  const toggleExpanded = (indexToToggle: number) => (): void => {
-    setExpanded(expanded.map((rowIsExpanded, i) => (i === indexToToggle ? !rowIsExpanded : rowIsExpanded)));
-  };
-
-  return (
-    <table className={clsx('PageTable', className)}>
-      <thead className={clsx('PageTable__thead', {...getCustomClassNames(className, '__thead', true)})}>
-        <tr>
-          <th />
-          {Object.entries(header).map(([key, value]) => (
-            <td key={key}>{value}</td>
-          ))}
-        </tr>
-      </thead>
-      <tbody>{renderSampleRows()}</tbody>
-    </table>
+  return loading ? (
+    <Loader />
+  ) : (
+    <>
+      <PaginationSummary className="PageTable__PaginationSummary" count={count} currentPage={currentPage} />
+      <table className={clsx('PageTable', className)}>
+        <thead className={clsx('PageTable__thead', {...getCustomClassNames(className, '__thead', true)})}>
+          <tr>
+            <th />
+            {orderedKeys.map((key) => (
+              <td key={key}>{headers[key]}</td>
+            ))}
+          </tr>
+        </thead>
+        <tbody>{renderRows()}</tbody>
+      </table>
+    </>
   );
 };
 

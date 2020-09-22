@@ -7,8 +7,7 @@ import {Form, FormButton, FormButtonProps} from '@renderer/components/FormCompon
 import Icon, {IconType} from '@renderer/components/Icon';
 import Loader from '@renderer/components/FormElements/Loader';
 
-import {GenericFormValues} from '@renderer/types/forms';
-import {GenericFunction} from '@renderer/types/generic';
+import {GenericFormValues, GenericFunction} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';
 
 import './Modal.scss';
@@ -17,11 +16,13 @@ export interface ModalButtonProps extends FormButtonProps {
   content: ReactNode;
 }
 
-interface ModalProps {
+interface ComponentProps {
   cancelButton?: ModalButtonProps | string;
   className?: string;
   close(): void;
+  disableOverlayClick?: boolean;
   displayCancelButton?: boolean;
+  displayCloseButton?: boolean;
   displaySubmitButton?: boolean;
   footer?: ReactNode;
   header?: ReactNode;
@@ -34,15 +35,17 @@ interface ModalProps {
   validationSchema?: any;
 }
 
-const Modal: FC<ModalProps> = ({
+const Modal: FC<ComponentProps> = ({
   cancelButton,
   children,
   className,
   close,
+  disableOverlayClick = false,
   displayCancelButton = true,
   displaySubmitButton = true,
   footer,
   header,
+  displayCloseButton = true,
   ignoreDirty: ignoreDirtyProps = false,
   initialValues = {},
   onSubmit,
@@ -148,7 +151,7 @@ const Modal: FC<ModalProps> = ({
           ...getCustomClassNames(className, '__overlay', true),
           ...getCustomClassNames(className, '__overlay--submitting', submitting),
         })}
-        onClick={submitting ? noop : close}
+        onClick={submitting || disableOverlayClick ? noop : close}
       />
       <div
         className={clsx(
@@ -160,16 +163,18 @@ const Modal: FC<ModalProps> = ({
       >
         <div className={clsx('Modal__header', {...getCustomClassNames(className, '__header', true)})}>
           {typeof header === 'string' ? <h2>{header}</h2> : header}
-          <Icon
-            className={clsx('Modal__close-icon', {
-              'Modal__close-icon--submitting': submitting,
-              ...getCustomClassNames(className, '__close-icon', true),
-              ...getCustomClassNames(className, '__close-icon--submitting', submitting),
-            })}
-            disabled={submitting}
-            icon={IconType.close}
-            onClick={close}
-          />
+          {displayCloseButton && (
+            <Icon
+              className={clsx('Modal__close-icon', {
+                'Modal__close-icon--submitting': submitting,
+                ...getCustomClassNames(className, '__close-icon', true),
+                ...getCustomClassNames(className, '__close-icon--submitting', submitting),
+              })}
+              disabled={submitting}
+              icon={IconType.close}
+              onClick={close}
+            />
+          )}
         </div>
         <Form initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
           <div className={clsx('Modal__content', {...getCustomClassNames(className, '__content', true)})}>

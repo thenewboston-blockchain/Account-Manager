@@ -1,40 +1,33 @@
 import React, {FC} from 'react';
+import {NavLink} from 'react-router-dom';
 import clsx from 'clsx';
 
-import {getCustomClassNames} from '@renderer/utils/components';
 import './PageTabs.scss';
 
 interface Item {
-  active: boolean;
   name: string;
-  onClick(name: string): void;
+  page: string;
 }
 
 interface ComponentProps {
-  className?: string;
+  baseUrl: string;
+  breakpoint?: 'small' | 'large';
   items: Item[];
 }
 
-const PageTabs: FC<ComponentProps> = ({className, items}) => {
+const PageTabs: FC<ComponentProps> = ({baseUrl, breakpoint = 'small', items}) => {
   return (
-    <div className={clsx('PageTabs', className)}>
-      {items.map(({active, name, onClick}) => (
-        <div
-          className={clsx('PageTabs__tab', {
-            'PageTabs__tab--active': active,
-            ...getCustomClassNames(className, '__tab', true),
-            ...getCustomClassNames(className, '__tab--active', active),
-          })}
-          key={name}
-          onClick={() => onClick(name)}
-        >
-          <div className={clsx('PageTabs__tab-name', {...getCustomClassNames(className, '__tab-name', true)})}>
-            {name}
-          </div>
-          <div
-            className={clsx('PageTabs__tab-indicator', {...getCustomClassNames(className, '__tab-indicator', true)})}
-          />
-        </div>
+    <div
+      className={clsx('PageTabs', {
+        'PageTabs--large': breakpoint === 'large',
+        'PageTabs--small': breakpoint === 'small',
+      })}
+    >
+      {items.map(({name, page}) => (
+        <NavLink activeClassName="PageTabs__tab--active" className="PageTabs__tab" key={page} to={`${baseUrl}/${page}`}>
+          <div className="PageTabs__tab-name">{name}</div>
+          <div className="PageTabs__tab-indicator" />
+        </NavLink>
       ))}
     </div>
   );

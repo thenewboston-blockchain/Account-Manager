@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const path = require('path');
 const rules = require('./webpack.rules');
 
@@ -6,11 +8,13 @@ function srcPaths(src) {
 }
 
 module.exports = {
-  mode: 'development',
-  target: 'electron-renderer',
   devtool: 'source-map',
+  mode: 'development',
   module: {
     rules,
+  },
+  output: {
+    path: path.join(__dirname, 'bundle', 'renderer'),
   },
   resolve: {
     alias: {
@@ -21,4 +25,5 @@ module.exports = {
     },
     extensions: ['.js', '.ts', '.tsx', '.jsx', '.json'],
   },
+  target: 'electron-renderer',
 };

@@ -1,0 +1,30 @@
+.LeftSubmenuItem {
+  $left-padding: 36px;
+  $right-padding: 12px;
+
+  align-items: center;
+  color: var(--color-primary);
+  display: flex;
+  overflow: hidden;
+  padding-left: $left-padding;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:focus:not(&--active),
+  &:hover {
+    background: var(--color-gray-050);
+  }
+
+  &--active,
+  &--active:hover {
+    background: var(--color-gray-100);
+  }
+
+  &__label {
+    line-height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: calc(var(--left-menu-width) - #{$left-padding + $right-padding});
+  }
+}

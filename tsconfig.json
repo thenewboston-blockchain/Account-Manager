@@ -10,7 +10,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "noImplicitAny": true,
-    "outDir": "./.webpack/main",
+    "outDir": "./bundle/main",
     "paths": {
       "@main/*": ["./src/main/*"],
       "@models/*": ["./src/models/*"],

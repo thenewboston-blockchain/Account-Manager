@@ -1,0 +1,72 @@
+name: Release
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  linux_build:
+    name: Linux Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install Dependencies
+        run: npm install
+      - name: release
+        run: npm run release
+        env:
+          EP_PRE_RELEASE: true
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  mac_build:
+    name: MacOS Build
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install Dependencies
+        run: npm install
+      - name: release
+        run: npm run release
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PWD: ${{ secrets.APPLE_PWD }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
+          CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
+          EP_PRE_RELEASE: true
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  win_build:
+    name: Windows Build
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install Dependencies
+        run: npm install
+      - name: release
+        run: npm run release
+        env:
+          CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+          CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+          EP_PRE_RELEASE: true
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}

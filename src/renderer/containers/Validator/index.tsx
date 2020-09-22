@@ -1,107 +1,182 @@
-import React from 'react';
-import noop from 'lodash/noop';
+import React, {FC, ReactNode} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {Route, Switch, useRouteMatch} from 'react-router-dom';
+import sortBy from 'lodash/sortBy';
 
-import Button from '@renderer/components/FormElements/Button';
-import DetailPanel from '@renderer/components/DetailPanel';
+import Badge from '@renderer/components/Badge';
+import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import {Button} from '@renderer/components/FormElements';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
-import TrustBadge from '@renderer/components/TrustBadge';
+import {useAddress, useBooleanState} from '@renderer/hooks';
+import {getIsActivePrimaryValidator, getIsManagedValidator, getManagedValidators} from '@renderer/selectors';
+import {setManagedValidator} from '@renderer/store/app';
+import {AppDispatch, RootState} from '@renderer/types';
+import {parseAddressData} from '@renderer/utils/address';
 
+import AddValidatorSigningKeyModal from './AddValidatorSigningKeyModal';
+import EditValidatorNicknameModal from './EditValidatorNicknameModal';
+import RemoveValidatorModal from './RemoveValidatorModal';
+import ValidatorAccounts from './ValidatorAccounts';
+import ValidatorBanks from './ValidatorBanks';
+import ValidatorOverview from './ValidatorOverview';
+import ValidatorValidators from './ValidatorValidators';
 import './Validator.scss';
 
-const Validator = () => {
-  const renderDetailPanels = () => {
-    return (
-      <div className="Validator__panels">
-        <DetailPanel
-          className="Validator__DetailPanel"
-          items={[
-            {
-              key: 'Node Type',
-              value: 'Validator',
-            },
-            {
-              key: 'Network ID',
-              value: 'Gn53dfs4a2z',
-            },
-            {
-              key: 'Protocol',
-              value: 'http',
-            },
-          ]}
-          title="Validator Information"
-        />
-        <DetailPanel
-          className="Validator__DetailPanel"
-          items={[
-            {
-              key: '90',
-              value: '1.00',
-            },
-            {
-              key: '70',
-              value: '1.22',
-            },
-          ]}
-          tableHeaders={['Bank Trust Level', 'Tx Fee (Points)']}
-          title="Trust Levels"
-        />
-      </div>
+const Validator: FC = () => {
+  const address = useAddress();
+  const dispatch = useDispatch<AppDispatch>();
+  const {path, url} = useRouteMatch();
+  const [addSigningKeyModalIsOpen, toggleSigningKeyModal] = useBooleanState(false);
+  const [editNicknameModalIsOpen, toggleEditNicknameModal] = useBooleanState(false);
+  const [removeValidatorModalIsOpen, toggleRemoveValidatorModal] = useBooleanState(false);
+  const isActivePrimaryValidator = useSelector((state: RootState) => getIsActivePrimaryValidator(state, address));
+  const isManagedValidator = useSelector((state: RootState) => getIsManagedValidator(state, address));
+  const managedValidators = useSelector(getManagedValidators);
+  const managedValidator = managedValidators[address];
+
+  const getDropdownMenuOptions = (): DropdownMenuOption[] => {
+    if (!isManagedValidator) return [];
+
+    const menuOptions = [
+      {
+        label: 'Edit Nickname',
+        onClick: toggleEditNicknameModal,
+      },
+      {
+        disabled: isActivePrimaryValidator,
+        label: 'Remove Validator',
+        onClick: toggleRemoveValidatorModal,
+      },
+    ];
+
+    const signingKeyOption = !managedValidator.nid_signing_key
+      ? {
+          label: 'Add NID Signing Key',
+          onClick: toggleSigningKeyModal,
+        }
+      : {
+          label: 'Remove NID Signing Key',
+          onClick: handleRemoveSigningKey,
+        };
+
+    return sortBy([...menuOptions, signingKeyOption], ['label']);
+  };
+
+  const handleAddManagedValidator = (): void => {
+    const {ipAddress, port, protocol} = parseAddressData(address);
+    dispatch(
+      setManagedValidator({
+        ip_address: ipAddress,
+        nickname: '',
+        nid_signing_key: '',
+        port,
+        protocol,
+      }),
     );
   };
 
-  const renderRightPageHeaderButtons = () => (
+  const handleRemoveSigningKey = (): void => {
+    dispatch(
+      setManagedValidator({
+        ...managedValidator,
+        nid_signing_key: '',
+      }),
+    );
+  };
+
+  const renderAuthenticatedBadge = (): ReactNode => {
+    if (!managedValidator?.nid_signing_key) return null;
+    return <Badge color="secondary" text="Authenticated" />;
+  };
+
+  const renderRightPageHeaderButtons = (): ReactNode => {
+    if (isActivePrimaryValidator || isManagedValidator) return null;
+    return <Button onClick={handleAddManagedValidator}>Add to Managed Validators</Button>;
+  };
+
+  const renderTabContent = (): ReactNode => {
+    const tabContentRoutes = [
+      {
+        content: <ValidatorAccounts />,
+        page: 'accounts',
+      },
+      {
+        content: <ValidatorBanks managedValidator={managedValidator} />,
+        page: 'banks',
+      },
+      {
+        content: <ValidatorOverview />,
+        page: 'overview',
+      },
+      {
+        content: <ValidatorValidators managedValidator={managedValidator} />,
+        page: 'validators',
+      },
+    ];
+
+    return (
+      <Switch>
+        {tabContentRoutes.map(({content, page}) => (
+          <Route key={page} path={`${path}/${page}`}>
+            {content}
+          </Route>
+        ))}
+      </Switch>
+    );
+  };
+
+  const renderTitle = (): string => {
+    if (isManagedValidator) {
+      return managedValidator.nickname || managedValidator.ip_address;
+    }
+    const {ipAddress} = parseAddressData(address);
+    return ipAddress;
+  };
+
+  const renderTop = (): ReactNode => (
     <>
-      <Button variant="outlined">Add to Managed Validators</Button>
-      <Button>Register Bank</Button>
+      <PageHeader
+        dropdownMenuOptions={getDropdownMenuOptions()}
+        leftContent={renderAuthenticatedBadge()}
+        rightContent={renderRightPageHeaderButtons()}
+        title={renderTitle()}
+      />
+      <PageTabs
+        baseUrl={url}
+        items={[
+          {
+            name: 'Overview',
+            page: 'overview',
+          },
+          {
+            name: 'Accounts',
+            page: 'accounts',
+          },
+          {
+            name: 'Banks',
+            page: 'banks',
+          },
+          {
+            name: 'Validators',
+            page: 'validators',
+          },
+        ]}
+      />
     </>
   );
 
-  const renderTop = () => {
-    return (
-      <>
-        <PageHeader
-          leftTools={<TrustBadge score={98.34} />}
-          rightContent={renderRightPageHeaderButtons()}
-          title="My Validator (223.125.111.178)"
-        />
-        <PageTabs
-          items={[
-            {
-              active: true,
-              name: 'Overview',
-              onClick: noop,
-            },
-            {
-              active: false,
-              name: 'Members',
-              onClick: noop,
-            },
-            {
-              active: false,
-              name: 'Transactions',
-              onClick: noop,
-            },
-            {
-              active: false,
-              name: 'Banks',
-              onClick: noop,
-            },
-            {
-              active: false,
-              name: 'Validators',
-              onClick: noop,
-            },
-          ]}
-        />
-      </>
-    );
-  };
-
   return (
     <div className="Validator">
-      <PageLayout content={renderDetailPanels()} top={renderTop()} />
+      <PageLayout content={renderTabContent()} top={renderTop()} />
+      {addSigningKeyModalIsOpen && <AddValidatorSigningKeyModal close={toggleSigningKeyModal} />}
+      {editNicknameModalIsOpen && (
+        <EditValidatorNicknameModal close={toggleEditNicknameModal} validator={managedValidator} />
+      )}
+      {removeValidatorModalIsOpen && (
+        <RemoveValidatorModal close={toggleRemoveValidatorModal} validator={managedValidator} />
+      )}
     </div>
   );
 };

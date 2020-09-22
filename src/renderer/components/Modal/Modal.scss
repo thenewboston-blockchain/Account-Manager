@@ -16,11 +16,49 @@ $modal-footer-height: 60px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   position: fixed;
 
+  &__close-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    &--submitting {
+      cursor: wait;
+    }
+  }
+
+  &__content {
+    background: var(--color-gray-050);
+    max-height: calc(85vh - #{$modal-header-height} - #{$modal-footer-height});
+    overflow-y: auto;
+    padding: 12px;
+  }
+
   &--default-position {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     width: 324px;
+  }
+
+  &__default-submit {
+    margin-left: 12px;
+  }
+
+  &__footer {
+    align-items: center;
+    display: flex;
+    height: $modal-footer-height;
+    justify-content: flex-end;
+    padding: 0 12px;
+  }
+
+  &__header {
+    align-items: center;
+    display: flex;
+    height: $modal-header-height;
+    padding: 0 12px;
+    position: relative;
   }
 
   &__overlay {
@@ -34,54 +72,5 @@ $modal-footer-height: 60px;
     &--submitting {
       cursor: wait;
     }
-  }
-
-  &__header {
-    align-items: center;
-    display: flex;
-    height: $modal-header-height;
-    padding: 0 12px;
-    position: relative;
-  }
-
-  &__close-icon {
-    cursor: pointer;
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: color 0.1s;
-
-    &:hover:not(&--disabled) {
-      color: var(--color-danger);
-    }
-
-    &--disabled {
-      color: var(--color-primary-disabled);
-      cursor: auto;
-    }
-
-    &--submitting {
-      cursor: wait;
-    }
-  }
-
-  &__content {
-    background: var(--color-panels-bg);
-    max-height: calc(85vh - #{$modal-header-height} - #{$modal-footer-height});
-    overflow-y: auto;
-    padding: 12px;
-  }
-
-  &__footer {
-    align-items: center;
-    display: flex;
-    height: $modal-footer-height;
-    justify-content: flex-end;
-    padding: 0 12px;
-  }
-
-  &__default-submit {
-    margin-left: 12px;
   }
 }

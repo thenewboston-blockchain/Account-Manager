@@ -2,21 +2,52 @@
   align-items: center;
   display: flex;
   justify-content: center;
-  padding: 24px 0;
+  padding-bottom: 24px;
 
-  &__prev-button {
-    margin-right: 30px;
-  }
+  &__button {
+    align-items: center;
+    border-radius: 15px;
+    color: var(--color-secondary);
+    cursor: pointer;
+    display: flex;
+    font-family: var(--font-family-mono);
+    height: 30px;
+    justify-content: center;
+    margin: 0 3px;
+    min-width: 30px;
+    padding: 0 6px;
+    transition: all 0.1s;
 
-  &__next-button {
-    margin-left: 30px;
-  }
-
-  &__page {
-    padding: 0 3px;
+    &:hover {
+      background: var(--color-gray-100);
+    }
 
     &--active {
-      color: var(--color-neutral-900);
+      background: var(--color-gray-100);
+      color: var(--color-primary);
+    }
+
+    &--disabled {
+      color: var(--color-gray-700);
+      cursor: default;
+
+      &:hover {
+        background: transparent;
+      }
+    }
+
+    &--ellipses {
+      color: var(--color-primary);
+      cursor: default;
+
+      &:hover {
+        background: transparent;
+      }
+    }
+
+    &--prev,
+    &--next {
+      padding: 0;
     }
   }
 }

@@ -1,8 +1,16 @@
 import React, {FC, memo} from 'react';
+import clsx from 'clsx';
 
-// TODO: get a icon for this
-const Loader: FC = () => {
-  return <span className="Loader">Loading</span>;
+import Icon, {IconType} from '@renderer/components/Icon';
+
+import './Loader.scss';
+
+interface ComponentProps {
+  className?: string;
+}
+
+const Loader: FC<ComponentProps> = ({className}) => {
+  return <Icon className={clsx('Loader', className)} icon={IconType.loading} size={15.35} />;
 };
 
 export default memo(Loader);

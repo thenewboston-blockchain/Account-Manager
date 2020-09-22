@@ -7,13 +7,13 @@
     #{$self}__single-value,
     #{$self}__placeholder,
     #{$self}__input {
+      font-family: var(--font-family-mono);
       height: 100%;
       margin-top: 6px;
       padding-right: 42px;
     }
 
     #{$self}__single-value {
-      font-family: var(--font-family-mono);
       text-overflow: unset;
       white-space: unset;
       word-break: break-all;
@@ -28,9 +28,9 @@
 
 #dropdown-root {
   .Select__option {
-    border-bottom: 1px solid var(--color-neutral-300);
+    border-bottom: 1px solid var(--color-gray-100);
     height: unset;
-    padding: 6px 30px 6px 6px;
+    padding: 6px 81px 6px 6px;
 
     &:last-child {
       border-bottom: none;
@@ -39,17 +39,18 @@
     &--is-disabled {
       .SelectDetailed__option-label,
       .SelectDetailed__option-value {
-        color: var(--color-neutral-400);
+        color: var(--color-gray-300);
       }
     }
   }
 
   .SelectDetailed__option-label {
-    color: var(--color-neutral-600);
+    color: var(--color-gray-500);
     font-size: var(--font-size-small);
   }
 
   .SelectDetailed__option-value {
     font-family: var(--font-family-mono);
+    word-break: break-all;
   }
 }

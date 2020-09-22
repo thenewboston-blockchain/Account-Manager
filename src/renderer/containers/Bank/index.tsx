@@ -1,153 +1,232 @@
-import React from 'react';
-import noop from 'lodash/noop';
+import React, {FC, ReactNode} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {Route, Switch, useRouteMatch} from 'react-router-dom';
+import sortBy from 'lodash/sortBy';
 
-import {Button} from '@renderer/components/FormElements';
-import DropdownMenuButton, {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-import EditBankModal from '@renderer/containers/Bank/EditBankModal';
-import Icon, {IconType} from '@renderer/components/Icon';
-import Modal from '@renderer/components/Modal';
+import Badge from '@renderer/components/Badge';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
-import PageTable from '@renderer/components/PageTable';
 import PageTabs from '@renderer/components/PageTabs';
-import Pagination from '@renderer/components/Pagination';
-import TrustBadge from '@renderer/components/TrustBadge';
+import {Button} from '@renderer/components/FormElements';
+import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import {useAddress, useBooleanState} from '@renderer/hooks';
+import {getIsActiveBank, getIsManagedBank, getManagedBanks} from '@renderer/selectors';
+import {setManagedBank} from '@renderer/store/app';
+import {AppDispatch, RootState} from '@renderer/types';
+import {parseAddressData} from '@renderer/utils/address';
 
-import useBooleanState from '@renderer/hooks/useBooleanState';
-import sampleData from '@renderer/mock/OverviewSampleData';
-
+import AddBankSigningKeyModal from './AddBankSigningKeyModal';
+import BankAccounts from './BankAccounts';
+import BankBanks from './BankBanks';
+import BankBlocks from './BankBlocks';
+import BankConfirmationBlocks from './BankConfirmationBlocks';
+import BankInvalidBlocks from './BankInvalidBlocks';
+import BankOverview from './BankOverview';
+import BankTransactions from './BankTransactions';
+import BankValidatorConfirmationServices from './BankValidatorConfirmationServices';
+import BankValidators from './BankValidators';
+import EditBankNicknameModal from './EditBankNicknameModal';
+import RemoveBankModal from './RemoveBankModal';
+import SetAsActiveBankModal from './SetAsActiveBankModal';
 import './Bank.scss';
 
-const Bank = () => {
-  const [submittingDeleteModal, , setSubmittingDeleteModalTrue, setSubmittingDeleteModalFalse] = useBooleanState(false);
-  const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
-  const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
-  const [unregisterBankModalIsOpen, toggleUnregisterBankModal] = useBooleanState(false);
+const Bank: FC = () => {
+  const {path, url} = useRouteMatch();
+  const [addSigningKeyModalIsOpen, toggleSigningKeyModal] = useBooleanState(false);
+  const [editNicknameModalIsOpen, toggleEditNicknameModal] = useBooleanState(false);
+  const [removeBankModalIsOpen, toggleRemoveBankModal] = useBooleanState(false);
+  const [setAsActiveBankModalIsOpen, toggleSetAsActiveBankModal] = useBooleanState(false);
+  const address = useAddress();
+  const dispatch = useDispatch<AppDispatch>();
+  const isActiveBank = useSelector((state: RootState) => getIsActiveBank(state, address));
+  const isManagedBank = useSelector((state: RootState) => getIsManagedBank(state, address));
+  const managedBanks = useSelector(getManagedBanks);
+  const managedBank = managedBanks[address];
 
-  const dropdownMenuOptions: DropdownMenuOption[] = [
-    {
-      label: 'Edit',
-      onClick: toggleEditModal,
-    },
-    {
-      label: 'Delete Account',
-      onClick: toggleDeleteModal,
-    },
-    {
-      label: 'Unregister Bank',
-      onClick: toggleUnregisterBankModal,
-    },
-  ];
+  const getDropdownMenuOptions = (): DropdownMenuOption[] => {
+    if (!isManagedBank) return [];
 
-  const handleDeleteAccountFromModal = async (): Promise<void> => {
-    try {
-      setSubmittingDeleteModalTrue();
-      setTimeout(() => {
-        setSubmittingDeleteModalFalse();
-        toggleDeleteModal();
-      }, 1000);
-    } catch (error) {
-      console.log('ERROR', error);
-    }
+    const menuOptions = [
+      {
+        label: 'Edit Nickname',
+        onClick: toggleEditNicknameModal,
+      },
+      {
+        disabled: isActiveBank,
+        label: 'Remove Bank',
+        onClick: toggleRemoveBankModal,
+      },
+      {
+        disabled: isActiveBank,
+        label: 'Set as Active Bank',
+        onClick: toggleSetAsActiveBankModal,
+      },
+    ];
+
+    const signingKeyOption = !managedBank.nid_signing_key
+      ? {
+          label: 'Add NID Signing Key',
+          onClick: toggleSigningKeyModal,
+        }
+      : {
+          label: 'Remove NID Signing Key',
+          onClick: handleRemoveSigningKey,
+        };
+
+    return sortBy([...menuOptions, signingKeyOption], ['label']);
   };
 
-  const renderContent = () => (
-    <>
-      <PageTable items={sampleData} />
-      <Pagination />
-    </>
-  );
-
-  const renderDeleteModal = () => (
-    <Modal
-      cancelButton="No"
-      className="BankDeleteModal"
-      close={toggleDeleteModal}
-      header={
-        <>
-          <Icon className="BankDeleteModal__icon" icon={IconType.alert} />
-          <h2 className="BankDeleteModal__title">Delete Account</h2>
-        </>
-      }
-      onSubmit={handleDeleteAccountFromModal}
-      submitButton="Yes"
-      submitting={submittingDeleteModal}
-    >
-      <>
-        <span className="BankDeleteModal__warning-span">Warning: </span> If you delete your account, you will lose all
-        the points in your account as well as your signing key. Are you sure you want to delete your account?
-      </>
-    </Modal>
-  );
-
-  const renderLeftTools = () => {
-    return (
-      <>
-        <TrustBadge score={98.34} />
-        <DropdownMenuButton options={dropdownMenuOptions} />
-      </>
+  const handleAddManagedBank = (): void => {
+    const {ipAddress, port, protocol} = parseAddressData(address);
+    dispatch(
+      setManagedBank({
+        ip_address: ipAddress,
+        nickname: '',
+        nid_signing_key: '',
+        port,
+        protocol,
+      }),
     );
   };
 
-  const renderRightPageHeaderButtons = () => (
-    <>
-      <Button variant="outlined">Add to Managed Banks</Button>
-      <Button>Register as Member</Button>
-    </>
-  );
+  const handleRemoveSigningKey = (): void => {
+    dispatch(
+      setManagedBank({
+        ...managedBank,
+        nid_signing_key: '',
+      }),
+    );
+  };
 
-  const renderTop = () => (
+  const renderAuthenticatedBadge = (): ReactNode => {
+    if (!managedBank?.nid_signing_key) return null;
+    return <Badge color="secondary" text="Authenticated" />;
+  };
+
+  const renderRightPageHeaderButtons = (): ReactNode => {
+    if (isActiveBank || isManagedBank) return null;
+    return <Button onClick={handleAddManagedBank}>Add to Managed Banks</Button>;
+  };
+
+  const renderTabContent = (): ReactNode => {
+    const tabContentRoutes = [
+      {
+        content: <BankAccounts managedBank={managedBank} />,
+        page: 'accounts',
+      },
+      {
+        content: <BankBanks managedBank={managedBank} />,
+        page: 'banks',
+      },
+      {
+        content: <BankBlocks />,
+        page: 'blocks',
+      },
+      {
+        content: <BankConfirmationBlocks />,
+        page: 'confirmation-blocks',
+      },
+      {
+        content: <BankInvalidBlocks />,
+        page: 'invalid-blocks',
+      },
+      {
+        content: <BankOverview />,
+        page: 'overview',
+      },
+      {
+        content: <BankTransactions />,
+        page: 'transactions',
+      },
+      {
+        content: <BankValidatorConfirmationServices />,
+        page: 'validator-confirmation-services',
+      },
+      {
+        content: <BankValidators managedBank={managedBank} />,
+        page: 'validators',
+      },
+    ];
+
+    return (
+      <Switch>
+        {tabContentRoutes.map(({content, page}) => (
+          <Route key={page} path={`${path}/${page}`}>
+            {content}
+          </Route>
+        ))}
+      </Switch>
+    );
+  };
+
+  const renderTitle = (): string => {
+    if (isManagedBank) {
+      return managedBank.nickname || managedBank.ip_address;
+    }
+    const {ipAddress} = parseAddressData(address);
+    return ipAddress;
+  };
+
+  const renderTop = (): ReactNode => (
     <>
       <PageHeader
-        leftTools={renderLeftTools()}
+        dropdownMenuOptions={getDropdownMenuOptions()}
+        leftContent={renderAuthenticatedBadge()}
         rightContent={renderRightPageHeaderButtons()}
-        title="Digital Ocean Bank (223.125.111.178)"
+        title={renderTitle()}
       />
       <PageTabs
+        baseUrl={url}
+        breakpoint="large"
         items={[
           {
-            active: true,
             name: 'Overview',
-            onClick: noop,
+            page: 'overview',
           },
           {
-            active: false,
-            name: 'Members',
-            onClick: noop,
+            name: 'Accounts',
+            page: 'accounts',
           },
           {
-            active: false,
             name: 'Transactions',
-            onClick: noop,
+            page: 'transactions',
           },
           {
-            active: false,
+            name: 'Blocks',
+            page: 'blocks',
+          },
+          {
+            name: 'Confirmations',
+            page: 'confirmation-blocks',
+          },
+          {
+            name: 'Invalid Blocks',
+            page: 'invalid-blocks',
+          },
+          {
             name: 'Banks',
-            onClick: noop,
+            page: 'banks',
           },
           {
-            active: false,
             name: 'Validators',
-            onClick: noop,
+            page: 'validators',
+          },
+          {
+            name: 'Confirmation Services',
+            page: 'validator-confirmation-services',
           },
         ]}
       />
     </>
   );
 
-  const renderUnregisterBankModal = () => (
-    <Modal close={toggleUnregisterBankModal} header="Unregister Bank" onSubmit={toggleUnregisterBankModal}>
-      Here is the modal used very minimally. It is using most of modal's defaults, and it's not using any custom header
-      or footer
-    </Modal>
-  );
-
   return (
     <div className="Bank">
-      <PageLayout content={renderContent()} top={renderTop()} />
-      {deleteModalIsOpen && renderDeleteModal()}
-      {editModalIsOpen && <EditBankModal close={toggleEditModal} />}
-      {unregisterBankModalIsOpen && renderUnregisterBankModal()}
+      <PageLayout content={renderTabContent()} top={renderTop()} />
+      {addSigningKeyModalIsOpen && <AddBankSigningKeyModal close={toggleSigningKeyModal} />}
+      {editNicknameModalIsOpen && <EditBankNicknameModal close={toggleEditNicknameModal} bank={managedBank} />}
+      {removeBankModalIsOpen && <RemoveBankModal close={toggleRemoveBankModal} bank={managedBank} />}
+      {setAsActiveBankModalIsOpen && <SetAsActiveBankModal close={toggleSetAsActiveBankModal} bank={managedBank} />}
     </div>
   );
 };

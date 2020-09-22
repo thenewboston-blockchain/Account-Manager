@@ -3,7 +3,7 @@
 
   // This is to override React-Select's specificity
   &.Select {
-    height: 24px;
+    height: 30px;
 
     &#{$self}--error {
       #{$self}__control {
@@ -28,7 +28,7 @@
 
     #{$self}__control {
       border-radius: 3px;
-      border: 1px solid var(--color-neutral-600);
+      border: 1px solid var(--color-gray-300);
       box-shadow: unset !important;
       height: 100%;
       min-height: unset;
@@ -41,26 +41,26 @@
 
       &--is-disabled {
         background: var(--color-white);
-        border-color: var(--color-neutral-400);
+        border-color: var(--color-gray-300);
 
         &:hover {
-          border-color: var(--color-neutral-400);
+          border-color: var(--color-gray-300);
         }
 
         #{$self}__indicator {
-          color: var(--color-neutral-400);
+          color: var(--color-gray-300);
 
           &:hover {
-            color: var(--color-neutral-400);
+            color: var(--color-gray-300);
           }
         }
 
         #{$self}__single-value {
-          color: var(--color-neutral-400);
+          color: var(--color-gray-300);
         }
 
         #{$self}__placeholder {
-          color: var(--color-neutral-500);
+          color: var(--color-gray-500);
         }
       }
     }
@@ -77,24 +77,24 @@
       }
     }
 
-    #{$self}__single-value {
-      color: var(--color-neutral-900);
-      margin: 1px 0 0;
+    #{$self}__input {
+      height: 100%;
+      margin-top: 6px;
+
+      input {
+        color: var(--color-primary);
+        transition: none;
+      }
     }
 
     #{$self}__placeholder {
-      color: var(--color-neutral-500);
+      color: var(--color-gray-500);
       margin: 0;
     }
 
-    #{$self}__input {
-      height: 100%;
-      margin-top: 3px;
-
-      input {
-        color: var(--color-neutral-900);
-        transition: none;
-      }
+    #{$self}__single-value {
+      color: var(--color-primary);
+      margin: 0;
     }
 
     #{$self}__indicators {
@@ -106,7 +106,7 @@
     }
 
     #{$self}__indicator {
-      color: var(--color-neutral-600);
+      color: var(--color-gray-500);
 
       &:hover {
         color: var(--color-secondary);
@@ -122,20 +122,28 @@
 
   .Select__option {
     $self: &;
-    height: 24px;
+    color: var(--color-primary);
+    height: 30px;
     padding: 4px 24px 4px 6px;
     position: relative;
 
     &--is-focused {
-      background: var(--color-neutral-200);
-      color: var(--color-neutral-900);
+      background: var(--color-gray-050);
+    }
+
+    &--is-selected {
+      background: var(--color-gray-100);
     }
 
     &--is-disabled {
-      color: var(--color-neutral-400);
+      color: var(--color-gray-300);
 
       #{$self}--is-focused {
         color: var(--color-white);
+      }
+
+      #{$self}--is-selected {
+        color: var(--color-primary);
       }
     }
   }

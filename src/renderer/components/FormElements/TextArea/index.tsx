@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, FocusEvent} from 'react';
+import React, {ChangeEvent, FC, FocusEvent, useEffect, useRef} from 'react';
 import clsx from 'clsx';
 
 import {getCustomClassNames} from '@renderer/utils/components';
@@ -8,6 +8,7 @@ export interface BaseInputProps {
   className?: string;
   disabled?: boolean;
   error?: boolean;
+  focused?: boolean;
   name?: string;
   onBlur?(e: FocusEvent<HTMLTextAreaElement>): void;
   onChange?(e: ChangeEvent<HTMLTextAreaElement>): void;
@@ -17,14 +18,23 @@ export interface BaseInputProps {
 
 const InputTextArea: FC<BaseInputProps> = ({
   className,
-  disabled,
+  disabled = false,
   error = false,
+  focused = false,
   name,
   onBlur,
   onChange,
   placeholder = 'Enter',
   value,
 }) => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (focused) {
+      textareaRef.current?.focus();
+    }
+  }, [focused, textareaRef]);
+
   return (
     <textarea
       className={clsx('TextArea', className, {
@@ -36,6 +46,7 @@ const InputTextArea: FC<BaseInputProps> = ({
       onBlur={onBlur}
       onChange={onChange}
       placeholder={placeholder}
+      ref={textareaRef}
       value={value}
     />
   );

@@ -3,20 +3,21 @@
   flex-direction: column;
 
   .points {
-    margin: 12px 12px 12px 33px;
-
-    &__title {
-      color: var(--color-neutral-600);
-      cursor: default;
-      margin-bottom: 6px;
-    }
+    margin: 12px 12px 12px 36px;
 
     &__amount {
       align-items: center;
       color: var(--color-tertiary);
       display: flex;
-      font-size: var(--font-size-medium);
+      font-family: var(--font-family-inter-medium);
+      font-size: var(--font-size-large);
       font-weight: 500;
+    }
+
+    &__title {
+      color: var(--color-gray-500);
+      cursor: default;
+      margin-bottom: 4px;
     }
   }
 }

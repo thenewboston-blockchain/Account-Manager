@@ -1,0 +1,9 @@
+.NodeLink {
+  color: var(--color-secondary);
+  text-decoration: none;
+
+  &:focus,
+  &:hover {
+    text-decoration: underline;
+  }
+}

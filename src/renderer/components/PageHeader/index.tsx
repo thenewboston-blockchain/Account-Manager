@@ -1,23 +1,35 @@
 import React, {FC, ReactNode} from 'react';
 
+import DropdownMenuButton, {DropdownMenuDirection, DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+
 import './PageHeader.scss';
 
 interface ComponentProps {
-  leftTools?: ReactNode;
+  dropdownMenuOptions?: DropdownMenuOption[];
+  leftContent?: ReactNode;
   rightContent?: ReactNode;
   title: string;
 }
 
-// TODO
-
-const PageHeader: FC<ComponentProps> = ({leftTools, rightContent, title}) => {
+const PageHeader: FC<ComponentProps> = ({dropdownMenuOptions, leftContent, rightContent, title}) => {
   return (
     <div className="PageHeader">
       <div className="PageHeader__left-section">
         <h1 className="PageHeader__title">{title}</h1>
-        {leftTools && leftTools}
+        {leftContent}
       </div>
-      {rightContent && <div className="PageHeader__right-section">{rightContent}</div>}
+      {(dropdownMenuOptions?.length || rightContent) && (
+        <div className="PageHeader__right-section">
+          {rightContent}
+          {dropdownMenuOptions?.length ? (
+            <DropdownMenuButton
+              className="PageHeader__DropdownMenuButton"
+              direction={DropdownMenuDirection.left}
+              options={dropdownMenuOptions}
+            />
+          ) : null}
+        </div>
+      )}
     </div>
   );
 };

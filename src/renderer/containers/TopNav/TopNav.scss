@@ -5,9 +5,19 @@
   justify-content: space-between;
   padding: 6px 12px;
 
-  &__container {
-    color: var(--color-blue-gray-700);
+  &__change-bank {
+    color: var(--color-primary);
     cursor: pointer;
+    margin-right: 12px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__container {
+    align-items: center;
+    color: var(--color-gray-700);
     display: flex;
   }
 

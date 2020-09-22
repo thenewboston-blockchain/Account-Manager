@@ -4,15 +4,16 @@
   border-width: 1px;
   border-style: solid;
   cursor: pointer;
-  outline: none;
   padding: 9px 12px;
   transition: all 0.1s;
+  white-space: nowrap;
 
   &--disabled {
     cursor: auto;
   }
 
   &--contained {
+    box-shadow: 0 4px 4px rgba(4, 34, 53, 0.25);
     color: var(--color-white);
 
     &#{$self}--primary {
@@ -20,8 +21,8 @@
       border-color: var(--color-primary);
 
       &:hover {
-        background: var(--color-primary-dark);
-        border-color: var(--color-primary-dark);
+        background: var(--color-primary-hover);
+        border-color: var(--color-primary-hover);
       }
 
       &#{$self}--disabled,
@@ -48,46 +49,6 @@
       &:hover {
         background: var(--color-tertiary);
         border-color: var(--color-tertiary);
-      }
-    }
-  }
-
-  &--outlined {
-    background: transparent;
-
-    &#{$self}--primary {
-      border-color: var(--color-blue-gray-200);
-      color: var(--color-primary);
-
-      &:hover {
-        background: var(--color-primary-outline-bg);
-      }
-
-      &#{$self}--disabled,
-      &#{$self}--disabled:hover {
-        background: var(--color-primary-disabled-fill);
-        border-color: var(--color-primary-disabled-text);
-        color: var(--color-primary-disabled-text);
-      }
-    }
-
-    &#{$self}--secondary {
-      border-color: var(--color-secondary);
-      color: var(--color-secondary);
-
-      &:hover {
-        border-color: var(--color-secondary);
-        color: var(--color-secondary);
-      }
-    }
-
-    &#{$self}--tertiary {
-      border-color: var(--color-tertiary);
-      color: var(--color-tertiary);
-
-      &:hover {
-        border-color: var(--color-tertiary);
-        color: var(--color-tertiary);
       }
     }
   }

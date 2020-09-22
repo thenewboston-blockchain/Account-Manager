@@ -1,105 +1,101 @@
-import React, {FC, useState} from 'react';
+import React, {FC, ReactNode} from 'react';
+import {useSelector} from 'react-redux';
+import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
 
-import DetailPanel from '@renderer/components/DetailPanel';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
-import PageTable from '@renderer/components/PageTable';
 import PageTabs from '@renderer/components/PageTabs';
-import Pagination from '@renderer/components/Pagination';
-import QR from '@renderer/components/QR';
-import transactionSampleData from '@renderer/mock/TransactionSampleData';
+import {Button} from '@renderer/components/FormElements';
+import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import SendPointsModal from '@renderer/containers/SendPointsModal';
+import {useBooleanState} from '@renderer/hooks';
+import {getManagedFriends} from '@renderer/selectors';
 
+import DeleteFriendModal from './DeleteFriendModal';
+import EditFriendNicknameModal from './EditFriendNicknameModal';
+import FriendOverview from './FriendOverview';
+import FriendTransactions from './FriendTransactions';
 import './Friend.scss';
 
-enum Tabs {
-  OVERVIEW = 'Overview',
-  TRANSACTIONS = 'Transactions',
-}
-const tabs = [Tabs.OVERVIEW, Tabs.TRANSACTIONS];
-
 const Friend: FC = () => {
-  const [activeTab, setActiveTab] = useState(tabs[0]);
+  const {accountNumber} = useParams();
+  const {path, url} = useRouteMatch();
+  const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
+  const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
+  const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
+  const managedFriends = useSelector(getManagedFriends);
+  const managedFriend = managedFriends[accountNumber];
 
-  const renderDetailPanels = () => {
+  const getDropdownMenuOptions = (): DropdownMenuOption[] => {
+    if (!managedFriend) return [];
+    return [
+      {
+        label: 'Edit Nickname',
+        onClick: toggleEditModal,
+      },
+      {
+        label: 'Remove Friend',
+        onClick: toggleDeleteModal,
+      },
+    ];
+  };
+
+  const renderRightPageHeaderButtons = (): ReactNode => <Button onClick={toggleSendPointsModal}>Send Points</Button>;
+
+  const renderTabContent = (): ReactNode => {
+    const tabContentRoutes = [
+      {
+        content: <FriendOverview />,
+        page: 'overview',
+      },
+      {
+        content: <FriendTransactions />,
+        page: 'transactions',
+      },
+    ];
+
     return (
-      <div className="Friend__panels">
-        <DetailPanel
-          className="Friend__DetailPanel"
-          items={[
-            {
-              key: 'Balance',
-              value: '184.35',
-            },
-            {
-              key: 'Account Number',
-              value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
-            },
-            {
-              key: 'Signing Key',
-              value: '**************************',
-            },
-            {
-              key: 'QR Code',
-              value: <QR text="0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb" />,
-            },
-          ]}
-          title="Account Info"
-        />
-        <DetailPanel
-          className="Friend__DetailPanel"
-          items={[
-            {
-              key: 'Network ID',
-              value: '0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb',
-            },
-            {
-              key: 'Account Number',
-              value: 'Account Number',
-            },
-            {
-              key: 'Protocol',
-              value: 'http',
-            },
-          ]}
-          title="Bank Info"
-        />
-      </div>
+      <Switch>
+        {tabContentRoutes.map(({content, page}) => (
+          <Route key={page} path={`${path}/${page}`}>
+            {content}
+          </Route>
+        ))}
+      </Switch>
     );
   };
 
-  const renderPageTable = () => (
+  const renderTop = (): ReactNode => (
     <>
-      <PageTable items={transactionSampleData} />
-      <Pagination />
-    </>
-  );
-
-  const renderTabContent = (activeTab: Tabs) => {
-    const tabContent = {
-      [Tabs.OVERVIEW]: renderDetailPanels(),
-      [Tabs.TRANSACTIONS]: renderPageTable(),
-    };
-    return tabContent[activeTab] || null;
-  };
-
-  const renderTop = () => (
-    <>
-      <PageHeader title="Donations (43hawrjkef243d)" />
+      <PageHeader
+        dropdownMenuOptions={getDropdownMenuOptions()}
+        rightContent={renderRightPageHeaderButtons()}
+        title={managedFriend?.nickname || accountNumber}
+      />
       <PageTabs
-        items={tabs.map((item) => ({
-          name: item.toString(),
-          active: activeTab === item,
-          onClick: (name) => {
-            setActiveTab(name as Tabs);
+        baseUrl={url}
+        items={[
+          {
+            name: 'Overview',
+            page: 'overview',
           },
-        }))}
+          {
+            name: 'Transactions',
+            page: 'transactions',
+          },
+        ]}
       />
     </>
   );
 
   return (
-    <div className="Friend">
-      <PageLayout content={renderTabContent(activeTab)} top={renderTop()} />
+    <div className="friend">
+      <PageLayout content={renderTabContent()} top={renderTop()} />
+      {deleteModalIsOpen && <DeleteFriendModal close={toggleDeleteModal} managedFriend={managedFriend} />}
+      {editModalIsOpen && <EditFriendNicknameModal close={toggleEditModal} managedFriend={managedFriend} />}
+      {sendPointsModalIsOpen && (
+        <SendPointsModal close={toggleSendPointsModal} initialRecipient={accountNumber} initialSender="" />
+      )}
     </div>
   );
 };

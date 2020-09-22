@@ -1,47 +1,111 @@
-import React, {FC} from 'react';
+import React, {FC, ReactNode, useCallback, useMemo} from 'react';
 import clsx from 'clsx';
+import noop from 'lodash/noop';
 
+import Icon, {IconType} from '@renderer/components/Icon';
 import {getCustomClassNames} from '@renderer/utils/components';
 import './Pagination.scss';
 
 interface ComponentProps {
   className?: string;
+  currentPage: number;
+  setPage(page: number): () => void;
+  totalPages: number;
 }
 
-const Pagination: FC<ComponentProps> = ({className}) => {
-  const renderSamplePages = () => {
-    return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-      <a
-        className={clsx('Pagination__page', {
-          'Pagination__page--active': i === 1,
-          ...getCustomClassNames(className, '__page', true),
-          ...getCustomClassNames(className, '__page--active', i === 1),
-        })}
-        href="#"
-        key={i}
-      >
-        {i}
-      </a>
-    ));
-  };
+const TOTAL_VISIBLE_PAGES = 11;
 
+const Pagination: FC<ComponentProps> = ({className, currentPage, setPage, totalPages}) => {
+  const nextIsDisabled = useMemo(() => currentPage >= totalPages, [currentPage, totalPages]);
+  const prevIsDisabled = useMemo(() => currentPage === 1, [currentPage]);
+  const leftEllipsesIsVisible = useMemo(() => currentPage > Math.floor(TOTAL_VISIBLE_PAGES / 2) + 1, [currentPage]);
+  const rightEllipsesIsVisible = useMemo(() => currentPage < totalPages - Math.floor(TOTAL_VISIBLE_PAGES / 2), [
+    currentPage,
+    totalPages,
+  ]);
+
+  const renderEllipses = useCallback(
+    (key: string): ReactNode => {
+      return (
+        <div
+          className={clsx('Pagination__button Pagination__button--ellipses', {
+            ...getCustomClassNames(className, '__button', true),
+            ...getCustomClassNames(className, '__button--ellipses', true),
+          })}
+          key={key}
+        >
+          ...
+        </div>
+      );
+    },
+    [className],
+  );
+
+  const renderPage = useCallback(
+    (page: number): ReactNode => {
+      return (
+        <div
+          className={clsx('Pagination__button', {
+            'Pagination__button--active': page === currentPage,
+            ...getCustomClassNames(className, '__button', true),
+            ...getCustomClassNames(className, '__button--active', page === currentPage),
+          })}
+          key={page}
+          onClick={setPage(page)}
+        >
+          {page}
+        </div>
+      );
+    },
+    [className, currentPage, setPage],
+  );
+
+  const renderMiddle = useCallback((): ReactNode => {
+    if (totalPages <= 1) return null;
+
+    const pageNodes = [renderPage(1)];
+    if (leftEllipsesIsVisible) pageNodes.push(renderEllipses('left'));
+
+    const totalMiddleNumbers =
+      TOTAL_VISIBLE_PAGES - 2 - (leftEllipsesIsVisible ? 1 : 0) - (rightEllipsesIsVisible ? 1 : 0);
+
+    if (totalMiddleNumbers > 0) {
+      const secondNumber = Math.max(currentPage - 3 - (leftEllipsesIsVisible ? 0 : 1), 2);
+      const secondLastNumber = Math.min(currentPage + 3 + (rightEllipsesIsVisible ? 0 : 1), totalPages - 1);
+
+      for (let i = secondNumber; i <= secondLastNumber; i += 1) {
+        pageNodes.push(renderPage(i));
+      }
+    }
+
+    if (rightEllipsesIsVisible) pageNodes.push(renderEllipses('right'));
+    pageNodes.push(renderPage(totalPages));
+
+    return pageNodes;
+  }, [currentPage, leftEllipsesIsVisible, renderEllipses, renderPage, rightEllipsesIsVisible, totalPages]);
+
+  if (totalPages <= 1) return null;
   return (
     <div className={clsx('Pagination', className)}>
-      <a
-        className={clsx('Pagination__prev-button', {...getCustomClassNames(className, '__prev-button', true)})}
-        href="#"
-      >
-        {'<< Prev'}
-      </a>
-      <div className={clsx('Pagination__pages', {...getCustomClassNames(className, '__pages', true)})}>
-        {renderSamplePages()}
-      </div>
-      <a
-        className={clsx('Pagination__next-button', {...getCustomClassNames(className, '__next-button', true)})}
-        href="#"
-      >
-        {'Next >>'}
-      </a>
+      <Icon
+        className={clsx('Pagination__button Pagination__button--prev', {
+          ...getCustomClassNames(className, '__button', true),
+          ...getCustomClassNames(className, '__button--prev', true),
+        })}
+        disabled={prevIsDisabled}
+        icon={IconType.chevronLeft}
+        onClick={prevIsDisabled ? noop : setPage(currentPage - 1)}
+      />
+      {renderMiddle()}
+      <Icon
+        className={clsx('Pagination__button Pagination__button--next', {
+          ...getCustomClassNames(className, '__button', true),
+          ...getCustomClassNames(className, '__button--next', true),
+        })}
+        disabled={nextIsDisabled}
+        icon={IconType.chevronRight}
+        onClick={nextIsDisabled ? noop : setPage(currentPage + 1)}
+      />
     </div>
   );
 };

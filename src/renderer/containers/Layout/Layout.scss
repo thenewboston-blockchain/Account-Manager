@@ -1,11 +1,11 @@
 .Layout {
   display: grid;
   grid-template-columns: var(--left-menu-width) auto;
-  grid-template-rows: fit-content(100px) auto;
+  grid-template-rows: min-content auto;
   height: 100vh;
 
   &__top {
-    border-bottom: 1px solid var(--color-neutral-300);
+    border-bottom: 1px solid var(--color-gray-100);
     grid-column: 1 / span 2;
     grid-row: 1 / span 1;
   }
@@ -18,7 +18,7 @@
   }
 
   &__right {
-    background-color: var(--color-panels-bg);
+    background-color: var(--color-gray-050);
     grid-column: 2 / span 1;
     grid-row: 2 / span 1;
     overflow-y: auto;

@@ -1,23 +1,20 @@
 * {
   box-sizing: border-box;
   line-height: 1.2;
+  outline: none;
 }
 
 body {
-  background: var(--color-neutral-50);
-  color: var(--color-neutral-900);
-  font-family: var(--font-family-default);
+  background: var(--color-gray-050);
+  color: var(--color-primary);
+  font-family: var(--font-family-inter-regular);
   font-size: var(--font-size-regular);
   margin: auto;
 }
 
-a {
-  color: var(--color-secondary);
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
+b {
+  font-family: var(--font-family-inter-bold);
+  font-weight: 700;
 }
 
 h1,
@@ -26,22 +23,32 @@ h3,
 h4,
 h5,
 h6 {
+  line-height: 1;
   margin: 0;
 }
 
 h1 {
-  font-size: var(--font-size-large);
+  font-family: var(--font-family-inter-regular);
+  font-size: var(--font-size-extra-large);
   font-weight: normal;
 }
 
 h2 {
-  font-size: var(--font-size-medium);
+  font-family: var(--font-family-inter-medium);
+  font-size: var(--font-size-large);
   font-weight: 500;
 }
 
 h3 {
+  font-family: var(--font-family-inter-medium);
+  font-size: var(--font-size-medium);
+  font-weight: 500;
+}
+
+h4 {
+  font-family: var(--font-family-inter-bold);
   font-size: var(--font-size-regular);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 p {

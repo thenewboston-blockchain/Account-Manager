@@ -18,11 +18,11 @@ interface ComponentProps {
 }
 
 const DetailPanel: FC<ComponentProps> = ({className, items, tableHeaders, title}) => {
-  const renderTableBody = () => {
+  const renderTableBody = (): ReactNode => {
     return (
       <tbody>
-        {items.map(({key, value}, i) => (
-          <tr key={i}>
+        {items.map(({key, value}) => (
+          <tr key={key}>
             <td>{key}</td>
             <td>{value}</td>
           </tr>
@@ -47,7 +47,7 @@ const DetailPanel: FC<ComponentProps> = ({className, items, tableHeaders, title}
 
   return (
     <div className={clsx('DetailPanel', className)}>
-      <h1 className={clsx('DetailPanel__title', {...getCustomClassNames(className, '__title', true)})}>{title}</h1>
+      <h2 className={clsx('DetailPanel__title', {...getCustomClassNames(className, '__title', true)})}>{title}</h2>
       <table className={clsx('DetailPanel__table', {...getCustomClassNames(className, '__table', true)})}>
         {renderTableHeader()}
         {renderTableBody()}

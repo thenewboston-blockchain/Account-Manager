@@ -1,0 +1,22 @@
+.BankValidators {
+  &__clickable-text {
+    color: var(--color-secondary);
+    cursor: pointer;
+    text-decoration: none;
+
+    &:focus,
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__edit-trust-icon {
+    display: inline-flex;
+    margin-left: 6px;
+  }
+
+  &__trust-cell {
+    align-items: center;
+    display: flex;
+  }
+}

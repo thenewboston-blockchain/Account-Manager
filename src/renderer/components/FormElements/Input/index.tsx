@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, FocusEvent} from 'react';
+import React, {ChangeEvent, FC, FocusEvent, useEffect, useRef} from 'react';
 import clsx from 'clsx';
 
 import {getCustomClassNames} from '@renderer/utils/components';
@@ -8,6 +8,7 @@ export interface BaseInputProps {
   className?: string;
   disabled?: boolean;
   error?: boolean;
+  focused?: boolean;
   name?: string;
   onBlur?(e: FocusEvent<HTMLInputElement>): void;
   onChange?(e: ChangeEvent<HTMLInputElement>): void;
@@ -18,8 +19,9 @@ export interface BaseInputProps {
 
 const Input: FC<BaseInputProps> = ({
   className,
-  disabled,
+  disabled = false,
   error = false,
+  focused = false,
   name,
   onBlur,
   onChange,
@@ -27,14 +29,26 @@ const Input: FC<BaseInputProps> = ({
   type = 'text',
   value,
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (focused) {
+      inputRef.current?.focus();
+    }
+  }, [focused, inputRef]);
+
   return (
     <input
-      className={clsx('Input', className, {'Input--error': error, ...getCustomClassNames(className, '--error', error)})}
+      className={clsx('Input', className, {
+        'Input--error': error,
+        ...getCustomClassNames(className, '--error', error),
+      })}
       disabled={disabled}
       name={name}
       onBlur={onBlur}
       onChange={onChange}
       placeholder={placeholder}
+      ref={inputRef}
       type={type}
       value={value}
     />

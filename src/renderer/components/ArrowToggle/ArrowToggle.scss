@@ -1,7 +1,10 @@
 .ArrowToggle {
-  color: var(--color-neutral-700);
-  cursor: pointer;
+  color: var(--color-gray-700);
   transition: transform 0.06s linear;
+
+  &:hover {
+    background: transparent;
+  }
 
   &--expanded {
     margin-left: 1px;

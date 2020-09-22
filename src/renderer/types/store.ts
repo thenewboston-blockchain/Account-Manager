@@ -1,20 +1,15 @@
-import {SerializedError} from '@reduxjs/toolkit';
 import store from '@renderer/store';
+import {Error, PaginatedResultsWithError} from './network';
 
+export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
-export interface Data<T> {
+export interface Dict<T> {
   [key: string]: T;
 }
 
-export enum Loading {
-  'pending' = 'pending',
-  'idle' = 'idle',
-}
+export type DictWithError = Dict<Error>;
 
-export interface StateSlice<S> {
-  entities: S;
-  loading: Loading;
-  currentRequestId?: string;
-  error: SerializedError | null;
-}
+export type DictWithDataAndError<T> = Dict<Error & {data: T}>;
+
+export type DictWithPaginatedResultsAndError<T> = Dict<PaginatedResultsWithError<T>>;
