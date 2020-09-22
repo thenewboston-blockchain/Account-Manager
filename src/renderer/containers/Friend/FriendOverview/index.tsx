@@ -33,8 +33,8 @@ const FriendOverview: FC = () => {
 
   return (
     <div className="FriendOverview">
-      <TileAccountBalance balance={balance || 0} loading={loading} type="account" />
-      <TileAccountNumber accountNumber={accountNumber} type="account" />
+      <TileAccountBalance balance={balance || 0} loading={loading} type="friend" />
+      <TileAccountNumber accountNumber={accountNumber} type="friend" />
     </div>
   );
 };

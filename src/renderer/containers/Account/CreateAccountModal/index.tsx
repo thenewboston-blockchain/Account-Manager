@@ -69,7 +69,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
         signingKeyStr = signingKeyHex;
         const {balance: accountBalance} = await fetchAccountBalance(accountNumberStr);
         balance = accountBalance;
-        displayToast('You successfully created an account!', 'success');
+        displayToast('You successfully added an account!', 'success');
       } catch (error) {
         displayErrorToast(error);
         return;
