@@ -1,4 +1,4 @@
-import React, {FC, useMemo} from 'react';
+import React, {FC, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
@@ -14,16 +14,8 @@ import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import yup from '@renderer/utils/yup';
 
-import CreateAccountModalFields from './CreateAccountModalFields';
+import CreateAccountModalFields, {initialValues, FormValues} from './CreateAccountModalFields';
 import './CreateAccountModal.scss';
-
-const initialValues = {
-  nickname: '',
-  signingKey: '',
-  type: 'create',
-};
-
-type FormValues = typeof initialValues;
 
 interface ComponentProps {
   close(): void;
@@ -31,6 +23,7 @@ interface ComponentProps {
 }
 
 const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = false}) => {
+  const [isCreatingNewAccount, setIsCreatingNewAccount] = useState<boolean>(true);
   const activePrimaryValidator = useSelector(getActivePrimaryValidator)!;
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
@@ -123,10 +116,10 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
       ignoreDirty
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      submitButton="Add"
+      submitButton={isCreatingNewAccount ? 'Create' : 'Add'}
       validationSchema={validationSchema}
     >
-      <CreateAccountModalFields />
+      <CreateAccountModalFields setIsCreatingNewAccount={setIsCreatingNewAccount} />
     </Modal>
   );
 };
