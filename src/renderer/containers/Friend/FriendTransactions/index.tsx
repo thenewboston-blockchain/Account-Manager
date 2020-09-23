@@ -50,8 +50,8 @@ const FriendTransactions: FC = () => {
         [TableKeys.amount]: 'Amount',
         [TableKeys.balanceKey]: 'Balance Key',
         [TableKeys.dateCreated]: 'Date Created',
-        [TableKeys.recipientAccountNumber]: 'Recipient Account Number',
-        [TableKeys.senderAccountNumber]: 'Sender Account Number',
+        [TableKeys.recipientAccountNumber]: 'Recipient',
+        [TableKeys.senderAccountNumber]: 'Sender',
         [TableKeys.signature]: 'Signature',
       },
       orderedKeys: [
