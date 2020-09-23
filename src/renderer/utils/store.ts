@@ -142,6 +142,14 @@ export function setPaginatedResultErrorReducer() {
   };
 }
 
+export function changeActiveNodeReducer<T extends ManagedNode>() {
+  return (state: Dict<T>, {payload}: PayloadAction<T>) => {
+    Object.values(state).forEach((node) => {
+      node.is_default = formatAddressFromNode(node) === formatAddressFromNode(payload) && payload.is_default;
+    });
+  };
+}
+
 export function unsetActiveNodeReducer() {
   return (state: Dict<ManagedNode>) => {
     Object.values(state).forEach((node) => {

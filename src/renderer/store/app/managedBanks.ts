@@ -7,7 +7,7 @@ import {
   clearLocalAndStateReducer,
   getStateName,
   setLocalAndAddressReducer,
-  unsetActiveNodeReducer,
+  changeActiveNodeReducer,
   unsetLocalAndAddressReducer,
 } from '@renderer/utils/store';
 
@@ -15,13 +15,13 @@ const managedBanks = createSlice({
   initialState: (localStore.get(getStateName(MANAGED_BANKS)) || {}) as Dict<ManagedNode>,
   name: MANAGED_BANKS,
   reducers: {
+    changeActiveBank: changeActiveNodeReducer<ManagedNode>(),
     clearManagedBanks: clearLocalAndStateReducer(),
     setManagedBank: setLocalAndAddressReducer<ManagedNode>(MANAGED_BANKS),
-    unsetActiveBank: unsetActiveNodeReducer(),
     unsetManagedBank: unsetLocalAndAddressReducer(MANAGED_BANKS),
   },
 });
 
-export const {clearManagedBanks, setManagedBank, unsetActiveBank, unsetManagedBank} = managedBanks.actions;
+export const {clearManagedBanks, setManagedBank, changeActiveBank, unsetManagedBank} = managedBanks.actions;
 
 export default managedBanks;

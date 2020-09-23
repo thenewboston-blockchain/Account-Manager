@@ -5,7 +5,7 @@ import {
   clearManagedValidators,
   setManagedBank,
   setManagedValidator,
-  unsetActiveBank,
+  changeActiveBank,
   unsetActivePrimaryValidator,
 } from '@renderer/store/app';
 import {AddressData, AppDispatch} from '@renderer/types';
@@ -79,15 +79,15 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
 
   const activeBankData = {
     ip_address: bankConfig.ip_address,
-    is_default: true,
     nickname: bankNickname,
     nid_signing_key: '',
     node_identifier: bankConfig.node_identifier,
     port: bankConfig.port,
     protocol: bankConfig.protocol,
   };
-  dispatch(unsetActiveBank());
+
   dispatch(setManagedBank(activeBankData));
+  dispatch(changeActiveBank({...activeBankData, is_default: true}));
 
   const activePrimaryValidatorData = {
     ip_address: validatorConfig.ip_address,

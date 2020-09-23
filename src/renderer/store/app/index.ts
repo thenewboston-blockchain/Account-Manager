@@ -6,7 +6,7 @@ import managedAccounts, {
   setManagedAccountBalance,
   unsetManagedAccount,
 } from './managedAccounts';
-import managedBanks, {clearManagedBanks, setManagedBank, unsetActiveBank, unsetManagedBank} from './managedBanks';
+import managedBanks, {clearManagedBanks, setManagedBank, changeActiveBank, unsetManagedBank} from './managedBanks';
 import managedFriends, {clearManagedFriends, setManagedFriend, unsetManagedFriend} from './managedFriends';
 import managedValidators, {
   clearManagedValidators,
@@ -25,7 +25,7 @@ export {
   setManagedBank,
   setManagedFriend,
   setManagedValidator,
-  unsetActiveBank,
+  changeActiveBank,
   unsetActivePrimaryValidator,
   unsetManagedAccount,
   unsetManagedBank,
