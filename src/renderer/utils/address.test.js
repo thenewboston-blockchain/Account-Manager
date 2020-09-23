@@ -44,7 +44,7 @@ describe('formatAddressFromNode to return the following: ', () => {
     expect(formatAddressFromNode(nodeAddress)).toBe('http://127.0.0.1');
   });
 
-  test('correct IP from node with port as number', () => {
+  test('correct IP from node with port as number 80', () => {
     const nodeAddress = {
       ip_address: '127.0.0.1',
       port: 80,
@@ -116,6 +116,10 @@ describe('formatPath to return the following: ', () => {
   test('correct Path when port 80 as string is passed', () => {
     expect(formatPath('127.0.0.1', '80', 'https')).toBe('https/127.0.0.1/80');
   });
+
+  test('correct Path when port of null is passed', () => {
+    expect(formatPath('127.0.0.1', null, 'https')).toBe('https/127.0.0.1/port');
+  });
 });
 
 describe('formatPathFromNode to return the following: ', () => {
@@ -183,6 +187,11 @@ describe('parseAddressData to return the following: ', () => {
     };
     expect(parseAddressData('https://127.0.0.1')).toMatchObject(expectedAddressData);
   });
+
+  test('port if provided should be a number type', () => {
+    const parsedData = parseAddressData('http://127.0.0.1:8081');
+    expect(typeof parsedData.port === 'number').toBeTruthy();
+  });
 });
 
 describe('parseQueryParams to return the following: ', () => {
@@ -196,7 +205,7 @@ describe('parseQueryParams to return the following: ', () => {
     expect(parseQueryParams('?')).toMatchObject(expectedQueryParams);
   });
 
-  test('correct QueryParams object with no assgned parameter passed', () => {
+  test('correct QueryParams object with no assigned parameter passed', () => {
     const expectedQueryParams = {};
     expect(parseQueryParams('?transaction')).toMatchObject(expectedQueryParams);
   });
@@ -215,5 +224,11 @@ describe('parseQueryParams to return the following: ', () => {
       transaction: 'send',
     };
     expect(parseQueryParams('?confirmation=0x000001&id=1&transaction=send')).toMatchObject(expectedQueryParams);
+  });
+
+  test('correct QueryParams when same param is passed multiple times', () => {
+    expect(parseQueryParams('test?param1=abc,123')).toMatchObject({
+      param1: 'abc,123',
+    });
   });
 });
