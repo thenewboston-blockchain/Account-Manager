@@ -30,11 +30,12 @@ export type SetError = (payload: Address & Error) => PayloadAction<Address & Err
 
 export const getStateName = (actionType: string) => actionType.split('/')[1];
 
-export function changeActiveNodeReducer<T extends ManagedNode>() {
+export function changeActiveNodeReducer<T extends ManagedNode>(sliceName: string) {
   return (state: Dict<T>, {payload}: PayloadAction<T>) => {
     Object.values(state).forEach((node) => {
       node.is_default = formatAddressFromNode(node) === formatAddressFromNode(payload) && payload.is_default;
     });
+    localStore.set(getStateName(sliceName), state);
   };
 }
 
