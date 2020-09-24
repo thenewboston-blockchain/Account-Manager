@@ -1,11 +1,11 @@
 import {
+  changeActiveBank,
   clearManagedAccounts,
   clearManagedBanks,
   clearManagedFriends,
   clearManagedValidators,
   setManagedBank,
   setManagedValidator,
-  changeActiveBank,
   unsetActivePrimaryValidator,
 } from '@renderer/store/app';
 import {AddressData, AppDispatch} from '@renderer/types';

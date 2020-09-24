@@ -4,10 +4,10 @@ import {MANAGED_BANKS} from '@renderer/constants';
 import localStore from '@renderer/store/localStore';
 import {Dict, ManagedNode} from '@renderer/types';
 import {
+  changeActiveNodeReducer,
   clearLocalAndStateReducer,
   getStateName,
   setLocalAndAddressReducer,
-  changeActiveNodeReducer,
   unsetLocalAndAddressReducer,
 } from '@renderer/utils/store';
 
