@@ -30,6 +30,14 @@ export type SetError = (payload: Address & Error) => PayloadAction<Address & Err
 
 export const getStateName = (actionType: string) => actionType.split('/')[1];
 
+export function changeActiveNodeReducer<T extends ManagedNode>() {
+  return (state: Dict<T>, {payload}: PayloadAction<T>) => {
+    Object.values(state).forEach((node) => {
+      node.is_default = formatAddressFromNode(node) === formatAddressFromNode(payload) && payload.is_default;
+    });
+  };
+}
+
 export const clearLocalAndStateReducer = () => (state: any, action: PayloadAction<undefined>) => {
   localStore.set(getStateName(action.type), {});
   return {};
