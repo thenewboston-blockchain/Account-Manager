@@ -70,7 +70,7 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
       className="AddFriendModal"
       close={close}
       header="Add Friend"
-      ignoreDirty
+      ignoreDirty={false}
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitButton="Add"
