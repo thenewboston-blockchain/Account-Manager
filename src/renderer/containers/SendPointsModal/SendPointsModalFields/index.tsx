@@ -31,7 +31,7 @@ interface ComponentProps {
 const SendPointsModalFields: FC<ComponentProps> = ({submitting}) => {
   const {errors, touched, values} = useFormContext<FormValues>();
   const activeBankConfig = useSelector(getActiveBankConfig)!;
-  const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
+  const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig);
   const managedAccounts = useSelector(getManagedAccounts);
   const managedFriends = useSelector(getManagedFriends);
 
@@ -64,10 +64,15 @@ const SendPointsModalFields: FC<ComponentProps> = ({submitting}) => {
 
   const renderTotal = (): string => {
     const {points, senderAccountNumber} = values;
-    if (!points) return '-';
+    if (!activePrimaryValidatorConfig || !points) return '-';
     const bankTxFee = getBankTxFee(activeBankConfig, senderAccountNumber);
     const validatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidatorConfig, senderAccountNumber);
     return (parseInt(points, 10) + bankTxFee + validatorTxFee).toLocaleString();
+  };
+
+  const renderValidatorFee = (): number | string => {
+    if (!activePrimaryValidatorConfig) return '-';
+    return getPrimaryValidatorTxFee(activePrimaryValidatorConfig, values?.senderAccountNumber) || '-';
   };
 
   return (
@@ -116,7 +121,7 @@ const SendPointsModalFields: FC<ComponentProps> = ({submitting}) => {
           </tr>
           <tr>
             <td>Validator Fee</td>
-            <td>{getPrimaryValidatorTxFee(activePrimaryValidatorConfig, values?.senderAccountNumber) || '-'}</td>
+            <td>{renderValidatorFee()}</td>
           </tr>
           <tr className="SendPointsModalFields__total-tr">
             <td>Total</td>
