@@ -1,7 +1,5 @@
 import {
   getActiveBank,
-  getOtherBanks,
-  getOtherValidators,
   getActiveBankConfig,
   getActivePrimaryValidator,
   getActivePrimaryValidatorConfig,
@@ -32,8 +30,6 @@ import {getIsActivePrimaryValidator, getIsManagedValidator} from './validators';
 
 export {
   getActiveBank,
-  getOtherBanks,
-  getOtherValidators,
   getActiveBankConfig,
   getActivePrimaryValidator,
   getActivePrimaryValidatorConfig,

@@ -6,10 +6,6 @@ export const getActiveBank = createSelector([getManagedBanks], (managedBanks) =>
   return Object.values(managedBanks).find((bank) => bank.is_default) || null;
 });
 
-export const getOtherBanks = createSelector([getManagedBanks], (managedBanks) => {
-  return Object.values(managedBanks).filter((bank) => !bank.is_default);
-});
-
 export const getActiveBankConfig = createSelector([getActiveBank, getBankConfigs], (activeBank, bankConfigs) => {
   if (!activeBank) return null;
   const address = formatAddressFromNode(activeBank);
@@ -18,10 +14,6 @@ export const getActiveBankConfig = createSelector([getActiveBank, getBankConfigs
 
 export const getActivePrimaryValidator = createSelector([getManagedValidators], (managedValidators) => {
   return Object.values(managedValidators).find((validator) => validator.is_default) || null;
-});
-
-export const getOtherValidators = createSelector([getManagedValidators], (managedValidators) => {
-  return Object.values(managedValidators).filter((validator) => !validator.is_default);
 });
 
 export const getActivePrimaryValidatorConfig = createSelector(

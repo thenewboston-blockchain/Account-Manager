@@ -8,14 +8,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import Connect from '@renderer/containers/Connect';
 import Layout from '@renderer/containers/Layout';
-import {
-  connect,
-  connectAndStoreLocalData,
-  loadOtherBanksData,
-  loadOtherValidatorsData,
-} from '@renderer/dispatchers/app';
+import {connect, connectAndStoreLocalData, fetchNonDefaultNodeConfigs} from '@renderer/dispatchers/app';
 import {useBooleanState, useWebSockets} from '@renderer/hooks';
-import {getActiveBank, getActiveBankConfig, getOtherBanks, getOtherValidators} from '@renderer/selectors';
+import {getActiveBank, getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch, ProtocolType} from '@renderer/types';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
@@ -29,18 +24,15 @@ const App: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const activeBank = useSelector(getActiveBank);
   const activeBankConfig = useSelector(getActiveBankConfig);
-  const otherBanks = useSelector(getOtherBanks);
-  const otherValidators = useSelector(getOtherValidators);
   const [getStartedModalIsOpen, toggleGetStartedModal, openGetStartedModal] = useBooleanState(false);
   const [loading, setLoading] = useState<boolean>(true);
   useWebSockets();
 
   useEffect(() => {
-    const fetchOtherBanksAndValidatorsData = (): void => {
-      dispatch(loadOtherBanksData(otherBanks));
-      dispatch(loadOtherValidatorsData(otherValidators));
-    };
+    dispatch(fetchNonDefaultNodeConfigs());
+  }, [dispatch]);
 
+  useEffect(() => {
     if (activeBank && !activeBankConfig) {
       setLoading(true);
       const fetchData = async (): Promise<void> => {
@@ -53,7 +45,6 @@ const App: FC = () => {
         }
       };
       fetchData();
-      fetchOtherBanksAndValidatorsData();
     } else if (!activeBank && !activeBankConfig) {
       setLoading(true);
       const fetchDefaultBankData = async (): Promise<void> => {
@@ -71,11 +62,10 @@ const App: FC = () => {
         }
       };
       fetchDefaultBankData();
-      fetchOtherBanksAndValidatorsData();
     } else {
       setLoading(false);
     }
-  }, [activeBank, activeBankConfig, otherBanks, otherValidators, dispatch, openGetStartedModal]);
+  }, [activeBank, activeBankConfig, dispatch, openGetStartedModal]);
 
   const renderComponent = (): ReactNode => {
     if (loading) return null;

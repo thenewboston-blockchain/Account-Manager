@@ -10,16 +10,16 @@ import AddValidatorModal from '@renderer/containers/Validator/AddValidatorModal'
 import {useBooleanState} from '@renderer/hooks';
 import {
   getActivePrimaryValidatorConfig,
+  getBankConfigs,
   getManagedAccounts,
   getManagedBanks,
   getManagedFriends,
   getManagedValidators,
   getPointBalance,
-  getBankConfigs,
   getValidatorConfigs,
 } from '@renderer/selectors';
 import {ManagedAccount, ManagedFriend, ManagedNode, RootState} from '@renderer/types';
-import {formatPathFromNode, formatAddressFromNode} from '@renderer/utils/address';
+import {formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
 import {sortByBooleanKey, sortDictValuesByPreferredKey} from '@renderer/utils/sort';
 
 import LeftSubmenu from './LeftSubmenu';
@@ -29,25 +29,25 @@ import './LeftMenu.scss';
 const LeftMenuSelector = (state: RootState) => {
   return {
     activePrimaryValidator: getActivePrimaryValidatorConfig(state),
-    configBanks: getBankConfigs(state),
-    configValidators: getValidatorConfigs(state),
+    bankConfigs: getBankConfigs(state),
     managedAccounts: getManagedAccounts(state),
     managedBanks: getManagedBanks(state),
     managedFriends: getManagedFriends(state),
     managedValidators: getManagedValidators(state),
     pointBalance: getPointBalance(state),
+    validatorConfigs: getValidatorConfigs(state),
   };
 };
 
 const LeftMenu: FC = () => {
   const {
+    bankConfigs,
     managedAccounts,
     managedBanks,
     managedFriends,
     managedValidators,
     pointBalance,
-    configBanks,
-    configValidators,
+    validatorConfigs,
   } = useSelector(LeftMenuSelector);
   const [addBankModalIsOpen, toggleAddBankModal] = useBooleanState(false);
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
@@ -74,12 +74,12 @@ const LeftMenu: FC = () => {
         .map((managedBank) => ({
           baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
           isDefault: managedBank.is_default || false,
-          isOnline: configBanks[formatAddressFromNode(managedBank)]?.error === null || false,
+          isOnline: bankConfigs[formatAddressFromNode(managedBank)]?.error === null || false,
           key: managedBank.ip_address,
           label: managedBank.nickname || managedBank.ip_address,
           to: `/bank/${formatPathFromNode(managedBank)}/overview`,
         }))
-        .map(({baseUrl, isDefault, key, label, to, isOnline}) => (
+        .map(({baseUrl, isDefault, isOnline, key, label, to}) => (
           <LeftSubmenuItemStatus
             badge={isDefault ? 'active-bank' : null}
             baseUrl={baseUrl}
@@ -89,7 +89,7 @@ const LeftMenu: FC = () => {
             to={to}
           />
         )),
-    [managedBanks, configBanks],
+    [bankConfigs, managedBanks],
   );
 
   const friendMenuItems = useMemo<ReactNode[]>(
@@ -112,12 +112,12 @@ const LeftMenu: FC = () => {
         .map((managedValidator) => ({
           baseUrl: `/validator/${formatPathFromNode(managedValidator)}`,
           isDefault: managedValidator.is_default || false,
-          isOnline: configValidators[formatAddressFromNode(managedValidator)]?.error === null || false,
+          isOnline: validatorConfigs[formatAddressFromNode(managedValidator)]?.error === null || false,
           key: managedValidator.ip_address,
           label: managedValidator.nickname || managedValidator.ip_address,
           to: `/validator/${formatPathFromNode(managedValidator)}/overview`,
         }))
-        .map(({baseUrl, isDefault, key, label, to, isOnline}) => (
+        .map(({baseUrl, isDefault, isOnline, key, label, to}) => (
           <LeftSubmenuItemStatus
             badge={isDefault ? 'primary-validator' : null}
             baseUrl={baseUrl}
@@ -127,7 +127,7 @@ const LeftMenu: FC = () => {
             to={to}
           />
         )),
-    [managedValidators, configValidators],
+    [managedValidators, validatorConfigs],
   );
 
   return (
