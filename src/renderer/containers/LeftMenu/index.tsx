@@ -67,30 +67,30 @@ const LeftMenu: FC = () => {
     [managedAccounts],
   );
 
-  const bankMenuItems = useMemo<ReactNode[]>(() => {
-    // console.log(configBanks[formatAddressFromNode"http://143.110.137.54"])
-
-    return sortDictValuesByPreferredKey<ManagedNode>(managedBanks, 'nickname', 'ip_address')
-      .sort(sortByBooleanKey<ManagedNode>('is_default'))
-      .map((managedBank) => ({
-        baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
-        isDefault: managedBank.is_default || false,
-        isOnline: configBanks[formatAddressFromNode(managedBank)]?.error === null || false,
-        key: managedBank.ip_address,
-        label: managedBank.nickname || managedBank.ip_address,
-        to: `/bank/${formatPathFromNode(managedBank)}/overview`,
-      }))
-      .map(({baseUrl, isDefault, key, label, to, isOnline}) => (
-        <LeftSubmenuItemStatus
-          badge={isDefault ? 'active-bank' : null}
-          baseUrl={baseUrl}
-          key={key}
-          label={label}
-          status={isOnline ? 'online' : 'offline'}
-          to={to}
-        />
-      ));
-  }, [managedBanks, configBanks]);
+  const bankMenuItems = useMemo<ReactNode[]>(
+    () =>
+      sortDictValuesByPreferredKey<ManagedNode>(managedBanks, 'nickname', 'ip_address')
+        .sort(sortByBooleanKey<ManagedNode>('is_default'))
+        .map((managedBank) => ({
+          baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
+          isDefault: managedBank.is_default || false,
+          isOnline: configBanks[formatAddressFromNode(managedBank)]?.error === null || false,
+          key: managedBank.ip_address,
+          label: managedBank.nickname || managedBank.ip_address,
+          to: `/bank/${formatPathFromNode(managedBank)}/overview`,
+        }))
+        .map(({baseUrl, isDefault, key, label, to, isOnline}) => (
+          <LeftSubmenuItemStatus
+            badge={isDefault ? 'active-bank' : null}
+            baseUrl={baseUrl}
+            key={key}
+            label={label}
+            status={isOnline ? 'online' : 'offline'}
+            to={to}
+          />
+        )),
+    [managedBanks, configBanks],
+  );
 
   const friendMenuItems = useMemo<ReactNode[]>(
     () =>
