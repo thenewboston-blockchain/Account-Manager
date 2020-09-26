@@ -21,6 +21,20 @@ export const clearLocalState = () => (dispatch: AppDispatch) => {
   dispatch(clearManagedValidators());
 };
 
+export const loadOtherBanksData = (banksAddressData: AddressData[]) => async (dispatch: AppDispatch) => {
+  banksAddressData.forEach(async (bankAddressData) => {
+    const address = formatAddressFromNode(bankAddressData);
+    await dispatch(fetchBankConfig(address));
+  });
+};
+
+export const loadOtherValidatorsData = (validatorsAddressData: AddressData[]) => async (dispatch: AppDispatch) => {
+  validatorsAddressData.forEach(async (validatorAddressData) => {
+    const address = formatAddressFromNode(validatorAddressData);
+    await dispatch(fetchValidatorConfig(address));
+  });
+};
+
 export const connect = (bankAddressData: AddressData) => async (dispatch: AppDispatch) => {
   const address = formatAddressFromNode(bankAddressData);
   const bankConfig = await dispatch(fetchBankConfig(address));
