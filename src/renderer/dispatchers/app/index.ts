@@ -1,3 +1,4 @@
+import store from '@renderer/store';
 import {
   changeActiveBank,
   clearManagedAccounts,
@@ -102,4 +103,27 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
   dispatch(setManagedValidator(activePrimaryValidatorData));
 
   return connectResponse;
+};
+
+export const fetchNonDefaultNodeConfigs = () => async (dispatch: AppDispatch) => {
+  const {
+    app: {managedBanks, managedValidators},
+  } = store.getState();
+
+  const bankPromises = Object.values(managedBanks)
+    .filter((bank) => !bank.is_default)
+    .map((bank) => {
+      const address = formatAddressFromNode(bank);
+      return dispatch(fetchBankConfig(address));
+    });
+
+  const validatorPromises = Object.values(managedValidators)
+    .filter((validator) => !validator.is_default)
+    .map((validator) => {
+      const address = formatAddressFromNode(validator);
+      return dispatch(fetchValidatorConfig(address));
+    });
+
+  await Promise.all(bankPromises);
+  await Promise.all(validatorPromises);
 };

@@ -13,7 +13,7 @@ export const getActiveBankConfig = createSelector([getActiveBank, getBankConfigs
 });
 
 export const getActivePrimaryValidator = createSelector([getManagedValidators], (managedValidators) => {
-  return Object.values(managedValidators).find((bank) => bank.is_default) || null;
+  return Object.values(managedValidators).find((validator) => validator.is_default) || null;
 });
 
 export const getActivePrimaryValidatorConfig = createSelector(

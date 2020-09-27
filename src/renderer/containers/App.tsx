@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import Connect from '@renderer/containers/Connect';
 import Layout from '@renderer/containers/Layout';
-import {connect, connectAndStoreLocalData} from '@renderer/dispatchers/app';
+import {connect, connectAndStoreLocalData, fetchNonDefaultNodeConfigs} from '@renderer/dispatchers/app';
 import {useBooleanState, useWebSockets} from '@renderer/hooks';
 import {getActiveBank, getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch, ProtocolType} from '@renderer/types';
@@ -27,6 +27,10 @@ const App: FC = () => {
   const [getStartedModalIsOpen, toggleGetStartedModal, openGetStartedModal] = useBooleanState(false);
   const [loading, setLoading] = useState<boolean>(true);
   useWebSockets();
+
+  useEffect(() => {
+    dispatch(fetchNonDefaultNodeConfigs());
+  }, [dispatch]);
 
   useEffect(() => {
     if (activeBank && !activeBankConfig) {
