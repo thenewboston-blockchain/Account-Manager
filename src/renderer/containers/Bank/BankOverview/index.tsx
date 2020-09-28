@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 
 import DetailPanel from '@renderer/components/DetailPanel';
-import {PageLoader} from '@renderer/components/FormElements';
+import {Loader} from '@renderer/components/FormElements';
 import {BANK_CONFIGS} from '@renderer/constants';
 import {useNetworkConfigFetcher} from '@renderer/hooks';
 import {BankConfig} from '@renderer/types';
@@ -14,7 +14,7 @@ const BankOverview: FC = () => {
   return (
     <div className="BankOverview">
       {loading || !bankConfig ? (
-        <PageLoader />
+        <Loader />
       ) : (
         <DetailPanel
           items={[

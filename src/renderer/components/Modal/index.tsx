@@ -5,7 +5,7 @@ import noop from 'lodash/noop';
 
 import {Form, FormButton, FormButtonProps} from '@renderer/components/FormComponents';
 import Icon, {IconType} from '@renderer/components/Icon';
-import ButtonLoader from '@renderer/components/FormElements/ButtonLoader';
+import Loader from '@renderer/components/FormElements/Loader';
 
 import {GenericFormValues, GenericFunction} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';
@@ -136,7 +136,7 @@ const Modal: FC<ComponentProps> = ({
             type={submitProps.type}
             variant={submitProps.variant}
           >
-            {submitting ? <ButtonLoader /> : submitProps.content}
+            {submitting ? <Loader /> : submitProps.content}
           </FormButton>
         )}
       </>

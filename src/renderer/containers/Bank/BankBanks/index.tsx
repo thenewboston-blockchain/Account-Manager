@@ -1,7 +1,7 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
-import {PageLoader} from '@renderer/components/FormElements';
+import {Loader} from '@renderer/components/FormElements';
 import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
@@ -105,7 +105,7 @@ const BankBanks: FC<ComponentProps> = ({managedBank}) => {
   return (
     <div className="BankBanks">
       {loading ? (
-        <PageLoader />
+        <Loader />
       ) : (
         <>
           <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />

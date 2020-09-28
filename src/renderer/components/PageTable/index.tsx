@@ -2,7 +2,7 @@ import React, {FC, ReactNode, useState} from 'react';
 import clsx from 'clsx';
 
 import ArrowToggle from '@renderer/components/ArrowToggle';
-import PageLoader from '@renderer/components/FormElements/PageLoader';
+import Loader from '@renderer/components/FormElements/Loader';
 import PaginationSummary from '@renderer/components/PaginationSummary';
 import {getCustomClassNames} from '@renderer/utils/components';
 
@@ -70,7 +70,7 @@ const PageTable: FC<ComponentProps> = ({className, count, currentPage, items, lo
   };
 
   return loading ? (
-    <PageLoader />
+    <Loader />
   ) : (
     <>
       <PaginationSummary className="PageTable__PaginationSummary" count={count} currentPage={currentPage} />
