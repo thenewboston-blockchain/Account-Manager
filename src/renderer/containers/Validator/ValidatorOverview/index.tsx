@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 
 import A from '@renderer/components/A';
 import DetailPanel from '@renderer/components/DetailPanel';
-import {Loader} from '@renderer/components/FormElements';
+import {PageLoader} from '@renderer/components/FormElements';
 import {VALIDATOR_CONFIGS} from '@renderer/constants';
 import {useNetworkConfigFetcher} from '@renderer/hooks';
 import {ValidatorConfig} from '@renderer/types';
@@ -15,7 +15,7 @@ const ValidatorOverview: FC = () => {
   return (
     <div className="ValidatorOverview">
       {loading || !validatorConfig ? (
-        <Loader />
+        <PageLoader />
       ) : (
         <DetailPanel
           items={[

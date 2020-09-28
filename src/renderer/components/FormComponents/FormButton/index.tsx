@@ -2,7 +2,7 @@
 
 import React, {FC, useMemo} from 'react';
 import {useFormikContext} from 'formik';
-import {BaseButtonProps, Button, Loader} from '@renderer/components/FormElements';
+import {BaseButtonProps, Button, ButtonLoader} from '@renderer/components/FormElements';
 
 export interface FormButtonProps extends BaseButtonProps {
   ignoreDirty?: boolean;
@@ -37,7 +37,7 @@ const FormButton: FC<FormButtonProps> = ({children, ignoreDirty = false, submitt
 
   return (
     <Button {...baseButtonProps} disabled={buttonIsDisabled} onClick={handleClick}>
-      {type === 'submit' && submitting ? <Loader /> : children}
+      {type === 'submit' && submitting ? <ButtonLoader /> : children}
     </Button>
   );
 };
