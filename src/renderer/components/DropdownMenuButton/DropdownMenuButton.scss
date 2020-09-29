@@ -23,12 +23,12 @@ $button-height: 24px;
     transition: background 0.1s;
     white-space: nowrap;
 
-    &:focus {
-      background: var(--color-gray-100);
-    }
-
     &:not(&--disabled) {
       cursor: pointer;
+
+      &:focus {
+        background: var(--color-gray-100);
+      }
 
       &:hover {
         background: var(--color-gray-100);

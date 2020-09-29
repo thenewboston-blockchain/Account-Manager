@@ -68,6 +68,10 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, direction = Dropdown
     closeMenu();
   };
 
+  const handleOptionMouseLeave = (index: number) => async (): Promise<void> => {
+    optionsRef.current[index]?.blur();
+  };
+
   const handleOptionKeyDown = (optionOnClick: GenericVoidFunction, index: number) => async (
     e: KeyboardEvent<HTMLDivElement>,
   ): Promise<void> => {
@@ -110,6 +114,7 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, direction = Dropdown
                     ...getCustomClassNames(className, '__option--disabled', disabled),
                   })}
                   key={JSON.stringify(label)}
+                  onMouseLeave={disabled ? noop : handleOptionMouseLeave(index)}
                   onKeyDown={disabled ? noop : handleOptionKeyDown(optionOnClick, index)}
                   onClick={disabled ? noop : handleOptionClick(optionOnClick)}
                   ref={(el) => {
