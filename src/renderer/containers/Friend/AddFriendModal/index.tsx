@@ -60,7 +60,7 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
         .string()
         .length(64, 'Account number must be 64 characters long')
         .required('This field is required')
-        .notOneOf(managedAccountNumbers, 'This friend already exists'),
+        .notOneOf(managedAccountNumbers, "This friend's account already exists"),
       nickname: yup.string().notOneOf(managedFriendNicknames, 'That nickname is already taken'),
     });
   }, [managedAccountNumbers, managedFriendNicknames]);
