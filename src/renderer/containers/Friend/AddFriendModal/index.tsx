@@ -4,7 +4,7 @@ import {useHistory} from 'react-router-dom';
 
 import {FormInput, FormTextArea} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import {getManagedFriends} from '@renderer/selectors';
+import {getManagedAccounts, getManagedFriends} from '@renderer/selectors';
 import {setManagedFriend} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
 import yup from '@renderer/utils/yup';
@@ -25,9 +25,18 @@ interface ComponentProps {
 const AddFriendModal: FC<ComponentProps> = ({close}) => {
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
+  const managedAccounts = useSelector(getManagedAccounts);
   const managedFriends = useSelector(getManagedFriends);
 
   const managedAccountNumbers = useMemo(
+    () =>
+      Object.values(managedAccounts)
+        .filter(({account_number}) => !!account_number)
+        .map(({account_number}) => account_number),
+    [managedAccounts],
+  );
+
+  const managedFriendsAccountNumbers = useMemo(
     () =>
       Object.values(managedFriends)
         .filter(({account_number}) => !!account_number)
@@ -60,10 +69,15 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
         .string()
         .length(64, 'Account number must be 64 characters long')
         .required('This field is required')
-        .notOneOf(managedAccountNumbers, "This friend's account already exists"),
+        .test('cannot-add-own-account', 'Unable to add your own account as a friend', (accnum) => {
+          return !managedAccountNumbers.includes(accnum);
+        })
+        .test('friend-already-exists', "This friend's account already exists", (accnum) => {
+          return !managedFriendsAccountNumbers.includes(accnum);
+        }),
       nickname: yup.string().notOneOf(managedFriendNicknames, 'That nickname is already taken'),
     });
-  }, [managedAccountNumbers, managedFriendNicknames]);
+  }, [managedAccountNumbers, managedFriendsAccountNumbers, managedFriendNicknames]);
 
   return (
     <Modal
