@@ -32,8 +32,8 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
       const totalCost =
         getBankTxFee(activeBank, accountNumber) +
         getPrimaryValidatorTxFee(activePrimaryValidator, accountNumber) +
-				points;
-      	return totalCost <= balance;
+        points;
+      return totalCost <= balance;
     },
     [activeBank, activePrimaryValidator, managedAccounts],
   );
@@ -93,12 +93,11 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
     const senderAccountNumberRef = yup.ref('senderAccountNumber');
     return yup.object().shape({
       points: yup
-				.number()
-				.moreThan(0, 'Points must be greater than 0')
+        .number()
         .callbackWithRef(senderAccountNumberRef, checkPointsWithBalance, INVALID_AMOUNT_ERROR)
-				.integer("Points must be an integer")
-				.required('Points is a required field')
-        ,
+        .moreThan(0, 'Points must be greater than 0')
+        .integer('Points cannot be a decimal')
+        .required('Points is a required field'),
       recipientAccountNumber: yup
         .string()
         .notEqualTo(senderAccountNumberRef, MATCH_ERROR)
