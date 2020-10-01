@@ -89,7 +89,7 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
       form: yup.string().when(['ipAddress', 'port', 'protocol'], {
         is: (ipAddress, port, protocol) => managedValidatorAddresses.includes(formatAddress(ipAddress, port, protocol)),
         otherwise: yup.string(),
-        then: yup.string().required('Address is already a managed bank'),
+        then: yup.string().required('This address is already a managed validator'),
       }),
       ipAddress: yup
         .string()
