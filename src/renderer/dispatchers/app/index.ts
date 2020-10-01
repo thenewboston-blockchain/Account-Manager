@@ -1,4 +1,4 @@
-import {getIsActivePrimaryValidator} from '@renderer/selectors';
+import {getIsActivePrimaryValidator, getIsManagedValidator, getManagedValidators} from '@renderer/selectors';
 import store from '@renderer/store';
 import {
   changeActiveBank,
@@ -54,7 +54,23 @@ export const connect = (bankAddressData: AddressData) => async (dispatch: AppDis
     throw new Error('No ValidatorConfig data');
   }
 
-  if (!getIsActivePrimaryValidator(state, primaryValidatorAddress)) {
+  if (getIsManagedValidator(state, primaryValidatorAddress)) {
+    const managedValidators = getManagedValidators(state);
+    const managedValidator = managedValidators[primaryValidatorAddress];
+    const activePrimaryValidatorData = {
+      ...managedValidator,
+      ip_address: validatorConfigResponse.data.ip_address,
+      node_identifier: validatorConfigResponse.data.node_identifier,
+      port: validatorConfigResponse.data.port,
+      protocol: validatorConfigResponse.data.protocol,
+    };
+
+    dispatch(setManagedValidator(activePrimaryValidatorData));
+
+    if (!getIsActivePrimaryValidator(state, primaryValidatorAddress)) {
+      dispatch(changeActivePrimaryValidator(activePrimaryValidatorData));
+    }
+  } else {
     const activePrimaryValidatorData = {
       ip_address: validatorConfigResponse.data.ip_address,
       nickname: '',
@@ -65,7 +81,10 @@ export const connect = (bankAddressData: AddressData) => async (dispatch: AppDis
     };
 
     dispatch(setManagedValidator(activePrimaryValidatorData));
-    dispatch(changeActivePrimaryValidator(activePrimaryValidatorData));
+
+    if (!getIsActivePrimaryValidator(state, primaryValidatorAddress)) {
+      dispatch(changeActivePrimaryValidator(activePrimaryValidatorData));
+    }
   }
 
   return {
@@ -77,7 +96,10 @@ export const connect = (bankAddressData: AddressData) => async (dispatch: AppDis
 
 export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickname: string) => async (
   dispatch: AppDispatch,
+  getState: () => RootState,
 ) => {
+  const state = getState();
+
   const connectResponse = await dispatch(connect(bankAddressData));
   if (connectResponse?.error) {
     return connectResponse;
@@ -108,16 +130,20 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
   dispatch(setManagedBank(activeBankData));
   dispatch(changeActiveBank(activeBankData));
 
-  const activePrimaryValidatorData = {
-    ip_address: validatorConfig.ip_address,
-    nickname: '',
-    nid_signing_key: '',
-    node_identifier: validatorConfig.node_identifier,
-    port: validatorConfig.port,
-    protocol: validatorConfig.protocol,
-  };
-  dispatch(setManagedValidator(activePrimaryValidatorData));
-  dispatch(changeActivePrimaryValidator(activePrimaryValidatorData));
+  const primaryValidatorAddress = formatAddressFromNode(validatorConfig);
+  if (getIsManagedValidator(state, primaryValidatorAddress)) {
+    const managedValidators = getManagedValidators(state);
+    const managedValidator = managedValidators[primaryValidatorAddress];
+    const activePrimaryValidatorData = {
+      ...managedValidator,
+      ip_address: validatorConfig.ip_address,
+      node_identifier: validatorConfig.node_identifier,
+      port: validatorConfig.port,
+      protocol: validatorConfig.protocol,
+    };
+    dispatch(setManagedValidator(activePrimaryValidatorData));
+    dispatch(changeActivePrimaryValidator(activePrimaryValidatorData));
+  }
 
   return connectResponse;
 };
