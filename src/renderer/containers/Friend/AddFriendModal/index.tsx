@@ -72,7 +72,7 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
         .test('cannot-add-own-account', 'Unable to add your own account as a friend', (accnum) => {
           return !managedAccountNumbers.includes(accnum);
         })
-        .test('friend-already-exists', "This friend's account already exists", (accnum) => {
+        .test('friend-already-exists', 'This friend already exists', (accnum) => {
           return !managedFriendsAccountNumbers.includes(accnum);
         }),
       nickname: yup.string().notOneOf(managedFriendNicknames, 'That nickname is already taken'),
