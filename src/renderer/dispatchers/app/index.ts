@@ -1,4 +1,11 @@
-import {getIsActivePrimaryValidator, getIsManagedValidator, getManagedValidators} from '@renderer/selectors';
+import {
+  getIsActiveBank,
+  getIsActivePrimaryValidator,
+  getIsManagedBank,
+  getIsManagedValidator,
+  getManagedBanks,
+  getManagedValidators,
+} from '@renderer/selectors';
 import store from '@renderer/store';
 import {
   changeActiveBank,
@@ -118,17 +125,40 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
     };
   }
 
-  const activeBankData = {
-    ip_address: bankConfig.ip_address,
-    nickname: bankNickname,
-    nid_signing_key: '',
-    node_identifier: bankConfig.node_identifier,
-    port: bankConfig.port,
-    protocol: bankConfig.protocol,
-  };
+  const bankAddress = formatAddressFromNode(bankAddressData);
+  if (getIsManagedBank(state, bankAddress)) {
+    const managedBanks = getManagedBanks(state);
+    const managedBank = managedBanks[bankAddress];
+    const activeBankData = {
+      ...managedBank,
+      ip_address: bankConfig.ip_address,
+      nickname: bankNickname,
+      node_identifier: bankConfig.node_identifier,
+      port: bankConfig.port,
+      protocol: bankConfig.protocol,
+    };
 
-  dispatch(setManagedBank(activeBankData));
-  dispatch(changeActiveBank(activeBankData));
+    dispatch(setManagedBank(activeBankData));
+
+    if (!getIsActiveBank(state, bankAddress)) {
+      dispatch(changeActiveBank(activeBankData));
+    }
+  } else {
+    const activeBankData = {
+      ip_address: bankConfig.ip_address,
+      nickname: bankNickname,
+      nid_signing_key: '',
+      node_identifier: bankConfig.node_identifier,
+      port: bankConfig.port,
+      protocol: bankConfig.protocol,
+    };
+
+    dispatch(setManagedBank(activeBankData));
+
+    if (!getIsActiveBank(state, bankAddress)) {
+      dispatch(changeActiveBank(activeBankData));
+    }
+  }
 
   const primaryValidatorAddress = formatAddressFromNode(validatorConfig);
   if (getIsManagedValidator(state, primaryValidatorAddress)) {
