@@ -1,15 +1,16 @@
+import {getIsActivePrimaryValidator} from '@renderer/selectors';
 import store from '@renderer/store';
 import {
   changeActiveBank,
+  changeActivePrimaryValidator,
   clearManagedAccounts,
   clearManagedBanks,
   clearManagedFriends,
   clearManagedValidators,
   setManagedBank,
   setManagedValidator,
-  unsetActivePrimaryValidator,
 } from '@renderer/store/app';
-import {AddressData, AppDispatch} from '@renderer/types';
+import {AddressData, AppDispatch, RootState} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 
 import {fetchBankConfig} from '../banks';
@@ -22,7 +23,9 @@ export const clearLocalState = () => (dispatch: AppDispatch) => {
   dispatch(clearManagedValidators());
 };
 
-export const connect = (bankAddressData: AddressData) => async (dispatch: AppDispatch) => {
+export const connect = (bankAddressData: AddressData) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const state = getState();
+
   const address = formatAddressFromNode(bankAddressData);
   const bankConfig = await dispatch(fetchBankConfig(address));
   if (bankConfig.error) {
@@ -38,22 +41,37 @@ export const connect = (bankAddressData: AddressData) => async (dispatch: AppDis
   const {primary_validator: primaryValidator} = bankConfig.data;
 
   const primaryValidatorAddress = formatAddressFromNode(primaryValidator);
-  const validatorConfig = await dispatch(fetchValidatorConfig(primaryValidatorAddress));
-  if (validatorConfig.error) {
+
+  const validatorConfigResponse = await dispatch(fetchValidatorConfig(primaryValidatorAddress));
+  if (validatorConfigResponse.error) {
     return {
-      address: validatorConfig.error,
-      error: validatorConfig.error,
+      address: validatorConfigResponse.error,
+      error: validatorConfigResponse.error,
     };
   }
 
-  if (!validatorConfig.data) {
+  if (!validatorConfigResponse.data) {
     throw new Error('No ValidatorConfig data');
+  }
+
+  if (!getIsActivePrimaryValidator(state, primaryValidatorAddress)) {
+    const activePrimaryValidatorData = {
+      ip_address: validatorConfigResponse.data.ip_address,
+      nickname: '',
+      nid_signing_key: '',
+      node_identifier: validatorConfigResponse.data.node_identifier,
+      port: validatorConfigResponse.data.port,
+      protocol: validatorConfigResponse.data.protocol,
+    };
+
+    dispatch(setManagedValidator(activePrimaryValidatorData));
+    dispatch(changeActivePrimaryValidator(activePrimaryValidatorData));
   }
 
   return {
     address,
     bankConfig: bankConfig.data,
-    validatorConfig: validatorConfig.data,
+    validatorConfig: validatorConfigResponse.data,
   };
 };
 
@@ -88,19 +106,18 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
   };
 
   dispatch(setManagedBank(activeBankData));
-  dispatch(changeActiveBank({...activeBankData, is_default: true}));
+  dispatch(changeActiveBank(activeBankData));
 
   const activePrimaryValidatorData = {
     ip_address: validatorConfig.ip_address,
-    is_default: true,
     nickname: '',
     nid_signing_key: '',
     node_identifier: validatorConfig.node_identifier,
     port: validatorConfig.port,
     protocol: validatorConfig.protocol,
   };
-  dispatch(unsetActivePrimaryValidator());
   dispatch(setManagedValidator(activePrimaryValidatorData));
+  dispatch(changeActivePrimaryValidator(activePrimaryValidatorData));
 
   return connectResponse;
 };
