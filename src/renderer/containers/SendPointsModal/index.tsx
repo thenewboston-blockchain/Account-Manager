@@ -91,12 +91,12 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
 
   const validationSchema = useMemo(() => {
     const senderAccountNumberRef = yup.ref('senderAccountNumber');
-
     return yup.object().shape({
       points: yup
         .number()
         .callbackWithRef(senderAccountNumberRef, checkPointsWithBalance, INVALID_AMOUNT_ERROR)
         .moreThan(0, 'Points must be greater than 0')
+        .integer('Points cannot be a decimal')
         .required('Points is a required field'),
       recipientAccountNumber: yup
         .string()
