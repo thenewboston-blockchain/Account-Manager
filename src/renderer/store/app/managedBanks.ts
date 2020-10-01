@@ -15,9 +15,9 @@ const managedBanks = createSlice({
   initialState: (localStore.get(getStateName(MANAGED_BANKS)) || {}) as Dict<ManagedNode>,
   name: MANAGED_BANKS,
   reducers: {
-    changeActiveBank: changeActiveNodeReducer<ManagedNode>(MANAGED_BANKS),
+    changeActiveBank: changeActiveNodeReducer<Omit<ManagedNode, 'is_default'>>(MANAGED_BANKS),
     clearManagedBanks: clearLocalAndStateReducer(),
-    setManagedBank: setLocalAndAddressReducer<ManagedNode>(MANAGED_BANKS),
+    setManagedBank: setLocalAndAddressReducer<Omit<ManagedNode, 'is_default'>>(MANAGED_BANKS),
     unsetManagedBank: unsetLocalAndAddressReducer(MANAGED_BANKS),
   },
 });
