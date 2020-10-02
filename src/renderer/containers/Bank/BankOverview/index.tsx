@@ -1,7 +1,8 @@
 import React, {FC} from 'react';
 
-import DetailPanel from '@renderer/components/DetailPanel';
+import {TilePrimaryAmount, TileKeyValueList, TileBankSigningDetails} from '@renderer/components/Tiles';
 import {Loader} from '@renderer/components/FormElements';
+
 import {BANK_CONFIGS} from '@renderer/constants';
 import {useNetworkConfigFetcher} from '@renderer/hooks';
 import {BankConfig} from '@renderer/types';
@@ -16,43 +17,52 @@ const BankOverview: FC = () => {
       {loading || !bankConfig ? (
         <Loader />
       ) : (
-        <DetailPanel
-          items={[
-            {
-              key: 'Account Number',
-              value: bankConfig.account_number,
-            },
-            {
-              key: 'IP Address',
-              value: bankConfig.ip_address,
-            },
-            {
-              key: 'Network ID',
-              value: bankConfig.node_identifier,
-            },
-            {
-              key: 'Port',
-              value: bankConfig.port || '-',
-            },
-            {
-              key: 'Protocol',
-              value: bankConfig.protocol,
-            },
-            {
-              key: 'Version',
-              value: bankConfig.version,
-            },
-            {
-              key: 'Tx Fee',
-              value: bankConfig.default_transaction_fee,
-            },
-            {
-              key: 'Node Type',
-              value: bankConfig.node_type,
-            },
-          ]}
-          title="Bank Information"
-        />
+        <>
+          <div className="BankOverview__left">
+            <TilePrimaryAmount title="Tx Fee /per tx" amount={bankConfig.default_transaction_fee} />
+            <TilePrimaryAmount title="Confirmation Services" amount={-1} />
+            <TileKeyValueList
+              items={[
+                {
+                  key: 'IP Address',
+                  value: bankConfig.ip_address,
+                },
+                {
+                  key: 'Port',
+                  value: bankConfig.port || '-',
+                },
+                {
+                  key: 'Protocol',
+                  value: bankConfig.protocol,
+                },
+                {
+                  key: 'Version',
+                  value: bankConfig.version,
+                },
+                {
+                  key: 'Node Type',
+                  value: bankConfig.node_type,
+                },
+              ]}
+            />
+          </div>
+          <div className="BankOverview__right">
+            <TileBankSigningDetails
+              items={[
+                {
+                  key: 'bankNetworkId',
+                  title: 'Bank Network ID',
+                  value: bankConfig.node_identifier.toString(),
+                },
+                {
+                  key: 'bankAccountNumber',
+                  title: 'Bank Account Number',
+                  value: bankConfig.account_number.toString(),
+                },
+              ]}
+            />
+          </div>
+        </>
       )}
     </div>
   );
