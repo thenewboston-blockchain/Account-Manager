@@ -104,7 +104,7 @@ const Bank: FC = () => {
   };
 
   const renderAuthenticatedBadge = (): ReactNode => {
-    if (!managedBank?.nid_signing_key) return null;
+    if (!(managedBank?.acc_signing_key && managedBank?.nid_signing_key)) return null;
     return <Badge color="tertiary" text="Authenticated" />;
   };
 
