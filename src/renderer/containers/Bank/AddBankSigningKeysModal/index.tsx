@@ -9,6 +9,7 @@ import {getBankConfigs, getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
 import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
+import {displayToast} from '@renderer/utils/toast';
 import yup from '@renderer/utils/yup';
 
 interface ComponentProps {
@@ -16,73 +17,83 @@ interface ComponentProps {
 }
 
 const initialValues = {
-  signingKey: '',
+  accountSigningKey: '',
+  nidSigningKey: '',
 };
 
 type FormValues = typeof initialValues;
 
-const AddBankSigningKeyModal: FC<ComponentProps> = ({close}) => {
+const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
   const bankConfigs = useSelector(getBankConfigs);
   const {
-    data: {node_identifier: nodeIdentifier},
+    data: {account_number: accountNumber, node_identifier: nodeIdentifier},
   } = bankConfigs[address];
   const managedBanks = useSelector(getManagedBanks);
   const managedBank = managedBanks[address];
 
-  const handleSubmit = ({signingKey}: FormValues): void => {
+  const handleSubmit = ({accountSigningKey, nidSigningKey}: FormValues): void => {
     dispatch(
       setManagedBank({
         ...managedBank,
-        nid_signing_key: signingKey,
+        acc_signing_key: accountSigningKey,
+        nid_signing_key: nidSigningKey,
       }),
     );
+    displayToast('Bank is now authenticated', 'success');
     close();
   };
 
-  const managedBankSigningKeys = useMemo(
-    () =>
-      Object.values(managedBanks)
-        .filter(({nid_signing_key}) => !!nid_signing_key)
-        .map(({nid_signing_key}) => nid_signing_key),
-    [managedBanks],
-  );
+  const checkPrivateSigningKey = (publicKey: string, privateKey: string): boolean => {
+    try {
+      const {publicKeyHex} = getKeyPairFromSigningKeyHex(privateKey);
+      return publicKeyHex === publicKey;
+    } catch (error) {
+      return false;
+    }
+  };
 
   const validationSchema = useMemo(() => {
     return yup.object().shape({
-      signingKey: yup
+      accountSigningKey: yup
         .string()
         .length(64, SIGNING_KEY_LENGTH_ERROR)
-        .notOneOf(managedBankSigningKeys, 'That bank already exists')
+        .required(SIGNING_KEY_REQUIRED_ERROR)
+        .test({
+          message: 'Resulting public key does not match Account',
+          name: 'is-valid-private-key-account',
+          test: (key: string) => {
+            return checkPrivateSigningKey(accountNumber, key);
+          },
+        }),
+      nidSigningKey: yup
+        .string()
+        .length(64, SIGNING_KEY_LENGTH_ERROR)
         .required(SIGNING_KEY_REQUIRED_ERROR)
         .test({
           message: 'Resulting public key does not match NID',
-          name: 'is-valid-private-key',
-          test: (value: string) => {
-            try {
-              const {publicKeyHex} = getKeyPairFromSigningKeyHex(value);
-              return publicKeyHex === nodeIdentifier;
-            } catch (error) {
-              return false;
-            }
+          name: 'is-valid-private-key-nid',
+          test: (key: string) => {
+            return checkPrivateSigningKey(nodeIdentifier, key);
           },
         }),
     });
-  }, [managedBankSigningKeys, nodeIdentifier]);
+  }, [accountNumber, nodeIdentifier]);
 
   return (
     <Modal
       close={close}
-      header="Add NID Signing Key"
+      header="Add Signing Keys"
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitButton="Save"
       validationSchema={validationSchema}
     >
-      <FormTextArea focused label="Signing Key" name="signingKey" required />
+      <FormTextArea focused label="Bank NID Signing Key" name="nidSigningKey" required />
+      <FormTextArea label="Bank Account Signing Key" name="accountSigningKey" required />
     </Modal>
   );
 };
 
-export default AddBankSigningKeyModal;
+export default AddBankSigningKeysModal;

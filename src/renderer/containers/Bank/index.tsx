@@ -61,39 +61,27 @@ const Bank: FC = () => {
         label: 'Set as Active Bank',
         onClick: toggleSetAsActiveBankModal,
       },
+      {
+        label: `${
+          !!managedBank.acc_signing_key && !!managedBank.nid_signing_key ? 'Edit' : 'Add'
+        } Signing Keys (For DEVOPS)`,
+        onClick: toggleSigningKeyModal,
+      },
     ];
 
-    const signingKeyOption = !managedBank.nid_signing_key
-      ? {
-          label: 'Add Signing Keys (For DEVOPS)',
-          onClick: toggleSigningKeyModal,
-        }
-      : {
-          label: 'Remove NID Signing Key',
-          onClick: handleRemoveSigningKey,
-        };
-
-    return sortBy([...menuOptions, signingKeyOption], ['label']);
+    return sortBy(menuOptions, ['label']);
   };
 
   const handleAddManagedBank = (): void => {
     const {ipAddress, port, protocol} = parseAddressData(address);
     dispatch(
       setManagedBank({
+        acc_signing_key: '',
         ip_address: ipAddress,
         nickname: '',
         nid_signing_key: '',
         port,
         protocol,
-      }),
-    );
-  };
-
-  const handleRemoveSigningKey = (): void => {
-    dispatch(
-      setManagedBank({
-        ...managedBank,
-        nid_signing_key: '',
       }),
     );
   };
