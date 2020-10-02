@@ -71,12 +71,12 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, direction = Dropdown
   const handleOptionKeyDown = (optionOnClick: GenericVoidFunction, index: number, disabled: boolean) => async (
     e: KeyboardEvent<HTMLDivElement>,
   ): Promise<void> => {
-    if (index !== options.length - 1 && e.key === 'ArrowDown') {
+    if (e.key === 'ArrowDown' && index !== options.length - 1) {
       optionsRef.current[index + 1]?.focus();
       return;
     }
 
-    if (index !== 0 && e.key === 'ArrowUp') {
+    if (e.key === 'ArrowUp' && index !== 0) {
       optionsRef.current[index - 1]?.focus();
       return;
     }
