@@ -51,6 +51,17 @@
         border-color: var(--color-tertiary);
       }
     }
+
+    &#{$self}--white {
+      color: var(--color-secondary);
+      background: var(--color-white);
+      border-color: var(--color-gray-100);
+
+      &:hover {
+        background: var(--color-white);
+        border-color: var(--color-gray-100);
+      }
+    }
   }
 
   &--link {
