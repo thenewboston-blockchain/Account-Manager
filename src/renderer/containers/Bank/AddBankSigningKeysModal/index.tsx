@@ -33,6 +33,11 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
   const managedBanks = useSelector(getManagedBanks);
   const managedBank = managedBanks[address];
 
+  const headerTitle = useMemo(() => {
+    const prefix = !!managedBank.acc_signing_key && !!managedBank.nid_signing_key ? 'Edit' : 'Add';
+    return `${prefix} Signing Keys`;
+  }, [managedBank]);
+
   const handleSubmit = ({accountSigningKey, nidSigningKey}: FormValues): void => {
     dispatch(
       setManagedBank({
@@ -84,7 +89,7 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
   return (
     <Modal
       close={close}
-      header="Add Signing Keys"
+      header={headerTitle}
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitButton="Save"
