@@ -68,18 +68,20 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, direction = Dropdown
     closeMenu();
   };
 
-  const handleOptionKeyDown = (optionOnClick: GenericVoidFunction, index: number) => async (
+  const handleOptionKeyDown = (optionOnClick: GenericVoidFunction, index: number, disabled: boolean) => async (
     e: KeyboardEvent<HTMLDivElement>,
   ): Promise<void> => {
     if (index !== options.length - 1 && e.key === 'ArrowDown') {
       optionsRef.current[index + 1]?.focus();
       return;
     }
+
     if (index !== 0 && e.key === 'ArrowUp') {
       optionsRef.current[index - 1]?.focus();
       return;
     }
-    if (e.key === 'Enter') {
+
+    if (e.key === 'Enter' && !disabled) {
       await optionOnClick();
       closeMenu();
     }
@@ -110,7 +112,7 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, direction = Dropdown
                     ...getCustomClassNames(className, '__option--disabled', disabled),
                   })}
                   key={JSON.stringify(label)}
-                  onKeyDown={disabled ? noop : handleOptionKeyDown(optionOnClick, index)}
+                  onKeyDown={handleOptionKeyDown(optionOnClick, index, disabled)}
                   onClick={disabled ? noop : handleOptionClick(optionOnClick)}
                   ref={(el) => {
                     if (el) {
