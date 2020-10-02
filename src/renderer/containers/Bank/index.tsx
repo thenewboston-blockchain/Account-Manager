@@ -15,7 +15,7 @@ import {setManagedBank} from '@renderer/store/app';
 import {AppDispatch, RootState} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
 
-import AddBankSigningKeyModal from './AddBankSigningKeyModal';
+import AddBankSigningKeysModal from './AddBankSigningKeysModal';
 import BankAccounts from './BankAccounts';
 import BankBanks from './BankBanks';
 import BankBlocks from './BankBlocks';
@@ -228,7 +228,7 @@ const Bank: FC = () => {
   return (
     <div className="Bank">
       <PageLayout content={renderTabContent()} top={renderTop()} />
-      {addSigningKeyModalIsOpen && <AddBankSigningKeyModal close={toggleSigningKeyModal} />}
+      {addSigningKeyModalIsOpen && <AddBankSigningKeysModal close={toggleSigningKeyModal} />}
       {editNicknameModalIsOpen && <EditBankNicknameModal close={toggleEditNicknameModal} bank={managedBank} />}
       {removeBankModalIsOpen && <RemoveBankModal close={toggleRemoveBankModal} bank={managedBank} />}
       {setAsActiveBankModalIsOpen && <SetAsActiveBankModal close={toggleSetAsActiveBankModal} bank={managedBank} />}
