@@ -65,7 +65,7 @@ const Bank: FC = () => {
 
     const signingKeyOption = !managedBank.nid_signing_key
       ? {
-          label: 'Add NID Signing Key',
+          label: 'Add Signing Keys (For DEVOPS)',
           onClick: toggleSigningKeyModal,
         }
       : {
@@ -98,9 +98,14 @@ const Bank: FC = () => {
     );
   };
 
+  const renderActiveBadge = (): ReactNode => {
+    if (!managedBank?.is_default) return null;
+    return <Badge color="secondary" text="Active" />;
+  };
+
   const renderAuthenticatedBadge = (): ReactNode => {
     if (!managedBank?.nid_signing_key) return null;
-    return <Badge color="secondary" text="Authenticated" />;
+    return <Badge color="tertiary" text="Authenticated" />;
   };
 
   const renderRightPageHeaderButtons = (): ReactNode => {
@@ -171,7 +176,7 @@ const Bank: FC = () => {
     <>
       <PageHeader
         dropdownMenuOptions={getDropdownMenuOptions()}
-        leftContent={renderAuthenticatedBadge()}
+        leftContent={[renderActiveBadge(), renderAuthenticatedBadge()]}
         rightContent={renderRightPageHeaderButtons()}
         title={renderTitle()}
       />

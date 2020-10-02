@@ -6,7 +6,7 @@ import './PageHeader.scss';
 
 interface ComponentProps {
   dropdownMenuOptions?: DropdownMenuOption[];
-  leftContent?: ReactNode;
+  leftContent?: ReactNode[];
   rightContent?: ReactNode;
   title: string;
 }
