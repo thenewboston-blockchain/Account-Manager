@@ -6,7 +6,7 @@ import './Button.scss';
 
 export interface BaseButtonProps {
   className?: string;
-  color?: 'primary' | 'secondary' | 'tertiary';
+  color?: 'primary' | 'secondary' | 'tertiary' | 'white';
   disabled?: boolean;
   focused?: boolean;
   onClick?(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
