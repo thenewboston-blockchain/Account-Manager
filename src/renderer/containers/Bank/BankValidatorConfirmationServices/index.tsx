@@ -32,10 +32,10 @@ const BankValidatorConfirmationServices: FC = () => {
       bankValidatorConfirmationServices.map((validatorConfirmationService) => ({
         key: validatorConfirmationService.id,
         [TableKeys.createdDate]: formatDate(validatorConfirmationService.created_date),
-        [TableKeys.end]: validatorConfirmationService.end,
+        [TableKeys.end]: formatDate(validatorConfirmationService.end),
         [TableKeys.id]: validatorConfirmationService.id,
         [TableKeys.modifiedDate]: formatDate(validatorConfirmationService.modified_date),
-        [TableKeys.start]: validatorConfirmationService.start,
+        [TableKeys.start]: formatDate(validatorConfirmationService.start),
         [TableKeys.validator]: validatorConfirmationService.validator,
       })) || [],
     [bankValidatorConfirmationServices],
