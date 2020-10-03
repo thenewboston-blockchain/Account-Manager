@@ -4,6 +4,14 @@
   padding: 4px 8px;
   margin: 0 5px;
 
+  &:not(&--clickable) {
+    cursor: default;
+  }
+
+  &--clickable {
+    cursor: pointer;
+  }
+
   &--primary {
     color: var(--color-white);
     font-weight: 400;
@@ -20,5 +28,10 @@
     color: var(--color-green-500);
     font-weight: 700;
     background: var(--color-green-100);
+  }
+
+  &--transparent {
+    color: var(--color-secondary);
+    padding: 0;
   }
 }
