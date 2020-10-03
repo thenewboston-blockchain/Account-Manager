@@ -5,7 +5,7 @@ import {FormTextArea} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import {SIGNING_KEY_LENGTH_ERROR, SIGNING_KEY_REQUIRED_ERROR} from '@renderer/constants/form-validation';
 import {useAddress} from '@renderer/hooks';
-import {getBankConfigs, getManagedBanks} from '@renderer/selectors';
+import {getBankConfigs, getManagedAccounts, getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
 import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
@@ -16,13 +16,6 @@ interface ComponentProps {
   close(): void;
 }
 
-const initialValues = {
-  accountSigningKey: '',
-  nidSigningKey: '',
-};
-
-type FormValues = typeof initialValues;
-
 const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
@@ -32,6 +25,16 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
   } = bankConfigs[address];
   const managedBanks = useSelector(getManagedBanks);
   const managedBank = managedBanks[address];
+  const managedAccounts = useSelector(getManagedAccounts);
+
+  const initialValues = {
+    accountSigningKey:
+      Object.values(managedAccounts).find((macc) => macc.account_number === accountNumber)?.signing_key ||
+      managedBank.acc_signing_key,
+    nidSigningKey: managedBank.nid_signing_key,
+  };
+
+  type FormValues = typeof initialValues;
 
   const headerTitle = useMemo(() => {
     const prefix = !!managedBank.acc_signing_key && !!managedBank.nid_signing_key ? 'Edit' : 'Add';
