@@ -37,7 +37,7 @@ const TileBankSigningDetails: FC<ComponentProps> = ({className, items}) => {
 
   const signingKeysButtonText = useMemo(() => {
     const prefix = !!managedBank.acc_signing_key && !!managedBank.nid_signing_key ? 'Edit' : 'Add';
-    return `${prefix} Signing Keys`;
+    return `${prefix} Signing Keys (For DEVOPS)`;
   }, [managedBank]);
 
   const handleCopy = (value: string): void => {
