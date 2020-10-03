@@ -1,18 +1,21 @@
 import React, {FC, memo} from 'react';
 import clsx from 'clsx';
 
+import Loader from '@renderer/components/FormElements/Loader';
+
 import {getCustomClassNames} from '@renderer/utils/components';
 
 import Tile from '../Tile';
 import './TilePrimaryAmount.scss';
 
 interface ComponentProps {
-  title: string;
   amount: number;
   className?: string;
+  loading: boolean;
+  title: string;
 }
 
-const TilePrimaryAmount: FC<ComponentProps> = ({title, amount, className}) => {
+const TilePrimaryAmount: FC<ComponentProps> = ({amount, className, loading, title}) => {
   return (
     <Tile className={clsx('TilePrimaryAmount', className)}>
       <>
@@ -20,7 +23,7 @@ const TilePrimaryAmount: FC<ComponentProps> = ({title, amount, className}) => {
           {title}
         </div>
         <div className={clsx('TilePrimaryAmount__amount', {...getCustomClassNames(className, '__amount', true)})}>
-          {amount}
+          {loading ? <Loader /> : amount}
         </div>
       </>
     </Tile>

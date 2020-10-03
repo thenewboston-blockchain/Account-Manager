@@ -3,14 +3,18 @@ import React, {FC} from 'react';
 import {TilePrimaryAmount, TileKeyValueList, TileBankSigningDetails} from '@renderer/components/Tiles';
 import {Loader} from '@renderer/components/FormElements';
 
-import {BANK_CONFIGS} from '@renderer/constants';
-import {useNetworkConfigFetcher} from '@renderer/hooks';
-import {BankConfig} from '@renderer/types';
+import {BANK_CONFIGS, BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants';
+import {useAddress, usePaginatedNetworkDataFetcher, useNetworkConfigFetcher} from '@renderer/hooks';
+import {BankConfig, ValidatorConfirmationService} from '@renderer/types';
 
 import './BankOverview.scss';
 
 const BankOverview: FC = () => {
+  const address = useAddress();
   const {data: bankConfig, loading} = useNetworkConfigFetcher<BankConfig>(BANK_CONFIGS);
+  const {count: confirmationServiceCount, loading: confirmationServiceLoading} = usePaginatedNetworkDataFetcher<
+    ValidatorConfirmationService
+  >(BANK_VALIDATOR_CONFIRMATION_SERVICES, address);
 
   return (
     <div className="BankOverview">
@@ -20,7 +24,11 @@ const BankOverview: FC = () => {
         <>
           <div className="BankOverview__left">
             <TilePrimaryAmount title="Tx Fee /per tx" amount={bankConfig.default_transaction_fee} />
-            <TilePrimaryAmount title="Confirmation Services" amount={-1} />
+            <TilePrimaryAmount
+              title="Confirmation Services"
+              loading={confirmationServiceLoading}
+              amount={confirmationServiceCount}
+            />
             <TileKeyValueList
               items={[
                 {
