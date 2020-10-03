@@ -22,6 +22,7 @@ import PencilIcon from 'mdi-react/PencilIcon';
 import PowerIcon from 'mdi-react/PowerIcon';
 import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
+import LinkIcon from 'mdi-react/LinkIcon';
 import RadioboxBlankIcon from 'mdi-react/RadioboxBlankIcon';
 import RadioboxMarkedIcon from 'mdi-react/RadioboxMarkedIcon';
 import RefreshIcon from 'mdi-react/RefreshIcon';
@@ -49,6 +50,7 @@ export enum IconType {
   lanConnect,
   lanDisconnect,
   loading,
+  link,
   pencil,
   play,
   plus,
@@ -134,6 +136,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
           return <LanDisconnectIcon {...iconProps} />;
         case IconType.loading:
           return <LoadingIcon {...iconProps} />;
+        case IconType.link:
+          return <LinkIcon {...iconProps} />;
         case IconType.pencil:
           return <PencilIcon {...iconProps} />;
         case IconType.play:
