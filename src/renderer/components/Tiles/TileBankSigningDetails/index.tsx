@@ -1,12 +1,17 @@
-import React, {FC, memo, ReactNode} from 'react';
+import React, {FC, memo, useMemo, ReactNode} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
 
-import {getCustomClassNames} from '@renderer/utils/components';
+import AddBankSigningKeysModal from '@renderer/containers/Bank/AddBankSigningKeysModal';
+
+import {getManagedBanks} from '@renderer/selectors';
+import {useAddress, useBooleanState} from '@renderer/hooks';
 
 import {Button} from '@renderer/components/FormElements';
 import Icon, {IconType} from '@renderer/components/Icon';
 
+import {getCustomClassNames} from '@renderer/utils/components';
 import {displayToast} from '@renderer/utils/toast';
 
 import Tile from '../Tile';
@@ -24,6 +29,17 @@ interface ComponentProps {
 }
 
 const TileBankSigningDetails: FC<ComponentProps> = ({className, items}) => {
+  const [addSigningKeyModalIsOpen, toggleSigningKeyModal] = useBooleanState(false);
+
+  const address = useAddress();
+  const managedBanks = useSelector(getManagedBanks);
+  const managedBank = managedBanks[address];
+
+  const signingKeysButtonText = useMemo(() => {
+    const prefix = !!managedBank.acc_signing_key && !!managedBank.nid_signing_key ? 'Edit' : 'Add';
+    return `${prefix} Signing Keys`;
+  }, [managedBank]);
+
   const handleCopy = (value: string): void => {
     displayToast(`${items.find((e) => e.value === value)?.title} copied to the clipboard`, 'success');
   };
@@ -55,7 +71,10 @@ const TileBankSigningDetails: FC<ComponentProps> = ({className, items}) => {
     <Tile className={clsx('TileBankSigningDetails', className)}>
       <>
         {renderList()}
-        <Button color="white">Add NID Signing Key</Button>
+        <Button color="white" onClick={toggleSigningKeyModal}>
+          {signingKeysButtonText}
+        </Button>
+        {addSigningKeyModalIsOpen && <AddBankSigningKeysModal close={toggleSigningKeyModal} />}
       </>
     </Tile>
   );
