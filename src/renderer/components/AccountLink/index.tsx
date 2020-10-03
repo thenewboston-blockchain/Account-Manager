@@ -5,11 +5,12 @@ import './AccountLink.scss';
 
 interface ComponentProps {
   accountNumber: string;
+  managedType: string;
 }
 
-const AccountLink: FC<ComponentProps> = ({accountNumber}) => {
+const AccountLink: FC<ComponentProps> = ({accountNumber, managedType}) => {
   return (
-    <NavLink className="AccountLink" to={`/account/${accountNumber}/overview`}>
+    <NavLink className="AccountLink" to={`/${managedType}/${accountNumber}/overview`}>
       {accountNumber}
     </NavLink>
   );

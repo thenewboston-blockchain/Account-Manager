@@ -3,7 +3,7 @@ import React, {FC, useMemo} from 'react';
 import AccountLink from '@renderer/components/AccountLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {BANK_BANK_TRANSACTIONS} from '@renderer/constants';
+import {ACCOUNT, BANK_BANK_TRANSACTIONS} from '@renderer/constants';
 import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BankTransaction} from '@renderer/types';
 
@@ -33,8 +33,8 @@ const BankTransactions: FC = () => {
         [TableKeys.amount]: bankTransaction.amount,
         [TableKeys.block]: bankTransaction.block.id,
         [TableKeys.id]: bankTransaction.id,
-        [TableKeys.recipient]: <AccountLink accountNumber={bankTransaction.recipient} />,
-        [TableKeys.sender]: <AccountLink accountNumber={bankTransaction.block.sender} />,
+        [TableKeys.recipient]: <AccountLink accountNumber={bankTransaction.recipient} managedType={ACCOUNT} />,
+        [TableKeys.sender]: <AccountLink accountNumber={bankTransaction.block.sender} managedType={ACCOUNT} />,
       })) || [],
     [bankBankTransactions],
   );

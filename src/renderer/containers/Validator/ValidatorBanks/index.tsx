@@ -6,7 +6,7 @@ import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
-import {VALIDATOR_BANKS} from '@renderer/constants';
+import {ACCOUNT, VALIDATOR_BANKS} from '@renderer/constants';
 import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {ManagedNode, Node, ValidatorBank} from '@renderer/types';
 
@@ -50,7 +50,7 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
     () =>
       validatorBanks.map((bank) => ({
         key: bank.node_identifier,
-        [TableKeys.accountNumber]: <AccountLink accountNumber={bank.account_number} />,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={bank.account_number} managedType={ACCOUNT} />,
         [TableKeys.confirmationExpiration]: bank.confirmation_expiration,
         [TableKeys.defaultTransactionFee]: bank.default_transaction_fee,
         [TableKeys.ipAddress]: <NodeLink node={bank} urlBase="bank" />,

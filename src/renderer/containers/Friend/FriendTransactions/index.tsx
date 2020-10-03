@@ -5,9 +5,9 @@ import {useParams} from 'react-router-dom';
 import AccountLink from '@renderer/components/AccountLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {BANK_BANK_TRANSACTIONS} from '@renderer/constants';
+import {ACCOUNT, BANK_BANK_TRANSACTIONS, FRIEND} from '@renderer/constants';
 import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
-import {getActiveBankConfig} from '@renderer/selectors';
+import {getActiveBankConfig, getManagedFriends} from '@renderer/selectors';
 import {BankTransaction} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 import {formatDate} from '@renderer/utils/dates';
@@ -28,19 +28,27 @@ const FriendTransactions: FC = () => {
   const {count, currentPage, loading, results: bankTransactions, setPage, totalPages} = usePaginatedNetworkDataFetcher<
     BankTransaction
   >(BANK_BANK_TRANSACTIONS, activeBankAddress, {account_number: accountNumber});
-
+  const managedFriends = useSelector(getManagedFriends);
   const bankTransactionsTableData = useMemo<PageTableData[]>(
     () =>
-      bankTransactions.map((bankTransaction) => ({
-        key: bankTransaction.id,
-        [TableKeys.amount]: bankTransaction.amount,
-        [TableKeys.balanceKey]: bankTransaction.block.balance_key,
-        [TableKeys.dateCreated]: formatDate(bankTransaction.block.created_date),
-        [TableKeys.recipientAccountNumber]: <AccountLink accountNumber={bankTransaction.recipient} />,
-        [TableKeys.senderAccountNumber]: <AccountLink accountNumber={bankTransaction.block.sender} />,
-        [TableKeys.signature]: bankTransaction.block.signature,
-      })) || [],
-    [bankTransactions],
+      bankTransactions.map((bankTransaction) => {
+        const recipientType = managedFriends[bankTransaction.recipient] ? FRIEND : ACCOUNT;
+        const senderType = managedFriends[bankTransaction.block.sender] ? FRIEND : ACCOUNT;
+        return {
+          key: bankTransaction.id,
+          [TableKeys.amount]: bankTransaction.amount,
+          [TableKeys.balanceKey]: bankTransaction.block.balance_key,
+          [TableKeys.dateCreated]: formatDate(bankTransaction.block.created_date),
+          [TableKeys.recipientAccountNumber]: (
+            <AccountLink accountNumber={bankTransaction.recipient} managedType={recipientType} />
+          ),
+          [TableKeys.senderAccountNumber]: (
+            <AccountLink accountNumber={bankTransaction.block.sender} managedType={senderType} />
+          ),
+          [TableKeys.signature]: bankTransaction.block.signature,
+        };
+      }) || [],
+    [bankTransactions, managedFriends],
   );
 
   const pageTableItems = useMemo<PageTableItems>(

@@ -5,7 +5,7 @@ import Icon, {IconType} from '@renderer/components/Icon';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
-import {BANK_ACCOUNTS} from '@renderer/constants';
+import {ACCOUNT, BANK_ACCOUNTS} from '@renderer/constants';
 import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BankAccount, ManagedNode} from '@renderer/types';
 import {formatDate} from '@renderer/utils/dates';
@@ -46,7 +46,7 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
     () =>
       bankAccounts.map((account) => ({
         key: account.account_number,
-        [TableKeys.accountNumber]: <AccountLink accountNumber={account.account_number} />,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={account.account_number} managedType={ACCOUNT} />,
         [TableKeys.createdDate]: formatDate(account.created_date),
         [TableKeys.id]: account.id,
         [TableKeys.modifiedDate]: formatDate(account.modified_date),

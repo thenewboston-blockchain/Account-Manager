@@ -3,7 +3,7 @@ import React, {FC, useMemo} from 'react';
 import AccountLink from '@renderer/components/AccountLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {VALIDATOR_ACCOUNTS} from '@renderer/constants';
+import {ACCOUNT, VALIDATOR_ACCOUNTS} from '@renderer/constants';
 import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {ValidatorAccount} from '@renderer/types';
 
@@ -23,7 +23,7 @@ const ValidatorAccounts: FC = () => {
     () =>
       validatorAccounts.map((account) => ({
         key: account.id,
-        [TableKeys.accountNumber]: <AccountLink accountNumber={account.account_number} />,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={account.account_number} managedType={ACCOUNT} />,
         [TableKeys.balanceLock]: account.balance_lock,
         [TableKeys.balance]: account.balance,
       })) || [],

@@ -25,7 +25,6 @@ const Friend: FC = () => {
   const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
   const managedFriends = useSelector(getManagedFriends);
   const managedFriend = managedFriends[accountNumber];
-
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
     if (!managedFriend) return [];
     return [

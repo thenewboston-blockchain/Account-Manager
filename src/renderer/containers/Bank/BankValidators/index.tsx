@@ -8,7 +8,7 @@ import PageTable, {PageTableData, PageTableItems} from '@renderer/components/Pag
 import Pagination from '@renderer/components/Pagination';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
 import PurchaseConfirmationServicesModal from '@renderer/containers/PurchaseConfirmationServicesModal';
-import {BANK_VALIDATORS} from '@renderer/constants';
+import {ACCOUNT, BANK_VALIDATORS} from '@renderer/constants';
 import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
 import {BaseValidator, ManagedNode} from '@renderer/types';
@@ -83,7 +83,7 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
     () =>
       bankValidators.map((validator) => ({
         key: validator.node_identifier,
-        [TableKeys.accountNumber]: <AccountLink accountNumber={validator.account_number} />,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={validator.account_number} managedType={ACCOUNT} />,
         [TableKeys.dailyConfirmationRate]: renderValidatorDailyRate(validator),
         [TableKeys.defaultTransactionFee]: validator.default_transaction_fee,
         [TableKeys.ipAddress]: <NodeLink node={validator} urlBase="validator" />,

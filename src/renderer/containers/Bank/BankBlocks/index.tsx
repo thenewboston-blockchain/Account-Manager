@@ -3,7 +3,7 @@ import React, {FC, useMemo} from 'react';
 import AccountLink from '@renderer/components/AccountLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {BANK_BLOCKS} from '@renderer/constants';
+import {ACCOUNT, BANK_BLOCKS} from '@renderer/constants';
 import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BlockResponse} from '@renderer/types';
 import {formatDate} from '@renderer/utils/dates';
@@ -31,7 +31,7 @@ const BankBlocks: FC = () => {
         [TableKeys.createdDate]: formatDate(block.created_date),
         [TableKeys.id]: block.id,
         [TableKeys.modifiedDate]: formatDate(block.modified_date),
-        [TableKeys.sender]: <AccountLink accountNumber={block.sender} />,
+        [TableKeys.sender]: <AccountLink accountNumber={block.sender} managedType={ACCOUNT} />,
         [TableKeys.signature]: block.signature,
       })) || [],
     [bankBlocks],

@@ -1,4 +1,6 @@
 const APP = 'app';
+export const ACCOUNT = 'account';
+export const FRIEND = 'friend';
 export const BANKS = 'banks';
 export const NOTIFICATIONS = 'notifications';
 export const VALIDATORS = 'validators';

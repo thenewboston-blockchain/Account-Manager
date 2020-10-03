@@ -5,7 +5,7 @@ import {useParams} from 'react-router-dom';
 import AccountLink from '@renderer/components/AccountLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {BANK_BANK_TRANSACTIONS} from '@renderer/constants';
+import {ACCOUNT, BANK_BANK_TRANSACTIONS} from '@renderer/constants';
 import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {getActiveBankConfig} from '@renderer/selectors';
 import {BankTransaction} from '@renderer/types';
@@ -36,8 +36,12 @@ const AccountTransactions: FC = () => {
         [TableKeys.amount]: bankTransaction.amount,
         [TableKeys.balanceKey]: bankTransaction.block.balance_key,
         [TableKeys.dateCreated]: formatDate(bankTransaction.block.created_date),
-        [TableKeys.recipientAccountNumber]: <AccountLink accountNumber={bankTransaction.recipient} />,
-        [TableKeys.senderAccountNumber]: <AccountLink accountNumber={bankTransaction.block.sender} />,
+        [TableKeys.recipientAccountNumber]: (
+          <AccountLink accountNumber={bankTransaction.recipient} managedType={ACCOUNT} />
+        ),
+        [TableKeys.senderAccountNumber]: (
+          <AccountLink accountNumber={bankTransaction.block.sender} managedType={ACCOUNT} />
+        ),
         [TableKeys.signature]: bankTransaction.block.signature,
       })) || [],
     [bankTransactions],
