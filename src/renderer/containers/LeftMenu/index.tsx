@@ -1,10 +1,11 @@
-import React, {FC, ReactNode, useMemo} from 'react';
+import React, {FC, ReactNode, useCallback, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 
 import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import AddBankModal from '@renderer/containers/Bank/AddBankModal';
 import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
+import LeftSubmenuItemLink from '@renderer/containers/LeftMenu/LeftSubmenuItemLink';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import AddValidatorModal from '@renderer/containers/Validator/AddValidatorModal';
 import {useBooleanState} from '@renderer/hooks';
@@ -54,18 +55,31 @@ const LeftMenu: FC = () => {
   const [addValidatorModalIsOpen, toggleAddValidatorModal] = useBooleanState(false);
   const [createAccountModalIsOpen, toggleCreateAccountModal] = useBooleanState(false);
 
-  const accountItems = useMemo<ReactNode[]>(
-    () =>
-      sortDictValuesByPreferredKey<ManagedAccount>(managedAccounts, 'nickname', 'account_number')
-        .map(({account_number, nickname}) => ({
-          baseUrl: `/account/${account_number}`,
-          key: account_number,
-          label: nickname || account_number,
-          to: `/account/${account_number}/overview`,
-        }))
-        .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />),
-    [managedAccounts],
-  );
+  const accountItems = useMemo<ReactNode[]>(() => {
+    const getLinkedResources = (signingKey) => {
+      const linkedBank = Object.values(managedBanks).find(({acc_signing_key}) => acc_signing_key === signingKey);
+      if (linkedBank) return `/bank/${formatPathFromNode(linkedBank)}/overview`;
+
+      const linkedValidator = Object.values(managedValidators).find(
+        ({acc_signing_key}) => acc_signing_key === signingKey,
+      );
+      if (linkedValidator) return `/validator/${formatPathFromNode(linkedValidator)}/overview`;
+
+      return null;
+    };
+
+    return sortDictValuesByPreferredKey<ManagedAccount>(managedAccounts, 'nickname', 'account_number')
+      .map(({account_number, nickname, signing_key}) => ({
+        baseUrl: `/account/${account_number}`,
+        key: account_number,
+        label: nickname || account_number,
+        link: getLinkedResources(signing_key),
+        to: `/account/${account_number}/overview`,
+      }))
+      .map(({baseUrl, key, label, link, to}) => (
+        <LeftSubmenuItemLink baseUrl={baseUrl} key={key} label={label} to={to} link={link} />
+      ));
+  }, [managedAccounts, managedBanks, managedValidators]);
 
   const bankMenuItems = useMemo<ReactNode[]>(
     () =>
