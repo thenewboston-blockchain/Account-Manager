@@ -79,6 +79,7 @@ export const connect = (bankAddressData: AddressData) => async (dispatch: AppDis
     }
   } else {
     const activePrimaryValidatorData = {
+      acc_signing_key: '',
       ip_address: validatorConfigResponse.data.ip_address,
       nickname: '',
       nid_signing_key: '',

@@ -1,4 +1,4 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Route, Switch, useRouteMatch} from 'react-router-dom';
 import sortBy from 'lodash/sortBy';
@@ -36,6 +36,10 @@ const Validator: FC = () => {
   const managedValidators = useSelector(getManagedValidators);
   const managedValidator = managedValidators[address];
 
+  const isAuthenticated = useMemo((): boolean => {
+    return managedValidator.acc_signing_key && managedValidator.nid_signing_key;
+  }, [managedValidator]);
+
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
     if (!isManagedValidator) return [];
 
@@ -49,39 +53,25 @@ const Validator: FC = () => {
         label: 'Remove Validator',
         onClick: toggleRemoveValidatorModal,
       },
+      {
+        label: `${isAuthenticated ? 'Edit' : 'Add'} Signing Keys (For DEVOPS)`,
+        onClick: toggleSigningKeyModal,
+      },
     ];
 
-    const signingKeyOption = !managedValidator.nid_signing_key
-      ? {
-          label: 'Add NID Signing Key',
-          onClick: toggleSigningKeyModal,
-        }
-      : {
-          label: 'Remove NID Signing Key',
-          onClick: handleRemoveSigningKey,
-        };
-
-    return sortBy([...menuOptions, signingKeyOption], ['label']);
+    return sortBy(menuOptions, ['label']);
   };
 
   const handleAddManagedValidator = (): void => {
     const {ipAddress, port, protocol} = parseAddressData(address);
     dispatch(
       setManagedValidator({
+        acc_signing_key: '',
         ip_address: ipAddress,
         nickname: '',
         nid_signing_key: '',
         port,
         protocol,
-      }),
-    );
-  };
-
-  const handleRemoveSigningKey = (): void => {
-    dispatch(
-      setManagedValidator({
-        ...managedValidator,
-        nid_signing_key: '',
       }),
     );
   };
