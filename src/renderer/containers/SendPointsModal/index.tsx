@@ -10,7 +10,7 @@ import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import yup from '@renderer/utils/yup';
 
-import SendPointsModalFields, {FormValues, INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendPointsModalFields';
+import SendPointsModalFields, {FormValues, INSUFFICIENT_FUNDS_ERROR, MATCH_ERROR} from './SendPointsModalFields';
 import './SendPointsModal.scss';
 
 interface ComponentProps {
@@ -94,7 +94,7 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
     return yup.object().shape({
       points: yup
         .number()
-        .callbackWithRef(senderAccountNumberRef, checkPointsWithBalance, INVALID_AMOUNT_ERROR)
+        .callbackWithRef(senderAccountNumberRef, checkPointsWithBalance, INSUFFICIENT_FUNDS_ERROR)
         .moreThan(0, 'Points must be greater than 0')
         .integer('Points cannot be a decimal')
         .required('Points is a required field'),

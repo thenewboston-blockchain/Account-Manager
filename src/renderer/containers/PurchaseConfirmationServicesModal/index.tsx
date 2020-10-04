@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 
 import Modal from '@renderer/components/Modal';
-import {INVALID_AMOUNT_ERROR} from '@renderer/containers/SendPointsModal/SendPointsModalFields';
+import {INSUFFICIENT_FUNDS_ERROR} from '@renderer/containers/SendPointsModal/SendPointsModalFields';
 import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {
@@ -235,7 +235,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
     return yup.object().shape({
       amount: yup
         .number()
-        .callbackWithRef(bankAddressRef, checkPointsWithBalance, INVALID_AMOUNT_ERROR)
+        .callbackWithRef(bankAddressRef, checkPointsWithBalance, INSUFFICIENT_FUNDS_ERROR)
         .moreThan(0, 'Amount must be greater than 0')
         .required('Amount is a required field'),
       bankAddress: yup
