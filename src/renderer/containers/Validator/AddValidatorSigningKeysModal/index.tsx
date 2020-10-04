@@ -5,7 +5,7 @@ import {FormTextArea} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import {SIGNING_KEY_LENGTH_ERROR, SIGNING_KEY_REQUIRED_ERROR} from '@renderer/constants/form-validation';
 import {useAddress} from '@renderer/hooks';
-import {getManagedValidators, getValidatorConfigs} from '@renderer/selectors';
+import {getManagedAccounts, getManagedValidators, getValidatorConfigs} from '@renderer/selectors';
 import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
 import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
@@ -15,72 +15,89 @@ interface ComponentProps {
   close(): void;
 }
 
-const initialValues = {
-  signingKey: '',
-};
-
-type FormValues = typeof initialValues;
-
 const AddValidatorSigningKeysModal: FC<ComponentProps> = ({close}) => {
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
   const validatorConfigs = useSelector(getValidatorConfigs);
   const {
-    data: {node_identifier: nodeIdentifier},
+    data: {account_number: accountNumber, node_identifier: nodeIdentifier},
   } = validatorConfigs[address];
   const managedValidators = useSelector(getManagedValidators);
   const managedValidator = managedValidators[address];
+  const managedAccounts = useSelector(getManagedAccounts);
 
-  const handleSubmit = ({signingKey}: FormValues): void => {
+  const initialValues = {
+    accountSigningKey:
+      Object.values(managedAccounts).find((macc) => macc.account_number === accountNumber)?.signing_key ||
+      managedValidator.acc_signing_key,
+    nidSigningKey: managedValidator.nid_signing_key,
+  };
+
+  type FormValues = typeof initialValues;
+
+  const headerTitle = useMemo(() => {
+    const prefix = !!managedValidator.acc_signing_key && !!managedValidator.nid_signing_key ? 'Edit' : 'Add';
+    return `${prefix} Signing Keys`;
+  }, [managedValidator]);
+
+  const handleSubmit = ({accountSigningKey, nidSigningKey}: FormValues): void => {
     dispatch(
       setManagedValidator({
         ...managedValidator,
-        nid_signing_key: signingKey,
+        acc_signing_key: accountSigningKey,
+        nid_signing_key: nidSigningKey,
       }),
     );
     close();
   };
 
-  const managedValidatorSigningKeys = useMemo(
-    () =>
-      Object.values(managedValidators)
-        .filter(({nid_signing_key}) => !!nid_signing_key)
-        .map(({nid_signing_key}) => nid_signing_key),
-    [managedValidators],
-  );
+  const checkPrivateSigningKey = (publicKey: string, privateKey: string): boolean => {
+    try {
+      const {publicKeyHex} = getKeyPairFromSigningKeyHex(privateKey);
+      return publicKeyHex === publicKey;
+    } catch (error) {
+      return false;
+    }
+  };
 
   const validationSchema = useMemo(() => {
     return yup.object().shape({
-      signingKey: yup
+      accountSigningKey: yup
         .string()
         .length(64, SIGNING_KEY_LENGTH_ERROR)
-        .notOneOf(managedValidatorSigningKeys, 'That validator already exists')
+        .required(SIGNING_KEY_REQUIRED_ERROR)
+        .test({
+          message: 'Resulting public key does not match Account',
+          name: 'is-valid-private-key-account',
+          test: (key: string) => {
+            return checkPrivateSigningKey(accountNumber, key);
+          },
+        }),
+      nidSigningKey: yup
+        .string()
+        .length(64, SIGNING_KEY_LENGTH_ERROR)
         .required(SIGNING_KEY_REQUIRED_ERROR)
         .test({
           message: 'Resulting public key does not match NID',
-          name: 'is-valid-private-key',
-          test: (value: string) => {
-            try {
-              const {publicKeyHex} = getKeyPairFromSigningKeyHex(value);
-              return publicKeyHex === nodeIdentifier;
-            } catch (error) {
-              return false;
-            }
+          name: 'is-valid-private-key-nid',
+          test: (key: string) => {
+            return checkPrivateSigningKey(nodeIdentifier, key);
           },
         }),
     });
-  }, [managedValidatorSigningKeys, nodeIdentifier]);
+  }, [accountNumber, nodeIdentifier]);
 
   return (
     <Modal
       close={close}
-      header="Add NID Signing Key"
+      header={headerTitle}
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitButton="Save"
       validationSchema={validationSchema}
     >
-      <FormTextArea focused label="Signing Key" name="signingKey" required />
+      <FormTextArea focused label="Validator NID Signing Key" name="nidSigningKey" required />
+      <FormTextArea label="Validator Account Signing Key" name="accountSigningKey" required />
     </Modal>
   );
 };
