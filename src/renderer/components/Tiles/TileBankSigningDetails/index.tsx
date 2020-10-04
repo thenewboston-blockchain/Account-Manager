@@ -5,13 +5,16 @@ import clsx from 'clsx';
 
 import AddBankSigningKeysModal from '@renderer/containers/Bank/AddBankSigningKeysModal';
 
-import {getManagedBanks} from '@renderer/selectors';
+import {getIsManagedBank, getManagedBanks} from '@renderer/selectors';
+import {setManagedBank} from '@renderer/store/app';
 import {useAddress, useBooleanState} from '@renderer/hooks';
+import {AppDispatch, RootState} from '@renderer/types';
 
 import {Button} from '@renderer/components/FormElements';
 import Icon, {IconType} from '@renderer/components/Icon';
 
 import {getCustomClassNames} from '@renderer/utils/components';
+import {parseAddressData} from '@renderer/utils/address';
 import {displayToast} from '@renderer/utils/toast';
 
 import Tile from '../Tile';
@@ -31,12 +34,29 @@ interface ComponentProps {
 const TileBankSigningDetails: FC<ComponentProps> = ({className, items}) => {
   const [addSigningKeyModalIsOpen, toggleSigningKeyModal] = useBooleanState(false);
 
+  const dispatch = useDispatch<AppDispatch>();
   const address = useAddress();
+  const isManagedBank = useSelector((state: RootState) => getIsManagedBank(state, address));
+
   const managedBanks = useSelector(getManagedBanks);
   const managedBank = managedBanks[address];
 
+  const handleAddManagedBank = (): void => {
+    const {ipAddress, port, protocol} = parseAddressData(address);
+    dispatch(
+      setManagedBank({
+        acc_signing_key: '',
+        ip_address: ipAddress,
+        nickname: '',
+        nid_signing_key: '',
+        port,
+        protocol,
+      }),
+    );
+  };
+
   const signingKeysButtonText = useMemo(() => {
-    const prefix = !!managedBank.acc_signing_key && !!managedBank.nid_signing_key ? 'Edit' : 'Add';
+    const prefix = !!managedBank?.acc_signing_key && !!managedBank?.nid_signing_key ? 'Edit' : 'Add';
     return `${prefix} Signing Keys (For DEVOPS)`;
   }, [managedBank]);
 
@@ -71,9 +91,17 @@ const TileBankSigningDetails: FC<ComponentProps> = ({className, items}) => {
     <Tile className={clsx('TileBankSigningDetails', className)}>
       <>
         {renderList()}
-        <Button color="white" onClick={toggleSigningKeyModal}>
-          {signingKeysButtonText}
-        </Button>
+
+        {isManagedBank ? (
+          <Button color="white" onClick={toggleSigningKeyModal}>
+            {signingKeysButtonText}
+          </Button>
+        ) : (
+          <Button color="white" onClick={handleAddManagedBank}>
+            Add to Managed Banks
+          </Button>
+        )}
+
         {addSigningKeyModalIsOpen && <AddBankSigningKeysModal close={toggleSigningKeyModal} />}
       </>
     </Tile>

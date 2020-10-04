@@ -45,7 +45,7 @@ const Validator: FC = () => {
   const managedAccounts = useSelector(getManagedAccounts);
 
   const isAuthenticated = useMemo((): boolean => {
-    return managedValidator.acc_signing_key && managedValidator.nid_signing_key;
+    return !!managedValidator?.acc_signing_key && !!managedValidator?.nid_signing_key;
   }, [managedValidator]);
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {

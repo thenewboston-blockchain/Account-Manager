@@ -47,7 +47,7 @@ const Bank: FC = () => {
   const managedAccounts = useSelector(getManagedAccounts);
 
   const isAuthenticated = useMemo((): boolean => {
-    return managedBank.acc_signing_key && managedBank.nid_signing_key;
+    return !!managedBank?.acc_signing_key && !!managedBank?.nid_signing_key;
   }, [managedBank]);
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
