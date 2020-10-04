@@ -21,7 +21,7 @@ const initialValues = {
 
 type FormValues = typeof initialValues;
 
-const AddValidatorSigningKeyModal: FC<ComponentProps> = ({close}) => {
+const AddValidatorSigningKeysModal: FC<ComponentProps> = ({close}) => {
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
   const validatorConfigs = useSelector(getValidatorConfigs);
@@ -85,4 +85,4 @@ const AddValidatorSigningKeyModal: FC<ComponentProps> = ({close}) => {
   );
 };
 
-export default AddValidatorSigningKeyModal;
+export default AddValidatorSigningKeysModal;

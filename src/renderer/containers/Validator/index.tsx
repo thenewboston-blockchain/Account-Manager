@@ -15,7 +15,7 @@ import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch, RootState} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
 
-import AddValidatorSigningKeyModal from './AddValidatorSigningKeyModal';
+import AddValidatorSigningKeysModal from './AddValidatorSigningKeysModal';
 import EditValidatorNicknameModal from './EditValidatorNicknameModal';
 import RemoveValidatorModal from './RemoveValidatorModal';
 import ValidatorAccounts from './ValidatorAccounts';
@@ -170,7 +170,7 @@ const Validator: FC = () => {
   return (
     <div className="Validator">
       <PageLayout content={renderTabContent()} top={renderTop()} />
-      {addSigningKeyModalIsOpen && <AddValidatorSigningKeyModal close={toggleSigningKeyModal} />}
+      {addSigningKeyModalIsOpen && <AddValidatorSigningKeysModal close={toggleSigningKeyModal} />}
       {editNicknameModalIsOpen && (
         <EditValidatorNicknameModal close={toggleEditNicknameModal} validator={managedValidator} />
       )}
