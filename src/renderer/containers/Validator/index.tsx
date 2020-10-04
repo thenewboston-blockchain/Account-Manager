@@ -1,16 +1,22 @@
 import React, {FC, ReactNode, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Route, Switch, useRouteMatch} from 'react-router-dom';
+import {Route, Switch, useRouteMatch, useHistory} from 'react-router-dom';
 import sortBy from 'lodash/sortBy';
 
 import Badge from '@renderer/components/Badge';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import {IconType} from '@renderer/components/Icon';
 import {Button} from '@renderer/components/FormElements';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {useAddress, useBooleanState} from '@renderer/hooks';
-import {getIsActivePrimaryValidator, getIsManagedValidator, getManagedValidators} from '@renderer/selectors';
+import {
+  getManagedAccounts,
+  getIsActivePrimaryValidator,
+  getIsManagedValidator,
+  getManagedValidators,
+} from '@renderer/selectors';
 import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch, RootState} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
@@ -27,6 +33,7 @@ import './Validator.scss';
 const Validator: FC = () => {
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
+  const history = useHistory();
   const {path, url} = useRouteMatch();
   const [addSigningKeyModalIsOpen, toggleSigningKeyModal] = useBooleanState(false);
   const [editNicknameModalIsOpen, toggleEditNicknameModal] = useBooleanState(false);
@@ -35,6 +42,7 @@ const Validator: FC = () => {
   const isManagedValidator = useSelector((state: RootState) => getIsManagedValidator(state, address));
   const managedValidators = useSelector(getManagedValidators);
   const managedValidator = managedValidators[address];
+  const managedAccounts = useSelector(getManagedAccounts);
 
   const isAuthenticated = useMemo((): boolean => {
     return managedValidator.acc_signing_key && managedValidator.nid_signing_key;
@@ -77,8 +85,28 @@ const Validator: FC = () => {
   };
 
   const renderAuthenticatedBadge = (): ReactNode => {
-    if (!managedValidator?.nid_signing_key) return null;
-    return <Badge color="secondary" text="Authenticated" />;
+    if (!isAuthenticated) return null;
+    return <Badge color="tertiary" text="Authenticated" />;
+  };
+
+  const renderAccountLinkBagde = (): ReactNode => {
+    if (isAuthenticated) {
+      const linkedAccount = Object.values(managedAccounts).find(
+        ({signing_key}) => signing_key === managedValidator.acc_signing_key,
+      );
+      if (linkedAccount) {
+        return (
+          <Badge
+            color="transparent"
+            iconType={IconType.link}
+            onClick={() => {
+              history.push(`/account/${linkedAccount.account_number}/overview`);
+            }}
+          />
+        );
+      }
+    }
+    return null;
   };
 
   const renderRightPageHeaderButtons = (): ReactNode => {
@@ -129,7 +157,7 @@ const Validator: FC = () => {
     <>
       <PageHeader
         dropdownMenuOptions={getDropdownMenuOptions()}
-        leftContent={renderAuthenticatedBadge()}
+        leftContent={[renderAuthenticatedBadge(), renderAccountLinkBagde()]}
         rightContent={renderRightPageHeaderButtons()}
         title={renderTitle()}
       />
