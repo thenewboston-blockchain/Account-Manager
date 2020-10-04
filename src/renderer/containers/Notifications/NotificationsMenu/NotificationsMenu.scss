@@ -44,9 +44,18 @@
   &__mark-as-read {
     color: var(--color-secondary);
     cursor: pointer;
-
     &:hover {
       text-decoration: underline;
+    }
+  }
+
+  &__mark-as-read-disabled {
+    color: var(--color-gray-300);
+    cursor: default;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: none;
     }
   }
 }
