@@ -16,10 +16,7 @@
   &__toggle {
     color: var(--color-secondary);
     cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
-    }
+    margin-right: 20px;
   }
 
   &__top {
@@ -27,5 +24,14 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 12px;
+  }
+
+  &__icons-container {
+    display: flex;
+  }
+
+  &__copy-container {
+    color: var(--color-secondary);
+    cursor: pointer;
   }
 }

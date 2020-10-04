@@ -7,20 +7,8 @@
   }
 
   &__copy-container {
-    align-items: center;
     color: var(--color-secondary);
     cursor: pointer;
-    display: flex;
-
-    &:hover {
-      #{$self}__copy-text {
-        text-decoration: underline;
-      }
-    }
-  }
-
-  &__copy-icon {
-    margin-right: 6px;
   }
 
   &__title {
