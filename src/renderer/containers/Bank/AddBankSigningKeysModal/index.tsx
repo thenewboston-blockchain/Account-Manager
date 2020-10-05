@@ -31,7 +31,7 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
     () => ({
       accountSigningKey:
         Object.values(managedAccounts).find(({account_number}) => account_number === accountNumber)?.signing_key ||
-        managedBank.acc_signing_key,
+        managedBank.account_signing_key,
       nidSigningKey: managedBank.nid_signing_key,
     }),
     [accountNumber, managedAccounts, managedBank],
@@ -40,7 +40,7 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
   type FormValues = typeof initialValues;
 
   const headerTitle = useMemo(() => {
-    const prefix = !!managedBank.acc_signing_key && !!managedBank.nid_signing_key ? 'Edit' : 'Add';
+    const prefix = !!managedBank.account_signing_key && !!managedBank.nid_signing_key ? 'Edit' : 'Add';
     return `${prefix} Signing Keys`;
   }, [managedBank]);
 
@@ -48,7 +48,7 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
     dispatch(
       setManagedBank({
         ...managedBank,
-        acc_signing_key: accountSigningKey,
+        account_signing_key: accountSigningKey,
         nid_signing_key: nidSigningKey,
       }),
     );

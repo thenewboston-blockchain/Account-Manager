@@ -57,11 +57,13 @@ const LeftMenu: FC = () => {
 
   const accountItems = useMemo<ReactNode[]>(() => {
     const getLinkedResources = (signingKey: string) => {
-      const linkedBank = Object.values(managedBanks).find(({acc_signing_key}) => acc_signing_key === signingKey);
+      const linkedBank = Object.values(managedBanks).find(
+        ({account_signing_key}) => account_signing_key === signingKey,
+      );
       if (linkedBank) return `/bank/${formatPathFromNode(linkedBank)}/overview`;
 
       const linkedValidator = Object.values(managedValidators).find(
-        ({acc_signing_key}) => acc_signing_key === signingKey,
+        ({account_signing_key}) => account_signing_key === signingKey,
       );
       if (linkedValidator) return `/validator/${formatPathFromNode(linkedValidator)}/overview`;
 

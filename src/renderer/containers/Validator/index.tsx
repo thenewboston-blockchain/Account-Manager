@@ -45,7 +45,7 @@ const Validator: FC = () => {
   const managedAccounts = useSelector(getManagedAccounts);
 
   const isAuthenticated = useMemo((): boolean => {
-    return !!managedValidator?.acc_signing_key && !!managedValidator?.nid_signing_key;
+    return !!managedValidator?.account_signing_key && !!managedValidator?.nid_signing_key;
   }, [managedValidator]);
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
@@ -74,7 +74,7 @@ const Validator: FC = () => {
     const {ipAddress, port, protocol} = parseAddressData(address);
     dispatch(
       setManagedValidator({
-        acc_signing_key: '',
+        account_signing_key: '',
         ip_address: ipAddress,
         nickname: '',
         nid_signing_key: '',
@@ -92,7 +92,7 @@ const Validator: FC = () => {
   const renderAccountLinkBagde = (): ReactNode => {
     if (isAuthenticated) {
       const linkedAccount = Object.values(managedAccounts).find(
-        ({signing_key}) => signing_key === managedValidator.acc_signing_key,
+        ({signing_key}) => signing_key === managedValidator.account_signing_key,
       );
       if (linkedAccount) {
         return (

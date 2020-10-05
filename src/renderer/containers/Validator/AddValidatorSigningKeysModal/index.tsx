@@ -28,15 +28,15 @@ const AddValidatorSigningKeysModal: FC<ComponentProps> = ({close}) => {
 
   const initialValues = {
     accountSigningKey:
-      Object.values(managedAccounts).find((macc) => macc.account_number === accountNumber)?.signing_key ||
-      managedValidator.acc_signing_key,
+      Object.values(managedAccounts).find(({account_number}) => account_number === accountNumber)?.signing_key ||
+      managedValidator.account_signing_key,
     nidSigningKey: managedValidator.nid_signing_key,
   };
 
   type FormValues = typeof initialValues;
 
   const headerTitle = useMemo(() => {
-    const prefix = !!managedValidator.acc_signing_key && !!managedValidator.nid_signing_key ? 'Edit' : 'Add';
+    const prefix = !!managedValidator.account_signing_key && !!managedValidator.nid_signing_key ? 'Edit' : 'Add';
     return `${prefix} Signing Keys`;
   }, [managedValidator]);
 
@@ -44,7 +44,7 @@ const AddValidatorSigningKeysModal: FC<ComponentProps> = ({close}) => {
     dispatch(
       setManagedValidator({
         ...managedValidator,
-        acc_signing_key: accountSigningKey,
+        account_signing_key: accountSigningKey,
         nid_signing_key: nidSigningKey,
       }),
     );

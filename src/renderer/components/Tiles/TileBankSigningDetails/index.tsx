@@ -46,7 +46,7 @@ const TileBankSigningDetails: FC<ComponentProps> = ({className, items}) => {
     const {ipAddress, port, protocol} = parseAddressData(address);
     dispatch(
       setManagedBank({
-        acc_signing_key: '',
+        account_signing_key: '',
         ip_address: ipAddress,
         nickname: '',
         nid_signing_key: '',
@@ -57,7 +57,7 @@ const TileBankSigningDetails: FC<ComponentProps> = ({className, items}) => {
   };
 
   const signingKeysButtonText = useMemo(() => {
-    const prefix = !!managedBank?.acc_signing_key && !!managedBank?.nid_signing_key ? 'Edit' : 'Add';
+    const prefix = !!managedBank?.account_signing_key && !!managedBank?.nid_signing_key ? 'Edit' : 'Add';
     return `${prefix} Signing Keys (For DEVOPS)`;
   }, [managedBank]);
 
