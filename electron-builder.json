@@ -16,7 +16,7 @@
     "target": ["dmg", "zip"],
     "artifactName": "${productName}-${version}-${os}.${ext}"
   },
-	"win": {
+  "win": {
     "target": [
       {
         "target": "nsis",
