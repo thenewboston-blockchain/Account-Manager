@@ -1,10 +1,10 @@
 import React, {FC, ReactNode, RefObject, useRef} from 'react';
 import noop from 'lodash/noop';
+import clsx from 'clsx';
 
 import {useEventListener} from '@renderer/hooks';
 
 import './NotificationsMenu.scss';
-import clsx from 'clsx';
 
 interface ComponentProps {
   handleMenuClose(): void;
