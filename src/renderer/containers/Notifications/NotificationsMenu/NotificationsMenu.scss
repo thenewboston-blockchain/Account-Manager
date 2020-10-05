@@ -48,5 +48,15 @@
     &:hover {
       text-decoration: underline;
     }
+
+    &--disabled {
+      color: var(--color-gray-300);
+      cursor: default;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
   }
 }
