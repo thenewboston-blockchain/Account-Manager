@@ -2,32 +2,27 @@
   border-radius: 12px;
   font-size: 12px;
   padding: 4px 8px;
-  margin: 0 5px;
-
-  &:not(&--clickable) {
-    cursor: default;
-  }
 
   &--clickable {
     cursor: pointer;
   }
 
   &--primary {
+    background: var(--color-primary);
     color: var(--color-white);
     font-weight: 400;
-    background: var(--color-primary);
   }
 
   &--secondary {
+    background: var(--color-secondary);
     color: var(--color-white);
     font-weight: 400;
-    background: var(--color-secondary);
   }
 
   &--tertiary {
+    background: var(--color-green-100);
     color: var(--color-green-500);
     font-weight: 700;
-    background: var(--color-green-100);
   }
 
   &--transparent {
