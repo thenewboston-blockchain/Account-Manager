@@ -2,9 +2,9 @@ import React, {FC, useEffect, useRef} from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
 
+import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState} from '@renderer/hooks';
 import {getCustomClassNames} from '@renderer/utils/components';
-import Icon, {IconType} from '@renderer/components/Icon';
 import {displayToast} from '@renderer/utils/toast';
 
 import Tile from '../Tile';
