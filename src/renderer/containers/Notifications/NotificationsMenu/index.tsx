@@ -1,4 +1,4 @@
-import React, {FC, ReactNode, RefObject, useRef, useState} from 'react';
+import React, {FC, ReactNode, RefObject, useRef} from 'react';
 import noop from 'lodash/noop';
 
 import {useEventListener} from '@renderer/hooks';
@@ -24,12 +24,8 @@ const NotificationsMenu: FC<ComponentProps> = ({
   updateLastReadTime,
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
-  const [emptyNotification, setEmptyNotification] = useState(true);
 
   const handleClick = (e: any): void => {
-    if (unreadNotificationsLength !== 0) {
-      setEmptyNotification(!emptyNotification);
-    }
     if (menuOpen && !iconRef.current?.contains(e.target) && !menuRef.current?.contains(e.target)) {
       handleMenuClose();
     }
@@ -46,9 +42,9 @@ const NotificationsMenu: FC<ComponentProps> = ({
         </div>
         <span
           className={clsx('NotificationsMenu__mark-as-read', {
-            'NotificationsMenu__mark-as-read-disabled': emptyNotification,
+            'NotificationsMenu__mark-as-read--disabled': !unreadNotificationsLength,
           })}
-          onClick={emptyNotification ? noop : updateLastReadTime}
+          onClick={unreadNotificationsLength ? updateLastReadTime : noop}
         >
           Mark all as read
         </span>
