@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useRef} from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
 
@@ -18,19 +18,27 @@ interface ComponentProps {
 }
 
 const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, signingKey}) => {
-  const [signingKeyVisible, toggleSigningKeyVisible, , setSigningKeyInvisible] = useBooleanState(false);
+  const copyRef = useRef<HTMLDivElement>(null);
+  const eyeRef = useRef<HTMLDivElement>(null);
+  const [showSigningKey, toggleSigningKey, , hideSigningKey] = useBooleanState(false);
 
   useEffect(() => {
-    setSigningKeyInvisible();
-  }, [accountNumber, setSigningKeyInvisible]);
+    hideSigningKey();
+  }, [accountNumber, hideSigningKey]);
 
   const handleCopy = (): void => {
     displayToast('Signing Key copied to the clipboard', 'success');
+    copyRef.current?.blur();
+  };
+
+  const handleEyeClick = (): void => {
+    toggleSigningKey();
+    eyeRef.current?.blur();
   };
 
   const renderSigningKeyDisplay = () => {
     if (loading) return '-';
-    return <div>{signingKeyVisible ? signingKey : '*'.repeat(64)}</div>;
+    return <div>{showSigningKey ? signingKey : '*'.repeat(64)}</div>;
   };
 
   return (
@@ -45,24 +53,15 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, 
               ...getCustomClassNames(className, '__icons-container', true),
             })}
           >
-            <div
-              className={clsx('TileSigningKey__toggle', {...getCustomClassNames(className, '__toggle', true)})}
-              onClick={toggleSigningKeyVisible}
-            >
-              {signingKeyVisible ? (
-                <Icon className={clsx('TileSigningKey__eye-off-icon')} icon={IconType.eyeOff} size={22} />
-              ) : (
-                <Icon className={clsx('TileSigningKey__eye-icon')} icon={IconType.eye} size={22} />
-              )}
-            </div>
+            <Icon
+              className={clsx('TileSigningKey__eye-icon')}
+              icon={showSigningKey ? IconType.eyeOff : IconType.eye}
+              onClick={handleEyeClick}
+              ref={eyeRef}
+              size={22}
+            />
             <CopyToClipboard onCopy={handleCopy} text={signingKey}>
-              <div
-                className={clsx('TileSigningKey__copy-container', {
-                  ...getCustomClassNames(className, '__copy-container', true),
-                })}
-              >
-                <Icon className={clsx('TileSigningKey__copy-icon')} icon={IconType.contentCopy} size={22} />
-              </div>
+              <Icon className={clsx('TileSigningKey__copy-icon')} icon={IconType.contentCopy} ref={copyRef} size={22} />
             </CopyToClipboard>
           </div>
         </div>

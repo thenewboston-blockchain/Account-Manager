@@ -4,19 +4,26 @@
     font-size: var(--font-size-large);
   }
 
-  &__signing-key {
-    word-wrap: break-word;
+  &__copy-icon {
+    color: var(--color-secondary);
+    cursor: pointer;
+  }
+
+  &__eye-icon {
+    color: var(--color-secondary);
+    cursor: pointer;
+    margin-right: 21px;
+  }
+
+  &__icons-container {
+    align-items: center;
+    display: flex;
+    justify-content: center;
   }
 
   &__title {
     color: var(--color-gray-500);
     margin-bottom: 6px;
-  }
-
-  &__toggle {
-    color: var(--color-secondary);
-    cursor: pointer;
-    margin-right: 20px;
   }
 
   &__top {
@@ -26,12 +33,7 @@
     margin-bottom: 12px;
   }
 
-  &__icons-container {
-    display: flex;
-  }
-
-  &__copy-container {
-    color: var(--color-secondary);
-    cursor: pointer;
+  &__signing-key {
+    word-wrap: break-word;
   }
 }
