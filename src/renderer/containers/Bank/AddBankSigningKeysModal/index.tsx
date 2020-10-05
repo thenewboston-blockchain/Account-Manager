@@ -27,12 +27,15 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
   const managedBank = managedBanks[address];
   const managedAccounts = useSelector(getManagedAccounts);
 
-  const initialValues = {
-    accountSigningKey:
-      Object.values(managedAccounts).find((macc) => macc.account_number === accountNumber)?.signing_key ||
-      managedBank.acc_signing_key,
-    nidSigningKey: managedBank.nid_signing_key,
-  };
+  const initialValues = useMemo(
+    () => ({
+      accountSigningKey:
+        Object.values(managedAccounts).find(({account_number}) => account_number === accountNumber)?.signing_key ||
+        managedBank.acc_signing_key,
+      nidSigningKey: managedBank.nid_signing_key,
+    }),
+    [accountNumber, managedAccounts, managedBank],
+  );
 
   type FormValues = typeof initialValues;
 
