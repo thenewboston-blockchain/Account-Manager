@@ -1,13 +1,13 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
+
 import {getCustomClassNames} from '@renderer/utils/components';
 
 import './Badge.scss';
 
 interface ComponentProps {
   className?: string;
-  color?: 'primary' | 'secondary' | 'tertiary' | 'transparent';
-  onClick?(): void;
+  color?: 'primary' | 'secondary' | 'tertiary';
   text?: number | string;
 }
 
