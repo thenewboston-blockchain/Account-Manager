@@ -5,7 +5,7 @@ import sortBy from 'lodash/sortBy';
 
 import Badge from '@renderer/components/Badge';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-import {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon';
 import {Button} from '@renderer/components/FormElements';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
@@ -89,16 +89,15 @@ const Validator: FC = () => {
     return <Badge color="tertiary" text="Authenticated" />;
   };
 
-  const renderAccountLinkBagde = (): ReactNode => {
+  const renderAccountLinkBadge = (): ReactNode => {
     if (isAuthenticated) {
       const linkedAccount = Object.values(managedAccounts).find(
         ({signing_key}) => signing_key === managedValidator.account_signing_key,
       );
       if (linkedAccount) {
         return (
-          <Badge
-            color="transparent"
-            iconType={IconType.link}
+          <Icon
+            icon={IconType.link}
             onClick={() => {
               history.push(`/account/${linkedAccount.account_number}/overview`);
             }}
@@ -157,7 +156,7 @@ const Validator: FC = () => {
     <>
       <PageHeader
         dropdownMenuOptions={getDropdownMenuOptions()}
-        leftContent={[renderAuthenticatedBadge(), renderAccountLinkBagde()]}
+        leftContent={[renderAuthenticatedBadge(), renderAccountLinkBadge()]}
         rightContent={renderRightPageHeaderButtons()}
         title={renderTitle()}
       />

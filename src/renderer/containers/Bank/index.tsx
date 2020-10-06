@@ -9,7 +9,7 @@ import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-import {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon';
 import {useAddress, useBooleanState} from '@renderer/hooks';
 import {getIsActiveBank, getManagedAccounts, getIsManagedBank, getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
@@ -93,24 +93,24 @@ const Bank: FC = () => {
 
   const renderActiveBadge = (): ReactNode => {
     if (!managedBank?.is_default) return null;
-    return <Badge color="secondary" text="Active" />;
+    return <Badge className="Bank__Badge" color="secondary" text="Active" />;
   };
 
   const renderAuthenticatedBadge = (): ReactNode => {
     if (!isAuthenticated) return null;
-    return <Badge color="tertiary" text="Authenticated" />;
+    return <Badge className="Bank__Badge" color="tertiary" text="Authenticated" />;
   };
 
-  const renderAccountLinkBagde = (): ReactNode => {
+  const renderAccountLinkBadge = (): ReactNode => {
     if (isAuthenticated) {
       const linkedAccount = Object.values(managedAccounts).find(
         ({signing_key}) => signing_key === managedBank.account_signing_key,
       );
       if (linkedAccount) {
         return (
-          <Badge
-            color="transparent"
-            iconType={IconType.link}
+          <Icon
+            className="Bank__chain-link-icon"
+            icon={IconType.link}
             onClick={() => {
               history.push(`/account/${linkedAccount.account_number}/overview`);
             }}
@@ -189,7 +189,7 @@ const Bank: FC = () => {
     <>
       <PageHeader
         dropdownMenuOptions={getDropdownMenuOptions()}
-        leftContent={[renderActiveBadge(), renderAuthenticatedBadge(), renderAccountLinkBagde()]}
+        leftContent={[renderActiveBadge(), renderAuthenticatedBadge(), renderAccountLinkBadge()]}
         rightContent={renderRightPageHeaderButtons()}
         title={renderTitle()}
       />
