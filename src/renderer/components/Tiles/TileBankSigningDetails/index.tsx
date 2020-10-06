@@ -1,4 +1,4 @@
-import React, {FC, memo, useMemo, ReactNode} from 'react';
+import React, {FC, memo, useMemo, RefObject, ReactNode} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
@@ -22,6 +22,7 @@ import './TileBankSigningDetails.scss';
 
 interface Item {
   key: string;
+  ref: RefObject<HTMLDivElement>;
   title: string;
   value: string;
 }
@@ -45,7 +46,7 @@ const TileBankSigningDetails: FC<ComponentProps> = ({className, items}) => {
     const {ipAddress, port, protocol} = parseAddressData(address);
     dispatch(
       setManagedBank({
-        acc_signing_key: '',
+        account_signing_key: '',
         ip_address: ipAddress,
         nickname: '',
         nid_signing_key: '',
@@ -56,35 +57,41 @@ const TileBankSigningDetails: FC<ComponentProps> = ({className, items}) => {
   };
 
   const signingKeysButtonText = useMemo(() => {
-    const prefix = !!managedBank?.acc_signing_key && !!managedBank?.nid_signing_key ? 'Edit' : 'Add';
+    const prefix = !!managedBank?.account_signing_key && !!managedBank?.nid_signing_key ? 'Edit' : 'Add';
     return `${prefix} Signing Keys (For DEVOPS)`;
   }, [managedBank]);
 
-  const handleCopy = (value: string): void => {
-    displayToast(`${items.find((e) => e.value === value)?.title} copied to the clipboard`, 'success');
+  const handleCopy = (item: Item) => (): void => {
+    displayToast(`${item.title} copied to the clipboard`, 'success');
+    item.ref.current?.blur();
   };
 
   const renderList = (): ReactNode => {
-    return items.map(({key, title, value}) => (
-      <div key={key}>
-        <div className={clsx('TileBankSigningDetails__top', {...getCustomClassNames(className, '__top', true)})}>
-          <div className={clsx('TileBankSigningDetails__title', {...getCustomClassNames(className, '__title', true)})}>
-            {title}
-          </div>
-          <CopyToClipboard onCopy={handleCopy} text={value}>
+    return items.map((item) => {
+      const {key, ref, title, value} = item;
+      return (
+        <div key={key}>
+          <div className={clsx('TileBankSigningDetails__top', {...getCustomClassNames(className, '__top', true)})}>
             <div
-              className={clsx('TileBankSigningDetails__copy-container', {
-                ...getCustomClassNames(className, '__copy-container', true),
-              })}
+              className={clsx('TileBankSigningDetails__title', {...getCustomClassNames(className, '__title', true)})}
             >
-              <Icon className={clsx('TileBankSigningDetails__copy-icon')} icon={IconType.contentCopy} size={22} />
-              <div className={clsx('TileBankSigningDetails__copy-text')}>Copy</div>
+              {title}
             </div>
-          </CopyToClipboard>
+            <CopyToClipboard onCopy={handleCopy(item)} text={value}>
+              <Icon
+                className={clsx('TileBankSigningDetails__copy-icon', {
+                  ...getCustomClassNames(className, '__copy-container', true),
+                })}
+                icon={IconType.contentCopy}
+                ref={ref}
+                size={22}
+              />
+            </CopyToClipboard>
+          </div>
+          <div className={clsx('TileBankSigningDetails__value')}>{value}</div>
         </div>
-        <div className={clsx('TileBankSigningDetails__value')}>{value}</div>
-      </div>
-    ));
+      );
+    });
   };
 
   return (

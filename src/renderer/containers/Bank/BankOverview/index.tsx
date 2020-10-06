@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useRef} from 'react';
 
 import {TilePrimaryAmount, TileKeyValueList, TileBankSigningDetails} from '@renderer/components/Tiles';
 import {Loader} from '@renderer/components/FormElements';
@@ -10,6 +10,9 @@ import {BankConfig, ValidatorConfirmationService} from '@renderer/types';
 import './BankOverview.scss';
 
 const BankOverview: FC = () => {
+  const bankAccountNumberRef = useRef<HTMLDivElement>(null);
+  const bankNetworkIdRef = useRef<HTMLDivElement>(null);
+
   const address = useAddress();
   const {data: bankConfig, loading} = useNetworkConfigFetcher<BankConfig>(BANK_CONFIGS);
   const {count: confirmationServiceCount, loading: confirmationServiceLoading} = usePaginatedNetworkDataFetcher<
@@ -23,7 +26,7 @@ const BankOverview: FC = () => {
       ) : (
         <>
           <div className="BankOverview__left">
-            <TilePrimaryAmount title="Tx Fee /per tx" amount={bankConfig.default_transaction_fee} />
+            <TilePrimaryAmount title="Tx Fee /per tx" amount={bankConfig.default_transaction_fee} loading={loading} />
             <TilePrimaryAmount
               title="Confirmation Services"
               loading={confirmationServiceLoading}
@@ -59,11 +62,13 @@ const BankOverview: FC = () => {
               items={[
                 {
                   key: 'bankNetworkId',
+                  ref: bankNetworkIdRef,
                   title: 'Bank Network ID',
                   value: bankConfig.node_identifier.toString(),
                 },
                 {
                   key: 'bankAccountNumber',
+                  ref: bankAccountNumberRef,
                   title: 'Bank Account Number',
                   value: bankConfig.account_number.toString(),
                 },

@@ -1,4 +1,4 @@
-import React, {FC, ReactNode, useCallback, useMemo} from 'react';
+import React, {FC, ReactNode, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 
 import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
@@ -56,16 +56,18 @@ const LeftMenu: FC = () => {
   const [createAccountModalIsOpen, toggleCreateAccountModal] = useBooleanState(false);
 
   const accountItems = useMemo<ReactNode[]>(() => {
-    const getLinkedResources = (signingKey) => {
-      const linkedBank = Object.values(managedBanks).find(({acc_signing_key}) => acc_signing_key === signingKey);
+    const getLinkedResources = (signingKey: string) => {
+      const linkedBank = Object.values(managedBanks).find(
+        ({account_signing_key}) => account_signing_key === signingKey,
+      );
       if (linkedBank) return `/bank/${formatPathFromNode(linkedBank)}/overview`;
 
       const linkedValidator = Object.values(managedValidators).find(
-        ({acc_signing_key}) => acc_signing_key === signingKey,
+        ({account_signing_key}) => account_signing_key === signingKey,
       );
       if (linkedValidator) return `/validator/${formatPathFromNode(linkedValidator)}/overview`;
 
-      return null;
+      return undefined;
     };
 
     return sortDictValuesByPreferredKey<ManagedAccount>(managedAccounts, 'nickname', 'account_number')

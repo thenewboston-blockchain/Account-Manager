@@ -10,7 +10,7 @@ export interface LeftSubmenuItemLinkProps extends RouteComponentProps {
   baseUrl: string;
   key: string;
   label: ReactNode;
-  link: string;
+  link?: string;
   to: string;
 }
 
@@ -18,6 +18,7 @@ const LeftSubmenuItemLink: FC<LeftSubmenuItemLinkProps> = ({baseUrl, key, label,
   const getIsActive = (): boolean => location.pathname.includes(baseUrl);
 
   const renderLinkIcon = (): ReactNode => {
+    if (!link) return null;
     return (
       <NavLink className="LeftSubmenuItemLink__Linked" to={link}>
         <Icon icon={IconType.link} size={18} />

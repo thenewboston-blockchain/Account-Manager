@@ -1,4 +1,4 @@
-import React, {FC, memo, ReactNode, useMemo} from 'react';
+import React, {FC, memo, ReactNode} from 'react';
 import clsx from 'clsx';
 
 import {getCustomClassNames} from '@renderer/utils/components';

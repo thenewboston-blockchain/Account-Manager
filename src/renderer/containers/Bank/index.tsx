@@ -47,7 +47,7 @@ const Bank: FC = () => {
   const managedAccounts = useSelector(getManagedAccounts);
 
   const isAuthenticated = useMemo((): boolean => {
-    return !!managedBank?.acc_signing_key && !!managedBank?.nid_signing_key;
+    return !!managedBank?.account_signing_key && !!managedBank?.nid_signing_key;
   }, [managedBank]);
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
@@ -81,7 +81,7 @@ const Bank: FC = () => {
     const {ipAddress, port, protocol} = parseAddressData(address);
     dispatch(
       setManagedBank({
-        acc_signing_key: '',
+        account_signing_key: '',
         ip_address: ipAddress,
         nickname: '',
         nid_signing_key: '',
@@ -104,7 +104,7 @@ const Bank: FC = () => {
   const renderAccountLinkBagde = (): ReactNode => {
     if (isAuthenticated) {
       const linkedAccount = Object.values(managedAccounts).find(
-        ({signing_key}) => signing_key === managedBank.acc_signing_key,
+        ({signing_key}) => signing_key === managedBank.account_signing_key,
       );
       if (linkedAccount) {
         return (
