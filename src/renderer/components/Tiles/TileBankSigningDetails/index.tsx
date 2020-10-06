@@ -1,18 +1,15 @@
-import React, {FC, memo, useMemo, RefObject, ReactNode} from 'react';
+import React, {FC, memo, ReactNode, RefObject, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
 
-import AddBankSigningKeysModal from '@renderer/containers/Bank/AddBankSigningKeysModal';
-
-import {getIsManagedBank, getManagedBanks} from '@renderer/selectors';
-import {setManagedBank} from '@renderer/store/app';
-import {useAddress, useBooleanState} from '@renderer/hooks';
-import {AppDispatch, RootState} from '@renderer/types';
-
 import {Button} from '@renderer/components/FormElements';
 import Icon, {IconType} from '@renderer/components/Icon';
-
+import AddBankSigningKeysModal from '@renderer/containers/Bank/AddBankSigningKeysModal';
+import {useAddress, useBooleanState} from '@renderer/hooks';
+import {getIsManagedBank, getManagedBanks} from '@renderer/selectors';
+import {setManagedBank} from '@renderer/store/app';
+import {AppDispatch, RootState} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';
 import {parseAddressData} from '@renderer/utils/address';
 import {displayToast} from '@renderer/utils/toast';
