@@ -18,14 +18,14 @@ interface ComponentProps {
 
 const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
   const address = useAddress();
-  const dispatch = useDispatch<AppDispatch>();
   const bankConfigs = useSelector(getBankConfigs);
   const {
     data: {account_number: accountNumber, node_identifier: nodeIdentifier},
   } = bankConfigs[address];
+  const dispatch = useDispatch<AppDispatch>();
+  const managedAccounts = useSelector(getManagedAccounts);
   const managedBanks = useSelector(getManagedBanks);
   const managedBank = managedBanks[address];
-  const managedAccounts = useSelector(getManagedAccounts);
 
   const initialValues = useMemo(
     () => ({
@@ -39,10 +39,19 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
 
   type FormValues = typeof initialValues;
 
-  const headerTitle = useMemo(() => {
+  const headerText = useMemo(() => {
     const prefix = !!managedBank.account_signing_key && !!managedBank.nid_signing_key ? 'Edit' : 'Add';
     return `${prefix} Signing Keys`;
   }, [managedBank]);
+
+  const checkPrivateSigningKey = (publicKey: string, privateKey: string): boolean => {
+    try {
+      const {publicKeyHex} = getKeyPairFromSigningKeyHex(privateKey);
+      return publicKeyHex === publicKey;
+    } catch (error) {
+      return false;
+    }
+  };
 
   const handleSubmit = ({accountSigningKey, nidSigningKey}: FormValues): void => {
     dispatch(
@@ -54,15 +63,6 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
     );
     displayToast('Bank is now authenticated', 'success');
     close();
-  };
-
-  const checkPrivateSigningKey = (publicKey: string, privateKey: string): boolean => {
-    try {
-      const {publicKeyHex} = getKeyPairFromSigningKeyHex(privateKey);
-      return publicKeyHex === publicKey;
-    } catch (error) {
-      return false;
-    }
   };
 
   const validationSchema = useMemo(() => {
@@ -95,7 +95,7 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
   return (
     <Modal
       close={close}
-      header={headerTitle}
+      header={headerText}
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitButton="Save"
