@@ -33,12 +33,14 @@
     }
 
     &#{$self}--secondary {
-      background: var(--color-secondary);
-      border-color: var(--color-secondary);
+      background: var(--color-white);
+      border-color: var(--color-gray-100);
+      box-shadow: 0 0 3px rgba(4, 34, 53, 0.3);
+      color: var(--color-secondary);
 
       &:hover {
-        background: var(--color-secondary);
-        border-color: var(--color-secondary);
+        background: var(--color-gray-050);
+        border-color: var(--color-gray-100);
       }
     }
 
@@ -49,17 +51,6 @@
       &:hover {
         background: var(--color-tertiary);
         border-color: var(--color-tertiary);
-      }
-    }
-
-    &#{$self}--white {
-      color: var(--color-secondary);
-      background: var(--color-white);
-      border-color: var(--color-gray-100);
-
-      &:hover {
-        background: var(--color-white);
-        border-color: var(--color-gray-100);
       }
     }
   }

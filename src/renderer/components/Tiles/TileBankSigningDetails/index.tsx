@@ -100,11 +100,11 @@ const TileBankSigningDetails: FC<ComponentProps> = ({className, items}) => {
         {renderList()}
 
         {isManagedBank ? (
-          <Button color="white" onClick={toggleSigningKeyModal}>
+          <Button color="secondary" onClick={toggleSigningKeyModal}>
             {signingKeysButtonText}
           </Button>
         ) : (
-          <Button color="white" onClick={handleAddManagedBank}>
+          <Button color="secondary" onClick={handleAddManagedBank}>
             Add to Managed Banks
           </Button>
         )}
