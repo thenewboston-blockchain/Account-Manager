@@ -1,8 +1,6 @@
 import React, {FC, memo, ReactNode} from 'react';
 import clsx from 'clsx';
 
-import {getCustomClassNames} from '@renderer/utils/components';
-
 import Tile from '../Tile';
 import './TileKeyValueList.scss';
 
@@ -32,9 +30,7 @@ const TileKeyValueList: FC<ComponentProps> = ({className, items}) => {
 
   return (
     <Tile className={clsx('TileKeyValueList', className)}>
-      <table className={clsx('TileKeyValueList__table', {...getCustomClassNames(className, '__table', true)})}>
-        {renderTable()}
-      </table>
+      <table className="TileKeyValueList__table">{renderTable()}</table>
     </Tile>
   );
 };
