@@ -62,7 +62,7 @@ const Validator: FC = () => {
         onClick: toggleRemoveValidatorModal,
       },
       {
-        label: `${isAuthenticated ? 'Edit' : 'Add'} Signing Keys (For DEVOPS)`,
+        label: `${isAuthenticated ? 'Edit' : 'Add'} Signing Keys (for DevOps)`,
         onClick: toggleSigningKeyModal,
       },
     ];
