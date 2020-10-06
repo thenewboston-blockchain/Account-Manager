@@ -1,4 +1,4 @@
-import React, {FC, memo, ReactNode} from 'react';
+import React, {FC, ReactNode} from 'react';
 import clsx from 'clsx';
 
 import Tile from '../Tile';
@@ -35,4 +35,4 @@ const TileKeyValueList: FC<ComponentProps> = ({className, items}) => {
   );
 };
 
-export default memo(TileKeyValueList);
+export default TileKeyValueList;
