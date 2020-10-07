@@ -1,6 +1,6 @@
 import {getBankTxFee, getPrimaryValidatorTxFee} from './transactions';
 
-describe('getBankTxFee to return the following: ', () => {
+describe('getBankTxFee to return the following:', () => {
   let activeBankConfig;
   let senderAccountNumber;
   test('correct bank transaction free when active bank account number is not equal to sender account number', () => {
@@ -62,7 +62,7 @@ describe('getBankTxFee to return the following: ', () => {
   });
 });
 
-describe('getPrimaryValidatorTxFee to return the following: ', () => {
+describe('getPrimaryValidatorTxFee to return the following:', () => {
   let activePrimaryValidatorConfig;
   let senderAccountNumber;
   test('correct primary validator transaction free when active bank account number is not equal to sender account number', () => {
