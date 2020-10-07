@@ -1,9 +1,9 @@
 import React, {FC, useRef} from 'react';
 
 import {Loader} from '@renderer/components/FormElements';
-import {TilePrimaryAmount, TileKeyValueList, TileBankSigningDetails} from '@renderer/components/Tiles';
+import {TileBankSigningDetails, TileKeyValueList, TilePrimaryAmount} from '@renderer/components/Tiles';
 import {BANK_CONFIGS, BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants';
-import {useAddress, usePaginatedNetworkDataFetcher, useNetworkConfigFetcher} from '@renderer/hooks';
+import {useAddress, useNetworkConfigFetcher, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BankConfig, ValidatorConfirmationService} from '@renderer/types';
 
 import './BankOverview.scss';
