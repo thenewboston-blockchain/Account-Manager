@@ -3,8 +3,8 @@
 import React, {forwardRef, ReactNode, useCallback, useMemo} from 'react';
 import clsx from 'clsx';
 
-import AlertIcon from 'mdi-react/AlertIcon';
 import AlertCircleOutlineIcon from 'mdi-react/AlertCircleOutlineIcon';
+import AlertIcon from 'mdi-react/AlertIcon';
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon';
 import ArrowRightIcon from 'mdi-react/ArrowRightIcon';
 import BellIcon from 'mdi-react/BellIcon';
@@ -19,11 +19,12 @@ import EyeIcon from 'mdi-react/EyeIcon';
 import EyeOffIcon from 'mdi-react/EyeOffIcon';
 import LanConnectIcon from 'mdi-react/LanConnectIcon';
 import LanDisconnectIcon from 'mdi-react/LanDisconnectIcon';
+import LinkIcon from 'mdi-react/LinkIcon';
 import LoadingIcon from 'mdi-react/LoadingIcon';
 import PencilIcon from 'mdi-react/PencilIcon';
-import PowerIcon from 'mdi-react/PowerIcon';
 import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
+import PowerIcon from 'mdi-react/PowerIcon';
 import RadioboxBlankIcon from 'mdi-react/RadioboxBlankIcon';
 import RadioboxMarkedIcon from 'mdi-react/RadioboxMarkedIcon';
 import RefreshIcon from 'mdi-react/RefreshIcon';
@@ -52,6 +53,7 @@ export enum IconType {
   eyeOff,
   lanConnect,
   lanDisconnect,
+  link,
   loading,
   pencil,
   play,
@@ -140,6 +142,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
           return <LanConnectIcon {...iconProps} />;
         case IconType.lanDisconnect:
           return <LanDisconnectIcon {...iconProps} />;
+        case IconType.link:
+          return <LinkIcon {...iconProps} />;
         case IconType.loading:
           return <LoadingIcon {...iconProps} />;
         case IconType.pencil:

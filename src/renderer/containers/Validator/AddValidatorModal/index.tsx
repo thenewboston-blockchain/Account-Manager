@@ -70,6 +70,7 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
 
       const formattedData = {
         ...validatorAddressData,
+        account_signing_key: '',
         nickname,
         nid_signing_key: '',
       };

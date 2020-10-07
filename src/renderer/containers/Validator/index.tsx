@@ -1,21 +1,27 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Route, Switch, useRouteMatch} from 'react-router-dom';
+import {Route, Switch, useHistory, useRouteMatch} from 'react-router-dom';
 import sortBy from 'lodash/sortBy';
 
 import Badge from '@renderer/components/Badge';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import Icon, {IconType} from '@renderer/components/Icon';
 import {Button} from '@renderer/components/FormElements';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {useAddress, useBooleanState} from '@renderer/hooks';
-import {getIsActivePrimaryValidator, getIsManagedValidator, getManagedValidators} from '@renderer/selectors';
+import {
+  getIsActivePrimaryValidator,
+  getIsManagedValidator,
+  getManagedAccounts,
+  getManagedValidators,
+} from '@renderer/selectors';
 import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch, RootState} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
 
-import AddValidatorSigningKeyModal from './AddValidatorSigningKeyModal';
+import AddValidatorSigningKeysModal from './AddValidatorSigningKeysModal';
 import EditValidatorNicknameModal from './EditValidatorNicknameModal';
 import RemoveValidatorModal from './RemoveValidatorModal';
 import ValidatorAccounts from './ValidatorAccounts';
@@ -27,14 +33,20 @@ import './Validator.scss';
 const Validator: FC = () => {
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
+  const history = useHistory();
   const {path, url} = useRouteMatch();
   const [addSigningKeyModalIsOpen, toggleSigningKeyModal] = useBooleanState(false);
   const [editNicknameModalIsOpen, toggleEditNicknameModal] = useBooleanState(false);
   const [removeValidatorModalIsOpen, toggleRemoveValidatorModal] = useBooleanState(false);
   const isActivePrimaryValidator = useSelector((state: RootState) => getIsActivePrimaryValidator(state, address));
   const isManagedValidator = useSelector((state: RootState) => getIsManagedValidator(state, address));
+  const managedAccounts = useSelector(getManagedAccounts);
   const managedValidators = useSelector(getManagedValidators);
   const managedValidator = managedValidators[address];
+
+  const isAuthenticated = useMemo((): boolean => {
+    return !!managedValidator?.account_signing_key && !!managedValidator?.nid_signing_key;
+  }, [managedValidator]);
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
     if (!isManagedValidator) return [];
@@ -49,25 +61,20 @@ const Validator: FC = () => {
         label: 'Remove Validator',
         onClick: toggleRemoveValidatorModal,
       },
+      {
+        label: `${isAuthenticated ? 'Edit' : 'Add'} Signing Keys (for DevOps)`,
+        onClick: toggleSigningKeyModal,
+      },
     ];
 
-    const signingKeyOption = !managedValidator.nid_signing_key
-      ? {
-          label: 'Add NID Signing Key',
-          onClick: toggleSigningKeyModal,
-        }
-      : {
-          label: 'Remove NID Signing Key',
-          onClick: handleRemoveSigningKey,
-        };
-
-    return sortBy([...menuOptions, signingKeyOption], ['label']);
+    return sortBy(menuOptions, ['label']);
   };
 
   const handleAddManagedValidator = (): void => {
     const {ipAddress, port, protocol} = parseAddressData(address);
     dispatch(
       setManagedValidator({
+        account_signing_key: '',
         ip_address: ipAddress,
         nickname: '',
         nid_signing_key: '',
@@ -77,18 +84,31 @@ const Validator: FC = () => {
     );
   };
 
-  const handleRemoveSigningKey = (): void => {
-    dispatch(
-      setManagedValidator({
-        ...managedValidator,
-        nid_signing_key: '',
-      }),
+  const renderAccountLink = (): ReactNode => {
+    if (!managedValidator) return null;
+    const linkedAccount = Object.values(managedAccounts).find(
+      ({signing_key}) => signing_key === managedValidator.account_signing_key,
+    );
+    if (!linkedAccount) return null;
+    return (
+      <Icon
+        className="Validator__chain-link-icon"
+        icon={IconType.link}
+        onClick={() => {
+          history.push(`/account/${linkedAccount.account_number}/overview`);
+        }}
+      />
     );
   };
 
   const renderAuthenticatedBadge = (): ReactNode => {
-    if (!managedValidator?.nid_signing_key) return null;
-    return <Badge color="secondary" text="Authenticated" />;
+    if (!isAuthenticated) return null;
+    return <Badge className="Validator__Badge" color="tertiary-light" text="Authenticated" />;
+  };
+
+  const renderPrimaryBadge = (): ReactNode => {
+    if (!managedValidator?.is_default) return null;
+    return <Badge className="Validator__Badge" color="tertiary" text="Primary" />;
   };
 
   const renderRightPageHeaderButtons = (): ReactNode => {
@@ -128,9 +148,7 @@ const Validator: FC = () => {
   };
 
   const renderTitle = (): string => {
-    if (isManagedValidator) {
-      return managedValidator.nickname || managedValidator.ip_address;
-    }
+    if (isManagedValidator) return managedValidator.nickname || managedValidator.ip_address;
     const {ipAddress} = parseAddressData(address);
     return ipAddress;
   };
@@ -139,7 +157,13 @@ const Validator: FC = () => {
     <>
       <PageHeader
         dropdownMenuOptions={getDropdownMenuOptions()}
-        leftContent={renderAuthenticatedBadge()}
+        leftContent={
+          <>
+            {renderPrimaryBadge()}
+            {renderAuthenticatedBadge()}
+            {renderAccountLink()}
+          </>
+        }
         rightContent={renderRightPageHeaderButtons()}
         title={renderTitle()}
       />
@@ -170,7 +194,7 @@ const Validator: FC = () => {
   return (
     <div className="Validator">
       <PageLayout content={renderTabContent()} top={renderTop()} />
-      {addSigningKeyModalIsOpen && <AddValidatorSigningKeyModal close={toggleSigningKeyModal} />}
+      {addSigningKeyModalIsOpen && <AddValidatorSigningKeysModal close={toggleSigningKeyModal} />}
       {editNicknameModalIsOpen && (
         <EditValidatorNicknameModal close={toggleEditNicknameModal} validator={managedValidator} />
       )}
