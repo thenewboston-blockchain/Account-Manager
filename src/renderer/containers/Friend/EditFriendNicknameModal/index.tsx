@@ -17,9 +17,13 @@ const EditFriendNicknameModal: FC<ComponentProps> = ({close, managedFriend}) => 
   const dispatch = useDispatch<AppDispatch>();
   const managedFriends = useSelector(getManagedFriends);
 
-  const initialValues = {
-    nickname: managedFriend.nickname,
-  };
+  const initialValues = useMemo(
+    () => ({
+      nickname: managedFriend.nickname,
+    }),
+    [managedFriend],
+  );
+
   type FormValues = typeof initialValues;
 
   const managedFriendsNicknames = useMemo(

@@ -18,7 +18,7 @@ import FriendTransactions from './FriendTransactions';
 import './Friend.scss';
 
 const Friend: FC = () => {
-  const {accountNumber} = useParams();
+  const {accountNumber} = useParams<{accountNumber: string}>();
   const {path, url} = useRouteMatch();
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
