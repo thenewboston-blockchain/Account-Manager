@@ -92,6 +92,7 @@ const Bank: FC = () => {
   };
 
   const renderAccountLink = (): ReactNode => {
+    if (!managedBank) return null;
     const linkedAccount = Object.values(managedAccounts).find(
       ({signing_key}) => signing_key === managedBank.account_signing_key,
     );

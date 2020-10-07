@@ -85,6 +85,7 @@ const Validator: FC = () => {
   };
 
   const renderAccountLink = (): ReactNode => {
+    if (!managedValidator) return null;
     const linkedAccount = Object.values(managedAccounts).find(
       ({signing_key}) => signing_key === managedValidator.account_signing_key,
     );
