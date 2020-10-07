@@ -7,7 +7,7 @@ import './Badge.scss';
 
 interface ComponentProps {
   className?: string;
-  color?: 'primary' | 'secondary' | 'tertiary';
+  color?: 'primary' | 'secondary' | 'tertiary' | 'tertiary-light';
   text?: number | string;
 }
 

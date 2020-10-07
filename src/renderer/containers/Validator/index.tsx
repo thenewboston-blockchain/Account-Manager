@@ -40,9 +40,9 @@ const Validator: FC = () => {
   const [removeValidatorModalIsOpen, toggleRemoveValidatorModal] = useBooleanState(false);
   const isActivePrimaryValidator = useSelector((state: RootState) => getIsActivePrimaryValidator(state, address));
   const isManagedValidator = useSelector((state: RootState) => getIsManagedValidator(state, address));
+  const managedAccounts = useSelector(getManagedAccounts);
   const managedValidators = useSelector(getManagedValidators);
   const managedValidator = managedValidators[address];
-  const managedAccounts = useSelector(getManagedAccounts);
 
   const isAuthenticated = useMemo((): boolean => {
     return !!managedValidator?.account_signing_key && !!managedValidator?.nid_signing_key;
@@ -84,28 +84,30 @@ const Validator: FC = () => {
     );
   };
 
-  const renderAuthenticatedBadge = (): ReactNode => {
-    if (!isAuthenticated) return null;
-    return <Badge color="tertiary" text="Authenticated" />;
+  const renderAccountLink = (): ReactNode => {
+    const linkedAccount = Object.values(managedAccounts).find(
+      ({signing_key}) => signing_key === managedValidator.account_signing_key,
+    );
+    if (!linkedAccount) return null;
+    return (
+      <Icon
+        className="Validator__chain-link-icon"
+        icon={IconType.link}
+        onClick={() => {
+          history.push(`/account/${linkedAccount.account_number}/overview`);
+        }}
+      />
+    );
   };
 
-  const renderAccountLinkBadge = (): ReactNode => {
-    if (isAuthenticated) {
-      const linkedAccount = Object.values(managedAccounts).find(
-        ({signing_key}) => signing_key === managedValidator.account_signing_key,
-      );
-      if (linkedAccount) {
-        return (
-          <Icon
-            icon={IconType.link}
-            onClick={() => {
-              history.push(`/account/${linkedAccount.account_number}/overview`);
-            }}
-          />
-        );
-      }
-    }
-    return null;
+  const renderAuthenticatedBadge = (): ReactNode => {
+    if (!isAuthenticated) return null;
+    return <Badge className="Validator__Badge" color="tertiary-light" text="Authenticated" />;
+  };
+
+  const renderPrimaryBadge = (): ReactNode => {
+    if (!managedValidator?.is_default) return null;
+    return <Badge className="Validator__Badge" color="tertiary" text="Primary" />;
   };
 
   const renderRightPageHeaderButtons = (): ReactNode => {
@@ -145,9 +147,7 @@ const Validator: FC = () => {
   };
 
   const renderTitle = (): string => {
-    if (isManagedValidator) {
-      return managedValidator.nickname || managedValidator.ip_address;
-    }
+    if (isManagedValidator) return managedValidator.nickname || managedValidator.ip_address;
     const {ipAddress} = parseAddressData(address);
     return ipAddress;
   };
@@ -158,8 +158,9 @@ const Validator: FC = () => {
         dropdownMenuOptions={getDropdownMenuOptions()}
         leftContent={
           <>
+            {renderPrimaryBadge()}
             {renderAuthenticatedBadge()}
-            {renderAccountLinkBadge()}
+            {renderAccountLink()}
           </>
         }
         rightContent={renderRightPageHeaderButtons()}

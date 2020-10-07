@@ -92,14 +92,10 @@ const Bank: FC = () => {
   };
 
   const renderAccountLink = (): ReactNode => {
-    if (!isAuthenticated) return null;
-
     const linkedAccount = Object.values(managedAccounts).find(
       ({signing_key}) => signing_key === managedBank.account_signing_key,
     );
-
     if (!linkedAccount) return null;
-
     return (
       <Icon
         className="Bank__chain-link-icon"
