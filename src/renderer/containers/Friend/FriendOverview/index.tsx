@@ -10,7 +10,7 @@ import {formatAddress} from '@renderer/utils/address';
 import './FriendOverview.scss';
 
 const FriendOverview: FC = () => {
-  const {accountNumber} = useParams();
+  const {accountNumber} = useParams<{accountNumber: string}>();
   const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);

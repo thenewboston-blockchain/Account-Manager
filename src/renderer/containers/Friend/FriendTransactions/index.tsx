@@ -22,7 +22,7 @@ enum TableKeys {
 }
 
 const FriendTransactions: FC = () => {
-  const {accountNumber} = useParams();
+  const {accountNumber} = useParams<{accountNumber: string}>();
   const activeBank = useSelector(getActiveBankConfig)!;
   const activeBankAddress = formatAddressFromNode(activeBank);
   const {count, currentPage, loading, results: bankTransactions, setPage, totalPages} = usePaginatedNetworkDataFetcher<
