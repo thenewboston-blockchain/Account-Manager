@@ -1,9 +1,9 @@
 import {
   formatAddress,
   formatAddressFromNode,
-  formatQueryParams,
   formatPath,
   formatPathFromNode,
+  formatQueryParams,
   parseAddressData,
   parseQueryParams,
 } from './address';

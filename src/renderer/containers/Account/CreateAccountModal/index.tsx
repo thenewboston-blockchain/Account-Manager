@@ -14,7 +14,7 @@ import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import yup from '@renderer/utils/yup';
 
-import CreateAccountModalFields, {initialValues, FormValues} from './CreateAccountModalFields';
+import CreateAccountModalFields, {FormValues, initialValues} from './CreateAccountModalFields';
 import './CreateAccountModal.scss';
 
 interface ComponentProps {

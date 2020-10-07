@@ -1,19 +1,17 @@
 import React, {FC, useRef} from 'react';
 
-import {TilePrimaryAmount, TileKeyValueList, TileBankSigningDetails} from '@renderer/components/Tiles';
 import {Loader} from '@renderer/components/FormElements';
-
+import {TileBankSigningDetails, TileKeyValueList, TilePrimaryAmount} from '@renderer/components/Tiles';
 import {BANK_CONFIGS, BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants';
-import {useAddress, usePaginatedNetworkDataFetcher, useNetworkConfigFetcher} from '@renderer/hooks';
+import {useAddress, useNetworkConfigFetcher, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BankConfig, ValidatorConfirmationService} from '@renderer/types';
 
 import './BankOverview.scss';
 
 const BankOverview: FC = () => {
+  const address = useAddress();
   const bankAccountNumberRef = useRef<HTMLDivElement>(null);
   const bankNetworkIdRef = useRef<HTMLDivElement>(null);
-
-  const address = useAddress();
   const {data: bankConfig, loading} = useNetworkConfigFetcher<BankConfig>(BANK_CONFIGS);
   const {count: confirmationServiceCount, loading: confirmationServiceLoading} = usePaginatedNetworkDataFetcher<
     ValidatorConfirmationService
@@ -26,11 +24,11 @@ const BankOverview: FC = () => {
       ) : (
         <>
           <div className="BankOverview__left">
-            <TilePrimaryAmount title="Tx Fee /per tx" amount={bankConfig.default_transaction_fee} loading={loading} />
+            <TilePrimaryAmount amount={bankConfig.default_transaction_fee} loading={loading} title="Tx Fee (per Tx)" />
             <TilePrimaryAmount
-              title="Confirmation Services"
-              loading={confirmationServiceLoading}
               amount={confirmationServiceCount}
+              loading={confirmationServiceLoading}
+              title="Confirmation Services"
             />
             <TileKeyValueList
               items={[

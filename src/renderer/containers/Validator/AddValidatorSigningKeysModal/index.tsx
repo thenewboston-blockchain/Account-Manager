@@ -18,13 +18,13 @@ interface ComponentProps {
 const AddValidatorSigningKeysModal: FC<ComponentProps> = ({close}) => {
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
+  const managedAccounts = useSelector(getManagedAccounts);
+  const managedValidators = useSelector(getManagedValidators);
+  const managedValidator = managedValidators[address];
   const validatorConfigs = useSelector(getValidatorConfigs);
   const {
     data: {account_number: accountNumber, node_identifier: nodeIdentifier},
   } = validatorConfigs[address];
-  const managedValidators = useSelector(getManagedValidators);
-  const managedValidator = managedValidators[address];
-  const managedAccounts = useSelector(getManagedAccounts);
 
   const initialValues = {
     accountSigningKey:

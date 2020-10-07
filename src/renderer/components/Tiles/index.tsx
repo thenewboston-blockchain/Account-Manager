@@ -3,8 +3,8 @@ import TileAccountBalance from './TileAccountBalance';
 import TileAccountNumber from './TileAccountNumber';
 import TileBankSigningDetails from './TileBankSigningDetails';
 import TileKeyValueList from './TileKeyValueList';
-import TileSigningKey from './TileSigningKey';
 import TilePrimaryAmount from './TilePrimaryAmount';
+import TileSigningKey from './TileSigningKey';
 
 export {
   Tile,
@@ -12,6 +12,6 @@ export {
   TileAccountNumber,
   TileBankSigningDetails,
   TileKeyValueList,
-  TileSigningKey,
   TilePrimaryAmount,
+  TileSigningKey,
 };

@@ -3,10 +3,6 @@
   font-size: 12px;
   padding: 4px 8px;
 
-  &--clickable {
-    cursor: pointer;
-  }
-
   &--primary {
     background: var(--color-primary);
     color: var(--color-white);
@@ -20,13 +16,14 @@
   }
 
   &--tertiary {
+    background: var(--color-tertiary);
+    color: var(--color-white);
+    font-weight: 400;
+  }
+
+  &--tertiary-light {
     background: var(--color-green-100);
     color: var(--color-green-500);
     font-weight: 700;
-  }
-
-  &--transparent {
-    color: var(--color-secondary);
-    padding: 0;
   }
 }

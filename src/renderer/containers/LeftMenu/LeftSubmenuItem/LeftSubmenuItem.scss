@@ -21,6 +21,15 @@
     background: var(--color-gray-100);
   }
 
+  &--has-related-node {
+    padding-left: 0;
+  }
+
+  &__chain-link-icon {
+    color: var(--color-secondary);
+    margin: 0 8px;
+  }
+
   &__label {
     line-height: 24px;
     overflow: hidden;

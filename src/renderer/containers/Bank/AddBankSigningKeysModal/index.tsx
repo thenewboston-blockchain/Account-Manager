@@ -18,14 +18,14 @@ interface ComponentProps {
 
 const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
   const address = useAddress();
-  const dispatch = useDispatch<AppDispatch>();
   const bankConfigs = useSelector(getBankConfigs);
   const {
     data: {account_number: accountNumber, node_identifier: nodeIdentifier},
   } = bankConfigs[address];
+  const dispatch = useDispatch<AppDispatch>();
+  const managedAccounts = useSelector(getManagedAccounts);
   const managedBanks = useSelector(getManagedBanks);
   const managedBank = managedBanks[address];
-  const managedAccounts = useSelector(getManagedAccounts);
 
   const initialValues = useMemo(
     () => ({
@@ -39,10 +39,19 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
 
   type FormValues = typeof initialValues;
 
-  const headerTitle = useMemo(() => {
+  const headerText = useMemo(() => {
     const prefix = !!managedBank.account_signing_key && !!managedBank.nid_signing_key ? 'Edit' : 'Add';
     return `${prefix} Signing Keys`;
   }, [managedBank]);
+
+  const checkPrivateSigningKey = (publicKey: string, privateKey: string): boolean => {
+    try {
+      const {publicKeyHex} = getKeyPairFromSigningKeyHex(privateKey);
+      return publicKeyHex === publicKey;
+    } catch (error) {
+      return false;
+    }
+  };
 
   const handleSubmit = ({accountSigningKey, nidSigningKey}: FormValues): void => {
     dispatch(
@@ -56,15 +65,6 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
     close();
   };
 
-  const checkPrivateSigningKey = (publicKey: string, privateKey: string): boolean => {
-    try {
-      const {publicKeyHex} = getKeyPairFromSigningKeyHex(privateKey);
-      return publicKeyHex === publicKey;
-    } catch (error) {
-      return false;
-    }
-  };
-
   const validationSchema = useMemo(() => {
     return yup.object().shape({
       accountSigningKey: yup
@@ -74,9 +74,7 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
         .test({
           message: 'Resulting public key does not match Account',
           name: 'is-valid-private-key-account',
-          test: (key: string) => {
-            return checkPrivateSigningKey(accountNumber, key);
-          },
+          test: (key: string) => checkPrivateSigningKey(accountNumber, key),
         }),
       nidSigningKey: yup
         .string()
@@ -85,9 +83,7 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
         .test({
           message: 'Resulting public key does not match NID',
           name: 'is-valid-private-key-nid',
-          test: (key: string) => {
-            return checkPrivateSigningKey(nodeIdentifier, key);
-          },
+          test: (key: string) => checkPrivateSigningKey(nodeIdentifier, key),
         }),
     });
   }, [accountNumber, nodeIdentifier]);
@@ -95,7 +91,7 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
   return (
     <Modal
       close={close}
-      header={headerTitle}
+      header={headerText}
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitButton="Save"
