@@ -91,7 +91,7 @@ const Bank: FC = () => {
     );
   };
 
-  const renderAccountLinkBadge = (): ReactNode => {
+  const renderAccountLink = (): ReactNode => {
     if (!isAuthenticated) return null;
 
     const linkedAccount = Object.values(managedAccounts).find(
@@ -187,7 +187,13 @@ const Bank: FC = () => {
     <>
       <PageHeader
         dropdownMenuOptions={getDropdownMenuOptions()}
-        leftContent={[renderActiveBadge(), renderAuthenticatedBadge(), renderAccountLinkBadge()]}
+        leftContent={
+          <>
+            {renderActiveBadge()}
+            {renderAuthenticatedBadge()}
+            {renderAccountLink()}
+          </>
+        }
         rightContent={renderRightPageHeaderButtons()}
         title={renderTitle()}
       />

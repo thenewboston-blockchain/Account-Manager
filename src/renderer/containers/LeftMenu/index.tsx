@@ -5,7 +5,6 @@ import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal'
 import AddBankModal from '@renderer/containers/Bank/AddBankModal';
 import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
-import LeftSubmenuItemLink from '@renderer/containers/LeftMenu/LeftSubmenuItemLink';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import AddValidatorModal from '@renderer/containers/Validator/AddValidatorModal';
 import {useBooleanState} from '@renderer/hooks';
@@ -56,18 +55,14 @@ const LeftMenu: FC = () => {
   const [createAccountModalIsOpen, toggleCreateAccountModal] = useBooleanState(false);
 
   const accountItems = useMemo<ReactNode[]>(() => {
-    const getLinkedResources = (signingKey: string) => {
-      const linkedBank = Object.values(managedBanks).find(
+    const getRelatedNodePath = (signingKey: string) => {
+      const bank = Object.values(managedBanks).find(({account_signing_key}) => account_signing_key === signingKey);
+      if (bank) return `/bank/${formatPathFromNode(bank)}/overview`;
+
+      const validator = Object.values(managedValidators).find(
         ({account_signing_key}) => account_signing_key === signingKey,
       );
-      if (linkedBank) return `/bank/${formatPathFromNode(linkedBank)}/overview`;
-
-      const linkedValidator = Object.values(managedValidators).find(
-        ({account_signing_key}) => account_signing_key === signingKey,
-      );
-      if (linkedValidator) return `/validator/${formatPathFromNode(linkedValidator)}/overview`;
-
-      return undefined;
+      if (validator) return `/validator/${formatPathFromNode(validator)}/overview`;
     };
 
     return sortDictValuesByPreferredKey<ManagedAccount>(managedAccounts, 'nickname', 'account_number')
@@ -75,11 +70,11 @@ const LeftMenu: FC = () => {
         baseUrl: `/account/${account_number}`,
         key: account_number,
         label: nickname || account_number,
-        link: getLinkedResources(signing_key),
+        relatedNodePath: getRelatedNodePath(signing_key),
         to: `/account/${account_number}/overview`,
       }))
-      .map(({baseUrl, key, label, link, to}) => (
-        <LeftSubmenuItemLink baseUrl={baseUrl} key={key} label={label} to={to} link={link} />
+      .map(({baseUrl, key, label, relatedNodePath, to}) => (
+        <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} relatedNodePath={relatedNodePath} to={to} />
       ));
   }, [managedAccounts, managedBanks, managedValidators]);
 

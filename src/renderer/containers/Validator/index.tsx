@@ -156,7 +156,12 @@ const Validator: FC = () => {
     <>
       <PageHeader
         dropdownMenuOptions={getDropdownMenuOptions()}
-        leftContent={[renderAuthenticatedBadge(), renderAccountLinkBadge()]}
+        leftContent={
+          <>
+            {renderAuthenticatedBadge()}
+            {renderAccountLinkBadge()}
+          </>
+        }
         rightContent={renderRightPageHeaderButtons()}
         title={renderTitle()}
       />
