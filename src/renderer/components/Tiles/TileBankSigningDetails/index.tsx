@@ -1,4 +1,4 @@
-import React, {FC, memo, ReactNode, RefObject, useMemo} from 'react';
+import React, {FC, ReactNode, RefObject, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
@@ -30,8 +30,8 @@ interface ComponentProps {
 
 const TileBankSigningDetails: FC<ComponentProps> = ({className, items}) => {
   const [addSigningKeyModalIsOpen, toggleSigningKeyModal] = useBooleanState(false);
-  const dispatch = useDispatch<AppDispatch>();
   const address = useAddress();
+  const dispatch = useDispatch<AppDispatch>();
   const isManagedBank = useSelector((state: RootState) => getIsManagedBank(state, address));
   const managedBanks = useSelector(getManagedBanks);
   const managedBank = managedBanks[address];
@@ -60,7 +60,7 @@ const TileBankSigningDetails: FC<ComponentProps> = ({className, items}) => {
     item.ref.current?.blur();
   };
 
-  const renderList = (): ReactNode => {
+  const renderItems = (): ReactNode => {
     return items.map((item) => {
       const {key, ref, title, value} = item;
       return (
@@ -79,21 +79,19 @@ const TileBankSigningDetails: FC<ComponentProps> = ({className, items}) => {
 
   return (
     <Tile className={clsx('TileBankSigningDetails', className)}>
-      <>
-        {renderList()}
-        {isManagedBank ? (
-          <Button color="secondary" onClick={toggleSigningKeyModal}>
-            {buttonText}
-          </Button>
-        ) : (
-          <Button color="secondary" onClick={handleAddManagedBank}>
-            Add to Managed Banks
-          </Button>
-        )}
-        {addSigningKeyModalIsOpen && <AddBankSigningKeysModal close={toggleSigningKeyModal} />}
-      </>
+      {renderItems()}
+      {isManagedBank ? (
+        <Button color="secondary" onClick={toggleSigningKeyModal}>
+          {buttonText}
+        </Button>
+      ) : (
+        <Button color="secondary" onClick={handleAddManagedBank}>
+          Add to Managed Banks
+        </Button>
+      )}
+      {addSigningKeyModalIsOpen && <AddBankSigningKeysModal close={toggleSigningKeyModal} />}
     </Tile>
   );
 };
 
-export default memo(TileBankSigningDetails);
+export default TileBankSigningDetails;

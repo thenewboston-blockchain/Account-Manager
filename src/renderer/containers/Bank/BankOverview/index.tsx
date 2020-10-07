@@ -62,13 +62,13 @@ const BankOverview: FC = () => {
                   key: 'bankNetworkId',
                   ref: bankNetworkIdRef,
                   title: 'Bank Network ID',
-                  value: bankConfig.node_identifier.toString(),
+                  value: bankConfig.node_identifier,
                 },
                 {
                   key: 'bankAccountNumber',
                   ref: bankAccountNumberRef,
                   title: 'Bank Account Number',
-                  value: bankConfig.account_number.toString(),
+                  value: bankConfig.account_number,
                 },
               ]}
             />
