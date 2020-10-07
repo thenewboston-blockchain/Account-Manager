@@ -114,7 +114,7 @@ const Bank: FC = () => {
 
   const renderAuthenticatedBadge = (): ReactNode => {
     if (!isAuthenticated) return null;
-    return <Badge className="Bank__Badge" color="tertiary" text="Authenticated" />;
+    return <Badge className="Bank__Badge" color="tertiary-light" text="Authenticated" />;
   };
 
   const renderRightPageHeaderButtons = (): ReactNode => {

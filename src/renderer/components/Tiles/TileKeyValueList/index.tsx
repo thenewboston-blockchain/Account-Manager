@@ -15,7 +15,7 @@ interface ComponentProps {
 }
 
 const TileKeyValueList: FC<ComponentProps> = ({className, items}) => {
-  const renderTable = (): ReactNode => {
+  const renderTableBody = (): ReactNode => {
     return (
       <tbody>
         {items.map(({key, value}) => (
@@ -30,7 +30,7 @@ const TileKeyValueList: FC<ComponentProps> = ({className, items}) => {
 
   return (
     <Tile className={clsx('TileKeyValueList', className)}>
-      <table className="TileKeyValueList__table">{renderTable()}</table>
+      <table className="TileKeyValueList__table">{renderTableBody()}</table>
     </Tile>
   );
 };

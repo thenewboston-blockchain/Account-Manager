@@ -1,6 +1,6 @@
 import React, {FC, ReactNode, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Route, Switch, useRouteMatch, useHistory} from 'react-router-dom';
+import {Route, Switch, useHistory, useRouteMatch} from 'react-router-dom';
 import sortBy from 'lodash/sortBy';
 
 import Badge from '@renderer/components/Badge';
@@ -12,9 +12,9 @@ import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {useAddress, useBooleanState} from '@renderer/hooks';
 import {
-  getManagedAccounts,
   getIsActivePrimaryValidator,
   getIsManagedValidator,
+  getManagedAccounts,
   getManagedValidators,
 } from '@renderer/selectors';
 import {setManagedValidator} from '@renderer/store/app';
