@@ -3,7 +3,6 @@ import React, {FC, useRef} from 'react';
 import A from '@renderer/components/A';
 import {Loader} from '@renderer/components/FormElements';
 import {TileBankSigningDetails, TileKeyValueList, TilePrimaryAmount} from '@renderer/components/Tiles';
-
 import {VALIDATOR_CONFIGS} from '@renderer/constants';
 import {useNetworkConfigFetcher} from '@renderer/hooks';
 import {ValidatorConfig} from '@renderer/types';
