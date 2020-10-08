@@ -6,6 +6,7 @@
       padding: 6px 0;
       text-align: left;
       vertical-align: top;
+      overflow-wrap: anywhere;
 
       &:nth-child(1) {
         color: var(--color-gray-500);
