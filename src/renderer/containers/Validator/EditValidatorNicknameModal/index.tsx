@@ -1,10 +1,12 @@
-import React, {FC} from 'react';
-import {useDispatch} from 'react-redux';
+import React, {FC, useMemo} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch, ManagedNode} from '@renderer/types';
+import yup from '@renderer/utils/yup';
+import {getManagedValidators} from '@renderer/selectors';
 
 interface ComponentProps {
   close(): void;
@@ -13,6 +15,9 @@ interface ComponentProps {
 
 const EditValidatorNicknameModal: FC<ComponentProps> = ({close, validator}) => {
   const dispatch = useDispatch<AppDispatch>();
+  const managedValidators = useSelector(getManagedValidators);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const initialValues = {
     nickname: validator.nickname,
   };
@@ -29,6 +34,20 @@ const EditValidatorNicknameModal: FC<ComponentProps> = ({close, validator}) => {
     close();
   };
 
+  const managedValidatorNicknames = useMemo(
+    () =>
+      Object.values(managedValidators)
+        .filter(({nickname}) => initialValues.nickname !== nickname)
+        .map(({nickname}) => nickname),
+    [initialValues, managedValidators],
+  );
+
+  const validationSchema = useMemo(() => {
+    return yup.object().shape({
+      nickname: yup.string().notOneOf(managedValidatorNicknames, 'That nickname is already taken'),
+    });
+  }, [managedValidatorNicknames]);
+
   return (
     <Modal
       className="EditValidatorNicknameModal"
@@ -37,6 +56,7 @@ const EditValidatorNicknameModal: FC<ComponentProps> = ({close, validator}) => {
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitButton="Save"
+      validationSchema={validationSchema}
     >
       <FormInput focused label="Validator Nickname" name="nickname" />
     </Modal>
