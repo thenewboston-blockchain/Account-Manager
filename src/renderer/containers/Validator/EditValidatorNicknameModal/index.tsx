@@ -17,10 +17,12 @@ const EditValidatorNicknameModal: FC<ComponentProps> = ({close, validator}) => {
   const dispatch = useDispatch<AppDispatch>();
   const managedValidators = useSelector(getManagedValidators);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const initialValues = {
-    nickname: validator.nickname,
-  };
+  const initialValues = useMemo(
+    () => ({
+      nickname: validator.nickname,
+    }),
+    [validator],
+  );
 
   type FormValues = typeof initialValues;
 
