@@ -5,6 +5,7 @@ import TileBankSigningDetails from './TileBankSigningDetails';
 import TileKeyValueList from './TileKeyValueList';
 import TilePrimaryAmount from './TilePrimaryAmount';
 import TileSigningKey from './TileSigningKey';
+import TileValidatorSigningDetails from './TileValidatorSigningDetails';
 
 export {
   Tile,
@@ -14,4 +15,5 @@ export {
   TileKeyValueList,
   TilePrimaryAmount,
   TileSigningKey,
+  TileValidatorSigningDetails,
 };

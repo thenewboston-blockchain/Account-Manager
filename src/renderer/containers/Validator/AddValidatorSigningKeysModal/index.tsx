@@ -9,6 +9,7 @@ import {getManagedAccounts, getManagedValidators, getValidatorConfigs} from '@re
 import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
 import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
+import {displayToast} from '@renderer/utils/toast';
 import yup from '@renderer/utils/yup';
 
 interface ComponentProps {
@@ -48,6 +49,7 @@ const AddValidatorSigningKeysModal: FC<ComponentProps> = ({close}) => {
         nid_signing_key: nidSigningKey,
       }),
     );
+    displayToast('Validator is now authenticated', 'success');
     close();
   };
 

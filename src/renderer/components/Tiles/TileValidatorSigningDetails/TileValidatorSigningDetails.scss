@@ -1,0 +1,24 @@
+.TileValidatorSigningDetails {
+  $self: &;
+
+  &__copy-icon {
+    color: var(--color-secondary);
+    cursor: pointer;
+  }
+
+  &__title {
+    color: var(--color-gray-500);
+  }
+
+  &__top {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  &__value {
+    margin-bottom: 18px;
+    word-wrap: break-word;
+  }
+}
