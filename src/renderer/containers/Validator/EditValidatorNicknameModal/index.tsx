@@ -3,10 +3,10 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
+import {getManagedValidators} from '@renderer/selectors';
 import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch, ManagedNode} from '@renderer/types';
 import yup from '@renderer/utils/yup';
-import {getManagedValidators} from '@renderer/selectors';
 
 interface ComponentProps {
   close(): void;
