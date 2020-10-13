@@ -1,0 +1,11 @@
+.TileDailyRate {
+  &__amount {
+    color: var(--color-primary);
+    font-size: var(--font-size-large);
+  }
+
+  &__title {
+    color: var(--color-gray-500);
+    margin-bottom: 8px;
+  }
+}

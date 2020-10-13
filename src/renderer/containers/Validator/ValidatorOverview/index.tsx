@@ -2,7 +2,12 @@ import React, {FC, useRef} from 'react';
 
 import A from '@renderer/components/A';
 import {Loader} from '@renderer/components/FormElements';
-import {TileValidatorSigningDetails, TileKeyValueList, TilePrimaryAmount} from '@renderer/components/Tiles';
+import {
+  TileValidatorSigningDetails,
+  TileKeyValueList,
+  TilePrimaryAmount,
+  TileDailyRate,
+} from '@renderer/components/Tiles';
 import {VALIDATOR_CONFIGS} from '@renderer/constants';
 import {useNetworkConfigFetcher} from '@renderer/hooks';
 import {ValidatorConfig} from '@renderer/types';
@@ -22,6 +27,11 @@ const ValidatorOverview: FC = () => {
         <>
           <div className="ValidatorOverview__left">
             <TilePrimaryAmount amount={validatorConfig.default_transaction_fee} loading={loading} title="Tx Fee" />
+            <TileDailyRate
+              amount={validatorConfig.daily_confirmation_rate || '-'}
+              loading={loading}
+              title="Daily Rate"
+            />
             <TileKeyValueList
               items={[
                 {
@@ -39,10 +49,6 @@ const ValidatorOverview: FC = () => {
                 {
                   key: 'Version',
                   value: validatorConfig.version,
-                },
-                {
-                  key: 'Daily Rate',
-                  value: validatorConfig.daily_confirmation_rate || '-',
                 },
                 {
                   key: 'Root Account File',
