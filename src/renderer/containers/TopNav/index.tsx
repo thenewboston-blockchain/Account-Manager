@@ -1,7 +1,7 @@
 import React, {FC, ReactNode} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
-import Icon, {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon2';
 import Modal from '@renderer/components/Modal';
 import ChangeActiveBankModal from '@renderer/containers/ChangeActiveBankModal';
 import Notifications from '@renderer/containers//Notifications';

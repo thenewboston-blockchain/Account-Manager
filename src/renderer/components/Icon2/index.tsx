@@ -116,9 +116,9 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.alertCircleOutline:
           return <AlertCircleOutlineIcon size={size || 24} />;
         case IconType.arrowLeft:
-          return <ArrowLeftIcon {...iconProps} />;
+          return <ArrowLeftIcon size={size || 24} />;
         case IconType.arrowRight:
-          return <ArrowRightIcon {...iconProps} />;
+          return <ArrowRightIcon size={size || 24} />;
         case IconType.bell:
           return <BellIcon size={size || 22} />;
         case IconType.checkboxBlankCircle:
@@ -160,7 +160,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.radioboxMarked:
           return <RadioboxMarkedIcon {...iconProps} />;
         case IconType.refresh:
-          return <RefreshIcon {...iconProps} />;
+          return <RefreshIcon size={size || 24} />;
         case IconType.sync:
           return <SyncIcon {...iconProps} />;
         case IconType.thumbsUp:
