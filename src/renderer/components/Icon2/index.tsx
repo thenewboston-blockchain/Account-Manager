@@ -114,7 +114,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.alert:
           return <AlertIcon size={size || 24} />;
         case IconType.alertCircleOutline:
-          return <AlertCircleOutlineIcon {...iconProps} />;
+          return <AlertCircleOutlineIcon size={size || 24} />;
         case IconType.arrowLeft:
           return <ArrowLeftIcon {...iconProps} />;
         case IconType.arrowRight:
@@ -164,7 +164,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.sync:
           return <SyncIcon {...iconProps} />;
         case IconType.thumbsUp:
-          return <ThumbsUpIcon {...iconProps} />;
+          return <ThumbsUpIcon size={size || 20} />;
         case IconType.tnb:
           return <TnbIcon {...iconProps} />;
         default:

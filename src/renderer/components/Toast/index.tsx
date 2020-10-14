@@ -37,7 +37,6 @@ const Toast: FC<ComponentProps> = ({children, className, type = 'warning'}) => {
           ...getCustomClassNames(className, `__icon--${type}`, true),
         })}
         icon={iconType}
-        size={20}
       />
       <div className={clsx('Toast__text', {...getCustomClassNames(className, '__text', true)})}>{children}</div>
     </div>
