@@ -94,7 +94,16 @@ const template = [
 const menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
 
-contextMenu();
+contextMenu({
+  // Add global context menu options here
+  menu: (defaultActions, params, browserWindow) => [
+    // allows for copy of QR code
+    defaultActions.copyImage({transform: (content) => `${content}`}),
+    defaultActions.separator(),
+    // Enables inspect element only in development
+    defaultActions.inspect(),
+  ],
+});
 
 const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
