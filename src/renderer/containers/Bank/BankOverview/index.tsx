@@ -24,7 +24,7 @@ const BankOverview: FC = () => {
       ) : (
         <>
           <div className="BankOverview__left">
-            <TilePrimaryAmount amount={bankConfig.default_transaction_fee} loading={loading} title="Tx Fee (per Tx)" />
+            <TilePrimaryAmount amount={bankConfig.default_transaction_fee} title="Tx Fee (per Tx)" />
             <TilePrimaryAmount
               amount={confirmationServiceCount}
               loading={confirmationServiceLoading}
