@@ -64,9 +64,9 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
 
       if (validatorConfig.error) {
         if (validatorConfig.error.includes('timeout') || validatorConfig.error.includes('Network Error')) {
-          displayErrorToast('Could Not Connect to Bank');
+          displayErrorToast('Could Not Connect to Validator');
         } else {
-          displayErrorToast('Invalid Bank Address');
+          displayErrorToast('Invalid Validator Address');
         }
         setSubmitting(false);
         return;
