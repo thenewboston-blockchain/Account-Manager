@@ -94,7 +94,9 @@ const template = [
 const menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
 
-contextMenu();
+contextMenu({
+  menu: (defaultActions) => [defaultActions.inspect()],
+});
 
 const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
