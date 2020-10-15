@@ -94,9 +94,9 @@ const LeftMenu: FC = () => {
           <LeftSubmenuItemStatus
             badge={isDefault ? 'active-bank' : null}
             baseUrl={baseUrl}
+            isOnline={isOnline}
             key={key}
             label={label}
-            status={isOnline ? 'online' : 'offline'}
             to={to}
           />
         )),
@@ -132,9 +132,9 @@ const LeftMenu: FC = () => {
           <LeftSubmenuItemStatus
             badge={isDefault ? 'primary-validator' : null}
             baseUrl={baseUrl}
+            isOnline={isOnline}
             key={key}
             label={label}
-            status={isOnline ? 'online' : 'offline'}
             to={to}
           />
         )),

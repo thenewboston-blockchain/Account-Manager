@@ -122,9 +122,9 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.bell:
           return <BellIcon size={size || 22} />;
         case IconType.checkboxBlankCircle:
-          return <CheckboxBlankCircleIcon {...iconProps} />;
+          return <CheckboxBlankCircleIcon size={size || 24} />;
         case IconType.checkboxBlankCircleOutline:
-          return <CheckboxBlankCircleOutlineIcon {...iconProps} />;
+          return <CheckboxBlankCircleOutlineIcon size={size || 24} />;
         case IconType.chevronLeft:
           return <ChevronLeftIcon {...iconProps} />;
         case IconType.chevronRight:

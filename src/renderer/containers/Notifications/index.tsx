@@ -8,6 +8,7 @@ import reverse from 'lodash/reverse';
 import sortBy from 'lodash/sortBy';
 
 import Icon, {IconType} from '@renderer/components/Icon2';
+import StatusBadge from '@renderer/components/StatusBadge';
 import {useBooleanState} from '@renderer/hooks';
 import {getManagedAccounts, getManagedFriends, getNotifications} from '@renderer/selectors';
 import {NotificationType} from '@renderer/types';
@@ -101,44 +102,30 @@ const Notifications: FC = () => {
 
           return (
             <div className="Notifications__notification" key={recipient}>
-              <Icon
-                className={clsx('Notifications__Icon', {
-                  'Notifications__Icon--read': read,
-                })}
-                icon={IconType.checkboxBlankCircle}
-                size={8}
-              />
-              <div className="Notifications__right">
-                <div className="Notifications__description">
-                  <div>
-                    <NavLink className="Notifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
-                      {getAccountNickname(senderAccountNumber)}
-                    </NavLink>{' '}
-                    paid you{' '}
-                    <NavLink className="Notifications__NavLink" to={`/account/${recipient}/overview`}>
-                      ({getAccountNickname(recipient)})
-                    </NavLink>
-                  </div>
-                  <div
-                    className={clsx('Notifications__time', {
-                      'Notifications__time--read': read,
-                    })}
-                  >
-                    {formatDistanceToNow(notificationTime, {includeSeconds: true})} ago
-                  </div>
+              {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
+              <div className="Notifications__description">
+                <div>
+                  <NavLink className="Notifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
+                    {getAccountNickname(senderAccountNumber)}
+                  </NavLink>{' '}
+                  paid you{' '}
+                  <NavLink className="Notifications__NavLink" to={`/account/${recipient}/overview`}>
+                    ({getAccountNickname(recipient)})
+                  </NavLink>
                 </div>
-                <div className="Notifications__amount">+ {amount}</div>
+                <div
+                  className={clsx('Notifications__time', {
+                    'Notifications__time--read': read,
+                  })}
+                >
+                  {formatDistanceToNow(notificationTime, {includeSeconds: true})} ago
+                </div>
               </div>
+              <div className="Notifications__amount">+ {amount}</div>
             </div>
           );
         });
     });
-  };
-
-  const renderUnreadNotificationsDot = (): ReactNode => {
-    return unreadNotificationsLength ? (
-      <span className="Notifications__unread-notifications-dot" onClick={handleBellClick} />
-    ) : null;
   };
 
   const truncate = (str: string, size: number): string => {
@@ -152,14 +139,14 @@ const Notifications: FC = () => {
 
   return (
     <>
-      <div className="Notifications__Icon-container">
+      <div className="Notifications__icon-container">
         <Icon
           className={clsx('Notifications', {'Notifications--active': open})}
           icon={IconType.bell}
           onClick={handleBellClick}
           ref={iconRef}
         />
-        {renderUnreadNotificationsDot()}
+        {unreadNotificationsLength ? <StatusBadge className="Notifications__bell-alert-badge" status="alert" /> : null}
       </div>
       {open &&
         createPortal(

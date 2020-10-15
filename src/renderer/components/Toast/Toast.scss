@@ -9,7 +9,7 @@
   }
 
   &--warning {
-    border-left-color: var(--color-danger);
+    border-left-color: var(--color-alert);
   }
 
   &__icon {
@@ -20,7 +20,7 @@
     }
 
     &--warning {
-      color: var(--color-danger);
+      color: var(--color-alert);
     }
   }
 
