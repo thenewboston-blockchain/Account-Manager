@@ -9,11 +9,11 @@ import './TilePrimaryAmount.scss';
 interface ComponentProps {
   amount: number;
   className?: string;
-  loading: boolean;
+  loading?: boolean;
   title: string;
 }
 
-const TilePrimaryAmount: FC<ComponentProps> = ({amount, className, loading, title}) => {
+const TilePrimaryAmount: FC<ComponentProps> = ({amount, className, loading = false, title}) => {
   return (
     <Tile className={clsx('TilePrimaryAmount', className)}>
       <div className="TilePrimaryAmount__title">{title}</div>

@@ -26,12 +26,8 @@ const ValidatorOverview: FC = () => {
       ) : (
         <>
           <div className="ValidatorOverview__left">
-            <TilePrimaryAmount amount={validatorConfig.default_transaction_fee} loading={loading} title="Tx Fee" />
-            <TileDailyRate
-              amount={validatorConfig.daily_confirmation_rate || '-'}
-              loading={loading}
-              title="Daily Rate"
-            />
+            <TilePrimaryAmount amount={validatorConfig.default_transaction_fee} title="Tx Fee" />
+            <TileDailyRate amount={validatorConfig.daily_confirmation_rate || '-'} title="Daily Rate" />
             <TileKeyValueList
               items={[
                 {

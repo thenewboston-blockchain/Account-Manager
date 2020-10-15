@@ -9,11 +9,11 @@ import './TileDailyRate.scss';
 interface ComponentProps {
   amount: number | string;
   className?: string;
-  loading: boolean;
+  loading?: boolean;
   title: string;
 }
 
-const TileDailyRate: FC<ComponentProps> = ({amount, className, loading, title}) => {
+const TileDailyRate: FC<ComponentProps> = ({amount, className, loading = false, title}) => {
   return (
     <Tile className={clsx('TileDailyRate', className)}>
       <div className="TileDailyRate__title">{title}</div>
