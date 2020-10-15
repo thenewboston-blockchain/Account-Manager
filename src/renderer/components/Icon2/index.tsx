@@ -166,7 +166,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.thumbsUp:
           return <ThumbsUpIcon size={size || 20} />;
         case IconType.tnb:
-          return <TnbIcon {...iconProps} />;
+          return <TnbIcon size={size || 24} />;
         default:
           return null;
       }

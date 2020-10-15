@@ -2,7 +2,7 @@ import React, {FC, ReactNode, useCallback, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import {FormButton} from '@renderer/components/FormComponents';
-import Icon, {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon2';
 import Modal from '@renderer/components/Modal';
 import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
 import {sendBlock} from '@renderer/utils/blocks';
@@ -83,7 +83,7 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
           submitting={submitting}
           type="submit"
         >
-          Send <Icon className="SendPointsModal__submit-icon" icon={IconType.tnb} size={16} />
+          Send <Icon className="SendPointsModal__submit-icon" icon={IconType.tnb} size={16} totalSize={16} />
         </FormButton>
       </>
     );
