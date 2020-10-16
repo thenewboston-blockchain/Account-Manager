@@ -1,7 +1,7 @@
 import React, {FC, ReactNode} from 'react';
 import clsx from 'clsx';
 
-import Icon, {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon2';
 import './ConnectionStatus.scss';
 
 export type Status = 'checking' | 'connected' | 'not-connected';
@@ -39,6 +39,7 @@ const ConnectionStatus: FC<ComponentProps> = ({status}) => {
             })}
             icon={icon}
             size={32}
+            totalSize={32}
           />
         </div>
         <div>

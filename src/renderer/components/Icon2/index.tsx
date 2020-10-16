@@ -87,6 +87,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
       [size],
     );
 
+    const divSize = Math.max(size || 0, totalSize);
+
     const getTabIndex = () => {
       if (unfocusable) return undefined;
 
@@ -140,9 +142,9 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.eyeOff:
           return <EyeOffIcon {...iconProps} />;
         case IconType.lanConnect:
-          return <LanConnectIcon {...iconProps} />;
+          return <LanConnectIcon size={size || 24} />;
         case IconType.lanDisconnect:
-          return <LanDisconnectIcon {...iconProps} />;
+          return <LanDisconnectIcon size={size || 24} />;
         case IconType.link:
           return <LinkIcon {...iconProps} />;
         case IconType.loading:
@@ -162,7 +164,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.refresh:
           return <RefreshIcon size={size || 24} />;
         case IconType.sync:
-          return <SyncIcon {...iconProps} />;
+          return <SyncIcon size={size || 24} />;
         case IconType.thumbsUp:
           return <ThumbsUpIcon size={size || 20} />;
         case IconType.tnb:
@@ -182,7 +184,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         ref={ref}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        style={{height: totalSize, width: totalSize}}
+        style={{height: divSize, width: divSize}}
         tabIndex={getTabIndex()}
       >
         {renderIcon()}
