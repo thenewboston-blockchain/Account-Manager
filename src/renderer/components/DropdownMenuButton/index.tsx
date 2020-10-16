@@ -3,7 +3,7 @@ import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
 
-import Icon, {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon2';
 import {useBooleanState, useEventListener} from '@renderer/hooks';
 import {GenericVoidFunction} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';

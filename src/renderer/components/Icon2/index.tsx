@@ -74,7 +74,7 @@ interface ComponentProps {
   onClick?(e?: React.MouseEvent<HTMLDivElement, MouseEvent>): void;
   onKeyDown?(e?: React.KeyboardEvent<HTMLDivElement>): void;
   size?: number;
-  totalSize?: number;
+  totalSize?: number | 'unset';
   unfocusable?: boolean;
 }
 
@@ -87,7 +87,11 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
       [size],
     );
 
-    const divSize = Math.max(size || 0, totalSize);
+    const divStyle = useMemo(() => {
+      if (totalSize === 'unset') return {};
+      const divSize = Math.max(size || 0, totalSize);
+      return {height: divSize, width: divSize};
+    }, [size, totalSize]);
 
     const tabIndex = useMemo(() => (unfocusable || !onClick ? undefined : 0), [onClick, unfocusable]);
 
@@ -132,7 +136,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.contentCopy:
           return <ContentCopyIcon size={size || 22} />;
         case IconType.dotsVertical:
-          return <DotsVerticalIcon {...iconProps} />;
+          return <DotsVerticalIcon size={size || 24} />;
         case IconType.eye:
           return <EyeIcon size={size || 22} />;
         case IconType.eyeOff:
@@ -144,7 +148,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.link:
           return <LinkIcon size={size || 24} />;
         case IconType.loading:
-          return <LoadingIcon {...iconProps} />;
+          return <LoadingIcon size={size || 24} />;
         case IconType.pencil:
           return <PencilIcon size={size || 24} />;
         case IconType.play:
@@ -180,7 +184,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         ref={ref}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        style={{height: divSize, width: divSize}}
+        style={divStyle}
         tabIndex={tabIndex}
       >
         {renderIcon()}
