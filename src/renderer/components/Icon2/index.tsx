@@ -80,13 +80,6 @@ interface ComponentProps {
 
 const Icon = forwardRef<HTMLDivElement, ComponentProps>(
   ({className, disabled = false, icon, onClick, onKeyDown, size, totalSize = 30, unfocusable = false}, ref) => {
-    const iconProps = useMemo(
-      () => ({
-        size,
-      }),
-      [size],
-    );
-
     const divStyle = useMemo(() => {
       if (totalSize === 'unset') return {};
       const divSize = Math.max(size || 0, totalSize);
@@ -128,11 +121,11 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.checkboxBlankCircleOutline:
           return <CheckboxBlankCircleOutlineIcon size={size || 24} />;
         case IconType.chevronLeft:
-          return <ChevronLeftIcon {...iconProps} />;
+          return <ChevronLeftIcon size={size || 24} />;
         case IconType.chevronRight:
-          return <ChevronRightIcon {...iconProps} />;
+          return <ChevronRightIcon size={size || 24} />;
         case IconType.close:
-          return <CloseIcon {...iconProps} />;
+          return <CloseIcon size={size || 24} />;
         case IconType.contentCopy:
           return <ContentCopyIcon size={size || 22} />;
         case IconType.dotsVertical:
@@ -172,7 +165,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         default:
           return null;
       }
-    }, [icon, iconProps, size]);
+    }, [icon, size]);
 
     return (
       <div

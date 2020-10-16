@@ -2,7 +2,7 @@ import React, {FC, ReactNode, useCallback, useMemo} from 'react';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
 
-import Icon, {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon2';
 import {getCustomClassNames} from '@renderer/utils/components';
 import './Pagination.scss';
 
