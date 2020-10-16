@@ -1,7 +1,7 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
-import Icon, {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon2';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
@@ -59,6 +59,7 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
                 icon={IconType.pencil}
                 onClick={handleEditTrustButton(account)}
                 size={15}
+                totalSize={18}
               />
             ) : null}
           </div>

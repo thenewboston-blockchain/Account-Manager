@@ -1,7 +1,7 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
-import Icon, {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon2';
 import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
@@ -66,6 +66,7 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
                 icon={IconType.pencil}
                 onClick={handleEditTrustButton(bank)}
                 size={15}
+                totalSize={18}
               />
             ) : null}
           </div>

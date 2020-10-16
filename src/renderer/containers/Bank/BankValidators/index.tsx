@@ -2,7 +2,7 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import AccountLink from '@renderer/components/AccountLink';
-import Icon, {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon2';
 import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
@@ -102,6 +102,7 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
                 icon={IconType.pencil}
                 onClick={handleEditTrustButton(validator)}
                 size={15}
+                totalSize={18}
               />
             ) : null}
           </div>

@@ -89,11 +89,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
 
     const divSize = Math.max(size || 0, totalSize);
 
-    const getTabIndex = () => {
-      if (unfocusable) return undefined;
-
-      return onClick ? 0 : undefined;
-    };
+    const tabIndex = useMemo(() => (unfocusable || !onClick ? undefined : 0), [onClick, unfocusable]);
 
     const handleClick = (e?: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
       if (disabled || !onClick) return;
@@ -150,7 +146,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.loading:
           return <LoadingIcon {...iconProps} />;
         case IconType.pencil:
-          return <PencilIcon {...iconProps} />;
+          return <PencilIcon size={size || 24} />;
         case IconType.play:
           return <PlayIcon size={size || 24} />;
         case IconType.plus:
@@ -185,7 +181,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         style={{height: divSize, width: divSize}}
-        tabIndex={getTabIndex()}
+        tabIndex={tabIndex}
       >
         {renderIcon()}
       </div>
