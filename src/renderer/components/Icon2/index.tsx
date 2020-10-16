@@ -142,7 +142,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.lanDisconnect:
           return <LanDisconnectIcon size={size || 24} />;
         case IconType.link:
-          return <LinkIcon {...iconProps} />;
+          return <LinkIcon size={size || 24} />;
         case IconType.loading:
           return <LoadingIcon {...iconProps} />;
         case IconType.pencil:
