@@ -134,13 +134,13 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.close:
           return <CloseIcon {...iconProps} />;
         case IconType.contentCopy:
-          return <ContentCopyIcon {...iconProps} />;
+          return <ContentCopyIcon size={size || 22} />;
         case IconType.dotsVertical:
           return <DotsVerticalIcon {...iconProps} />;
         case IconType.eye:
-          return <EyeIcon {...iconProps} />;
+          return <EyeIcon size={size || 22} />;
         case IconType.eyeOff:
-          return <EyeOffIcon {...iconProps} />;
+          return <EyeOffIcon size={size || 22} />;
         case IconType.lanConnect:
           return <LanConnectIcon size={size || 24} />;
         case IconType.lanDisconnect:

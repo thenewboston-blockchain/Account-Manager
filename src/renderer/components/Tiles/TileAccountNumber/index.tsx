@@ -2,7 +2,7 @@ import React, {FC, memo, useMemo, useRef} from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
 
-import Icon, {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon2';
 import Qr from '@renderer/components/Qr';
 import {getCustomClassNames} from '@renderer/utils/components';
 import {displayToast} from '@renderer/utils/toast';
@@ -41,7 +41,6 @@ const TileAccountNumber: FC<ComponentProps> = ({accountNumber, className, type})
               className={clsx('TileAccountNumber__copy-icon', {...getCustomClassNames(className, '__copy-icon', true)})}
               icon={IconType.contentCopy}
               ref={copyIconRef}
-              size={22}
             />
           </CopyToClipboard>
         </div>

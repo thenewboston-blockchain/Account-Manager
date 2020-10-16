@@ -4,7 +4,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
 
 import {Button} from '@renderer/components/FormElements';
-import Icon, {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon2';
 import AddValidatorSigningKeysModal from '@renderer/containers/Validator/AddValidatorSigningKeysModal';
 import {useAddress, useBooleanState} from '@renderer/hooks';
 import {getIsManagedValidator, getManagedValidators} from '@renderer/selectors';
@@ -68,12 +68,7 @@ const TileValidatorSigningDetails: FC<ComponentProps> = ({className, items}) => 
           <div className="TileValidatorSigningDetails__top">
             <div className="TileValidatorSigningDetails__title">{title}</div>
             <CopyToClipboard onCopy={handleCopy(item)} text={value}>
-              <Icon
-                className="TileValidatorSigningDetails__copy-icon"
-                icon={IconType.contentCopy}
-                ref={ref}
-                size={22}
-              />
+              <Icon className="TileValidatorSigningDetails__copy-icon" icon={IconType.contentCopy} ref={ref} />
             </CopyToClipboard>
           </div>
           <div className="TileValidatorSigningDetails__value">{value}</div>

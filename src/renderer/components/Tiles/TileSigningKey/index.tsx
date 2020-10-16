@@ -2,7 +2,7 @@ import React, {FC, useEffect, useRef} from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
 
-import Icon, {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon2';
 import {useBooleanState} from '@renderer/hooks';
 import {getCustomClassNames} from '@renderer/utils/components';
 import {displayToast} from '@renderer/utils/toast';
@@ -58,10 +58,9 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, 
               icon={showSigningKey ? IconType.eyeOff : IconType.eye}
               onClick={handleEyeClick}
               ref={eyeRef}
-              size={22}
             />
             <CopyToClipboard onCopy={handleCopy} text={signingKey}>
-              <Icon className={clsx('TileSigningKey__copy-icon')} icon={IconType.contentCopy} ref={copyRef} size={22} />
+              <Icon className={clsx('TileSigningKey__copy-icon')} icon={IconType.contentCopy} ref={copyRef} />
             </CopyToClipboard>
           </div>
         </div>

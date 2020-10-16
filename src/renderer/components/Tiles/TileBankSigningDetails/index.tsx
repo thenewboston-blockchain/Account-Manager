@@ -4,7 +4,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
 
 import {Button} from '@renderer/components/FormElements';
-import Icon, {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon2';
 import AddBankSigningKeysModal from '@renderer/containers/Bank/AddBankSigningKeysModal';
 import {useAddress, useBooleanState} from '@renderer/hooks';
 import {getIsManagedBank, getManagedBanks} from '@renderer/selectors';
@@ -68,7 +68,7 @@ const TileBankSigningDetails: FC<ComponentProps> = ({className, items}) => {
           <div className="TileBankSigningDetails__top">
             <div className="TileBankSigningDetails__title">{title}</div>
             <CopyToClipboard onCopy={handleCopy(item)} text={value}>
-              <Icon className="TileBankSigningDetails__copy-icon" icon={IconType.contentCopy} ref={ref} size={22} />
+              <Icon className="TileBankSigningDetails__copy-icon" icon={IconType.contentCopy} ref={ref} />
             </CopyToClipboard>
           </div>
           <div className="TileBankSigningDetails__value">{value}</div>
