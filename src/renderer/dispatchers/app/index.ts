@@ -67,7 +67,6 @@ export const connect = (bankAddressData: AddressData) => async (dispatch: AppDis
     const activePrimaryValidatorData = {
       ...managedValidator,
       ip_address: validatorConfigResponse.data.ip_address,
-      node_identifier: validatorConfigResponse.data.node_identifier,
       port: validatorConfigResponse.data.port,
       protocol: validatorConfigResponse.data.protocol,
     };
@@ -83,7 +82,6 @@ export const connect = (bankAddressData: AddressData) => async (dispatch: AppDis
       ip_address: validatorConfigResponse.data.ip_address,
       nickname: '',
       nid_signing_key: '',
-      node_identifier: validatorConfigResponse.data.node_identifier,
       port: validatorConfigResponse.data.port,
       protocol: validatorConfigResponse.data.protocol,
     };
@@ -134,7 +132,6 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
       ...managedBank,
       ip_address: bankConfig.ip_address,
       nickname: bankNickname,
-      node_identifier: bankConfig.node_identifier,
       port: bankConfig.port,
       protocol: bankConfig.protocol,
     };
@@ -150,7 +147,6 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
       ip_address: bankConfig.ip_address,
       nickname: bankNickname,
       nid_signing_key: '',
-      node_identifier: bankConfig.node_identifier,
       port: bankConfig.port,
       protocol: bankConfig.protocol,
     };
