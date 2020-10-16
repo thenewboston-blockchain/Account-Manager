@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {useDispatch} from 'react-redux';
 
-import Icon, {IconType} from '@renderer/components/Icon2';
+import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import {unsetManagedAccount} from '@renderer/store/app';
 import {AppDispatch, ManagedAccount} from '@renderer/types';

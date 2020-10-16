@@ -1,7 +1,7 @@
 import React, {FC, useMemo} from 'react';
 import clsx from 'clsx';
 
-import Icon, {IconType} from '@renderer/components/Icon2';
+import Icon, {IconType} from '@renderer/components/Icon';
 import {getCustomClassNames} from '@renderer/utils/components';
 
 import './Toast.scss';

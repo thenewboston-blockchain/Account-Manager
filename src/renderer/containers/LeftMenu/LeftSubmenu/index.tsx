@@ -1,7 +1,7 @@
 import React, {FC, ReactNode} from 'react';
 
 import ArrowToggle from '@renderer/components/ArrowToggle';
-import Icon, {IconType} from '@renderer/components/Icon2';
+import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState} from '@renderer/hooks';
 
 import './LeftSubmenu.scss';

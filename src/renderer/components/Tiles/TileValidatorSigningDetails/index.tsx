@@ -4,7 +4,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
 
 import {Button} from '@renderer/components/FormElements';
-import Icon, {IconType} from '@renderer/components/Icon2';
+import Icon, {IconType} from '@renderer/components/Icon';
 import AddValidatorSigningKeysModal from '@renderer/containers/Validator/AddValidatorSigningKeysModal';
 import {useAddress, useBooleanState} from '@renderer/hooks';
 import {getIsManagedValidator, getManagedValidators} from '@renderer/selectors';

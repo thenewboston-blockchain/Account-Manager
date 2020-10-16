@@ -2,7 +2,7 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import AccountLink from '@renderer/components/AccountLink';
-import Icon, {IconType} from '@renderer/components/Icon2';
+import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';

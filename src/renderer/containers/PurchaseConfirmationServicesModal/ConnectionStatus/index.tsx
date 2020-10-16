@@ -1,7 +1,7 @@
 import React, {FC, ReactNode} from 'react';
 import clsx from 'clsx';
 
-import Icon, {IconType} from '@renderer/components/Icon2';
+import Icon, {IconType} from '@renderer/components/Icon';
 import './ConnectionStatus.scss';
 
 export type Status = 'checking' | 'connected' | 'not-connected';

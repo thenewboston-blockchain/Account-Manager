@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useRef} from 'react';
 import clsx from 'clsx';
 
-import Icon, {IconType} from '@renderer/components/Icon2';
+import Icon, {IconType} from '@renderer/components/Icon';
 import {getCustomClassNames} from '@renderer/utils/components';
 
 import './Radio.scss';

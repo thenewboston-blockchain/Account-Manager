@@ -4,7 +4,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
 
 import {Button} from '@renderer/components/FormElements';
-import Icon, {IconType} from '@renderer/components/Icon2';
+import Icon, {IconType} from '@renderer/components/Icon';
 import AddBankSigningKeysModal from '@renderer/containers/Bank/AddBankSigningKeysModal';
 import {useAddress, useBooleanState} from '@renderer/hooks';
 import {getIsManagedBank, getManagedBanks} from '@renderer/selectors';

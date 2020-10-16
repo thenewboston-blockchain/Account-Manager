@@ -7,7 +7,7 @@ import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import reverse from 'lodash/reverse';
 import sortBy from 'lodash/sortBy';
 
-import Icon, {IconType} from '@renderer/components/Icon2';
+import Icon, {IconType} from '@renderer/components/Icon';
 import StatusBadge from '@renderer/components/StatusBadge';
 import {useBooleanState} from '@renderer/hooks';
 import {getManagedAccounts, getManagedFriends, getNotifications} from '@renderer/selectors';

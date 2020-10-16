@@ -5,7 +5,7 @@ import sortBy from 'lodash/sortBy';
 
 import Badge from '@renderer/components/Badge';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-import Icon, {IconType} from '@renderer/components/Icon2';
+import Icon, {IconType} from '@renderer/components/Icon';
 import {Button} from '@renderer/components/FormElements';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';

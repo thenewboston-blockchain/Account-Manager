@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import noop from 'lodash/noop';
 
 import {Form, FormButton, FormButtonProps} from '@renderer/components/FormComponents';
-import Icon, {IconType} from '@renderer/components/Icon2';
+import Icon, {IconType} from '@renderer/components/Icon';
 import Loader from '@renderer/components/FormElements/Loader';
 
 import {GenericFormValues, GenericFunction} from '@renderer/types';
