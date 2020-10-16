@@ -152,9 +152,9 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         case IconType.pencil:
           return <PencilIcon {...iconProps} />;
         case IconType.play:
-          return <PlayIcon {...iconProps} />;
+          return <PlayIcon size={size || 24} />;
         case IconType.plus:
-          return <PlusIcon {...iconProps} />;
+          return <PlusIcon size={size || 24} />;
         case IconType.power:
           return <PowerIcon size={size || 24} />;
         case IconType.radioboxBlank:

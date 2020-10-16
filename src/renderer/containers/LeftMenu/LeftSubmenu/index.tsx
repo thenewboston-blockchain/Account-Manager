@@ -1,7 +1,7 @@
 import React, {FC, ReactNode} from 'react';
 
 import ArrowToggle from '@renderer/components/ArrowToggle';
-import Icon, {IconType} from '@renderer/components/Icon';
+import Icon, {IconType} from '@renderer/components/Icon2';
 import {useBooleanState} from '@renderer/hooks';
 
 import './LeftSubmenu.scss';
@@ -39,7 +39,9 @@ const LeftSubmenu: FC<ComponentProps> = ({leftIcon, menuItems, rightOnClick, rig
       );
     }
 
-    return <Icon className="LeftSubmenu__add-icon" icon={IconType.plus} onClick={rightOnClick} size={20} />;
+    return (
+      <Icon className="LeftSubmenu__add-icon" icon={IconType.plus} onClick={rightOnClick} size={20} totalSize={20} />
+    );
   };
 
   return (
