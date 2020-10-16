@@ -9,18 +9,18 @@
   }
 
   &--warning {
-    border-left-color: var(--color-danger);
+    border-left-color: var(--color-alert);
   }
 
   &__icon {
-    margin-right: 14px;
+    margin-right: 12px;
 
     &--success {
       color: var(--color-tertiary);
     }
 
     &--warning {
-      color: var(--color-danger);
+      color: var(--color-alert);
     }
   }
 

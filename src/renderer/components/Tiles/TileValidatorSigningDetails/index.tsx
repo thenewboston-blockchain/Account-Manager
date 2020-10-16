@@ -68,12 +68,7 @@ const TileValidatorSigningDetails: FC<ComponentProps> = ({className, items}) => 
           <div className="TileValidatorSigningDetails__top">
             <div className="TileValidatorSigningDetails__title">{title}</div>
             <CopyToClipboard onCopy={handleCopy(item)} text={value}>
-              <Icon
-                className="TileValidatorSigningDetails__copy-icon"
-                icon={IconType.contentCopy}
-                ref={ref}
-                size={22}
-              />
+              <Icon className="TileValidatorSigningDetails__copy-icon" icon={IconType.contentCopy} ref={ref} />
             </CopyToClipboard>
           </div>
           <div className="TileValidatorSigningDetails__value">{value}</div>

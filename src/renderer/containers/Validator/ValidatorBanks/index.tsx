@@ -66,6 +66,7 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
                 icon={IconType.pencil}
                 onClick={handleEditTrustButton(bank)}
                 size={15}
+                totalSize={18}
               />
             ) : null}
           </div>

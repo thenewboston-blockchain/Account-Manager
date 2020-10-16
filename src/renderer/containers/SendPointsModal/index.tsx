@@ -83,7 +83,7 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
           submitting={submitting}
           type="submit"
         >
-          Send <Icon className="SendPointsModal__submit-icon" icon={IconType.tnb} size={16} />
+          Send <Icon className="SendPointsModal__submit-icon" icon={IconType.tnb} size={16} totalSize={16} />
         </FormButton>
       </>
     );

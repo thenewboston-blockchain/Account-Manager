@@ -58,10 +58,9 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, 
               icon={showSigningKey ? IconType.eyeOff : IconType.eye}
               onClick={handleEyeClick}
               ref={eyeRef}
-              size={22}
             />
             <CopyToClipboard onCopy={handleCopy} text={signingKey}>
-              <Icon className={clsx('TileSigningKey__copy-icon')} icon={IconType.contentCopy} ref={copyRef} size={22} />
+              <Icon className={clsx('TileSigningKey__copy-icon')} icon={IconType.contentCopy} ref={copyRef} />
             </CopyToClipboard>
           </div>
         </div>

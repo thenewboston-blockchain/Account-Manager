@@ -1,4 +1,4 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useRef} from 'react';
 import {NavLink, RouteComponentProps, useHistory, withRouter} from 'react-router-dom';
 import clsx from 'clsx';
 
@@ -15,8 +15,16 @@ export interface LeftSubmenuItemProps extends RouteComponentProps {
 
 const LeftSubmenuItem: FC<LeftSubmenuItemProps> = ({baseUrl, key, label, location, relatedNodePath, to}) => {
   const history = useHistory();
+  const linkIconRef = useRef<HTMLDivElement>(null);
 
   const getIsActive = (): boolean => location.pathname.includes(baseUrl);
+
+  const handleLinkIconClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!relatedNodePath) return;
+    e.preventDefault();
+    history.push(relatedNodePath);
+    linkIconRef.current?.blur();
+  };
 
   const renderLinkIcon = (): ReactNode => {
     if (!relatedNodePath) return null;
@@ -24,11 +32,10 @@ const LeftSubmenuItem: FC<LeftSubmenuItemProps> = ({baseUrl, key, label, locatio
       <Icon
         className="LeftSubmenuItem__chain-link-icon"
         icon={IconType.link}
-        onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-          e.preventDefault();
-          history.push(relatedNodePath);
-        }}
+        onClick={handleLinkIconClick}
+        ref={linkIconRef}
         size={20}
+        totalSize={20}
       />
     );
   };

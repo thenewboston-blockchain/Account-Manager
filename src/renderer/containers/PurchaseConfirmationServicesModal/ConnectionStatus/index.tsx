@@ -39,6 +39,7 @@ const ConnectionStatus: FC<ComponentProps> = ({status}) => {
             })}
             icon={icon}
             size={32}
+            totalSize={32}
           />
         </div>
         <div>

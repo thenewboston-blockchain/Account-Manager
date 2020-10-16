@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useRef} from 'react';
 import clsx from 'clsx';
 
 import Icon, {IconType} from '@renderer/components/Icon';
@@ -13,6 +13,13 @@ interface ComponentProps {
 }
 
 const ArrowToggle: FC<ComponentProps> = ({className, expanded, onClick}) => {
+  const iconRef = useRef<HTMLDivElement>(null);
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    onClick(e);
+    iconRef.current?.blur();
+  };
+
   return (
     <Icon
       className={clsx('ArrowToggle', className, {
@@ -20,8 +27,10 @@ const ArrowToggle: FC<ComponentProps> = ({className, expanded, onClick}) => {
         ...getCustomClassNames(className, '--expanded', expanded),
       })}
       icon={IconType.play}
-      onClick={onClick}
+      onClick={handleClick}
+      ref={iconRef}
       size={16}
+      totalSize={16}
     />
   );
 };

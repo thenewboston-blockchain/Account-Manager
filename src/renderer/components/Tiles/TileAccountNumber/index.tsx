@@ -41,7 +41,6 @@ const TileAccountNumber: FC<ComponentProps> = ({accountNumber, className, type})
               className={clsx('TileAccountNumber__copy-icon', {...getCustomClassNames(className, '__copy-icon', true)})}
               icon={IconType.contentCopy}
               ref={copyIconRef}
-              size={22}
             />
           </CopyToClipboard>
         </div>
