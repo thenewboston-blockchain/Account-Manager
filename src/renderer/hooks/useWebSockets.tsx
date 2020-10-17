@@ -49,6 +49,10 @@ const useWebSockets = (): void => {
     socket.onmessage = (event) => {
       processSocketEvent(bankSocketAddress, dispatch, event);
     };
+
+    return () => {
+      socket.close();
+    };
   }, [bankSocketAddress, dispatch]);
 };
 
