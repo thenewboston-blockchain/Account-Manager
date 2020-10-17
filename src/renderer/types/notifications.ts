@@ -8,4 +8,5 @@ export interface Notification {
 
 export enum NotificationType {
   confirmationBlockNotification = 'CONFIRMATION_BLOCK_NOTIFICATION',
+  primaryValidatorUpdatedNotification = 'PRIMARY_VALIDATOR_UPDATED_NOTIFICATION',
 }
