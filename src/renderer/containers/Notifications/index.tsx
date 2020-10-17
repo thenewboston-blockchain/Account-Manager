@@ -1,17 +1,20 @@
-import React, {FC, ReactNode, useEffect, useMemo, useRef, useState} from 'react';
+import React, {FC, Fragment, ReactNode, useEffect, useMemo, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import {useSelector} from 'react-redux';
 import {NavLink, useLocation} from 'react-router-dom';
 import clsx from 'clsx';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import reverse from 'lodash/reverse';
-import sortBy from 'lodash/sortBy';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import StatusBadge from '@renderer/components/StatusBadge';
 import {useBooleanState} from '@renderer/hooks';
 import {getManagedAccounts, getManagedFriends, getNotifications} from '@renderer/selectors';
-import {NotificationType} from '@renderer/types';
+import {
+  ConfirmationBlockNotificationPayload,
+  NotificationPayload,
+  NotificationType,
+  PrimaryValidatorUpdatedNotificationPayload,
+} from '@renderer/types';
 
 import NotificationsMenu from './NotificationsMenu';
 import './Notifications.scss';
@@ -38,7 +41,7 @@ const Notifications: FC = () => {
   const managedAccountNumbers = useMemo(() => managedAccountNumbersString.split('-'), [managedAccountNumbersString]);
 
   const unreadNotificationsLength = useMemo(
-    () => notifications.filter(({notificationTime}) => lastReadTime < notificationTime).length,
+    () => notifications.filter(({timestamp}) => lastReadTime < timestamp).length,
     [lastReadTime, notifications],
   );
 
@@ -78,54 +81,78 @@ const Notifications: FC = () => {
     closeMenu();
   };
 
-  const renderNotifications = (): ReactNode[] => {
-    let confirmationBlockNotifications = notifications.filter(
-      ({notificationType}) => notificationType === NotificationType.confirmationBlockNotification,
-    );
-    confirmationBlockNotifications = sortBy(confirmationBlockNotifications, ['notificationTime']);
-    confirmationBlockNotifications = reverse(confirmationBlockNotifications);
-
-    return confirmationBlockNotifications.map(({notificationTime, payload}) => {
-      const {
-        message: {
-          block: {
-            account_number: senderAccountNumber,
-            message: {txs},
-          },
+  const renderConfirmationBlockNotification = ({data, timestamp}: ConfirmationBlockNotificationPayload): ReactNode => {
+    const {
+      message: {
+        block: {
+          account_number: senderAccountNumber,
+          message: {txs},
         },
-      } = payload;
+      },
+    } = data;
 
-      return txs
-        .filter(({recipient}) => managedAccountNumbers.includes(recipient))
-        .map(({amount, recipient}) => {
-          const read = lastReadTime > notificationTime;
+    return txs
+      .filter(({recipient}) => managedAccountNumbers.includes(recipient))
+      .map(({amount, recipient}) => {
+        const read = lastReadTime > timestamp;
 
-          return (
-            <div className="Notifications__notification" key={recipient}>
-              {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
-              <div className="Notifications__description">
-                <div>
-                  <NavLink className="Notifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
-                    {getAccountNickname(senderAccountNumber)}
-                  </NavLink>{' '}
-                  paid you{' '}
-                  <NavLink className="Notifications__NavLink" to={`/account/${recipient}/overview`}>
-                    ({getAccountNickname(recipient)})
-                  </NavLink>
-                </div>
-                <div
-                  className={clsx('Notifications__time', {
-                    'Notifications__time--read': read,
-                  })}
-                >
-                  {formatDistanceToNow(notificationTime, {includeSeconds: true})} ago
-                </div>
+        return (
+          <div className="Notifications__notification" key={recipient}>
+            {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
+            <div className="Notifications__description">
+              <div>
+                <NavLink className="Notifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
+                  {getAccountNickname(senderAccountNumber)}
+                </NavLink>{' '}
+                paid you{' '}
+                <NavLink className="Notifications__NavLink" to={`/account/${recipient}/overview`}>
+                  ({getAccountNickname(recipient)})
+                </NavLink>
               </div>
-              <div className="Notifications__amount">+ {amount}</div>
+              <div
+                className={clsx('Notifications__time', {
+                  'Notifications__time--read': read,
+                })}
+              >
+                {formatDistanceToNow(timestamp, {includeSeconds: true})} ago
+              </div>
             </div>
-          );
-        });
+            <div className="Notifications__amount">+ {amount}</div>
+          </div>
+        );
+      });
+  };
+
+  const renderNotification = (notification: NotificationPayload): ReactNode => {
+    if (notification.type === NotificationType.confirmationBlockNotification) {
+      return renderConfirmationBlockNotification(notification as ConfirmationBlockNotificationPayload);
+    }
+    if (notification.type === NotificationType.primaryValidatorUpdatedNotification) {
+      return renderPrimaryValidatorUpdatedNotification(notification as PrimaryValidatorUpdatedNotificationPayload);
+    }
+    return null;
+  };
+
+  const renderNotifications = (): ReactNode[] => {
+    return notifications.map((notification) => {
+      return <Fragment key={notification.id}>{renderNotification(notification)}</Fragment>;
     });
+  };
+
+  const renderPrimaryValidatorUpdatedNotification = ({
+    data: primaryValidatorAddress,
+    timestamp,
+  }: PrimaryValidatorUpdatedNotificationPayload): ReactNode => {
+    const read = lastReadTime > timestamp;
+
+    return (
+      <div className="Notifications__notification" key="TODO">
+        {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
+        <div className="Notifications__description">
+          The networks Primary Validator has been changed to {primaryValidatorAddress}
+        </div>
+      </div>
+    );
   };
 
   const truncate = (str: string, size: number): string => {
