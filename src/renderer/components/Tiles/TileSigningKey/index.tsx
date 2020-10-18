@@ -1,6 +1,7 @@
 import React, {FC, useEffect, useRef} from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
+import {ipcRenderer} from 'electron';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState} from '@renderer/hooks';
@@ -33,6 +34,7 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, 
   };
 
   const handleDownloadClick = (): void => {
+    ipcRenderer.send('download-signing-key', signingKey);
     downloadRef.current?.blur();
   };
 

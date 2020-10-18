@@ -2,9 +2,10 @@
 /* eslint-disable global-require */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-import {app, BrowserWindow, Menu} from 'electron';
+import {app, BrowserWindow, ipcMain, Menu} from 'electron';
 import contextMenu from 'electron-context-menu';
 import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from 'electron-devtools-installer';
+import fs from 'fs';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
@@ -132,5 +133,14 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
+  }
+});
+
+ipcMain.on('download-signing-key', (e, signingKey) => {
+  try {
+    fs.writeFileSync('signing-key.txt', signingKey);
+    console.log('WROTE IT IN FILE');
+  } catch (error) {
+    console.log('Failed to save file');
   }
 });
