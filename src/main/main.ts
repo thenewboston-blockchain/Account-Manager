@@ -142,5 +142,6 @@ ipcMain.on('download-signing-key', (event, {filePath, signingKey}) => {
     event.reply('download-signing-key-success');
   } catch (error) {
     console.log('Failed to save file', error);
+    event.reply('download-signing-key-fail');
   }
 });

@@ -29,7 +29,11 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, 
   }, [accountNumber, hideSigningKey]);
 
   const displayDownloadSuccessToast = useCallback(() => {
-    displayToast('Signing Key has been saved locally.', 'success');
+    displayToast('Signing Key has been saved locally', 'success');
+  }, []);
+
+  const displayDownloadFailToast = useCallback(() => {
+    displayToast('Error: could not save signing key');
   }, []);
 
   useEffect(() => {
@@ -39,6 +43,14 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, 
       ipcRenderer.removeListener('download-signing-key-success', displayDownloadSuccessToast);
     };
   }, [displayDownloadSuccessToast]);
+
+  useEffect(() => {
+    ipcRenderer.on('download-signing-key-fail', displayDownloadFailToast);
+
+    return () => {
+      ipcRenderer.removeListener('download-signing-key-fail', displayDownloadFailToast);
+    };
+  }, [displayDownloadFailToast]);
 
   const handleCopy = (): void => {
     displayToast('Signing Key copied to the clipboard', 'success');
