@@ -9,10 +9,11 @@
     cursor: pointer;
   }
 
+  &__download-icon,
   &__eye-icon {
     color: var(--color-secondary);
     cursor: pointer;
-    margin-right: 18px;
+    margin-right: 15px;
   }
 
   &__icons-container {

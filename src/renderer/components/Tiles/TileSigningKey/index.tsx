@@ -19,6 +19,7 @@ interface ComponentProps {
 
 const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, signingKey}) => {
   const copyRef = useRef<HTMLDivElement>(null);
+  const downloadRef = useRef<HTMLDivElement>(null);
   const eyeRef = useRef<HTMLDivElement>(null);
   const [showSigningKey, toggleSigningKey, , hideSigningKey] = useBooleanState(false);
 
@@ -29,6 +30,10 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, 
   const handleCopy = (): void => {
     displayToast('Signing Key copied to the clipboard', 'success');
     copyRef.current?.blur();
+  };
+
+  const handleDownloadClick = (): void => {
+    downloadRef.current?.blur();
   };
 
   const handleEyeClick = (): void => {
@@ -54,13 +59,19 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, 
             })}
           >
             <Icon
-              className={clsx('TileSigningKey__eye-icon')}
+              className="TileSigningKey__download-icon"
+              icon={IconType.download}
+              onClick={handleDownloadClick}
+              ref={downloadRef}
+            />
+            <Icon
+              className="TileSigningKey__eye-icon"
               icon={showSigningKey ? IconType.eyeOff : IconType.eye}
               onClick={handleEyeClick}
               ref={eyeRef}
             />
             <CopyToClipboard onCopy={handleCopy} text={signingKey}>
-              <Icon className={clsx('TileSigningKey__copy-icon')} icon={IconType.contentCopy} ref={copyRef} />
+              <Icon className="TileSigningKey__copy-icon" icon={IconType.contentCopy} ref={copyRef} />
             </CopyToClipboard>
           </div>
         </div>

@@ -15,6 +15,7 @@ import ChevronRightIcon from 'mdi-react/ChevronRightIcon';
 import CloseIcon from 'mdi-react/CloseIcon';
 import ContentCopyIcon from 'mdi-react/ContentCopyIcon';
 import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
+import DownloadIcon from 'mdi-react/DownloadIcon';
 import EyeIcon from 'mdi-react/EyeIcon';
 import EyeOffIcon from 'mdi-react/EyeOffIcon';
 import LanConnectIcon from 'mdi-react/LanConnectIcon';
@@ -49,6 +50,7 @@ export enum IconType {
   close,
   contentCopy,
   dotsVertical,
+  download,
   eye,
   eyeOff,
   lanConnect,
@@ -130,6 +132,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
           return <ContentCopyIcon size={size || 22} />;
         case IconType.dotsVertical:
           return <DotsVerticalIcon size={size || 24} />;
+        case IconType.download:
+          return <DownloadIcon size={size || 24} />;
         case IconType.eye:
           return <EyeIcon size={size || 22} />;
         case IconType.eyeOff:
