@@ -1,7 +1,7 @@
-import React, {FC, useEffect, useRef} from 'react';
+import React, {FC, useCallback, useEffect, useRef} from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
-import {ipcRenderer} from 'electron';
+import {ipcRenderer, remote, SaveDialogOptions} from 'electron';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState} from '@renderer/hooks';
@@ -28,14 +28,38 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, 
     hideSigningKey();
   }, [accountNumber, hideSigningKey]);
 
+  const displayDownloadSuccessToast = useCallback(() => {
+    displayToast('Signing Key has been saved locally.', 'success');
+  }, []);
+
+  useEffect(() => {
+    ipcRenderer.on('download-signing-key-success', displayDownloadSuccessToast);
+
+    return () => {
+      ipcRenderer.removeListener('download-signing-key-success', displayDownloadSuccessToast);
+    };
+  }, [displayDownloadSuccessToast]);
+
   const handleCopy = (): void => {
     displayToast('Signing Key copied to the clipboard', 'success');
     copyRef.current?.blur();
   };
 
-  const handleDownloadClick = (): void => {
-    ipcRenderer.send('download-signing-key', accountNumber, signingKey);
-    displayToast('Signing Key has been saved locally.', 'success');
+  const handleDownloadClick = async (): Promise<void> => {
+    const options = {
+      buttonLabel: 'Save',
+      defaultPath: `${accountNumber}.txt`,
+      filters: [
+        {extensions: ['txt'], name: 'txt'},
+        {extensions: ['*'], name: 'All Files'},
+      ],
+      title: 'Save Signing Key',
+    } as SaveDialogOptions;
+
+    remote.dialog.showSaveDialog(options).then(({canceled, filePath}) => {
+      if (canceled) return;
+      ipcRenderer.send('download-signing-key', {filePath, signingKey});
+    });
     downloadRef.current?.blur();
   };
 

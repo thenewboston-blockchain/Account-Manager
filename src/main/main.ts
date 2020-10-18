@@ -136,10 +136,11 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('download-signing-key', (e, accountNumber, signingKey) => {
+ipcMain.on('download-signing-key', (event, {filePath, signingKey}) => {
   try {
-    fs.writeFileSync(`${accountNumber}.txt`, signingKey);
+    fs.writeFileSync(filePath, signingKey);
+    event.reply('download-signing-key-success');
   } catch (error) {
-    console.log('Failed to save file');
+    console.log('Failed to save file', error);
   }
 });
