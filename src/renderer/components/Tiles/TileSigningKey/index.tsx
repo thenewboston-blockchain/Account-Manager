@@ -34,7 +34,8 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, 
   };
 
   const handleDownloadClick = (): void => {
-    ipcRenderer.send('download-signing-key', signingKey);
+    ipcRenderer.send('download-signing-key', accountNumber, signingKey);
+    displayToast('Signing Key has been saved locally.', 'success');
     downloadRef.current?.blur();
   };
 
