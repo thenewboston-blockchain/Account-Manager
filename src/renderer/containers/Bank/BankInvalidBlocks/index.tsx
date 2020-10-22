@@ -22,7 +22,7 @@ const BankInvalidBlocks: FC = () => {
   const bankInvalidBlockTableData = useMemo<PageTableData[]>(
     () =>
       bankInvalidBlocks.map((invalidBlock) => ({
-        key: invalidBlock.block_identifier,
+        key: invalidBlock.id,
         [TableKeys.blockIdentifier]: invalidBlock.block_identifier,
         [TableKeys.block]: invalidBlock.block,
         [TableKeys.id]: invalidBlock.id,

@@ -39,7 +39,9 @@ const LeftSubmenu: FC<ComponentProps> = ({leftIcon, menuItems, rightOnClick, rig
       );
     }
 
-    return <Icon className="LeftSubmenu__add-icon" icon={IconType.plus} onClick={rightOnClick} size={20} />;
+    return (
+      <Icon className="LeftSubmenu__add-icon" icon={IconType.plus} onClick={rightOnClick} size={20} totalSize={20} />
+    );
   };
 
   return (

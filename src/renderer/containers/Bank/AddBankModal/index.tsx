@@ -62,13 +62,18 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       const bankConfig = await dispatch(fetchBankConfig(address));
 
       if (bankConfig.error) {
-        displayErrorToast(bankConfig.error);
+        if (bankConfig.error.includes('timeout') || bankConfig.error.includes('Network Error')) {
+          displayErrorToast('Could Not Connect to Bank');
+        } else {
+          displayErrorToast('Invalid Bank Address');
+        }
         setSubmitting(false);
         return;
       }
 
       const formattedData = {
         ...bankAddressData,
+        account_signing_key: '',
         nickname,
         nid_signing_key: '',
       };

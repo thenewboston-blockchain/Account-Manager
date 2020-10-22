@@ -1,3 +1,11 @@
 .Bank {
   height: 100%;
+
+  &__Badge {
+    margin-right: 12px;
+  }
+
+  &__chain-link-icon {
+    color: var(--color-secondary);
+  }
 }

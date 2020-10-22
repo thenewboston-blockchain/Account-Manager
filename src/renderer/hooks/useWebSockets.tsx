@@ -5,7 +5,11 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import {getActiveBank, getManagedAccounts} from '@renderer/selectors';
 import {AppDispatch} from '@renderer/types';
 import {formatSocketAddress} from '@renderer/utils/address';
-import {initializeSockets, processSocketEvent} from '@renderer/utils/sockets';
+import {
+  initializeSocketForPrimaryValidatorUpdated,
+  initializeSocketsForConfirmationBlocks,
+  processSocketEvent,
+} from '@renderer/utils/sockets';
 
 const useWebSockets = (): void => {
   const dispatch = useDispatch<AppDispatch>();
@@ -25,7 +29,7 @@ const useWebSockets = (): void => {
 
   useEffect(() => {
     if (!bankSocketAddress) return;
-    const sockets = initializeSockets(managedAccountNumbers, bankSocketAddress);
+    const sockets = initializeSocketsForConfirmationBlocks(managedAccountNumbers, bankSocketAddress);
 
     sockets.forEach((socket: ReconnectingWebSocket) => {
       socket.onmessage = (event) => {
@@ -37,6 +41,19 @@ const useWebSockets = (): void => {
       sockets.forEach((socket: ReconnectingWebSocket) => socket.close());
     };
   }, [bankSocketAddress, dispatch, managedAccountNumbers]);
+
+  useEffect(() => {
+    if (!bankSocketAddress) return;
+    const socket = initializeSocketForPrimaryValidatorUpdated(bankSocketAddress);
+
+    socket.onmessage = (event) => {
+      processSocketEvent(bankSocketAddress, dispatch, event);
+    };
+
+    return () => {
+      socket.close();
+    };
+  }, [bankSocketAddress, dispatch]);
 };
 
 export default useWebSockets;

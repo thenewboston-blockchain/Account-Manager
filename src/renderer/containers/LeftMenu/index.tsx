@@ -54,18 +54,29 @@ const LeftMenu: FC = () => {
   const [addValidatorModalIsOpen, toggleAddValidatorModal] = useBooleanState(false);
   const [createAccountModalIsOpen, toggleCreateAccountModal] = useBooleanState(false);
 
-  const accountItems = useMemo<ReactNode[]>(
-    () =>
-      sortDictValuesByPreferredKey<ManagedAccount>(managedAccounts, 'nickname', 'account_number')
-        .map(({account_number, nickname}) => ({
-          baseUrl: `/account/${account_number}`,
-          key: account_number,
-          label: nickname || account_number,
-          to: `/account/${account_number}/overview`,
-        }))
-        .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />),
-    [managedAccounts],
-  );
+  const accountItems = useMemo<ReactNode[]>(() => {
+    const getRelatedNodePath = (signingKey: string) => {
+      const bank = Object.values(managedBanks).find(({account_signing_key}) => account_signing_key === signingKey);
+      if (bank) return `/bank/${formatPathFromNode(bank)}/overview`;
+
+      const validator = Object.values(managedValidators).find(
+        ({account_signing_key}) => account_signing_key === signingKey,
+      );
+      if (validator) return `/validator/${formatPathFromNode(validator)}/overview`;
+    };
+
+    return sortDictValuesByPreferredKey<ManagedAccount>(managedAccounts, 'nickname', 'account_number')
+      .map(({account_number, nickname, signing_key}) => ({
+        baseUrl: `/account/${account_number}`,
+        key: account_number,
+        label: nickname || account_number,
+        relatedNodePath: getRelatedNodePath(signing_key),
+        to: `/account/${account_number}/overview`,
+      }))
+      .map(({baseUrl, key, label, relatedNodePath, to}) => (
+        <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} relatedNodePath={relatedNodePath} to={to} />
+      ));
+  }, [managedAccounts, managedBanks, managedValidators]);
 
   const bankMenuItems = useMemo<ReactNode[]>(
     () =>
@@ -83,9 +94,9 @@ const LeftMenu: FC = () => {
           <LeftSubmenuItemStatus
             badge={isDefault ? 'active-bank' : null}
             baseUrl={baseUrl}
+            isOnline={isOnline}
             key={key}
             label={label}
-            status={isOnline ? 'online' : 'offline'}
             to={to}
           />
         )),
@@ -121,9 +132,9 @@ const LeftMenu: FC = () => {
           <LeftSubmenuItemStatus
             badge={isDefault ? 'primary-validator' : null}
             baseUrl={baseUrl}
+            isOnline={isOnline}
             key={key}
             label={label}
-            status={isOnline ? 'online' : 'offline'}
             to={to}
           />
         )),

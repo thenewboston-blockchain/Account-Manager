@@ -1,4 +1,6 @@
 import React, {FC, ReactNode, RefObject, useRef} from 'react';
+import noop from 'lodash/noop';
+import clsx from 'clsx';
 
 import {useEventListener} from '@renderer/hooks';
 
@@ -38,7 +40,12 @@ const NotificationsMenu: FC<ComponentProps> = ({
           <h2>Notifications</h2>
           <span className="NotificationsMenu__count">{unreadNotificationsLength} unread</span>
         </div>
-        <span className="NotificationsMenu__mark-as-read" onClick={updateLastReadTime}>
+        <span
+          className={clsx('NotificationsMenu__mark-as-read', {
+            'NotificationsMenu__mark-as-read--disabled': !unreadNotificationsLength,
+          })}
+          onClick={unreadNotificationsLength ? updateLastReadTime : noop}
+        >
           Mark all as read
         </span>
       </div>

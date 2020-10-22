@@ -63,13 +63,18 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
       const validatorConfig = await dispatch(fetchValidatorConfig(address));
 
       if (validatorConfig.error) {
-        displayErrorToast(validatorConfig.error);
+        if (validatorConfig.error.includes('timeout') || validatorConfig.error.includes('Network Error')) {
+          displayErrorToast('Could Not Connect to Validator');
+        } else {
+          displayErrorToast('Invalid Validator Address');
+        }
         setSubmitting(false);
         return;
       }
 
       const formattedData = {
         ...validatorAddressData,
+        account_signing_key: '',
         nickname,
         nid_signing_key: '',
       };

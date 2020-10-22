@@ -1,0 +1,22 @@
+.TileKeyValueList {
+  &__table {
+    td {
+      border-bottom: 1px solid var(--color-gray-100);
+      min-width: 140px;
+      overflow-wrap: anywhere;
+      padding: 6px 0;
+      text-align: left;
+      vertical-align: top;
+
+      &:nth-child(1) {
+        color: var(--color-gray-500);
+        font-weight: 400;
+        padding-right: 8px;
+      }
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+  }
+}

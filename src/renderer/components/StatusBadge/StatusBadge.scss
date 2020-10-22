@@ -1,0 +1,13 @@
+.StatusBadge {
+  &--active {
+    color: var(--color-tertiary);
+  }
+
+  &--alert {
+    color: var(--color-alert);
+  }
+
+  &--inactive {
+    color: var(--color-gray-300);
+  }
+}

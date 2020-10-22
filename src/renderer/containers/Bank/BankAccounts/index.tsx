@@ -59,6 +59,7 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
                 icon={IconType.pencil}
                 onClick={handleEditTrustButton(account)}
                 size={15}
+                totalSize={18}
               />
             ) : null}
           </div>

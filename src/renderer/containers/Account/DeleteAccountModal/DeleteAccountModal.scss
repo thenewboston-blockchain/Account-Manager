@@ -1,15 +1,15 @@
 .DeleteAccountModal {
   &__icon {
-    color: var(--color-danger);
-    margin-right: 12px;
+    color: var(--color-alert);
+    margin-right: 9px;
   }
 
   &__title {
-    color: var(--color-danger);
+    color: var(--color-alert);
   }
 
   &__warning-span {
-    color: var(--color-danger);
+    color: var(--color-alert);
     font-weight: bold;
     text-transform: uppercase;
   }

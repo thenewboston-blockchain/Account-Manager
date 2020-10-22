@@ -15,7 +15,7 @@ export interface BaseRadioProps {
   name?: string;
   onClick?(e?: React.MouseEvent<HTMLDivElement, MouseEvent>): void;
   onKeyDown?(e?: React.KeyboardEvent<HTMLDivElement>): void;
-  size?: number | string;
+  size?: number;
   unfocusable?: boolean;
   value: string;
 }
@@ -29,7 +29,7 @@ const Radio: FC<BaseRadioProps> = ({
   name,
   onClick,
   onKeyDown,
-  size,
+  size = 24,
   unfocusable = false,
   value,
 }) => {
@@ -56,6 +56,7 @@ const Radio: FC<BaseRadioProps> = ({
         onKeyDown={onKeyDown}
         ref={radioRef}
         size={size}
+        totalSize={size}
         unfocusable={unfocusable}
       />
       <input

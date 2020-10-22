@@ -11,13 +11,13 @@
         &:active,
         &:hover,
         &--is-focused {
-          border-color: var(--color-danger);
+          border-color: var(--color-alert);
         }
       }
 
       #{$self}__indicator {
         &:hover {
-          color: var(--color-danger);
+          color: var(--color-alert);
         }
       }
     }

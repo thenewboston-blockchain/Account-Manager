@@ -1,14 +1,14 @@
 import {
   formatAddress,
   formatAddressFromNode,
-  formatQueryParams,
   formatPath,
   formatPathFromNode,
+  formatQueryParams,
   parseAddressData,
   parseQueryParams,
 } from './address';
 
-describe('formatAddress to return the following: ', () => {
+describe('formatAddress to return the following:', () => {
   test('correct IP without port when port 80 as string is passed', () => {
     expect(formatAddress('127.0.0.1', '80', 'http')).toBe('http://127.0.0.1');
   });
@@ -34,7 +34,7 @@ describe('formatAddress to return the following: ', () => {
   });
 });
 
-describe('formatAddressFromNode to return the following: ', () => {
+describe('formatAddressFromNode to return the following:', () => {
   test('correct IP from node with port as null', () => {
     const nodeAddress = {
       ip_address: '127.0.0.1',
@@ -81,7 +81,7 @@ describe('formatAddressFromNode to return the following: ', () => {
   });
 });
 
-describe('formatQueryParams to return the following: ', () => {
+describe('formatQueryParams to return the following:', () => {
   test('empty query string with no params', () => {
     const params = {};
     expect(formatQueryParams(params)).toBe('');
@@ -104,7 +104,7 @@ describe('formatQueryParams to return the following: ', () => {
   });
 });
 
-describe('formatPath to return the following: ', () => {
+describe('formatPath to return the following:', () => {
   test('correct Path with port when port as null is passed', () => {
     expect(formatPath('127.0.0.1', null, 'http')).toBe('http/127.0.0.1/port');
   });
@@ -122,7 +122,7 @@ describe('formatPath to return the following: ', () => {
   });
 });
 
-describe('formatPathFromNode to return the following: ', () => {
+describe('formatPathFromNode to return the following:', () => {
   test('correct Path with port when port as null is passed', () => {
     const nodePath = {
       ip_address: '127.0.0.1',
@@ -151,7 +151,7 @@ describe('formatPathFromNode to return the following: ', () => {
   });
 });
 
-describe('parseAddressData to return the following: ', () => {
+describe('parseAddressData to return the following:', () => {
   test('correct Address object with port null when port not specified', () => {
     const expectedAddressData = {
       ipAddress: '127.0.0.1',
@@ -194,7 +194,7 @@ describe('parseAddressData to return the following: ', () => {
   });
 });
 
-describe('parseQueryParams to return the following: ', () => {
+describe('parseQueryParams to return the following:', () => {
   test('correct QueryParams object with empty string passed', () => {
     const expectedQueryParams = {};
     expect(parseQueryParams('')).toMatchObject(expectedQueryParams);

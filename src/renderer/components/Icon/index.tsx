@@ -3,8 +3,8 @@
 import React, {forwardRef, ReactNode, useCallback, useMemo} from 'react';
 import clsx from 'clsx';
 
-import AlertIcon from 'mdi-react/AlertIcon';
 import AlertCircleOutlineIcon from 'mdi-react/AlertCircleOutlineIcon';
+import AlertIcon from 'mdi-react/AlertIcon';
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon';
 import ArrowRightIcon from 'mdi-react/ArrowRightIcon';
 import BellIcon from 'mdi-react/BellIcon';
@@ -15,13 +15,17 @@ import ChevronRightIcon from 'mdi-react/ChevronRightIcon';
 import CloseIcon from 'mdi-react/CloseIcon';
 import ContentCopyIcon from 'mdi-react/ContentCopyIcon';
 import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
+import DownloadIcon from 'mdi-react/DownloadIcon';
+import EyeIcon from 'mdi-react/EyeIcon';
+import EyeOffIcon from 'mdi-react/EyeOffIcon';
 import LanConnectIcon from 'mdi-react/LanConnectIcon';
 import LanDisconnectIcon from 'mdi-react/LanDisconnectIcon';
+import LinkIcon from 'mdi-react/LinkIcon';
 import LoadingIcon from 'mdi-react/LoadingIcon';
 import PencilIcon from 'mdi-react/PencilIcon';
-import PowerIcon from 'mdi-react/PowerIcon';
 import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
+import PowerIcon from 'mdi-react/PowerIcon';
 import RadioboxBlankIcon from 'mdi-react/RadioboxBlankIcon';
 import RadioboxMarkedIcon from 'mdi-react/RadioboxMarkedIcon';
 import RefreshIcon from 'mdi-react/RefreshIcon';
@@ -46,8 +50,12 @@ export enum IconType {
   close,
   contentCopy,
   dotsVertical,
+  download,
+  eye,
+  eyeOff,
   lanConnect,
   lanDisconnect,
+  link,
   loading,
   pencil,
   play,
@@ -67,24 +75,20 @@ interface ComponentProps {
   icon: IconType;
   onClick?(e?: React.MouseEvent<HTMLDivElement, MouseEvent>): void;
   onKeyDown?(e?: React.KeyboardEvent<HTMLDivElement>): void;
-  size?: number | string;
+  size?: number;
+  totalSize?: number | 'unset';
   unfocusable?: boolean;
 }
 
 const Icon = forwardRef<HTMLDivElement, ComponentProps>(
-  ({className, disabled = false, icon, onClick, onKeyDown, size = 24, unfocusable = false}, ref) => {
-    const iconProps = useMemo(
-      () => ({
-        size,
-      }),
-      [size],
-    );
+  ({className, disabled = false, icon, onClick, onKeyDown, size, totalSize = 30, unfocusable = false}, ref) => {
+    const divStyle = useMemo(() => {
+      if (totalSize === 'unset') return {};
+      const divSize = Math.max(size || 0, totalSize);
+      return {height: divSize, width: divSize};
+    }, [size, totalSize]);
 
-    const getTabIndex = () => {
-      if (unfocusable) return undefined;
-
-      return onClick ? 0 : undefined;
-    };
+    const tabIndex = useMemo(() => (unfocusable || !onClick ? undefined : 0), [onClick, unfocusable]);
 
     const handleClick = (e?: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
       if (disabled || !onClick) return;
@@ -105,59 +109,67 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
     const renderIcon = useCallback((): ReactNode => {
       switch (icon) {
         case IconType.alert:
-          return <AlertIcon {...iconProps} />;
+          return <AlertIcon size={size || 24} />;
         case IconType.alertCircleOutline:
-          return <AlertCircleOutlineIcon {...iconProps} />;
+          return <AlertCircleOutlineIcon size={size || 24} />;
         case IconType.arrowLeft:
-          return <ArrowLeftIcon {...iconProps} />;
+          return <ArrowLeftIcon size={size || 24} />;
         case IconType.arrowRight:
-          return <ArrowRightIcon {...iconProps} />;
+          return <ArrowRightIcon size={size || 24} />;
         case IconType.bell:
-          return <BellIcon {...iconProps} />;
+          return <BellIcon size={size || 22} />;
         case IconType.checkboxBlankCircle:
-          return <CheckboxBlankCircleIcon {...iconProps} />;
+          return <CheckboxBlankCircleIcon size={size || 24} />;
         case IconType.checkboxBlankCircleOutline:
-          return <CheckboxBlankCircleOutlineIcon {...iconProps} />;
+          return <CheckboxBlankCircleOutlineIcon size={size || 24} />;
         case IconType.chevronLeft:
-          return <ChevronLeftIcon {...iconProps} />;
+          return <ChevronLeftIcon size={size || 24} />;
         case IconType.chevronRight:
-          return <ChevronRightIcon {...iconProps} />;
+          return <ChevronRightIcon size={size || 24} />;
         case IconType.close:
-          return <CloseIcon {...iconProps} />;
+          return <CloseIcon size={size || 24} />;
         case IconType.contentCopy:
-          return <ContentCopyIcon {...iconProps} />;
+          return <ContentCopyIcon size={size || 22} />;
         case IconType.dotsVertical:
-          return <DotsVerticalIcon {...iconProps} />;
+          return <DotsVerticalIcon size={size || 24} />;
+        case IconType.download:
+          return <DownloadIcon size={size || 24} />;
+        case IconType.eye:
+          return <EyeIcon size={size || 22} />;
+        case IconType.eyeOff:
+          return <EyeOffIcon size={size || 22} />;
         case IconType.lanConnect:
-          return <LanConnectIcon {...iconProps} />;
+          return <LanConnectIcon size={size || 24} />;
         case IconType.lanDisconnect:
-          return <LanDisconnectIcon {...iconProps} />;
+          return <LanDisconnectIcon size={size || 24} />;
+        case IconType.link:
+          return <LinkIcon size={size || 24} />;
         case IconType.loading:
-          return <LoadingIcon {...iconProps} />;
+          return <LoadingIcon size={size || 24} />;
         case IconType.pencil:
-          return <PencilIcon {...iconProps} />;
+          return <PencilIcon size={size || 24} />;
         case IconType.play:
-          return <PlayIcon {...iconProps} />;
+          return <PlayIcon size={size || 24} />;
         case IconType.plus:
-          return <PlusIcon {...iconProps} />;
+          return <PlusIcon size={size || 24} />;
         case IconType.power:
-          return <PowerIcon {...iconProps} />;
+          return <PowerIcon size={size || 24} />;
         case IconType.radioboxBlank:
-          return <RadioboxBlankIcon {...iconProps} />;
+          return <RadioboxBlankIcon size={size || 24} />;
         case IconType.radioboxMarked:
-          return <RadioboxMarkedIcon {...iconProps} />;
+          return <RadioboxMarkedIcon size={size || 24} />;
         case IconType.refresh:
-          return <RefreshIcon {...iconProps} />;
+          return <RefreshIcon size={size || 24} />;
         case IconType.sync:
-          return <SyncIcon {...iconProps} />;
+          return <SyncIcon size={size || 24} />;
         case IconType.thumbsUp:
-          return <ThumbsUpIcon {...iconProps} />;
+          return <ThumbsUpIcon size={size || 20} />;
         case IconType.tnb:
-          return <TnbIcon {...iconProps} />;
+          return <TnbIcon size={size || 24} />;
         default:
           return null;
       }
-    }, [icon, iconProps]);
+    }, [icon, size]);
 
     return (
       <div
@@ -169,7 +181,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         ref={ref}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        tabIndex={getTabIndex()}
+        style={divStyle}
+        tabIndex={tabIndex}
       >
         {renderIcon()}
       </div>
