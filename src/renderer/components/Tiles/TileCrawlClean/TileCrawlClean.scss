@@ -1,0 +1,42 @@
+.TileCrawlClean {
+  &__button {
+    color: var(--color-secondary);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__button-container {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  &__label {
+    color: var(--color-gray-500);
+    min-width: 115px;
+  }
+
+  &__row {
+    display: flex;
+
+    &:first-child {
+      margin-bottom: 12px;
+    }
+  }
+
+  &__status {
+    font-family: var(--font-family-inter-bold);
+    min-width: 85px;
+
+    &--danger {
+      color: var(--color-red-500);
+    }
+
+    &--active {
+      color: var(--color-green-500);
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import React, {FC, useRef} from 'react';
 
 import {Loader} from '@renderer/components/FormElements';
-import {TileBankSigningDetails, TileKeyValueList, TilePrimaryAmount} from '@renderer/components/Tiles';
+import {TileBankSigningDetails, TileCrawlClean, TileKeyValueList, TilePrimaryAmount} from '@renderer/components/Tiles';
 import {BANK_CONFIGS, BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants';
 import {useAddress, useNetworkConfigFetcher, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BankConfig, ValidatorConfirmationService} from '@renderer/types';
@@ -56,6 +56,7 @@ const BankOverview: FC = () => {
             />
           </div>
           <div className="BankOverview__right">
+            <TileCrawlClean />
             <TileBankSigningDetails
               items={[
                 {
