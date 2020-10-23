@@ -24,8 +24,9 @@ const handleConfirmationBlockNotification = (
 
   const recipients = txs.map(({recipient}: any) => recipient);
   const managedAccountRecipients = intersection(accountNumbers, recipients);
-  if (!managedAccountRecipients.length) return;
-
+  if (!managedAccountRecipients.length) {
+    // if recipient is a managedFriend, update it's balance.
+  }
   processUpdatedBalances(accountNumbers, dispatch, updatedBalances);
 
   dispatch(
