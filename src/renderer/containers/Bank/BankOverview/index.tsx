@@ -3,23 +3,33 @@ import React, {FC, useRef} from 'react';
 import {Loader} from '@renderer/components/FormElements';
 import {TileBankSigningDetails, TileCrawlClean, TileKeyValueList, TilePrimaryAmount} from '@renderer/components/Tiles';
 import {BANK_CONFIGS, BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants';
-import {useAddress, useNetworkConfigFetcher, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {
+  useAddress,
+  useNetworkConfigFetcher,
+  useNetworkCrawlFetcher,
+  usePaginatedNetworkDataFetcher,
+} from '@renderer/hooks';
 import {BankConfig, ValidatorConfirmationService} from '@renderer/types';
 
 import './BankOverview.scss';
 
-const BankOverview: FC = () => {
+interface ComponentProps {
+  isAuthenticated: boolean;
+}
+
+const BankOverview: FC<ComponentProps> = ({isAuthenticated}) => {
   const address = useAddress();
   const bankAccountNumberRef = useRef<HTMLDivElement>(null);
   const bankNetworkIdRef = useRef<HTMLDivElement>(null);
-  const {data: bankConfig, loading} = useNetworkConfigFetcher<BankConfig>(BANK_CONFIGS);
+  const {data: bankConfig, loading: loadingConfig} = useNetworkConfigFetcher<BankConfig>(BANK_CONFIGS);
+  const {crawlStatus, loading: loadingCrawlStatus} = useNetworkCrawlFetcher(isAuthenticated);
   const {count: confirmationServiceCount, loading: confirmationServiceLoading} = usePaginatedNetworkDataFetcher<
     ValidatorConfirmationService
   >(BANK_VALIDATOR_CONFIRMATION_SERVICES, address);
 
   return (
     <div className="BankOverview">
-      {loading || !bankConfig ? (
+      {loadingConfig || !bankConfig ? (
         <Loader />
       ) : (
         <>
@@ -56,7 +66,9 @@ const BankOverview: FC = () => {
             />
           </div>
           <div className="BankOverview__right">
-            <TileCrawlClean />
+            {isAuthenticated ? (
+              <TileCrawlClean crawlStatus={crawlStatus} loadingCrawlStatus={loadingCrawlStatus} />
+            ) : null}
             <TileBankSigningDetails
               items={[
                 {

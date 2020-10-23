@@ -5,6 +5,7 @@ import useFormContext from './useFormContext';
 import useFormSelect from './useFormSelect';
 import useNavigationalHistory from './useNavigationalHistory';
 import useNetworkConfigFetcher from './useNetworkConfigFetcher';
+import useNetworkCrawlFetcher from './useNetworkCrawlFetcher';
 import usePaginatedNetworkDataFetcher from './usePaginatedNetworkDataFetcher';
 import useWebSockets from './useWebSockets';
 
@@ -16,6 +17,7 @@ export {
   useFormSelect,
   useNavigationalHistory,
   useNetworkConfigFetcher,
+  useNetworkCrawlFetcher,
   usePaginatedNetworkDataFetcher,
   useWebSockets,
 };
