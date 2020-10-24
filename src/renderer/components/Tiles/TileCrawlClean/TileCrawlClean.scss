@@ -6,6 +6,15 @@
     &:hover {
       text-decoration: underline;
     }
+
+    &--disabled {
+      color: var(--color-gray-300);
+      cursor: default;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
   }
 
   &__button-container {

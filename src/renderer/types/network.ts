@@ -64,6 +64,11 @@ export interface ConfirmationBlockMessage {
   updated_balances: UpdatedBalance[];
 }
 
+export enum CrawlCommand {
+  start = 'start',
+  stop = 'stop',
+}
+
 export enum CrawlStatus {
   crawling = 'crawling',
   notCrawling = 'not_crawling',

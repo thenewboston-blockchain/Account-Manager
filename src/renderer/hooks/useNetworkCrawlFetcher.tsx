@@ -1,18 +1,27 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import axios from 'axios';
 
-import {CrawlStatus, NodeCrawlStatus} from '@renderer/types/network';
-import {displayToast} from '@renderer/utils/toast';
+import {CrawlCommand, CrawlStatus, ManagedNode, NodeCrawlStatus} from '@renderer/types';
+import {generateSignedMessage, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
+import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 import useAddress from './useAddress';
 
 const useNetworkCrawlFetcher = (
+  managedBank: ManagedNode | undefined,
   isAuthenticated: boolean,
-): {crawlLastCompleted: string; crawlStatus: CrawlStatus | null; loading: boolean} => {
+): {
+  crawlLastCompleted: string;
+  crawlStatus: CrawlStatus | null;
+  handleCrawlClick: () => Promise<void>;
+  loadingCrawl: boolean;
+  submittingCrawl: boolean;
+} => {
+  const address = useAddress();
   const [crawlLastCompleted, setCrawlLastCompleted] = useState<string>('');
   const [crawlStatus, setCrawlStatus] = useState<CrawlStatus | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const address = useAddress();
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -35,10 +44,38 @@ const useNetworkCrawlFetcher = (
     }
   }, [address, isAuthenticated]);
 
+  const handleClick = useCallback(async (): Promise<void> => {
+    if (!managedBank?.account_signing_key) return;
+
+    setSubmitting(true);
+    try {
+      const crawlData = {
+        crawl: crawlStatus === CrawlStatus.notCrawling ? CrawlCommand.start : CrawlCommand.stop,
+      };
+
+      const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(managedBank.nid_signing_key);
+      const signedMessage = generateSignedMessage(crawlData, publicKeyHex, signingKey);
+      const {data} = await axios.post<NodeCrawlStatus>(`${address}/crawl`, signedMessage, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      setCrawlLastCompleted(data.crawl_last_completed);
+      setCrawlStatus(data.crawl_status);
+    } catch (error) {
+      displayErrorToast(error);
+    } finally {
+      setSubmitting(false);
+    }
+  }, [address, crawlStatus, managedBank?.account_signing_key, managedBank?.nid_signing_key]);
+
   return {
     crawlLastCompleted,
     crawlStatus,
-    loading,
+    handleCrawlClick: handleClick,
+    loadingCrawl: loading,
+    submittingCrawl: submitting,
   };
 };
 

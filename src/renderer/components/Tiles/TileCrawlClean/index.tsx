@@ -1,5 +1,6 @@
 import React, {FC, ReactNode, useCallback} from 'react';
 import clsx from 'clsx';
+import noop from 'lodash/noop';
 
 import {CrawlStatus} from '@renderer/types/network';
 import {getCustomClassNames} from '@renderer/utils/components';
@@ -11,14 +12,29 @@ import './TileCrawlClean.scss';
 interface ComponentProps {
   className?: string;
   crawlStatus: CrawlStatus | null;
+  handleCrawlClick(): Promise<void>;
   loadingCrawlStatus: boolean;
+  submittingCrawl: boolean;
 }
 
-const TileCrawlClean: FC<ComponentProps> = ({className, crawlStatus, loadingCrawlStatus}) => {
+const TileCrawlClean: FC<ComponentProps> = ({
+  className,
+  crawlStatus,
+  handleCrawlClick,
+  loadingCrawlStatus,
+  submittingCrawl,
+}) => {
   const renderCrawlButton = useCallback((): ReactNode => {
     const label = getCrawlButtonLabel(crawlStatus);
-    return label ? <span className="TileCrawlClean__button">{label}</span> : null;
-  }, [crawlStatus]);
+    return label ? (
+      <span
+        className={clsx('TileCrawlClean__button', {'TileCrawlClean__button--disabled': submittingCrawl})}
+        onClick={submittingCrawl ? noop : handleCrawlClick}
+      >
+        {label}
+      </span>
+    ) : null;
+  }, [crawlStatus, handleCrawlClick, submittingCrawl]);
 
   const renderCrawlStatus = useCallback((): ReactNode => {
     return (

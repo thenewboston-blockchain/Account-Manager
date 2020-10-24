@@ -9,23 +9,27 @@ import {
   useNetworkCrawlFetcher,
   usePaginatedNetworkDataFetcher,
 } from '@renderer/hooks';
-import {BankConfig, ValidatorConfirmationService} from '@renderer/types';
+import {BankConfig, ManagedNode, ValidatorConfirmationService} from '@renderer/types';
 
 import './BankOverview.scss';
 
 interface ComponentProps {
   isAuthenticated: boolean;
+  managedBank?: ManagedNode;
 }
 
-const BankOverview: FC<ComponentProps> = ({isAuthenticated}) => {
+const BankOverview: FC<ComponentProps> = ({isAuthenticated, managedBank}) => {
   const address = useAddress();
-  const bankAccountNumberRef = useRef<HTMLDivElement>(null);
-  const bankNetworkIdRef = useRef<HTMLDivElement>(null);
   const {data: bankConfig, loading: loadingConfig} = useNetworkConfigFetcher<BankConfig>(BANK_CONFIGS);
-  const {crawlStatus, loading: loadingCrawlStatus} = useNetworkCrawlFetcher(isAuthenticated);
+  const {crawlStatus, handleCrawlClick, loadingCrawl, submittingCrawl} = useNetworkCrawlFetcher(
+    managedBank,
+    isAuthenticated,
+  );
   const {count: confirmationServiceCount, loading: confirmationServiceLoading} = usePaginatedNetworkDataFetcher<
     ValidatorConfirmationService
   >(BANK_VALIDATOR_CONFIRMATION_SERVICES, address);
+  const bankAccountNumberRef = useRef<HTMLDivElement>(null);
+  const bankNetworkIdRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="BankOverview">
@@ -67,7 +71,12 @@ const BankOverview: FC<ComponentProps> = ({isAuthenticated}) => {
           </div>
           <div className="BankOverview__right">
             {isAuthenticated ? (
-              <TileCrawlClean crawlStatus={crawlStatus} loadingCrawlStatus={loadingCrawlStatus} />
+              <TileCrawlClean
+                crawlStatus={crawlStatus}
+                handleCrawlClick={handleCrawlClick}
+                loadingCrawlStatus={loadingCrawl}
+                submittingCrawl={submittingCrawl}
+              />
             ) : null}
             <TileBankSigningDetails
               items={[
