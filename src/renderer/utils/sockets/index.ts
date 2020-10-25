@@ -24,6 +24,7 @@ export const initializeSocketForPrimaryValidatorUpdated = (bankSocketAddress: st
   return new ReconnectingWebSocket(`${bankSocketAddress}/ws/primary_validator_updated`);
 };
 
+// TODO: This is useless. Get rid of this function
 export const processSocketEvent = (payload: any, dispatch: AppDispatch, event: MessageEvent): void => {
   try {
     const notification = JSON.parse(event.data);

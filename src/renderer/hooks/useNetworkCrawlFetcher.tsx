@@ -1,12 +1,14 @@
 import {useCallback, useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
-import ReconnectingWebSocket from 'reconnecting-websocket';
 
 import {useSocketAddress} from '@renderer/hooks';
-import {AppDispatch, CrawlCommand, CrawlStatus, ManagedNode, NodeCrawlStatus} from '@renderer/types';
+import {getNewCrawlNotification} from '@renderer/selectors';
+import {subscribeToSocket, unsubscribeFromSocket} from '@renderer/store/sockets';
+import {AppDispatch, CrawlCommand, CrawlStatus, ManagedNode, NodeCrawlStatus, RootState} from '@renderer/types';
 import {generateSignedMessage, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
-import {initializeSocketForCrawlStatus, processSocketEvent} from '@renderer/utils/sockets';
+import {initializeSocketForCrawlStatus} from '@renderer/utils/sockets';
+import handleCrawlStatusNotifications from '@renderer/utils/sockets/crawl-status-notifications';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 import useAddress from './useAddress';
@@ -27,8 +29,11 @@ const useNetworkCrawlFetcher = (
   const [crawlLastCompleted, setCrawlLastCompleted] = useState<string>('');
   const [crawlStatus, setCrawlStatus] = useState<CrawlStatus | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [socket, setSocket] = useState<ReconnectingWebSocket | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
+
+  const relevantNotification = useSelector((state: RootState) =>
+    getNewCrawlNotification(state, address, crawlLastCompleted),
+  );
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -52,12 +57,12 @@ const useNetworkCrawlFetcher = (
   }, [address, isAuthenticated]);
 
   useEffect(() => {
-    if (socket) {
-      socket.onmessage = (event) => {
-        processSocketEvent(undefined, dispatch, event);
-      };
+    if (relevantNotification) {
+      const {data} = relevantNotification;
+      setCrawlStatus(data.crawl_status);
+      setCrawlLastCompleted(data.crawl_last_completed);
     }
-  }, [dispatch, socket]);
+  }, [relevantNotification]);
 
   const handleClick = useCallback(async (): Promise<void> => {
     if (!managedBank?.account_signing_key) return;
@@ -80,16 +85,20 @@ const useNetworkCrawlFetcher = (
       setCrawlStatus(data.crawl_status);
 
       if (data.crawl_status === CrawlStatus.crawling) {
-        setSocket(initializeSocketForCrawlStatus(socketAddress));
+        const socket = initializeSocketForCrawlStatus(socketAddress);
+        socket.onmessage = (event) => {
+          handleCrawlStatusNotifications(undefined, dispatch, event);
+        };
+        dispatch(subscribeToSocket({address: socketAddress, socket}));
       } else {
-        socket?.close();
+        dispatch(unsubscribeFromSocket({address: socketAddress}));
       }
     } catch (error) {
       displayErrorToast(error);
     } finally {
       setSubmitting(false);
     }
-  }, [address, crawlStatus, managedBank?.account_signing_key, managedBank?.nid_signing_key, socket, socketAddress]);
+  }, [address, crawlStatus, dispatch, managedBank?.account_signing_key, managedBank?.nid_signing_key, socketAddress]);
 
   return {
     crawlLastCompleted,
