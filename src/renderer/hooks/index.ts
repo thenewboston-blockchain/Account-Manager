@@ -7,6 +7,7 @@ import useNavigationalHistory from './useNavigationalHistory';
 import useNetworkConfigFetcher from './useNetworkConfigFetcher';
 import useNetworkCrawlFetcher from './useNetworkCrawlFetcher';
 import usePaginatedNetworkDataFetcher from './usePaginatedNetworkDataFetcher';
+import useSocketAddress from './useSocketAddress';
 import useWebSockets from './useWebSockets';
 
 export {
@@ -19,5 +20,6 @@ export {
   useNetworkConfigFetcher,
   useNetworkCrawlFetcher,
   usePaginatedNetworkDataFetcher,
+  useSocketAddress,
   useWebSockets,
 };

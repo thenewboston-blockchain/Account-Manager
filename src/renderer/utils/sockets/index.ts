@@ -4,7 +4,12 @@ import {AppDispatch, NotificationType} from '@renderer/types';
 import {displayErrorToast} from '@renderer/utils/toast';
 
 import handleConfirmationBlockNotification from './confirmation-block-notifications';
+import handleCrawlStatusNotifications from './crawl-status-notifications';
 import handlePrimaryValidatorUpdatedNotifications from './primary-validator-updated-notifications';
+
+export const initializeSocketForCrawlStatus = (bankSocketAddress: string): ReconnectingWebSocket => {
+  return new ReconnectingWebSocket(`${bankSocketAddress}/ws/crawl_status`);
+};
 
 export const initializeSocketsForConfirmationBlocks = (
   accountNumbers: string[],
@@ -22,10 +27,19 @@ export const initializeSocketForPrimaryValidatorUpdated = (bankSocketAddress: st
 export const processSocketEvent = (payload: any, dispatch: AppDispatch, event: MessageEvent): void => {
   try {
     const notification = JSON.parse(event.data);
-    if (notification.notification_type === NotificationType.confirmationBlockNotification) {
-      handleConfirmationBlockNotification(payload, dispatch, notification);
-    } else if (notification.notification_type === NotificationType.primaryValidatorUpdatedNotification) {
-      handlePrimaryValidatorUpdatedNotifications(payload, dispatch, notification);
+    switch (notification.notification_type) {
+      case NotificationType.confirmationBlockNotification:
+        handleConfirmationBlockNotification(payload, dispatch, notification);
+        break;
+      case NotificationType.crawlStatusNotification:
+        handleCrawlStatusNotifications(payload, dispatch, notification);
+        break;
+      case NotificationType.primaryValidatorUpdatedNotification:
+        handlePrimaryValidatorUpdatedNotifications(payload, dispatch, notification);
+        break;
+      default:
+        displayErrorToast(`${notification.notification_type} is an unhandled notification type.`);
+        break;
     }
   } catch (error) {
     displayErrorToast(error);

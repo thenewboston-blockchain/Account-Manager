@@ -32,6 +32,7 @@ import {
 } from './network';
 import {
   ConfirmationBlockNotificationPayload,
+  CrawlStatusNotificationPayload,
   NotificationPayload,
   NotificationType,
   PrimaryValidatorUpdatedNotificationPayload,
@@ -62,6 +63,7 @@ export {
   ConfirmationBlockNotificationPayload,
   CrawlCommand,
   CrawlStatus,
+  CrawlStatusNotificationPayload,
   Dict,
   DictWithDataAndError,
   DictWithError,

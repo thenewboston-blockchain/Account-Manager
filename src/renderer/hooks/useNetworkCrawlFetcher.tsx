@@ -1,8 +1,12 @@
 import {useCallback, useEffect, useState} from 'react';
+import {useDispatch} from 'react-redux';
 import axios from 'axios';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
-import {CrawlCommand, CrawlStatus, ManagedNode, NodeCrawlStatus} from '@renderer/types';
+import {useSocketAddress} from '@renderer/hooks';
+import {AppDispatch, CrawlCommand, CrawlStatus, ManagedNode, NodeCrawlStatus} from '@renderer/types';
 import {generateSignedMessage, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
+import {initializeSocketForCrawlStatus, processSocketEvent} from '@renderer/utils/sockets';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 import useAddress from './useAddress';
@@ -18,9 +22,12 @@ const useNetworkCrawlFetcher = (
   submittingCrawl: boolean;
 } => {
   const address = useAddress();
+  const dispatch = useDispatch<AppDispatch>();
+  const socketAddress = useSocketAddress();
   const [crawlLastCompleted, setCrawlLastCompleted] = useState<string>('');
   const [crawlStatus, setCrawlStatus] = useState<CrawlStatus | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [socket, setSocket] = useState<ReconnectingWebSocket | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
@@ -44,6 +51,14 @@ const useNetworkCrawlFetcher = (
     }
   }, [address, isAuthenticated]);
 
+  useEffect(() => {
+    if (socket) {
+      socket.onmessage = (event) => {
+        processSocketEvent(undefined, dispatch, event);
+      };
+    }
+  }, [dispatch, socket]);
+
   const handleClick = useCallback(async (): Promise<void> => {
     if (!managedBank?.account_signing_key) return;
 
@@ -63,12 +78,18 @@ const useNetworkCrawlFetcher = (
 
       setCrawlLastCompleted(data.crawl_last_completed);
       setCrawlStatus(data.crawl_status);
+
+      if (data.crawl_status === CrawlStatus.crawling) {
+        setSocket(initializeSocketForCrawlStatus(socketAddress));
+      } else {
+        socket?.close();
+      }
     } catch (error) {
       displayErrorToast(error);
     } finally {
       setSubmitting(false);
     }
-  }, [address, crawlStatus, managedBank?.account_signing_key, managedBank?.nid_signing_key]);
+  }, [address, crawlStatus, managedBank?.account_signing_key, managedBank?.nid_signing_key, socket, socketAddress]);
 
   return {
     crawlLastCompleted,

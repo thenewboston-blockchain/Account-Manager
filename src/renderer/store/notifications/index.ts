@@ -3,6 +3,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {NOTIFICATIONS} from '@renderer/constants';
 import {
   ConfirmationBlockNotificationPayload,
+  CrawlStatusNotificationPayload,
   NotificationPayload,
   NotificationType,
   PrimaryValidatorUpdatedNotificationPayload,
@@ -19,6 +20,9 @@ const notifications = createSlice({
 
       if (blockIdentifiers.includes(payload.data.message.block_identifier)) return;
 
+      state.push(payload);
+    },
+    setCrawlStatusNotification: (state, {payload}: PayloadAction<CrawlStatusNotificationPayload>) => {
       state.push(payload);
     },
     setPrimaryValidatorUpdatedNotification: (
