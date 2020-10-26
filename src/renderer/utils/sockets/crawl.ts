@@ -1,4 +1,4 @@
-import {setPrimaryValidatorUpdatedNotification} from '@renderer/store/notifications';
+import {setCrawlStatusNotification} from '@renderer/store/notifications';
 import {AppDispatch, NodeCrawlStatusWithAddress, NotificationType} from '@renderer/types';
 import {generateUuid} from '@renderer/utils/local';
 import {displayToast} from '@renderer/utils/toast';
@@ -18,7 +18,7 @@ const handleCrawlSocketEvent = async (crawlSocketId: string, dispatch: AppDispat
       }),
     );
     dispatch(
-      setPrimaryValidatorUpdatedNotification({
+      setCrawlStatusNotification({
         data: payload,
         id: generateUuid(),
         timestamp: new Date().getTime(),

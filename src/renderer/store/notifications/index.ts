@@ -34,6 +34,10 @@ const notifications = createSlice({
   },
 });
 
-export const {setConfirmationBlockNotification, setPrimaryValidatorUpdatedNotification} = notifications.actions;
+export const {
+  setConfirmationBlockNotification,
+  setCrawlStatusNotification,
+  setPrimaryValidatorUpdatedNotification,
+} = notifications.actions;
 
 export default notifications;
