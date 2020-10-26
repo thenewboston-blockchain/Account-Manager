@@ -1,31 +1,11 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import ReconnectingWebSocket from 'reconnecting-websocket';
+import {combineReducers} from '@reduxjs/toolkit';
 
-import {SOCKETS} from '@renderer/constants';
-import {Dict} from '@renderer/types';
+import crawlSockets, {startCrawlProcess, updateCrawlProcess} from './crawlSockets';
 
-const sockets = createSlice({
-  initialState: {} as Dict<ReconnectingWebSocket>,
-  name: SOCKETS,
-  reducers: {
-    subscribeToSocket: (state, {payload}: PayloadAction<{address: string; socket: ReconnectingWebSocket}>) => {
-      const {address, socket} = payload;
-      if (state[address]) {
-        state[address].close();
-      }
+export {startCrawlProcess, updateCrawlProcess};
 
-      state[address] = socket;
-    },
-    unsubscribeFromSocket: (state, {payload}: PayloadAction<{address: string}>) => {
-      const {address} = payload;
-      if (state[address]) {
-        state[address].close();
-      }
-      delete state[address];
-    },
-  },
+const socketReducers = combineReducers({
+  crawl: crawlSockets.reducer,
 });
 
-export const {subscribeToSocket, unsubscribeFromSocket} = sockets.actions;
-
-export default sockets;
+export default socketReducers;

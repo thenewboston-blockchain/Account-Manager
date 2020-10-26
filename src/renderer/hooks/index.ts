@@ -1,5 +1,6 @@
 import useAddress from './useAddress';
 import useBooleanState from './useBooleanState';
+import useCrawlSockets from './useCrawlSockets';
 import useEventListener from './useEventListener';
 import useFormContext from './useFormContext';
 import useFormSelect from './useFormSelect';
@@ -13,6 +14,7 @@ import useWebSockets from './useWebSockets';
 export {
   useAddress,
   useBooleanState,
+  useCrawlSockets,
   useEventListener,
   useFormContext,
   useFormSelect,

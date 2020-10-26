@@ -64,17 +64,6 @@ export interface ConfirmationBlockMessage {
   updated_balances: UpdatedBalance[];
 }
 
-export enum CrawlCommand {
-  start = 'start',
-  stop = 'stop',
-}
-
-export enum CrawlStatus {
-  crawling = 'crawling',
-  notCrawling = 'not_crawling',
-  stopRequested = 'stop_requested',
-}
-
 export interface CreatedModified {
   created_date: string;
   modified_date: string;
@@ -100,11 +89,6 @@ export interface Node extends AccountNumber, AddressData, NodeIdentifier {
   node_type: NodeType;
   trust: string;
   version: string;
-}
-
-export interface NodeCrawlStatus extends AddressData {
-  crawl_last_completed: string;
-  crawl_status: CrawlStatus;
 }
 
 export interface NodeIdentifier {

@@ -4,7 +4,7 @@ import {AppDispatch, NotificationType} from '@renderer/types';
 import {displayErrorToast} from '@renderer/utils/toast';
 
 import handleConfirmationBlockNotification from './confirmation-block-notifications';
-import handleCrawlStatusNotifications from './crawl-status-notifications';
+import handleCrawlSocketEvent from './crawl';
 import handlePrimaryValidatorUpdatedNotifications from './primary-validator-updated-notifications';
 
 export const initializeSocketForCrawlStatus = (bankSocketAddress: string): ReconnectingWebSocket => {
@@ -33,7 +33,7 @@ export const processSocketEvent = (payload: any, dispatch: AppDispatch, event: M
         handleConfirmationBlockNotification(payload, dispatch, notification);
         break;
       case NotificationType.crawlStatusNotification:
-        handleCrawlStatusNotifications(payload, dispatch, notification);
+        handleCrawlSocketEvent(payload, dispatch, notification);
         break;
       case NotificationType.primaryValidatorUpdatedNotification:
         handlePrimaryValidatorUpdatedNotifications(payload, dispatch, notification);

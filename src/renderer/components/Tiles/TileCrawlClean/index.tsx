@@ -2,7 +2,7 @@ import React, {FC, ReactNode, useCallback} from 'react';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
 
-import {CrawlStatus} from '@renderer/types/network';
+import {CrawlStatus} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';
 import {getCrawlButtonLabel, getCrawlClassModifier, getCrawlDisplay} from '@renderer/utils/crawl';
 

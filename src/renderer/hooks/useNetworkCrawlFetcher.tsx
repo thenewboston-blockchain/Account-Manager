@@ -1,15 +1,13 @@
 import {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {useParams} from 'react-router-dom';
 import axios from 'axios';
 
-import {useSocketAddress} from '@renderer/hooks';
-import {getNewCrawlNotification} from '@renderer/selectors';
-import {subscribeToSocket, unsubscribeFromSocket} from '@renderer/store/sockets';
-import {AppDispatch, CrawlCommand, CrawlStatus, ManagedNode, NodeCrawlStatus, RootState} from '@renderer/types';
-import {generateSignedMessage, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
-import {initializeSocketForCrawlStatus} from '@renderer/utils/sockets';
-import handleCrawlStatusNotifications from '@renderer/utils/sockets/crawl-status-notifications';
-import {displayErrorToast, displayToast} from '@renderer/utils/toast';
+import {getCrawlSockets} from '@renderer/selectors';
+import {startCrawlProcess} from '@renderer/store/sockets';
+import {AppDispatch, CrawlStatus, ManagedNode, NodeCrawlStatusWithAddress, ProtocolType} from '@renderer/types';
+import {generateUuid} from '@renderer/utils/local';
+import {displayToast} from '@renderer/utils/toast';
 
 import useAddress from './useAddress';
 
@@ -23,23 +21,23 @@ const useNetworkCrawlFetcher = (
   loadingCrawl: boolean;
   submittingCrawl: boolean;
 } => {
+  const {ipAddress, port: portStr, protocol} = useParams<{ipAddress: string; port: string; protocol: ProtocolType}>();
+  const port = portStr === '80' || !portStr.length ? null : parseInt(portStr, 10);
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
-  const socketAddress = useSocketAddress();
+  const crawlSockets = useSelector(getCrawlSockets);
   const [crawlLastCompleted, setCrawlLastCompleted] = useState<string>('');
   const [crawlStatus, setCrawlStatus] = useState<CrawlStatus | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [socketId, setSocketId] = useState<string>('');
   const [submitting, setSubmitting] = useState<boolean>(false);
-
-  const relevantNotification = useSelector((state: RootState) =>
-    getNewCrawlNotification(state, address, crawlLastCompleted),
-  );
+  const crawlSocket = socketId ? crawlSockets[socketId] : null;
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         setLoading(true);
-        const {data} = await axios.get<NodeCrawlStatus>(`${address}/crawl`);
+        const {data} = await axios.get<NodeCrawlStatusWithAddress>(`${address}/crawl`);
         setCrawlStatus(data.crawl_status);
         setCrawlLastCompleted(data.crawl_last_completed);
       } catch (error) {
@@ -57,48 +55,35 @@ const useNetworkCrawlFetcher = (
   }, [address, isAuthenticated]);
 
   useEffect(() => {
-    if (relevantNotification) {
-      const {data} = relevantNotification;
-      setCrawlStatus(data.crawl_status);
-      setCrawlLastCompleted(data.crawl_last_completed);
+    if (!crawlSocket) return;
+    if (crawlSocket.crawl_status !== crawlStatus) {
+      setCrawlStatus(crawlSocket.crawl_status);
+      setCrawlLastCompleted(crawlSocket.crawl_last_completed);
     }
-  }, [relevantNotification]);
+    if (crawlSocket.crawl_status === CrawlStatus.notCrawling) {
+      setSocketId('');
+    }
+  }, [crawlSocket, crawlSocket?.crawl_status, crawlStatus]);
 
   const handleClick = useCallback(async (): Promise<void> => {
     if (!managedBank?.account_signing_key) return;
 
     setSubmitting(true);
-    try {
-      const crawlData = {
-        crawl: crawlStatus === CrawlStatus.notCrawling ? CrawlCommand.start : CrawlCommand.stop,
-      };
-
-      const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(managedBank.nid_signing_key);
-      const signedMessage = generateSignedMessage(crawlData, publicKeyHex, signingKey);
-      const {data} = await axios.post<NodeCrawlStatus>(`${address}/crawl`, signedMessage, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      setCrawlLastCompleted(data.crawl_last_completed);
-      setCrawlStatus(data.crawl_status);
-
-      if (data.crawl_status === CrawlStatus.crawling) {
-        const socket = initializeSocketForCrawlStatus(socketAddress);
-        socket.onmessage = (event) => {
-          handleCrawlStatusNotifications(undefined, dispatch, event);
-        };
-        dispatch(subscribeToSocket({address: socketAddress, socket}));
-      } else {
-        dispatch(unsubscribeFromSocket({address: socketAddress}));
-      }
-    } catch (error) {
-      displayErrorToast(error);
-    } finally {
-      setSubmitting(false);
+    if (crawlStatus === CrawlStatus.notCrawling) {
+      const id = generateUuid();
+      setSocketId(id);
+      dispatch(startCrawlProcess({id, ip_address: ipAddress, port, protocol, signingKey: managedBank.nid_signing_key}));
     }
-  }, [address, crawlStatus, dispatch, managedBank?.account_signing_key, managedBank?.nid_signing_key, socketAddress]);
+    setSubmitting(false);
+  }, [
+    crawlStatus,
+    dispatch,
+    ipAddress,
+    managedBank?.account_signing_key,
+    managedBank?.nid_signing_key,
+    port,
+    protocol,
+  ]);
 
   return {
     crawlLastCompleted,

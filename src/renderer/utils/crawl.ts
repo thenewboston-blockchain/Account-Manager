@@ -1,4 +1,4 @@
-import {CrawlStatus} from '@renderer/types/network';
+import {CrawlStatus} from '@renderer/types';
 
 export const getCrawlButtonLabel = (crawlStatus: CrawlStatus | null): string => {
   switch (crawlStatus) {
