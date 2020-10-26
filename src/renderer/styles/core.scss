@@ -7,14 +7,15 @@
 body {
   background: var(--color-gray-050);
   color: var(--color-primary);
-  font-family: var(--font-family-inter-regular);
+  font-family: Inter;
+  font-weight: 400;
   font-size: var(--font-size-regular);
   margin: auto;
 }
 
 b {
-  font-family: var(--font-family-inter-bold);
-  font-weight: 700;
+  font-family: Inter;
+  font-weight: 800;
 }
 
 h1,
@@ -28,27 +29,27 @@ h6 {
 }
 
 h1 {
-  font-family: var(--font-family-inter-regular);
-  font-size: var(--font-size-extra-large);
+  font-family: Inter;
   font-weight: normal;
+  font-size: var(--font-size-extra-large);
 }
 
 h2 {
-  font-family: var(--font-family-inter-medium);
+  font-family: Inter;
+  font-weight: 700;
   font-size: var(--font-size-large);
-  font-weight: 500;
 }
 
 h3 {
-  font-family: var(--font-family-inter-medium);
+  font-family: Inter;
+  font-weight: 700;
   font-size: var(--font-size-medium);
-  font-weight: 500;
 }
 
 h4 {
-  font-family: var(--font-family-inter-bold);
+  font-family: Inter;
+  font-weight: 800;
   font-size: var(--font-size-regular);
-  font-weight: 700;
 }
 
 p {
