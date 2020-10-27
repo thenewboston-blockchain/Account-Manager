@@ -7,14 +7,13 @@
 body {
   background: var(--color-gray-050);
   color: var(--color-primary);
-  font-family: Inter;
-  font-weight: 400;
+  font-family: var(--font-family-default);
   font-size: var(--font-size-regular);
+  font-weight: normal;
   margin: auto;
 }
 
 b {
-  font-family: Inter;
   font-weight: 800;
 }
 
@@ -29,27 +28,22 @@ h6 {
 }
 
 h1 {
-  font-family: Inter;
-  font-weight: normal;
   font-size: var(--font-size-extra-large);
 }
 
 h2 {
-  font-family: Inter;
-  font-weight: 700;
   font-size: var(--font-size-large);
+  font-weight: 700;
 }
 
 h3 {
-  font-family: Inter;
-  font-weight: 700;
   font-size: var(--font-size-medium);
+  font-weight: 700;
 }
 
 h4 {
-  font-family: Inter;
-  font-weight: 800;
   font-size: var(--font-size-regular);
+  font-weight: 800;
 }
 
 p {
