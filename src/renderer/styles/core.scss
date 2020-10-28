@@ -9,11 +9,11 @@ body {
   color: var(--color-primary);
   font-family: var(--font-family-default);
   font-size: var(--font-size-regular);
-  font-weight: normal;
   margin: auto;
 }
 
-b {
+b,
+strong {
   font-weight: 800;
 }
 
