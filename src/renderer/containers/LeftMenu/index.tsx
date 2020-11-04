@@ -11,11 +11,11 @@ import {useBooleanState} from '@renderer/hooks';
 import {
   getActivePrimaryValidatorConfig,
   getBankConfigs,
+  getCoinBalance,
   getManagedAccounts,
   getManagedBanks,
   getManagedFriends,
   getManagedValidators,
-  getPointBalance,
   getValidatorConfigs,
 } from '@renderer/selectors';
 import {ManagedAccount, ManagedFriend, ManagedNode, RootState} from '@renderer/types';
@@ -30,11 +30,11 @@ const LeftMenuSelector = (state: RootState) => {
   return {
     activePrimaryValidator: getActivePrimaryValidatorConfig(state),
     bankConfigs: getBankConfigs(state),
+    coinBalance: getCoinBalance(state),
     managedAccounts: getManagedAccounts(state),
     managedBanks: getManagedBanks(state),
     managedFriends: getManagedFriends(state),
     managedValidators: getManagedValidators(state),
-    pointBalance: getPointBalance(state),
     validatorConfigs: getValidatorConfigs(state),
   };
 };
@@ -42,11 +42,11 @@ const LeftMenuSelector = (state: RootState) => {
 const LeftMenu: FC = () => {
   const {
     bankConfigs,
+    coinBalance,
     managedAccounts,
     managedBanks,
     managedFriends,
     managedValidators,
-    pointBalance,
     validatorConfigs,
   } = useSelector(LeftMenuSelector);
   const [addBankModalIsOpen, toggleAddBankModal] = useBooleanState(false);
@@ -143,9 +143,9 @@ const LeftMenu: FC = () => {
 
   return (
     <div className="LeftMenu">
-      <div className="points">
-        <div className="points__title">Balance</div>
-        <div className="points__amount">{pointBalance.toLocaleString()}</div>
+      <div className="coins">
+        <div className="coins__title">Balance</div>
+        <div className="coins__amount">{coinBalance.toLocaleString()}</div>
       </div>
       <LeftSubmenu menuItems={validatorMenuItems} rightOnClick={toggleAddValidatorModal} title="Validators" />
       <LeftSubmenu menuItems={bankMenuItems} rightOnClick={toggleAddBankModal} title="Banks" />

@@ -7,7 +7,7 @@ import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-import SendPointsModal from '@renderer/containers/SendPointsModal';
+import SendCoinsModal from '@renderer/containers/SendCoinsModal';
 import {useBooleanState} from '@renderer/hooks';
 import {getManagedFriends} from '@renderer/selectors';
 
@@ -22,7 +22,7 @@ const Friend: FC = () => {
   const {path, url} = useRouteMatch();
   const [deleteModalIsOpen, toggleDeleteModal] = useBooleanState(false);
   const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
-  const [sendPointsModalIsOpen, toggleSendPointsModal] = useBooleanState(false);
+  const [sendCoinsModalIsOpen, toggleSendCoinsModal] = useBooleanState(false);
   const managedFriends = useSelector(getManagedFriends);
   const managedFriend = managedFriends[accountNumber];
 
@@ -40,7 +40,7 @@ const Friend: FC = () => {
     ];
   };
 
-  const renderRightPageHeaderButtons = (): ReactNode => <Button onClick={toggleSendPointsModal}>Send Points</Button>;
+  const renderRightPageHeaderButtons = (): ReactNode => <Button onClick={toggleSendCoinsModal}>Send Coins</Button>;
 
   const renderTabContent = (): ReactNode => {
     const tabContentRoutes = [
@@ -93,8 +93,8 @@ const Friend: FC = () => {
       <PageLayout content={renderTabContent()} top={renderTop()} />
       {deleteModalIsOpen && <DeleteFriendModal close={toggleDeleteModal} managedFriend={managedFriend} />}
       {editModalIsOpen && <EditFriendNicknameModal close={toggleEditModal} managedFriend={managedFriend} />}
-      {sendPointsModalIsOpen && (
-        <SendPointsModal close={toggleSendPointsModal} initialRecipient={accountNumber} initialSender="" />
+      {sendCoinsModalIsOpen && (
+        <SendCoinsModal close={toggleSendCoinsModal} initialRecipient={accountNumber} initialSender="" />
       )}
     </div>
   );

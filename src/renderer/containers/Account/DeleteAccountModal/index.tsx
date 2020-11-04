@@ -37,7 +37,7 @@ const DeleteAccountModal: FC<ComponentProps> = ({close, managedAccount}) => {
     >
       <>
         <span className="DeleteAccountModal__warning-span">Warning: </span> If you delete your account, you will lose
-        all the points in your account as well as your signing key. Are you sure you want to delete your account?
+        all the coins in your account as well as your signing key. Are you sure you want to delete your account?
       </>
     </Modal>
   );

@@ -33,8 +33,8 @@ const fetchAccountBalanceLock = async (
 export const sendBlock = async (
   activeBank: BankConfig,
   activePrimaryValidator: ValidatorConfig,
+  coins: number,
   managedAccounts: Dict<ManagedAccount>,
-  points: number,
   recipientAccountNumber: string,
   senderAccountNumber: string,
 ): Promise<void> => {
@@ -47,7 +47,7 @@ export const sendBlock = async (
   let txs: Tx[] = [
     {
       amount:
-        points +
+        coins +
         (recipientIsActiveBank ? bankTxFee : 0) +
         (recipientIsActivePrimaryValidator ? primaryValidatorTxFee : 0),
       recipient: recipientAccountNumber,
