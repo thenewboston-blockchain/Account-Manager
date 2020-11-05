@@ -10,8 +10,8 @@ import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import yup from '@renderer/utils/yup';
 
-import SendPointsModalFields, {FormValues, INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendPointsModalFields';
-import './SendPointsModal.scss';
+import SendCoinsModalFields, {FormValues, INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendCoinsModalFields';
+import './SendCoinsModal.scss';
 
 interface ComponentProps {
   close(): void;
@@ -19,20 +19,20 @@ interface ComponentProps {
   initialSender: string;
 }
 
-const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSender}) => {
+const SendCoinsModal: FC<ComponentProps> = ({close, initialRecipient, initialSender}) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const activeBank = useSelector(getActiveBankConfig)!;
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
   const managedAccounts = useSelector(getManagedAccounts);
 
-  const checkPointsWithBalance = useCallback(
-    (points: number, accountNumber: string): boolean => {
-      if (!accountNumber || !points) return true;
+  const checkCoinsWithBalance = useCallback(
+    (coins: number, accountNumber: string): boolean => {
+      if (!accountNumber || !coins) return true;
       const {balance} = managedAccounts[accountNumber];
       const totalCost =
         getBankTxFee(activeBank, accountNumber) +
         getPrimaryValidatorTxFee(activePrimaryValidator, accountNumber) +
-        points;
+        coins;
       return totalCost <= balance;
     },
     [activeBank, activePrimaryValidator, managedAccounts],
@@ -40,22 +40,22 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
 
   const initialValues = useMemo(
     () => ({
-      points: '',
+      coins: '',
       recipientAccountNumber: initialRecipient,
       senderAccountNumber: initialSender,
     }),
     [initialRecipient, initialSender],
   );
 
-  const handleSubmit = async ({points, recipientAccountNumber, senderAccountNumber}: FormValues): Promise<void> => {
+  const handleSubmit = async ({coins, recipientAccountNumber, senderAccountNumber}: FormValues): Promise<void> => {
     try {
       setSubmitting(true);
-      const pointAmount = parseInt(points, 10);
+      const coinAmount = parseInt(coins, 10);
       await sendBlock(
         activeBank,
         activePrimaryValidator,
+        coinAmount,
         managedAccounts,
-        pointAmount,
         recipientAccountNumber,
         senderAccountNumber,
       );
@@ -71,7 +71,7 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
     return (
       <>
         <FormButton
-          className="Modal__default-cancel SendPointsModal__default-cancel"
+          className="Modal__default-cancel SendCoinsModal__default-cancel"
           onClick={close}
           submitting={submitting}
           variant="link"
@@ -79,11 +79,11 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
           Cancel
         </FormButton>
         <FormButton
-          className="Modal__default-submit SendPointsModal__default-submit"
+          className="Modal__default-submit SendCoinsModal__default-submit"
           submitting={submitting}
           type="submit"
         >
-          Send <Icon className="SendPointsModal__submit-icon" icon={IconType.tnb} size={16} totalSize={16} />
+          Send <Icon className="SendCoinsModal__submit-icon" icon={IconType.tnb} size={16} totalSize={16} />
         </FormButton>
       </>
     );
@@ -92,12 +92,12 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
   const validationSchema = useMemo(() => {
     const senderAccountNumberRef = yup.ref('senderAccountNumber');
     return yup.object().shape({
-      points: yup
+      coins: yup
         .number()
-        .callbackWithRef(senderAccountNumberRef, checkPointsWithBalance, INVALID_AMOUNT_ERROR)
-        .moreThan(0, 'Points must be greater than 0')
-        .integer('Points cannot be a decimal')
-        .required('Points is a required field'),
+        .callbackWithRef(senderAccountNumberRef, checkCoinsWithBalance, INVALID_AMOUNT_ERROR)
+        .moreThan(0, 'Coins must be greater than 0')
+        .integer('Coins cannot be a decimal')
+        .required('Coins is a required field'),
       recipientAccountNumber: yup
         .string()
         .notEqualTo(senderAccountNumberRef, MATCH_ERROR)
@@ -105,22 +105,22 @@ const SendPointsModal: FC<ComponentProps> = ({close, initialRecipient, initialSe
         .required('This field is required'),
       senderAccountNumber: yup.string().required('This field is required'),
     });
-  }, [checkPointsWithBalance]);
+  }, [checkCoinsWithBalance]);
 
   return (
     <Modal
-      className="SendPointsModal"
+      className="SendCoinsModal"
       close={close}
       footer={renderFooter()}
-      header="Send Points"
+      header="Send Coins"
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitting={submitting}
       validationSchema={validationSchema}
     >
-      <SendPointsModalFields submitting={submitting} />
+      <SendCoinsModalFields submitting={submitting} />
     </Modal>
   );
 };
 
-export default SendPointsModal;
+export default SendCoinsModal;
