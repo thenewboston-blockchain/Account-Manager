@@ -1,10 +1,10 @@
-.SendPointsModalFields {
+.SendCoinsModalFields {
   &__account-balance {
     color: var(--color-tertiary);
   }
 
   &__error {
-    color: var(--color-danger);
+    color: var(--color-alert);
     display: block;
 
     &:last-of-type {

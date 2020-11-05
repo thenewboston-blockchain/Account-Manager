@@ -62,13 +62,18 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       const bankConfig = await dispatch(fetchBankConfig(address));
 
       if (bankConfig.error) {
-        displayErrorToast(bankConfig.error);
+        if (bankConfig.error.includes('timeout') || bankConfig.error.includes('Network Error')) {
+          displayErrorToast('Could Not Connect to Bank');
+        } else {
+          displayErrorToast('Invalid Bank Address');
+        }
         setSubmitting(false);
         return;
       }
 
       const formattedData = {
         ...bankAddressData,
+        account_signing_key: '',
         nickname,
         nid_signing_key: '',
       };
@@ -88,7 +93,7 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       form: yup.string().when(['ipAddress', 'port', 'protocol'], {
         is: (ipAddress, port, protocol) => managedBankAddresses.includes(formatAddress(ipAddress, port, protocol)),
         otherwise: yup.string(),
-        then: yup.string().required('Address is already a managed bank'),
+        then: yup.string().required('This address is already a managed bank'),
       }),
       ipAddress: yup
         .string()

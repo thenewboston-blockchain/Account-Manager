@@ -12,7 +12,11 @@ interface ComponentProps {
 const Form: FC<ComponentProps> = ({children, className, onSubmit, initialValues = {}, validationSchema}) => {
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
-      {() => <FormikForm className={className}>{children}</FormikForm>}
+      {() => (
+        <FormikForm className={className} spellCheck="false">
+          {children}
+        </FormikForm>
+      )}
     </Formik>
   );
 };

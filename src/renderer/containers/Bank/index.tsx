@@ -1,6 +1,6 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Route, Switch, useRouteMatch} from 'react-router-dom';
+import {Route, Switch, useHistory, useRouteMatch} from 'react-router-dom';
 import sortBy from 'lodash/sortBy';
 
 import Badge from '@renderer/components/Badge';
@@ -9,13 +9,14 @@ import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
+import Icon, {IconType} from '@renderer/components/Icon';
 import {useAddress, useBooleanState} from '@renderer/hooks';
-import {getIsActiveBank, getIsManagedBank, getManagedBanks} from '@renderer/selectors';
+import {getIsActiveBank, getIsManagedBank, getManagedAccounts, getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
 import {AppDispatch, RootState} from '@renderer/types';
 import {parseAddressData} from '@renderer/utils/address';
 
-import AddBankSigningKeyModal from './AddBankSigningKeyModal';
+import AddBankSigningKeysModal from './AddBankSigningKeysModal';
 import BankAccounts from './BankAccounts';
 import BankBanks from './BankBanks';
 import BankBlocks from './BankBlocks';
@@ -38,10 +39,16 @@ const Bank: FC = () => {
   const [setAsActiveBankModalIsOpen, toggleSetAsActiveBankModal] = useBooleanState(false);
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
+  const history = useHistory();
   const isActiveBank = useSelector((state: RootState) => getIsActiveBank(state, address));
   const isManagedBank = useSelector((state: RootState) => getIsManagedBank(state, address));
+  const managedAccounts = useSelector(getManagedAccounts);
   const managedBanks = useSelector(getManagedBanks);
   const managedBank = managedBanks[address];
+
+  const isAuthenticated = useMemo((): boolean => {
+    return !!managedBank?.account_signing_key && !!managedBank?.nid_signing_key;
+  }, [managedBank]);
 
   const getDropdownMenuOptions = (): DropdownMenuOption[] => {
     if (!isManagedBank) return [];
@@ -61,25 +68,20 @@ const Bank: FC = () => {
         label: 'Set as Active Bank',
         onClick: toggleSetAsActiveBankModal,
       },
+      {
+        label: `${isAuthenticated ? 'Edit' : 'Add'} Signing Keys (for DevOps)`,
+        onClick: toggleSigningKeyModal,
+      },
     ];
 
-    const signingKeyOption = !managedBank.nid_signing_key
-      ? {
-          label: 'Add NID Signing Key',
-          onClick: toggleSigningKeyModal,
-        }
-      : {
-          label: 'Remove NID Signing Key',
-          onClick: handleRemoveSigningKey,
-        };
-
-    return sortBy([...menuOptions, signingKeyOption], ['label']);
+    return sortBy(menuOptions, ['label']);
   };
 
   const handleAddManagedBank = (): void => {
     const {ipAddress, port, protocol} = parseAddressData(address);
     dispatch(
       setManagedBank({
+        account_signing_key: '',
         ip_address: ipAddress,
         nickname: '',
         nid_signing_key: '',
@@ -89,18 +91,31 @@ const Bank: FC = () => {
     );
   };
 
-  const handleRemoveSigningKey = (): void => {
-    dispatch(
-      setManagedBank({
-        ...managedBank,
-        nid_signing_key: '',
-      }),
+  const renderAccountLink = (): ReactNode => {
+    if (!managedBank) return null;
+    const linkedAccount = Object.values(managedAccounts).find(
+      ({signing_key}) => signing_key === managedBank.account_signing_key,
+    );
+    if (!linkedAccount) return null;
+    return (
+      <Icon
+        className="Bank__chain-link-icon"
+        icon={IconType.link}
+        onClick={() => {
+          history.push(`/account/${linkedAccount.account_number}/overview`);
+        }}
+      />
     );
   };
 
+  const renderActiveBadge = (): ReactNode => {
+    if (!managedBank?.is_default) return null;
+    return <Badge className="Bank__Badge" color="secondary" text="Active" />;
+  };
+
   const renderAuthenticatedBadge = (): ReactNode => {
-    if (!managedBank?.nid_signing_key) return null;
-    return <Badge color="secondary" text="Authenticated" />;
+    if (!isAuthenticated) return null;
+    return <Badge className="Bank__Badge" color="tertiary-light" text="Authenticated" />;
   };
 
   const renderRightPageHeaderButtons = (): ReactNode => {
@@ -160,9 +175,7 @@ const Bank: FC = () => {
   };
 
   const renderTitle = (): string => {
-    if (isManagedBank) {
-      return managedBank.nickname || managedBank.ip_address;
-    }
+    if (isManagedBank) return managedBank.nickname || managedBank.ip_address;
     const {ipAddress} = parseAddressData(address);
     return ipAddress;
   };
@@ -171,7 +184,13 @@ const Bank: FC = () => {
     <>
       <PageHeader
         dropdownMenuOptions={getDropdownMenuOptions()}
-        leftContent={renderAuthenticatedBadge()}
+        leftContent={
+          <>
+            {renderActiveBadge()}
+            {renderAuthenticatedBadge()}
+            {renderAccountLink()}
+          </>
+        }
         rightContent={renderRightPageHeaderButtons()}
         title={renderTitle()}
       />
@@ -223,7 +242,7 @@ const Bank: FC = () => {
   return (
     <div className="Bank">
       <PageLayout content={renderTabContent()} top={renderTop()} />
-      {addSigningKeyModalIsOpen && <AddBankSigningKeyModal close={toggleSigningKeyModal} />}
+      {addSigningKeyModalIsOpen && <AddBankSigningKeysModal close={toggleSigningKeyModal} />}
       {editNicknameModalIsOpen && <EditBankNicknameModal close={toggleEditNicknameModal} bank={managedBank} />}
       {removeBankModalIsOpen && <RemoveBankModal close={toggleRemoveBankModal} bank={managedBank} />}
       {setAsActiveBankModalIsOpen && <SetAsActiveBankModal close={toggleSetAsActiveBankModal} bank={managedBank} />}

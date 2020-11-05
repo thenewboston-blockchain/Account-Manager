@@ -27,7 +27,12 @@ import {
   ValidatorConfirmationBlock,
   ValidatorConfirmationService,
 } from './network';
-import {Notification, NotificationType} from './notifications';
+import {
+  ConfirmationBlockNotificationPayload,
+  NotificationPayload,
+  NotificationType,
+  PrimaryValidatorUpdatedNotificationPayload,
+} from './notifications';
 import {
   AppDispatch,
   Dict,
@@ -51,6 +56,7 @@ export {
   BaseFormInlineComponentProps,
   BaseValidator,
   BlockResponse,
+  ConfirmationBlockNotificationPayload,
   Dict,
   DictWithDataAndError,
   DictWithError,
@@ -65,12 +71,13 @@ export {
   Node,
   NodeIdentifier,
   NodeType,
-  Notification,
+  NotificationPayload,
   NotificationType,
   PaginatedQueryParams,
   PaginatedResults,
   PaginatedResultsWithError,
   PrimaryValidatorConfig,
+  PrimaryValidatorUpdatedNotificationPayload,
   ProtocolType,
   RootState,
   InputOption,

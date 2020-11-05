@@ -6,12 +6,12 @@ import {InputOption} from '@renderer/types';
 const protocolOptions: InputOption[] = [{value: 'http'}, {value: 'https'}];
 
 const AddValidatorModalFields: FC = () => {
-  const {errors, touched} = useFormContext();
-  const addressError = !!errors.form && !!touched.form;
+  const {errors} = useFormContext();
+  const addressError = errors.form;
 
   return (
     <>
-      {addressError ? <span className="AddValidatorModal__form-error">{errors.form}</span> : null}
+      {addressError ? <span className="AddValidatorModal__form-error">{addressError}</span> : null}
       <FormSelect focused label="Protocol" name="protocol" options={protocolOptions} required searchable={false} />
       <FormInput label="IP Address" name="ipAddress" required />
       <FormInput label="Port" name="port" type="number" />

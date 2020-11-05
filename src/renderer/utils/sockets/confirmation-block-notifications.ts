@@ -4,6 +4,8 @@ import {setManagedAccountBalance} from '@renderer/store/app';
 import {setConfirmationBlockNotification} from '@renderer/store/notifications';
 import {AppDispatch} from '@renderer/types';
 
+import {generateUuid} from './utils';
+
 const handleConfirmationBlockNotification = (
   accountNumbers: string[],
   dispatch: AppDispatch,
@@ -28,9 +30,10 @@ const handleConfirmationBlockNotification = (
 
   dispatch(
     setConfirmationBlockNotification({
-      notificationTime: new Date().getTime(),
-      notificationType: notification.notification_type,
-      payload: notification.payload,
+      data: notification.payload,
+      id: generateUuid(),
+      timestamp: new Date().getTime(),
+      type: notification.notification_type,
     }),
   );
 };

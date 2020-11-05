@@ -9,24 +9,24 @@
   }
 
   &--warning {
-    border-left-color: var(--color-danger);
+    border-left-color: var(--color-alert);
   }
 
   &__icon {
-    margin-right: 14px;
+    margin-right: 12px;
 
     &--success {
       color: var(--color-tertiary);
     }
 
     &--warning {
-      color: var(--color-danger);
+      color: var(--color-alert);
     }
   }
 
   &__text {
+    align-items: center;
     color: var(--color-black);
-    font-family: var(--font-family-inter-regular);
-    font-weight: bold;
+    display: flex;
   }
 }

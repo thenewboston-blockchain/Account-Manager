@@ -63,13 +63,18 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
       const validatorConfig = await dispatch(fetchValidatorConfig(address));
 
       if (validatorConfig.error) {
-        displayErrorToast(validatorConfig.error);
+        if (validatorConfig.error.includes('timeout') || validatorConfig.error.includes('Network Error')) {
+          displayErrorToast('Could Not Connect to Validator');
+        } else {
+          displayErrorToast('Invalid Validator Address');
+        }
         setSubmitting(false);
         return;
       }
 
       const formattedData = {
         ...validatorAddressData,
+        account_signing_key: '',
         nickname,
         nid_signing_key: '',
       };
@@ -89,7 +94,7 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
       form: yup.string().when(['ipAddress', 'port', 'protocol'], {
         is: (ipAddress, port, protocol) => managedValidatorAddresses.includes(formatAddress(ipAddress, port, protocol)),
         otherwise: yup.string(),
-        then: yup.string().required('Address is already a managed bank'),
+        then: yup.string().required('This address is already a managed validator'),
       }),
       ipAddress: yup
         .string()

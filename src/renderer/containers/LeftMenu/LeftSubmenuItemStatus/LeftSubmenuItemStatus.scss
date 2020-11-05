@@ -5,6 +5,7 @@
   color: var(--color-primary);
   display: flex;
   overflow: hidden;
+  position: relative;
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -19,17 +20,11 @@
     background: var(--color-gray-100);
   }
 
-  &__Icon {
-    flex-basis: $left-spacing;
-    min-width: $left-spacing;
-
-    &--offline {
-      color: var(--color-gray-300);
-    }
-
-    &--online {
-      color: var(--color-tertiary);
-    }
+  &__icon {
+    left: 14px;
+    top: 50%;
+    position: absolute;
+    transform: translateY(-50%);
   }
 
   &__badge {
@@ -55,6 +50,7 @@
   &__label {
     line-height: 24px;
     overflow: hidden;
+    padding-left: 36px;
     padding-right: 12px;
     text-overflow: ellipsis;
     width: calc(var(--left-menu-width) - #{$left-spacing});

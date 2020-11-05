@@ -1,3 +1,13 @@
 .BankOverview {
+  display: grid;
+  grid-gap: 12px;
+  grid-template-columns: 314px 314px;
   padding: var(--page-padding);
+
+  &__left,
+  &__right {
+    > * {
+      margin-bottom: 12px;
+    }
+  }
 }

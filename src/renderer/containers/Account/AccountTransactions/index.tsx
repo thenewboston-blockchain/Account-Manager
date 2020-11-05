@@ -22,7 +22,7 @@ enum TableKeys {
 }
 
 const AccountTransactions: FC = () => {
-  const {accountNumber} = useParams();
+  const {accountNumber} = useParams<{accountNumber: string}>();
   const activeBank = useSelector(getActiveBankConfig)!;
   const activeBankAddress = formatAddressFromNode(activeBank);
   const {count, currentPage, loading, results: bankTransactions, setPage, totalPages} = usePaginatedNetworkDataFetcher<
@@ -50,8 +50,8 @@ const AccountTransactions: FC = () => {
         [TableKeys.amount]: 'Amount',
         [TableKeys.balanceKey]: 'Balance Key',
         [TableKeys.dateCreated]: 'Date Created',
-        [TableKeys.recipientAccountNumber]: 'Recipient Account Number',
-        [TableKeys.senderAccountNumber]: 'Sender Account Number',
+        [TableKeys.recipientAccountNumber]: 'Recipient',
+        [TableKeys.senderAccountNumber]: 'Sender',
         [TableKeys.signature]: 'Signature',
       },
       orderedKeys: [

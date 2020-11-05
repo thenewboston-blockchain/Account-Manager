@@ -4,8 +4,22 @@
     font-size: var(--font-size-large);
   }
 
-  &__signing-key {
-    word-wrap: break-word;
+  &__copy-icon {
+    color: var(--color-secondary);
+    cursor: pointer;
+  }
+
+  &__download-icon,
+  &__eye-icon {
+    color: var(--color-secondary);
+    cursor: pointer;
+    margin-right: 15px;
+  }
+
+  &__icons-container {
+    align-items: center;
+    display: flex;
+    justify-content: center;
   }
 
   &__title {
@@ -13,19 +27,14 @@
     margin-bottom: 6px;
   }
 
-  &__toggle {
-    color: var(--color-secondary);
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
   &__top {
     align-items: center;
     display: flex;
     justify-content: space-between;
     margin-bottom: 12px;
+  }
+
+  &__signing-key {
+    word-wrap: break-word;
   }
 }

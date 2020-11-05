@@ -1,6 +1,6 @@
 import {getCustomClassNames} from './components';
 
-describe('getCustomClassNames to return the following: ', () => {
+describe('getCustomClassNames to return the following:', () => {
   test('empty object when classNames is undefined', () => {
     expect(getCustomClassNames(undefined, '--error', true)).toEqual({});
   });

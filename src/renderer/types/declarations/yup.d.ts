@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import {NumberSchema, NumberSchemaConstructor, Ref, StringSchema, StringSchemaConstructor} from 'yup';
 
 declare module 'yup' {

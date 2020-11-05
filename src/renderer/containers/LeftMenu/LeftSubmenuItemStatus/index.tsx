@@ -2,20 +2,28 @@ import React, {FC, ReactNode} from 'react';
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom';
 import clsx from 'clsx';
 
-import Icon, {IconType} from '@renderer/components/Icon';
+import StatusBadge from '@renderer/components/StatusBadge';
 
 import './LeftSubmenuItemStatus.scss';
 
 export interface LeftSubmenuItemStatusProps extends RouteComponentProps {
   badge: 'active-bank' | 'primary-validator' | null;
   baseUrl: string;
+  isOnline: boolean;
   key: string;
   label: ReactNode;
-  status: 'offline' | 'online';
   to: string;
 }
 
-const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({badge, baseUrl, key, label, location, status, to}) => {
+const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({
+  badge,
+  baseUrl,
+  isOnline,
+  key,
+  label,
+  location,
+  to,
+}) => {
   const getIsActive = (): boolean => location.pathname.includes(baseUrl);
 
   const renderBadge = (): ReactNode => {
@@ -32,25 +40,6 @@ const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({badge, baseUrl, 
     );
   };
 
-  const renderStatusIcon = (): ReactNode => {
-    return {
-      offline: (
-        <Icon
-          className="LeftSubmenuItemStatus__Icon LeftSubmenuItemStatus__Icon--offline"
-          icon={IconType.checkboxBlankCircleOutline}
-          size={8}
-        />
-      ),
-      online: (
-        <Icon
-          className="LeftSubmenuItemStatus__Icon LeftSubmenuItemStatus__Icon--online"
-          icon={IconType.checkboxBlankCircle}
-          size={8}
-        />
-      ),
-    }[status];
-  };
-
   return (
     <NavLink
       activeClassName="LeftSubmenuItemStatus--active"
@@ -59,7 +48,7 @@ const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({badge, baseUrl, 
       key={key}
       to={to}
     >
-      {renderStatusIcon()}
+      <StatusBadge className="LeftSubmenuItemStatus__icon" status={isOnline ? 'active' : 'inactive'} />
       <div
         className={clsx('LeftSubmenuItemStatus__label', {
           'LeftSubmenuItemStatus__label--with-badge': badge,

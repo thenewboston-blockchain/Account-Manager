@@ -30,7 +30,7 @@ export const generateSignature = (message: string, signingKey: Uint8Array) => {
   return signature.substring(0, 128);
 };
 
-export const generateSignedMessage = (message: object, publicKeyHex: string, signingKey: Uint8Array) => {
+export const generateSignedMessage = (message: any, publicKeyHex: string, signingKey: Uint8Array) => {
   const strMessage = JSON.stringify(message);
   const signedMessage = {
     message,

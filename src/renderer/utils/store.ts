@@ -30,6 +30,15 @@ export type SetError = (payload: Address & Error) => PayloadAction<Address & Err
 
 export const getStateName = (actionType: string) => actionType.split('/')[1];
 
+export function changeActiveNodeReducer<T extends ManagedNode>(sliceName: string) {
+  return (state: Dict<T>, {payload}: PayloadAction<T>) => {
+    Object.values(state).forEach((node) => {
+      node.is_default = formatAddressFromNode(node) === formatAddressFromNode(payload);
+    });
+    localStore.set(getStateName(sliceName), state);
+  };
+}
+
 export const clearLocalAndStateReducer = () => (state: any, action: PayloadAction<undefined>) => {
   localStore.set(getStateName(action.type), {});
   return {};
@@ -139,14 +148,6 @@ export function setPaginatedResultErrorReducer() {
     state[address].next = null;
     state[address].previous = null;
     state[address].results = [];
-  };
-}
-
-export function unsetActiveNodeReducer() {
-  return (state: Dict<ManagedNode>) => {
-    Object.values(state).forEach((node) => {
-      delete node.is_default;
-    });
   };
 }
 

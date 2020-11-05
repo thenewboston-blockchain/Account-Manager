@@ -10,6 +10,12 @@
     padding-right: 12px;
   }
 
+  &__bell-alert-badge {
+    position: absolute;
+    right: 5px;
+    top: 7px;
+  }
+
   &__description {
     display: flex;
     flex-direction: column;
@@ -21,23 +27,18 @@
     flex-basis: $left-spacing;
     min-width: $left-spacing;
 
-    &--offline {
-      color: var(--color-gray-300);
-    }
-
     &--read {
       color: transparent;
     }
   }
 
-  &__Icon-container {
+  &__icon-container {
     position: relative;
   }
 
   &__NavLink {
     color: var(--color-primary);
-    font-family: var(--font-family-inter-medium);
-    font-weight: 500;
+    font-weight: 700;
     text-decoration: none;
 
     &:hover {
@@ -48,13 +49,15 @@
   &__notification {
     border-bottom: 1px solid var(--color-gray-100);
     display: flex;
-    padding: 12px 0;
+    justify-content: space-between;
+    padding: 12px 0 12px 33px;
+    position: relative;
   }
 
-  &__right {
-    display: flex;
-    flex: 1;
-    justify-content: space-between;
+  &__row-alert-badge {
+    left: 12px;
+    position: absolute;
+    top: 17px;
   }
 
   &__time {
@@ -66,16 +69,5 @@
     &--read {
       color: var(--color-primary);
     }
-  }
-
-  &__unread-notifications-dot {
-    background: var(--color-alert);
-    border-radius: 99px;
-    cursor: pointer;
-    height: 11px;
-    position: absolute;
-    right: 0;
-    top: 3px;
-    width: 10px;
   }
 }
