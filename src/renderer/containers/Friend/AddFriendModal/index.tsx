@@ -70,10 +70,10 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
         .length(64, 'Account number must be 64 characters long')
         .required('This field is required')
         .test('cannot-add-own-account', 'Unable to add your own account as a friend', (accountNumber) => {
-          return !managedAccountNumbers.includes(accountNumber);
+          return !managedAccountNumbers.includes(accountNumber || '');
         })
         .test('friend-already-exists', "This friend's account already exists", (accountNumber) => {
-          return !managedFriendsAccountNumbers.includes(accountNumber);
+          return !managedFriendsAccountNumbers.includes(accountNumber || '');
         }),
       nickname: yup.string().notOneOf(managedFriendNicknames, 'That nickname is already taken'),
     });
