@@ -11,7 +11,7 @@
     "output": "release"
   },
   "asar": true,
-  "files": ["bundle/**/*", "!build", "!node_modules", "package.json", "app-information"],
+  "files": ["bundle/**/*", "!build", "!node_modules", "package.json", "app-information", "assets/icon.*"],
   "mac": {
     "target": ["dmg", "zip"],
     "artifactName": "${productName}-${version}-${os}.${ext}"
@@ -30,7 +30,8 @@
   },
   "linux": {
     "target": ["AppImage"],
-    "artifactName": "${productName}-${version}-${os}.${ext}"
+    "artifactName": "${productName}-${version}-${os}.${ext}",
+    "category": "Utility"
   },
   "dmg": {
     "title": "${productName}-${version}"

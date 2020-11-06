@@ -101,6 +101,7 @@ contextMenu({
 const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
     height: 1080,
+    icon: `${app.getAppPath()}/assets/icon.${process.platform === 'linux' ? 'png' : 'ico'}`,
     webPreferences: {
       nodeIntegration: true,
     },
