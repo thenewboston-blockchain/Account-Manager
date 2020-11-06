@@ -1,13 +1,13 @@
-.SendPointsModal {
+.SendCoinsModal {
   width: 384px;
+
+  &__coins-input {
+    margin-left: -7px;
+  }
 
   &__default-submit {
     display: flex;
     height: 35.5px;
-  }
-
-  &__points-input {
-    margin-left: -7px;
   }
 
   &__submit-icon {

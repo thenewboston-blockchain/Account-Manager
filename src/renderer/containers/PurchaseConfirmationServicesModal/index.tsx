@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 
 import Modal from '@renderer/components/Modal';
-import {INVALID_AMOUNT_ERROR} from '@renderer/containers/SendPointsModal/SendPointsModalFields';
+import {INVALID_AMOUNT_ERROR} from '@renderer/containers/SendCoinsModal/SendCoinsModalFields';
 import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {
@@ -132,12 +132,12 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
     try {
       setSubmitting(true);
       const accountNumber = getBanksAccountNumberFromAddress(bankAddress);
-      const pointAmount = parseInt(amount, 10);
+      const coinAmount = parseInt(amount, 10);
       await sendBlock(
         activeBank,
         activePrimaryValidator,
+        coinAmount,
         managedAccounts,
-        pointAmount,
         validator.account_number,
         accountNumber,
       );
@@ -211,7 +211,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
     [checkConnectionBankToValidator, checkConnectionValidatorToBank, knownStatuses],
   );
 
-  const checkPointsWithBalance = useCallback(
+  const checkCoinsWithBalance = useCallback(
     (amount: number, bankAddress: string): boolean => {
       if (!amount || !bankAddress) return true;
 
@@ -235,7 +235,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
     return yup.object().shape({
       amount: yup
         .number()
-        .callbackWithRef(bankAddressRef, checkPointsWithBalance, INVALID_AMOUNT_ERROR)
+        .callbackWithRef(bankAddressRef, checkCoinsWithBalance, INVALID_AMOUNT_ERROR)
         .moreThan(0, 'Amount must be greater than 0')
         .required('Amount is a required field'),
       bankAddress: yup
@@ -259,7 +259,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
         .required('This field is required'),
     });
   }, [
-    checkPointsWithBalance,
+    checkCoinsWithBalance,
     getBanksAccountNumberFromAddress,
     managedBanks,
     testBankHasSigningKey,

@@ -3,7 +3,7 @@ import {
   getActiveBankConfig,
   getActivePrimaryValidator,
   getActivePrimaryValidatorConfig,
-  getPointBalance,
+  getCoinBalance,
 } from './app';
 import {getIsActiveBank, getIsManagedBank} from './banks';
 import {
@@ -42,6 +42,7 @@ export {
   getBankInvalidBlocks,
   getBankValidatorConfirmationServices,
   getBankValidators,
+  getCoinBalance,
   getIsActiveBank,
   getIsActivePrimaryValidator,
   getIsManagedBank,
@@ -51,7 +52,6 @@ export {
   getManagedFriends,
   getManagedValidators,
   getNotifications,
-  getPointBalance,
   getValidatorAccounts,
   getValidatorBanks,
   getValidatorConfigs,
