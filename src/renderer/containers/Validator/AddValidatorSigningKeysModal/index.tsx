@@ -71,7 +71,7 @@ const AddValidatorSigningKeysModal: FC<ComponentProps> = ({close}) => {
         .test({
           message: 'Resulting public key does not match Account',
           name: 'is-valid-private-key-account',
-          test: (key: string) => {
+          test: (key: any) => {
             return checkPrivateSigningKey(accountNumber, key);
           },
         }),
@@ -82,7 +82,7 @@ const AddValidatorSigningKeysModal: FC<ComponentProps> = ({close}) => {
         .test({
           message: 'Resulting public key does not match NID',
           name: 'is-valid-private-key-nid',
-          test: (key: string) => {
+          test: (key: any) => {
             return checkPrivateSigningKey(nodeIdentifier, key);
           },
         }),

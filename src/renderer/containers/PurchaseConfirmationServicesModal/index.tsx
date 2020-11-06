@@ -150,7 +150,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
   };
 
   const testBankHasSigningKey = useCallback(
-    async (address: string) => {
+    async (address: string | any) => {
       if (!address) return true;
       const bankConfig = bankConfigs[address];
 
@@ -180,7 +180,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
   );
 
   const testConnection = useCallback(
-    async (address: string) => {
+    async (address: string | any) => {
       if (!address) return true;
       const knownStatus = knownStatuses[address];
       if (knownStatus) return knownStatus;
