@@ -74,7 +74,7 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
         .test({
           message: 'Resulting public key does not match Account',
           name: 'is-valid-private-key-account',
-          test: (key: string) => checkPrivateSigningKey(accountNumber, key),
+          test: (key: any) => checkPrivateSigningKey(accountNumber, key),
         }),
       nidSigningKey: yup
         .string()
@@ -83,7 +83,7 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
         .test({
           message: 'Resulting public key does not match NID',
           name: 'is-valid-private-key-nid',
-          test: (key: string) => checkPrivateSigningKey(nodeIdentifier, key),
+          test: (key: any) => checkPrivateSigningKey(nodeIdentifier, key),
         }),
     });
   }, [accountNumber, nodeIdentifier]);
