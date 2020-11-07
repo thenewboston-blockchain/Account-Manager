@@ -19,6 +19,7 @@
     align-items: center;
     color: var(--color-gray-700);
     display: flex;
+    user-select: none;
   }
 
   &__icon {
