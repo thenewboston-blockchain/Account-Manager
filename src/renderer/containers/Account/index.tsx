@@ -9,7 +9,7 @@ import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import SendCoinsModal from '@renderer/containers/SendCoinsModal';
 import {useBooleanState} from '@renderer/hooks';
-import {getManagedAccounts} from '@renderer/selectors';
+import {getManagedAccounts, getManagedFriends} from '@renderer/selectors';
 
 import AccountOverview from './AccountOverview';
 import AccountTransactions from './AccountTransactions';
@@ -24,6 +24,7 @@ const Account: FC = () => {
   const [editModalIsOpen, toggleEditModal] = useBooleanState(false);
   const [sendCoinsModalIsOpen, toggleSendCoinsModal] = useBooleanState(false);
   const managedAccounts = useSelector(getManagedAccounts);
+  const managedFriends = useSelector(getManagedFriends);
   const managedAccount = managedAccounts[accountNumber];
 
   const dropdownMenuOptions: DropdownMenuOption[] = managedAccount
@@ -69,7 +70,7 @@ const Account: FC = () => {
       <PageHeader
         dropdownMenuOptions={dropdownMenuOptions}
         rightContent={renderRightPageHeaderButtons()}
-        title={managedAccount?.nickname || accountNumber}
+        title={managedAccount ? managedAccount.nickname : managedFriends[accountNumber]?.nickname || accountNumber}
       />
       <PageTabs
         baseUrl={url}
