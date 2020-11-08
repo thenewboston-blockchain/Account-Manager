@@ -10,13 +10,22 @@ interface ComponentProps {
   balance: number;
   className?: string;
   loading: boolean;
-  type: 'account' | 'friend';
+  type: 'account' | 'friend' | 'default';
 }
 
 const TileAccountBalance: FC<ComponentProps> = ({balance, className, loading, type}) => {
   const title = useMemo(() => {
-    const prefix = type === 'account' ? 'My' : "Friend's";
-    return `${prefix} Account Balance`;
+    switch (type) {
+      case 'account':
+        return 'My Account Balance';
+      case 'friend':
+        return "Friend's Account Balance";
+
+      case 'default':
+        return 'Account Balance';
+      default:
+        break;
+    }
   }, [type]);
 
   const balanceStr = useMemo(() => {
