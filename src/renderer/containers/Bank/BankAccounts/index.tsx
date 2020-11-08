@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useMemo, useState} from 'react';
+import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
 import Icon, {IconType} from '@renderer/components/Icon';
@@ -11,6 +11,9 @@ import {BankAccount, ManagedNode} from '@renderer/types';
 import {formatDate} from '@renderer/utils/dates';
 
 import './BankAccounts.scss';
+import Fuse from 'fuse.js';
+import {searchOptionMaker} from '@renderer/config';
+import {useSearch} from '@renderer/hooks/useSearch';
 
 enum TableKeys {
   id,
@@ -31,6 +34,9 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
   >(BANK_ACCOUNTS, address);
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustAccount, setEditTrustAccount] = useState<BankAccount | null>(null);
+  const [searchValue, setSearchvalue] = useState('');
+
+  const [filteredData, search] = useSearch(bankAccounts, ['id', 'account_number']);
 
   const hasSigningKey = useMemo(() => !!managedBank?.nid_signing_key.length, [managedBank]);
 
@@ -42,9 +48,14 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
     [setEditTrustAccount, toggleEditTrustModal],
   );
 
+  // On search value change recompute the data
+  useEffect(() => {
+    search(searchValue);
+  }, [searchValue, search]);
+
   const bankAccountsTableData = useMemo<PageTableData[]>(
     () =>
-      bankAccounts.map((account) => ({
+      filteredData.map((account: BankAccount) => ({
         key: account.account_number,
         [TableKeys.accountNumber]: <AccountLink accountNumber={account.account_number} />,
         [TableKeys.createdDate]: formatDate(account.created_date),
@@ -65,7 +76,7 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
           </div>
         ),
       })) || [],
-    [bankAccounts, handleEditTrustButton, hasSigningKey],
+    [handleEditTrustButton, hasSigningKey, filteredData],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -91,6 +102,7 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
 
   return (
     <div className="BankAccounts">
+      <input type="text" className="Input" onChange={(e) => setSearchvalue(e.target.value)} />
       <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
       <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
       {editTrustModalIsOpen && !!editTrustAccount && !!managedBank && (

@@ -1,4 +1,4 @@
-import React, {FC, useMemo} from 'react';
+import React, {FC, useEffect, useMemo, useState} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
@@ -6,6 +6,7 @@ import Pagination from '@renderer/components/Pagination';
 import {BANK_BANK_TRANSACTIONS} from '@renderer/constants';
 import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BankTransaction} from '@renderer/types';
+import {useSearch} from '@renderer/hooks/useSearch';
 
 enum TableKeys {
   id,
@@ -17,6 +18,7 @@ enum TableKeys {
 
 const BankTransactions: FC = () => {
   const address = useAddress();
+
   const {
     count,
     currentPage,
@@ -26,9 +28,19 @@ const BankTransactions: FC = () => {
     totalPages,
   } = usePaginatedNetworkDataFetcher<BankTransaction>(BANK_BANK_TRANSACTIONS, address);
 
+  const [searchValue, setSearchvalue] = useState('');
+
+  // If we want to search for the block in here we will need a different hook because the block is an object here.
+  const [filteredData, search] = useSearch(bankBankTransactions, ['id', 'recipient']);
+
+  // On search value change recompute the data
+  useEffect(() => {
+    search(searchValue);
+  }, [searchValue, search]);
+
   const bankBankTransactionsTableData = useMemo<PageTableData[]>(
     () =>
-      bankBankTransactions.map((bankTransaction) => ({
+      filteredData.map((bankTransaction) => ({
         key: bankTransaction.id,
         [TableKeys.amount]: bankTransaction.amount,
         [TableKeys.block]: bankTransaction.block.id,
@@ -36,7 +48,7 @@ const BankTransactions: FC = () => {
         [TableKeys.recipient]: <AccountLink accountNumber={bankTransaction.recipient} />,
         [TableKeys.sender]: <AccountLink accountNumber={bankTransaction.block.sender} />,
       })) || [],
-    [bankBankTransactions],
+    [filteredData],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -56,6 +68,7 @@ const BankTransactions: FC = () => {
 
   return (
     <div className="BankTransactions">
+      <input type="text" className="Input" onChange={(e) => setSearchvalue(e.target.value)} />
       <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
       <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
     </div>
