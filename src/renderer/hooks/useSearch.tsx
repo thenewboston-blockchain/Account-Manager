@@ -16,4 +16,4 @@ const useSearch = <T,>(data: T[], filters: (keyof T)[]): [T[], (value: string) =
   ];
 };
 
-export {useSearch};
+export default useSearch;

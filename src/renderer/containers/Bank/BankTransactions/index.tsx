@@ -4,9 +4,8 @@ import AccountLink from '@renderer/components/AccountLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import {BANK_BANK_TRANSACTIONS} from '@renderer/constants';
-import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useAddress, usePaginatedNetworkDataFetcher, useSearch} from '@renderer/hooks';
 import {BankTransaction} from '@renderer/types';
-import {useSearch} from '@renderer/hooks/useSearch';
 
 enum TableKeys {
   id,

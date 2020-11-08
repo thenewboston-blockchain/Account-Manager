@@ -102,7 +102,6 @@
     "electron-store": "^5.2.0",
     "electron-updater": "^4.3.4",
     "formik": "^2.1.4",
-    "fuse.js": "^6.4.3",
     "lodash-es": "^4.17.15",
     "mdi-react": "^7.3.0",
     "normalize.css": "^8.0.1",

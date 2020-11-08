@@ -7,6 +7,7 @@ import useNavigationalHistory from './useNavigationalHistory';
 import useNetworkConfigFetcher from './useNetworkConfigFetcher';
 import usePaginatedNetworkDataFetcher from './usePaginatedNetworkDataFetcher';
 import useWebSockets from './useWebSockets';
+import useSearch from './useSearch';
 
 export {
   useAddress,
@@ -18,4 +19,5 @@ export {
   useNetworkConfigFetcher,
   usePaginatedNetworkDataFetcher,
   useWebSockets,
+  useSearch,
 };

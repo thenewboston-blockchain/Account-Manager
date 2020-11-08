@@ -6,14 +6,11 @@ import PageTable, {PageTableData, PageTableItems} from '@renderer/components/Pag
 import Pagination from '@renderer/components/Pagination';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
 import {BANK_ACCOUNTS} from '@renderer/constants';
-import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher, useSearch} from '@renderer/hooks';
 import {BankAccount, ManagedNode} from '@renderer/types';
 import {formatDate} from '@renderer/utils/dates';
 
 import './BankAccounts.scss';
-import Fuse from 'fuse.js';
-import {searchOptionMaker} from '@renderer/config';
-import {useSearch} from '@renderer/hooks/useSearch';
 
 enum TableKeys {
   id,
