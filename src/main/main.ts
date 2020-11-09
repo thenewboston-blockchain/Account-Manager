@@ -6,6 +6,7 @@ import {app, BrowserWindow, ipcMain, Menu} from 'electron';
 import contextMenu from 'electron-context-menu';
 import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from 'electron-devtools-installer';
 import fs from 'fs';
+import * as path from 'path';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
@@ -101,6 +102,7 @@ contextMenu({
 const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
     height: 1080,
+    icon: path.join('../assets/.icon-set/icon_256x256.png'),
     webPreferences: {
       nodeIntegration: true,
     },
