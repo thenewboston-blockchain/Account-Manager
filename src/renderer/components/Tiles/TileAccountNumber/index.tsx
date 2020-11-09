@@ -13,15 +13,23 @@ import './TileAccountNumber.scss';
 interface ComponentProps {
   accountNumber: string;
   className?: string;
-  type: 'account' | 'friend';
+  type: 'account' | 'friend' | 'default';
 }
 
 const TileAccountNumber: FC<ComponentProps> = ({accountNumber, className, type}) => {
   const copyIconRef = useRef<HTMLDivElement>(null);
 
   const title = useMemo(() => {
-    const prefix = type === 'account' ? 'My' : "Friend's";
-    return `${prefix} Account Number`;
+    switch (type) {
+      case 'account':
+        return 'My Account Number';
+      case 'friend':
+        return "Friend's Account Number";
+      case 'default':
+        return 'Account Number';
+      default:
+        break;
+    }
   }, [type]);
 
   const handleCopy = (): void => {
