@@ -20,7 +20,6 @@ const TileAccountBalance: FC<ComponentProps> = ({balance, className, loading, ty
         return 'My Account Balance';
       case 'friend':
         return "Friend's Account Balance";
-
       case 'default':
         return 'Account Balance';
       default:

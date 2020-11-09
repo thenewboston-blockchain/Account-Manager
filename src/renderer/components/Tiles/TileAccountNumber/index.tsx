@@ -25,7 +25,6 @@ const TileAccountNumber: FC<ComponentProps> = ({accountNumber, className, type})
         return 'My Account Number';
       case 'friend':
         return "Friend's Account Number";
-
       case 'default':
         return 'Account Number';
       default:
