@@ -96,6 +96,7 @@ const SendCoinsModal: FC<ComponentProps> = ({close, initialRecipient, initialSen
         .number()
         .callbackWithRef(senderAccountNumberRef, checkCoinsWithBalance, INVALID_AMOUNT_ERROR)
         .moreThan(0, 'Coins must be greater than 0')
+        .lessThan(9000000000000000, 'Coins must be lower than 9,000,000,000,000,000') // Less than Number.MAX_SAFE_INTEGER
         .integer('Coins cannot be a decimal')
         .required('Coins is a required field'),
       recipientAccountNumber: yup
