@@ -153,3 +153,8 @@ export interface ValidatorConfirmationService extends Id, CreatedModified {
   start: string;
   validator: string;
 }
+
+export interface ValidatorConfirmationServicePayload {
+  bank_node_identifier: string;
+  validator_confirmation_service: ValidatorConfirmationService;
+}

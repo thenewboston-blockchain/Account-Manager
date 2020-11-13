@@ -32,6 +32,7 @@ import {
   NotificationPayload,
   NotificationType,
   PrimaryValidatorUpdatedNotificationPayload,
+  ValidatorConfirmationServiceNotificationPayload,
 } from './notifications';
 import {
   AppDispatch,
@@ -87,4 +88,5 @@ export {
   ValidatorConfig,
   ValidatorConfirmationBlock,
   ValidatorConfirmationService,
+  ValidatorConfirmationServiceNotificationPayload,
 };

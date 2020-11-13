@@ -1,4 +1,4 @@
-import {ValidatorConfirmationBlock} from './network';
+import {ValidatorConfirmationBlock, ValidatorConfirmationServicePayload} from './network';
 
 export interface NotificationPayload<Data = any> {
   data: Data;
@@ -10,8 +10,10 @@ export interface NotificationPayload<Data = any> {
 export type ConfirmationBlockNotificationPayload = NotificationPayload<ValidatorConfirmationBlock>;
 
 export type PrimaryValidatorUpdatedNotificationPayload = NotificationPayload<string>;
+export type ValidatorConfirmationServiceNotificationPayload = NotificationPayload<ValidatorConfirmationServicePayload>;
 
 export enum NotificationType {
   confirmationBlockNotification = 'CONFIRMATION_BLOCK_NOTIFICATION',
   primaryValidatorUpdatedNotification = 'PRIMARY_VALIDATOR_UPDATED_NOTIFICATION',
+  validatorConfirmationServiceNotification = 'VALIDATOR_CONFIRMATION_SERVICE_NOTIFICATION',
 }

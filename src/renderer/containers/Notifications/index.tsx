@@ -4,6 +4,8 @@ import {useSelector} from 'react-redux';
 import {NavLink, useLocation} from 'react-router-dom';
 import clsx from 'clsx';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import formatDuration from 'date-fns/formatDuration';
+import intervalToDuration from 'date-fns/intervalToDuration';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import StatusBadge from '@renderer/components/StatusBadge';
@@ -14,6 +16,7 @@ import {
   NotificationPayload,
   NotificationType,
   PrimaryValidatorUpdatedNotificationPayload,
+  ValidatorConfirmationServiceNotificationPayload,
 } from '@renderer/types';
 
 import NotificationsMenu from './NotificationsMenu';
@@ -130,6 +133,11 @@ const Notifications: FC = () => {
     if (notification.type === NotificationType.primaryValidatorUpdatedNotification) {
       return renderPrimaryValidatorUpdatedNotification(notification as PrimaryValidatorUpdatedNotificationPayload);
     }
+    if (notification.type === NotificationType.validatorConfirmationServiceNotification) {
+      return renderValidatorConfirmationServiceNotification(
+        notification as ValidatorConfirmationServiceNotificationPayload,
+      );
+    }
     return null;
   };
 
@@ -150,6 +158,31 @@ const Notifications: FC = () => {
         {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
         <div className="Notifications__description">
           The networks Primary Validator has been changed to {primaryValidatorAddress}
+        </div>
+      </div>
+    );
+  };
+
+  const renderValidatorConfirmationServiceNotification = ({
+    data,
+    timestamp,
+  }: ValidatorConfirmationServiceNotificationPayload): ReactNode => {
+    const read = lastReadTime > timestamp;
+    const {
+      validator_confirmation_service: {start, end},
+    } = data;
+
+    const validatorConfirmationServiceDuration = intervalToDuration({
+      end: new Date(end),
+      start: new Date(start),
+    });
+
+    return (
+      <div className="Notifications__notification" key="TODO">
+        {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
+        <div className="Notifications__description">
+          Your bank purchased a validator confirmation service for{' '}
+          {formatDuration(validatorConfirmationServiceDuration)}.
         </div>
       </div>
     );

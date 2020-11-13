@@ -6,6 +6,7 @@ import {
   NotificationPayload,
   NotificationType,
   PrimaryValidatorUpdatedNotificationPayload,
+  ValidatorConfirmationServiceNotificationPayload,
 } from '@renderer/types';
 
 const notifications = createSlice({
@@ -27,9 +28,19 @@ const notifications = createSlice({
     ) => {
       state.push(payload);
     },
+    setValidatorConfirmationServiceNotification: (
+      state,
+      {payload}: PayloadAction<ValidatorConfirmationServiceNotificationPayload>,
+    ) => {
+      state.push(payload);
+    },
   },
 });
 
-export const {setConfirmationBlockNotification, setPrimaryValidatorUpdatedNotification} = notifications.actions;
+export const {
+  setConfirmationBlockNotification,
+  setPrimaryValidatorUpdatedNotification,
+  setValidatorConfirmationServiceNotification,
+} = notifications.actions;
 
 export default notifications;
