@@ -3,7 +3,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 
 import {getInactiveCrawlSockets} from '@renderer/selectors/sockets';
-import {AppDispatch, CrawlCommand, CrawlSocketState, CrawlStatus, NodeCrawlStatusWithAddress} from '@renderer/types';
+import {
+  AppDispatch,
+  CrawlCommand,
+  CrawlSocketState,
+  CrawlStatus,
+  NodeCrawlStatusWithAddress,
+  SocketConnectionStatus,
+} from '@renderer/types';
 import {formatAddressFromNode, formatSocketAddressFromNode} from '@renderer/utils/address';
 import {generateSignedMessage, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {initializeSocketForCrawlStatus} from '@renderer/utils/sockets';
@@ -18,7 +25,11 @@ const useCrawlSockets = (): void => {
   const fetchCrawlData = useCallback(
     async (crawlSocket: CrawlSocketState): Promise<void> => {
       try {
-        const crawlData = {crawl: CrawlCommand.start};
+        const inCrawling = crawlSocket.crawl_status === CrawlStatus.crawling;
+        const crawlData = {
+          crawl: inCrawling ? CrawlCommand.stop : CrawlCommand.start,
+        };
+
         const address = formatAddressFromNode(crawlSocket);
         const socketAddress = formatSocketAddressFromNode(crawlSocket);
         const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(crawlSocket.signingKey);
@@ -36,7 +47,7 @@ const useCrawlSockets = (): void => {
             id: crawlSocket.id,
           }),
         );
-        if (data.crawl_status === CrawlStatus.crawling) {
+        if (data.crawl_status === CrawlStatus.crawling || data.crawl_status === CrawlStatus.stopRequested) {
           const socket = initializeSocketForCrawlStatus(socketAddress);
           socket.onmessage = (event) => {
             handleCrawlSocketEvent(crawlSocket.id, dispatch, event);
@@ -45,6 +56,14 @@ const useCrawlSockets = (): void => {
         }
         // TODO: update for other processes
       } catch (error) {
+        dispatch(
+          updateCrawlProcess({
+            connectionStatus: SocketConnectionStatus.failed,
+            crawl_last_completed: crawlSocket.crawl_last_completed,
+            crawl_status: crawlSocket.crawl_status || CrawlStatus.notCrawling,
+            id: crawlSocket.id,
+          }),
+        );
         displayErrorToast(error);
       }
     },

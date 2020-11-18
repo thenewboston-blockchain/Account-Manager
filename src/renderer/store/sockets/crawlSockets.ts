@@ -11,25 +11,26 @@ import {
   SocketConnectionStatus,
 } from '@renderer/types';
 
-interface StartCrawlProcessPayload extends AddressData, Id {
+interface ToggleCrawlProcessPayload extends AddressData, Id {
   signingKey: string;
+  crawlStatus: CrawlStatus;
 }
 
-type UpdateCrawlProcessPayload = NodeCrawlStatus & Id;
+interface UpdateCrawlProcessPayload extends NodeCrawlStatus, Id {
+  connectionStatus?: SocketConnectionStatus;
+}
 
 const crawlSockets = createSlice({
   initialState: {} as Dict<CrawlSocketState>,
   name: CRAWL_SOCKETS,
   reducers: {
-    startCrawlProcess: (state, {payload}: PayloadAction<StartCrawlProcessPayload>) => {
-      const {id, ip_address: ipAddress, port, protocol, signingKey} = payload;
-      if (id in state) {
-        throw new Error('Crawl ID already exists');
-      }
+    toggleCrawlProcess: (state, {payload}: PayloadAction<ToggleCrawlProcessPayload>) => {
+      const {id, crawlStatus, ip_address: ipAddress, port, protocol, signingKey} = payload;
+
       state[id] = {
         connectionStatus: SocketConnectionStatus.inactive,
         crawl_last_completed: '',
-        crawl_status: null,
+        crawl_status: crawlStatus,
         id,
         ip_address: ipAddress,
         port,
@@ -38,16 +39,16 @@ const crawlSockets = createSlice({
       };
     },
     updateCrawlProcess: (state, {payload}: PayloadAction<UpdateCrawlProcessPayload>) => {
-      const {crawl_last_completed: crawlLastCompleted, crawl_status: crawlStatus, id} = payload;
-
+      const {connectionStatus, crawl_last_completed: crawlLastCompleted, crawl_status: crawlStatus, id} = payload;
       if (!state[id]) {
         throw new Error('Could not update crawl process. Id does not exist');
       }
 
       state[id].crawl_last_completed = crawlLastCompleted;
       state[id].crawl_status = crawlStatus;
-
-      if (crawlStatus === CrawlStatus.notCrawling) {
+      if (connectionStatus) {
+        state[id].connectionStatus = connectionStatus;
+      } else if (crawlStatus === CrawlStatus.notCrawling) {
         state[id].connectionStatus = SocketConnectionStatus.completed;
       } else {
         state[id].connectionStatus = SocketConnectionStatus.active;
@@ -56,6 +57,6 @@ const crawlSockets = createSlice({
   },
 });
 
-export const {startCrawlProcess, updateCrawlProcess} = crawlSockets.actions;
+export const {toggleCrawlProcess, updateCrawlProcess} = crawlSockets.actions;
 
 export default crawlSockets;

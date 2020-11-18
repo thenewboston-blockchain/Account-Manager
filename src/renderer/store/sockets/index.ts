@@ -1,8 +1,8 @@
 import {combineReducers} from '@reduxjs/toolkit';
 
-import crawlSockets, {startCrawlProcess, updateCrawlProcess} from './crawlSockets';
+import crawlSockets, {toggleCrawlProcess, updateCrawlProcess} from './crawlSockets';
 
-export {startCrawlProcess, updateCrawlProcess};
+export {toggleCrawlProcess, updateCrawlProcess};
 
 const socketReducers = combineReducers({
   crawl: crawlSockets.reducer,

@@ -56,7 +56,6 @@ export {
   getManagedValidators,
   getNewCrawlNotification,
   getNotifications,
-  getPointBalance,
   getValidatorAccounts,
   getValidatorBanks,
   getValidatorConfigs,

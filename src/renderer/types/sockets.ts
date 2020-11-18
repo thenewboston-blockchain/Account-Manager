@@ -25,6 +25,7 @@ export interface NodeCrawlStatus {
 export type NodeCrawlStatusWithAddress = NodeCrawlStatus & AddressData;
 
 export enum SocketConnectionStatus {
+  failed = 'failed',
   active = 'active',
   completed = 'completed',
   inactive = 'inactive',
