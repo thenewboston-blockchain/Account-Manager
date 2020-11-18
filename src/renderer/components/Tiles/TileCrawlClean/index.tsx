@@ -2,9 +2,10 @@ import React, {FC, ReactNode, useCallback} from 'react';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
 
-import {CrawlStatus} from '@renderer/types';
+import {CrawlStatus, CleanStatus} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';
 import {getCrawlButtonLabel, getCrawlClassModifier, getCrawlDisplay} from '@renderer/utils/crawl';
+import {getCleanButtonLabel, getCleanClassModifier, getCleanDisplay} from '@renderer/utils/clean';
 
 import Tile from '../Tile';
 import './TileCrawlClean.scss';
@@ -15,6 +16,10 @@ interface ComponentProps {
   handleCrawlClick(): Promise<void>;
   loadingCrawlStatus: boolean;
   submittingCrawl: boolean;
+  cleanStatus: CleanStatus | null;
+  handleCleanClick(): Promise<void>;
+  loadingCleanStatus: boolean;
+  submittingClean: boolean;
 }
 
 const TileCrawlClean: FC<ComponentProps> = ({
@@ -23,6 +28,10 @@ const TileCrawlClean: FC<ComponentProps> = ({
   handleCrawlClick,
   loadingCrawlStatus,
   submittingCrawl,
+  cleanStatus,
+  handleCleanClick,
+  loadingCleanStatus,
+  submittingClean,
 }) => {
   const renderCrawlButton = useCallback((): ReactNode => {
     const label = getCrawlButtonLabel(crawlStatus);
@@ -49,6 +58,31 @@ const TileCrawlClean: FC<ComponentProps> = ({
     );
   }, [className, crawlStatus, loadingCrawlStatus]);
 
+  const renderCleanButton = useCallback((): ReactNode => {
+    const label = getCleanButtonLabel(cleanStatus);
+    return label ? (
+      <span
+        className={clsx('TileCrawlClean__button', {'TileCrawlClean__button--disabled': submittingClean})}
+        onClick={submittingClean ? noop : handleCleanClick}
+      >
+        {label}
+      </span>
+    ) : null;
+  }, [cleanStatus, handleCleanClick, submittingClean]);
+
+  const renderCleanStatus = useCallback((): ReactNode => {
+    return (
+      <div
+        className={clsx('TileCrawlClean__status', `TileCrawlClean__status${getCleanClassModifier(cleanStatus)}`, {
+          ...getCustomClassNames(className, '__status', true),
+          ...getCustomClassNames(className, `__status${getCleanClassModifier(cleanStatus)}`, true),
+        })}
+      >
+        {getCleanDisplay(loadingCleanStatus ? null : cleanStatus)}
+      </div>
+    );
+  }, [className, cleanStatus, loadingCleanStatus]);
+
   return (
     <Tile className={clsx('TileCrawlClean', className)}>
       <>
@@ -63,17 +97,8 @@ const TileCrawlClean: FC<ComponentProps> = ({
           <div className={clsx('TileCrawlClean__label', {...getCustomClassNames(className, '__label', true)})}>
             Clean Status
           </div>
-          <div
-            className={clsx('TileCrawlClean__status', 'TileCrawlClean__status--active', {
-              ...getCustomClassNames(className, '__status', true),
-              ...getCustomClassNames(className, '__status--active', true),
-            })}
-          >
-            Cleaning
-          </div>
-          <div className={clsx('TileCrawlClean__button-container')}>
-            <span className="TileCrawlClean__button">Stop</span>
-          </div>
+          {renderCleanStatus()}
+          <div className={clsx('TileCrawlClean__button-container')}>{renderCleanButton()}</div>
         </div>
       </>
     </Tile>

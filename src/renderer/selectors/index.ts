@@ -6,7 +6,8 @@ import {
   getCoinBalance,
 } from './app';
 import {getIsActiveBank, getIsManagedBank} from './banks';
-import {getNewCrawlNotification} from './notifications';
+import {getNewCrawlNotification, getNewCleanNotification} from './notifications';
+
 import {
   getBankAccounts,
   getBankBankTransactions,
@@ -18,6 +19,7 @@ import {
   getBankValidatorConfirmationServices,
   getBankValidators,
   getCrawlSockets,
+  getCleanSockets,
   getManagedAccounts,
   getManagedBanks,
   getManagedFriends,
@@ -46,6 +48,7 @@ export {
   getBankValidators,
   getCoinBalance,
   getCrawlSockets,
+  getCleanSockets,
   getIsActiveBank,
   getIsActivePrimaryValidator,
   getIsManagedBank,
@@ -55,6 +58,7 @@ export {
   getManagedFriends,
   getManagedValidators,
   getNewCrawlNotification,
+  getNewCleanNotification,
   getNotifications,
   getValidatorAccounts,
   getValidatorBanks,

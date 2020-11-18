@@ -7,6 +7,7 @@ import {
   useAddress,
   useNetworkConfigFetcher,
   useNetworkCrawlFetcher,
+  useNetworkCleanFetcher,
   usePaginatedNetworkDataFetcher,
 } from '@renderer/hooks';
 import {BankConfig, ManagedNode, ValidatorConfirmationService} from '@renderer/types';
@@ -22,6 +23,10 @@ const BankOverview: FC<ComponentProps> = ({isAuthenticated, managedBank}) => {
   const address = useAddress();
   const {data: bankConfig, loading: loadingConfig} = useNetworkConfigFetcher<BankConfig>(BANK_CONFIGS);
   const {crawlStatus, handleCrawlClick, loadingCrawl, submittingCrawl} = useNetworkCrawlFetcher(
+    managedBank,
+    isAuthenticated,
+  );
+  const {cleanStatus, handleCleanClick, loadingClean, submittingClean} = useNetworkCleanFetcher(
     managedBank,
     isAuthenticated,
   );
@@ -76,6 +81,10 @@ const BankOverview: FC<ComponentProps> = ({isAuthenticated, managedBank}) => {
                 handleCrawlClick={handleCrawlClick}
                 loadingCrawlStatus={loadingCrawl}
                 submittingCrawl={submittingCrawl}
+                cleanStatus={cleanStatus}
+                handleCleanClick={handleCleanClick}
+                loadingCleanStatus={loadingClean}
+                submittingClean={submittingClean}
               />
             ) : null}
             <TileBankSigningDetails

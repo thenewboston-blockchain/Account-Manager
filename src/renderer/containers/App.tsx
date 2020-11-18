@@ -9,7 +9,7 @@ import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal'
 import Connect from '@renderer/containers/Connect';
 import Layout from '@renderer/containers/Layout';
 import {connect, connectAndStoreLocalData, fetchNonDefaultNodeConfigs} from '@renderer/dispatchers/app';
-import {useBooleanState, useCrawlSockets, useWebSockets} from '@renderer/hooks';
+import {useBooleanState, useCrawlSockets, useCleanSockets, useWebSockets} from '@renderer/hooks';
 import {getActiveBank, getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch, ProtocolType} from '@renderer/types';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
@@ -27,6 +27,7 @@ const App: FC = () => {
   const [getStartedModalIsOpen, toggleGetStartedModal, openGetStartedModal] = useBooleanState(false);
   const [loading, setLoading] = useState<boolean>(true);
   useCrawlSockets();
+  useCleanSockets();
   useWebSockets();
 
   useEffect(() => {

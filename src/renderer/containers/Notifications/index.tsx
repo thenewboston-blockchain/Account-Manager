@@ -12,6 +12,7 @@ import {getManagedAccounts, getManagedFriends, getNotifications} from '@renderer
 import {
   ConfirmationBlockNotificationPayload,
   CrawlStatusNotificationPayload,
+  CleanStatusNotificationPayload,
   NotificationPayload,
   NotificationType,
   PrimaryValidatorUpdatedNotificationPayload,
@@ -136,6 +137,17 @@ const Notifications: FC = () => {
       </div>
     );
   };
+  const renderCleanStatusNotification = ({data, id, timestamp}: CleanStatusNotificationPayload): ReactNode => {
+    const nodeAddress = formatAddressFromNode(data);
+    const read = lastReadTime > timestamp;
+
+    return (
+      <div className="Notifications__notification" key={id}>
+        {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
+        <div className="Notifications__description">{nodeAddress} has stopped cleaning</div>
+      </div>
+    );
+  };
 
   const renderNotification = (notification: NotificationPayload): ReactNode => {
     if (notification.type === NotificationType.confirmationBlockNotification) {
@@ -143,6 +155,9 @@ const Notifications: FC = () => {
     }
     if (notification.type === NotificationType.crawlStatusNotification) {
       return renderCrawlStatusNotification(notification as CrawlStatusNotificationPayload);
+    }
+    if (notification.type === NotificationType.cleanStatusNotification) {
+      return renderCleanStatusNotification(notification as CleanStatusNotificationPayload);
     }
     if (notification.type === NotificationType.primaryValidatorUpdatedNotification) {
       return renderPrimaryValidatorUpdatedNotification(notification as PrimaryValidatorUpdatedNotificationPayload);

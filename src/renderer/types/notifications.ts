@@ -1,5 +1,5 @@
 import {ValidatorConfirmationBlock} from './network';
-import {NodeCrawlStatusWithAddress} from './sockets';
+import {NodeCrawlStatusWithAddress, NodeCleanStatusWithAddress} from './sockets';
 
 export interface NotificationPayload<Data = any> {
   data: Data;
@@ -12,10 +12,13 @@ export type ConfirmationBlockNotificationPayload = NotificationPayload<Validator
 
 export type CrawlStatusNotificationPayload = NotificationPayload<NodeCrawlStatusWithAddress>;
 
+export type CleanStatusNotificationPayload = NotificationPayload<NodeCleanStatusWithAddress>;
+
 export type PrimaryValidatorUpdatedNotificationPayload = NotificationPayload<NodeCrawlStatusWithAddress>;
 
 export enum NotificationType {
   confirmationBlockNotification = 'CONFIRMATION_BLOCK_NOTIFICATION',
   crawlStatusNotification = 'CRAWL_STATUS_NOTIFICATION',
+  cleanStatusNotification = 'CLEAN_STATUS_NOTIFICATION',
   primaryValidatorUpdatedNotification = 'PRIMARY_VALIDATOR_UPDATED_NOTIFICATION',
 }

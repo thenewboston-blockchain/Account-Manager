@@ -1,5 +1,6 @@
 import {AddressData, Id} from '@renderer/types/network';
 
+/* CRAWL */
 export enum CrawlCommand {
   start = 'start',
   stop = 'stop',
@@ -23,6 +24,31 @@ export interface NodeCrawlStatus {
 }
 
 export type NodeCrawlStatusWithAddress = NodeCrawlStatus & AddressData;
+
+/* CLEAN */
+export enum CleanCommand {
+  start = 'start',
+  stop = 'stop',
+}
+
+export interface CleanSocketState extends Id, AddressData, Omit<NodeCleanStatus, 'clean_status'> {
+  connectionStatus: SocketConnectionStatus;
+  clean_status: CleanStatus | null;
+  signingKey: string;
+}
+
+export enum CleanStatus {
+  cleaning = 'cleaning',
+  notCleaning = 'not_cleaning',
+  stopRequested = 'stop_requested',
+}
+
+export interface NodeCleanStatus {
+  clean_last_completed: string;
+  clean_status: CleanStatus;
+}
+
+export type NodeCleanStatusWithAddress = NodeCleanStatus & AddressData;
 
 export enum SocketConnectionStatus {
   failed = 'failed',
