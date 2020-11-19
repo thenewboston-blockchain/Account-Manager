@@ -54,8 +54,6 @@ const useCleanSockets = (): void => {
             socket.close();
           };
         }
-
-        // TODO: update for other processes
       } catch (error) {
         dispatch(
           updateCleanProcess({

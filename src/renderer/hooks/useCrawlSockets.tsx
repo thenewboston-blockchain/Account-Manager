@@ -54,7 +54,6 @@ const useCrawlSockets = (): void => {
             socket.close();
           };
         }
-        // TODO: update for other processes
       } catch (error) {
         dispatch(
           updateCrawlProcess({
