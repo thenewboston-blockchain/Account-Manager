@@ -146,7 +146,7 @@ const Bank: FC = () => {
         page: 'invalid-blocks',
       },
       {
-        content: <BankOverview />,
+        content: <BankOverview isAuthenticated={isAuthenticated} managedBank={managedBank} />,
         page: 'overview',
       },
       {

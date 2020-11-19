@@ -3,6 +3,8 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {NOTIFICATIONS} from '@renderer/constants';
 import {
   ConfirmationBlockNotificationPayload,
+  CrawlStatusNotificationPayload,
+  CleanStatusNotificationPayload,
   NotificationPayload,
   NotificationType,
   PrimaryValidatorUpdatedNotificationPayload,
@@ -12,6 +14,9 @@ const notifications = createSlice({
   initialState: [] as NotificationPayload[],
   name: NOTIFICATIONS,
   reducers: {
+    setCleanStatusNotification: (state, {payload}: PayloadAction<CleanStatusNotificationPayload>) => {
+      state.push(payload);
+    },
     setConfirmationBlockNotification: (state, {payload}: PayloadAction<ConfirmationBlockNotificationPayload>) => {
       const blockIdentifiers = Object.values(state)
         .filter(({type}) => type === NotificationType.confirmationBlockNotification)
@@ -19,6 +24,9 @@ const notifications = createSlice({
 
       if (blockIdentifiers.includes(payload.data.message.block_identifier)) return;
 
+      state.push(payload);
+    },
+    setCrawlStatusNotification: (state, {payload}: PayloadAction<CrawlStatusNotificationPayload>) => {
       state.push(payload);
     },
     setPrimaryValidatorUpdatedNotification: (
@@ -30,6 +38,11 @@ const notifications = createSlice({
   },
 });
 
-export const {setConfirmationBlockNotification, setPrimaryValidatorUpdatedNotification} = notifications.actions;
+export const {
+  setConfirmationBlockNotification,
+  setCrawlStatusNotification,
+  setCleanStatusNotification,
+  setPrimaryValidatorUpdatedNotification,
+} = notifications.actions;
 
 export default notifications;
