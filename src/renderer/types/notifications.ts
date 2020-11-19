@@ -14,7 +14,7 @@ export type CrawlStatusNotificationPayload = NotificationPayload<NodeCrawlStatus
 
 export type CleanStatusNotificationPayload = NotificationPayload<NodeCleanStatusWithAddress>;
 
-export type PrimaryValidatorUpdatedNotificationPayload = NotificationPayload<NodeCrawlStatusWithAddress>;
+export type PrimaryValidatorUpdatedNotificationPayload = NotificationPayload;
 
 export enum NotificationType {
   confirmationBlockNotification = 'CONFIRMATION_BLOCK_NOTIFICATION',
