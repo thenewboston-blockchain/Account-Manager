@@ -1,8 +1,8 @@
 import ElectronStore from 'electron-store';
-import packageJson from '../../../package.json';
+import {remote} from 'electron';
 
 const migrations: any = {};
-const projectVersion = packageJson.version;
+const projectVersion = process.env.npm_package_version || remote.app.getVersion();
 
 migrations[projectVersion] = (store: any) => {
   store.set('sockets', {});
