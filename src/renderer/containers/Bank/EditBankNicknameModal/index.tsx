@@ -33,7 +33,10 @@ const EditBankNicknameModal: FC<ComponentProps> = ({bank, close}) => {
 
   const validationSchema = useMemo(() => {
     return yup.object().shape({
-      nickname: yup.string().notOneOf(managedBankNicknames, 'That nickname is already taken'),
+      nickname: yup
+        .string()
+        .notOneOf(managedBankNicknames, 'That nickname is already taken')
+        .max(64, 'Nickname must not be more than 64 characters.'),
     });
   }, [managedBankNicknames]);
 

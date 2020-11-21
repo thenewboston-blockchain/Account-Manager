@@ -100,7 +100,10 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
         .string()
         .required('This field is required')
         .matches(genericIpAddressRegex, {excludeEmptyString: true, message: 'IPv4 or IPv6 addresses only'}),
-      nickname: yup.string().notOneOf(managedValidatorNicknames, 'That nickname is already taken'),
+      nickname: yup
+        .string()
+        .notOneOf(managedValidatorNicknames, 'That nickname is already taken')
+        .max(64, 'Nickname must not be more than 64 characters.'),
       port: yup.number().integer(),
       protocol: yup.string().required(),
     });

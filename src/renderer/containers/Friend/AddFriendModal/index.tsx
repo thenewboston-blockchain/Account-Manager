@@ -75,7 +75,10 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
         .test('friend-already-exists', "This friend's account already exists", (accountNumber) => {
           return !managedFriendsAccountNumbers.includes(accountNumber || '');
         }),
-      nickname: yup.string().notOneOf(managedFriendNicknames, 'That nickname is already taken'),
+      nickname: yup
+        .string()
+        .notOneOf(managedFriendNicknames, 'That nickname is already taken')
+        .max(64, 'Nickname must not be more than 64 characters.'),
     });
   }, [managedAccountNumbers, managedFriendsAccountNumbers, managedFriendNicknames]);
 

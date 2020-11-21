@@ -46,7 +46,10 @@ const EditValidatorNicknameModal: FC<ComponentProps> = ({close, validator}) => {
 
   const validationSchema = useMemo(() => {
     return yup.object().shape({
-      nickname: yup.string().notOneOf(managedValidatorNicknames, 'That nickname is already taken'),
+      nickname: yup
+        .string()
+        .notOneOf(managedValidatorNicknames, 'That nickname is already taken')
+        .max(64, 'Nickname must not be more than 64 characters.'),
     });
   }, [managedValidatorNicknames]);
 

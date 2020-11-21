@@ -91,7 +91,10 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
 
   const validationSchema = useMemo(() => {
     return yup.object().shape({
-      nickname: yup.string().notOneOf(managedAccountNicknames, 'That nickname is already taken'),
+      nickname: yup
+        .string()
+        .notOneOf(managedAccountNicknames, 'That nickname is already taken')
+        .max(64, 'Nickname must not be more than 64 characters.'),
       signingKey: yup.string().when('type', {
         is: 'create',
         otherwise: yup

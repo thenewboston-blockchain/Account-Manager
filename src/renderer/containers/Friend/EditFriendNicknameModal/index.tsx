@@ -46,7 +46,10 @@ const EditFriendNicknameModal: FC<ComponentProps> = ({close, managedFriend}) => 
 
   const validationSchema = useMemo(() => {
     return yup.object().shape({
-      nickname: yup.string().notOneOf(managedFriendsNicknames, 'That nickname is already taken'),
+      nickname: yup
+        .string()
+        .notOneOf(managedFriendsNicknames, 'That nickname is already taken')
+        .max(64, 'Nickname must not be more than 64 characters.'),
     });
   }, [managedFriendsNicknames]);
 
