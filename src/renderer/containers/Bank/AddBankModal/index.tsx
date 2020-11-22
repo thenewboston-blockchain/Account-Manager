@@ -3,6 +3,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 
 import Modal from '@renderer/components/Modal';
+import {
+  BANK_ADDRESS_EXISTS_ERROR,
+  IP_INVALID_FORMAT_ERROR,
+  NICKNAME_EXISTS_ERROR,
+  REQUIRED_FIELD_ERROR,
+} from '@renderer/constants/form-validation';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
@@ -93,13 +99,13 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       form: yup.string().when(['ipAddress', 'port', 'protocol'], {
         is: (ipAddress, port, protocol) => managedBankAddresses.includes(formatAddress(ipAddress, port, protocol)),
         otherwise: yup.string(),
-        then: yup.string().required('This address is already a managed bank'),
+        then: yup.string().required(BANK_ADDRESS_EXISTS_ERROR),
       }),
       ipAddress: yup
         .string()
-        .required('This field is required')
-        .matches(genericIpAddressRegex, {excludeEmptyString: true, message: 'IPv4 or IPv6 addresses only'}),
-      nickname: yup.string().notOneOf(managedBankNicknames, 'That nickname is already taken'),
+        .required(REQUIRED_FIELD_ERROR)
+        .matches(genericIpAddressRegex, {excludeEmptyString: true, message: IP_INVALID_FORMAT_ERROR}),
+      nickname: yup.string().notOneOf(managedBankNicknames, NICKNAME_EXISTS_ERROR),
       port: yup.number().integer(),
       protocol: yup.string().required(),
     });
