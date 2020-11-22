@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import Modal from '@renderer/components/Modal';
 import {FormInput} from '@renderer/components/FormComponents';
+import {NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR} from '@renderer/constants/form-validation';
 import {getManagedFriends} from '@renderer/selectors';
 import {setManagedFriend} from '@renderer/store/app';
 import {AppDispatch, ManagedFriend} from '@renderer/types';
@@ -49,7 +50,7 @@ const EditFriendNicknameModal: FC<ComponentProps> = ({close, managedFriend}) => 
       nickname: yup
         .string()
         .notOneOf(managedFriendsNicknames, 'That nickname is already taken')
-        .max(64, 'Nickname must not be more than 64 characters.'),
+        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
     });
   }, [managedFriendsNicknames]);
 

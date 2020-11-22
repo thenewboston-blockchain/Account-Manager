@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 
 import Modal from '@renderer/components/Modal';
+import {NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR} from '@renderer/constants/form-validation';
 import {fetchValidatorConfig} from '@renderer/dispatchers/validators';
 import {getManagedValidators} from '@renderer/selectors';
 import {setManagedValidator} from '@renderer/store/app';
@@ -103,7 +104,7 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
       nickname: yup
         .string()
         .notOneOf(managedValidatorNicknames, 'That nickname is already taken')
-        .max(64, 'Nickname must not be more than 64 characters.'),
+        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
       port: yup.number().integer(),
       protocol: yup.string().required(),
     });

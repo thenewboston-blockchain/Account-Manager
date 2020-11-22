@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 
 import Modal from '@renderer/components/Modal';
+import {NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR} from '@renderer/constants/form-validation';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
@@ -102,7 +103,7 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       nickname: yup
         .string()
         .notOneOf(managedBankNicknames, 'That nickname is already taken')
-        .max(64, 'Nickname must not be more than 64 characters.'),
+        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
       port: yup.number().integer(),
       protocol: yup.string().required(),
     });

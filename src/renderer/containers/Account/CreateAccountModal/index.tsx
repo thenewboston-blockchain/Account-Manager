@@ -4,7 +4,12 @@ import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 
 import Modal from '@renderer/components/Modal';
-import {SIGNING_KEY_LENGTH_ERROR, SIGNING_KEY_REQUIRED_ERROR} from '@renderer/constants/form-validation';
+import {
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH_ERROR,
+  SIGNING_KEY_LENGTH_ERROR,
+  SIGNING_KEY_REQUIRED_ERROR,
+} from '@renderer/constants/form-validation';
 import {getActivePrimaryValidator, getManagedAccounts} from '@renderer/selectors';
 import {setManagedAccount} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
@@ -94,7 +99,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
       nickname: yup
         .string()
         .notOneOf(managedAccountNicknames, 'That nickname is already taken')
-        .max(64, 'Nickname must not be more than 64 characters.'),
+        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
       signingKey: yup.string().when('type', {
         is: 'create',
         otherwise: yup
