@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom';
 
 import {FormInput, FormTextArea} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
+import {NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR} from '@renderer/constants/form-validation';
 import {getManagedAccounts, getManagedFriends} from '@renderer/selectors';
 import {setManagedFriend} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
@@ -75,7 +76,10 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
         .test('friend-already-exists', "This friend's account already exists", (accountNumber) => {
           return !managedFriendsAccountNumbers.includes(accountNumber || '');
         }),
-      nickname: yup.string().notOneOf(managedFriendNicknames, 'That nickname is already taken'),
+      nickname: yup
+        .string()
+        .notOneOf(managedFriendNicknames, 'That nickname is already taken')
+        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
     });
   }, [managedAccountNumbers, managedFriendsAccountNumbers, managedFriendNicknames]);
 
