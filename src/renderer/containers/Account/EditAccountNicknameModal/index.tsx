@@ -2,7 +2,11 @@ import React, {FC, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Modal from '@renderer/components/Modal';
 import {FormInput} from '@renderer/components/FormComponents';
-import {NICKNAME_EXISTS_ERROR} from '@renderer/constants/form-validation';
+import {
+  NICKNAME_EXISTS_ERROR,
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH_ERROR,
+} from '@renderer/constants/form-validation';
 import {getManagedAccounts} from '@renderer/selectors';
 import {setManagedAccount} from '@renderer/store/app';
 import {AppDispatch, ManagedAccount} from '@renderer/types';
@@ -32,7 +36,10 @@ const EditAccountNicknameModal: FC<ComponentProps> = ({close, managedAccount}) =
 
   const validationSchema = useMemo(() => {
     return yup.object().shape({
-      nickname: yup.string().notOneOf(managedAccountNicknames, NICKNAME_EXISTS_ERROR),
+      nickname: yup
+        .string()
+        .notOneOf(managedAccountNicknames, NICKNAME_EXISTS_ERROR)
+        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
     });
   }, [managedAccountNicknames]);
 
