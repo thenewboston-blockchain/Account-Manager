@@ -4,7 +4,16 @@ import {useHistory} from 'react-router-dom';
 
 import {FormInput, FormTextArea} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import {NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR} from '@renderer/constants/form-validation';
+import {
+  ACCOUNT_NUMBER_LENGTH,
+  ACCOUNT_NUMBER_LENGTH_ERROR,
+  FRIEND_AS_OWN_ACCOUNT_ERROR,
+  FRIEND_EXISTS_ERROR,
+  NICKNAME_EXISTS_ERROR,
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH_ERROR,
+  REQUIRED_FIELD_ERROR,
+} from '@renderer/constants/form-validation';
 import {getManagedAccounts, getManagedFriends} from '@renderer/selectors';
 import {setManagedFriend} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
@@ -68,17 +77,17 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
     return yup.object().shape({
       accountNumber: yup
         .string()
-        .length(64, 'Account number must be 64 characters long')
-        .required('This field is required')
-        .test('cannot-add-own-account', 'Unable to add your own account as a friend', (accountNumber) => {
+        .length(ACCOUNT_NUMBER_LENGTH, ACCOUNT_NUMBER_LENGTH_ERROR)
+        .required(REQUIRED_FIELD_ERROR)
+        .test('cannot-add-own-account', FRIEND_AS_OWN_ACCOUNT_ERROR, (accountNumber) => {
           return !managedAccountNumbers.includes(accountNumber || '');
         })
-        .test('friend-already-exists', "This friend's account already exists", (accountNumber) => {
+        .test('friend-already-exists', FRIEND_EXISTS_ERROR, (accountNumber) => {
           return !managedFriendsAccountNumbers.includes(accountNumber || '');
         }),
       nickname: yup
         .string()
-        .notOneOf(managedFriendNicknames, 'That nickname is already taken')
+        .notOneOf(managedFriendNicknames, NICKNAME_EXISTS_ERROR)
         .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
     });
   }, [managedAccountNumbers, managedFriendsAccountNumbers, managedFriendNicknames]);

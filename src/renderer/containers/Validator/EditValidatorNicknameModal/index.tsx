@@ -3,7 +3,11 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import {NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR} from '@renderer/constants/form-validation';
+import {
+  NICKNAME_EXISTS_ERROR,
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH_ERROR,
+} from '@renderer/constants/form-validation';
 import {getManagedValidators} from '@renderer/selectors';
 import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch, ManagedNode} from '@renderer/types';
@@ -49,7 +53,7 @@ const EditValidatorNicknameModal: FC<ComponentProps> = ({close, validator}) => {
     return yup.object().shape({
       nickname: yup
         .string()
-        .notOneOf(managedValidatorNicknames, 'That nickname is already taken')
+        .notOneOf(managedValidatorNicknames, NICKNAME_EXISTS_ERROR)
         .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
     });
   }, [managedValidatorNicknames]);

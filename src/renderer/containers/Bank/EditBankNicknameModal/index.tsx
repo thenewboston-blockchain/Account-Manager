@@ -3,7 +3,11 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import {NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR} from '@renderer/constants/form-validation';
+import {
+  NICKNAME_EXISTS_ERROR,
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH_ERROR,
+} from '@renderer/constants/form-validation';
 import {setManagedBank} from '@renderer/store/app';
 import {getManagedBanks} from '@renderer/selectors';
 import {AppDispatch, ManagedNode} from '@renderer/types';
@@ -36,7 +40,7 @@ const EditBankNicknameModal: FC<ComponentProps> = ({bank, close}) => {
     return yup.object().shape({
       nickname: yup
         .string()
-        .notOneOf(managedBankNicknames, 'That nickname is already taken')
+        .notOneOf(managedBankNicknames, NICKNAME_EXISTS_ERROR)
         .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
     });
   }, [managedBankNicknames]);

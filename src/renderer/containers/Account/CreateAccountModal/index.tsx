@@ -5,8 +5,11 @@ import axios from 'axios';
 
 import Modal from '@renderer/components/Modal';
 import {
+  ACCOUNT_EXISTS_ERROR,
+  NICKNAME_EXISTS_ERROR,
   NICKNAME_MAX_LENGTH,
   NICKNAME_MAX_LENGTH_ERROR,
+  SIGNING_KEY_LENGTH,
   SIGNING_KEY_LENGTH_ERROR,
   SIGNING_KEY_REQUIRED_ERROR,
 } from '@renderer/constants/form-validation';
@@ -98,14 +101,14 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
     return yup.object().shape({
       nickname: yup
         .string()
-        .notOneOf(managedAccountNicknames, 'That nickname is already taken')
+        .notOneOf(managedAccountNicknames, NICKNAME_EXISTS_ERROR)
         .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
       signingKey: yup.string().when('type', {
         is: 'create',
         otherwise: yup
           .string()
-          .length(64, SIGNING_KEY_LENGTH_ERROR)
-          .notOneOf(managedAccountSigningKeys, 'That account already exists')
+          .length(SIGNING_KEY_LENGTH, SIGNING_KEY_LENGTH_ERROR)
+          .notOneOf(managedAccountSigningKeys, ACCOUNT_EXISTS_ERROR)
           .required(SIGNING_KEY_REQUIRED_ERROR),
         then: yup.string(),
       }),
