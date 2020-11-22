@@ -10,6 +10,8 @@ export const FRIEND_EXISTS_ERROR = "This friend's account already exists";
 export const IP_INVALID_FORMAT_ERROR = 'IPv4 or IPv6 addresses only';
 
 export const NICKNAME_EXISTS_ERROR = 'That nickname is already taken';
+export const NICKNAME_MAX_LENGTH = 64;
+export const NICKNAME_MAX_LENGTH_ERROR = 'Nickname must not be more than 64 characters';
 
 export const REQUIRED_FIELD_ERROR = 'This field is required';
 

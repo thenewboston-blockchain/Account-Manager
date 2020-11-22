@@ -7,6 +7,8 @@ import {
   BANK_ADDRESS_EXISTS_ERROR,
   IP_INVALID_FORMAT_ERROR,
   NICKNAME_EXISTS_ERROR,
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH_ERROR,
   REQUIRED_FIELD_ERROR,
 } from '@renderer/constants/form-validation';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
@@ -105,7 +107,10 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
         .string()
         .required(REQUIRED_FIELD_ERROR)
         .matches(genericIpAddressRegex, {excludeEmptyString: true, message: IP_INVALID_FORMAT_ERROR}),
-      nickname: yup.string().notOneOf(managedBankNicknames, NICKNAME_EXISTS_ERROR),
+      nickname: yup
+        .string()
+        .notOneOf(managedBankNicknames, NICKNAME_EXISTS_ERROR)
+        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
       port: yup.number().integer(),
       protocol: yup.string().required(),
     });

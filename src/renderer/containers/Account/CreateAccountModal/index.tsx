@@ -7,6 +7,8 @@ import Modal from '@renderer/components/Modal';
 import {
   ACCOUNT_EXISTS_ERROR,
   NICKNAME_EXISTS_ERROR,
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH_ERROR,
   SIGNING_KEY_LENGTH,
   SIGNING_KEY_LENGTH_ERROR,
   SIGNING_KEY_REQUIRED_ERROR,
@@ -97,7 +99,10 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
 
   const validationSchema = useMemo(() => {
     return yup.object().shape({
-      nickname: yup.string().notOneOf(managedAccountNicknames, NICKNAME_EXISTS_ERROR),
+      nickname: yup
+        .string()
+        .notOneOf(managedAccountNicknames, NICKNAME_EXISTS_ERROR)
+        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
       signingKey: yup.string().when('type', {
         is: 'create',
         otherwise: yup

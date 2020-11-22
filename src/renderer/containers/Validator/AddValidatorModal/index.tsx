@@ -6,6 +6,8 @@ import Modal from '@renderer/components/Modal';
 import {
   IP_INVALID_FORMAT_ERROR,
   NICKNAME_EXISTS_ERROR,
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH_ERROR,
   REQUIRED_FIELD_ERROR,
   VALIDATOR_ADDRESS_EXISTS_ERROR,
 } from '@renderer/constants/form-validation';
@@ -106,7 +108,10 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
         .string()
         .required(REQUIRED_FIELD_ERROR)
         .matches(genericIpAddressRegex, {excludeEmptyString: true, message: IP_INVALID_FORMAT_ERROR}),
-      nickname: yup.string().notOneOf(managedValidatorNicknames, NICKNAME_EXISTS_ERROR),
+      nickname: yup
+        .string()
+        .notOneOf(managedValidatorNicknames, NICKNAME_EXISTS_ERROR)
+        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
       port: yup.number().integer(),
       protocol: yup.string().required(),
     });

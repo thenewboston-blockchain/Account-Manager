@@ -10,6 +10,8 @@ import {
   FRIEND_AS_OWN_ACCOUNT_ERROR,
   FRIEND_EXISTS_ERROR,
   NICKNAME_EXISTS_ERROR,
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH_ERROR,
   REQUIRED_FIELD_ERROR,
 } from '@renderer/constants/form-validation';
 import {getManagedAccounts, getManagedFriends} from '@renderer/selectors';
@@ -83,7 +85,10 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
         .test('friend-already-exists', FRIEND_EXISTS_ERROR, (accountNumber) => {
           return !managedFriendsAccountNumbers.includes(accountNumber || '');
         }),
-      nickname: yup.string().notOneOf(managedFriendNicknames, NICKNAME_EXISTS_ERROR),
+      nickname: yup
+        .string()
+        .notOneOf(managedFriendNicknames, NICKNAME_EXISTS_ERROR)
+        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
     });
   }, [managedAccountNumbers, managedFriendsAccountNumbers, managedFriendNicknames]);
 
