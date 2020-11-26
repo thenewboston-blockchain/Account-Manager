@@ -95,4 +95,5 @@ const App: FC = () => {
   );
 };
 
-export default hot((): JSX.Element => <App />);
+const exportedApp = process.env.NODE_ENV === 'development' ? hot((): JSX.Element => <App />) : App;
+export default exportedApp;
