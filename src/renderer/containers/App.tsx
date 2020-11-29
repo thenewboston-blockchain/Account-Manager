@@ -15,8 +15,8 @@ import {AppDispatch, ProtocolType} from '@renderer/types';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 const DEFAULT_BANK = {
-  ip_address: '143.110.137.54',
-  port: null,
+  ip_address: '54.193.31.159',
+  port: 80,
   protocol: 'http' as ProtocolType,
 };
 
