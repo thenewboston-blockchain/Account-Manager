@@ -86,7 +86,7 @@ const Modal: FC<ComponentProps> = ({
     if (typeof submitButton === 'string') {
       return {
         content: submitButton,
-        ignoreDirty,
+        ignoreDirty: false,
         submitting,
         type: 'submit',
       };
