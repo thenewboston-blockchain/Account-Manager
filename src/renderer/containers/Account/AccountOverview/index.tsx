@@ -19,6 +19,7 @@ const AccountOverview: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const managedAccounts = useSelector(getManagedAccounts);
   const managedAccount = managedAccounts[accountNumber];
+  const type = !managedAccount ? 'default' : 'account';
 
   useEffect(() => {
     if (!activePrimaryValidator) return;
@@ -48,8 +49,8 @@ const AccountOverview: FC = () => {
 
   return (
     <div className="AccountOverview">
-      <TileAccountBalance balance={managedAccount?.balance || balance || 0} loading={loading} type="account" />
-      <TileAccountNumber accountNumber={accountNumber} type="account" />
+      <TileAccountBalance balance={managedAccount?.balance || balance || 0} loading={loading} type={type} />
+      <TileAccountNumber accountNumber={accountNumber} type={type} />
       {managedAccount && (
         <TileSigningKey accountNumber={accountNumber} loading={loading} signingKey={managedAccount.signing_key} />
       )}

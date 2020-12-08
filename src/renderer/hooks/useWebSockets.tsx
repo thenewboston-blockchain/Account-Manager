@@ -4,7 +4,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 
 import {getActiveBank, getManagedAccounts} from '@renderer/selectors';
 import {AppDispatch} from '@renderer/types';
-import {formatSocketAddress} from '@renderer/utils/address';
+import {formatSocketAddressFromNode} from '@renderer/utils/address';
 import {
   initializeSocketForPrimaryValidatorUpdated,
   initializeSocketForValidatorConfirmationService,
@@ -16,7 +16,7 @@ const useWebSockets = (): void => {
   const dispatch = useDispatch<AppDispatch>();
   const activeBank = useSelector(getActiveBank);
   const managedAccounts = useSelector(getManagedAccounts);
-  const bankSocketAddress = activeBank ? formatSocketAddress(activeBank) : '';
+  const bankSocketAddress = activeBank ? formatSocketAddressFromNode(activeBank) : '';
 
   const managedAccountNumbersString = useMemo(
     () =>

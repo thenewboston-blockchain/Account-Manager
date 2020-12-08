@@ -9,14 +9,14 @@ import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal'
 import Connect from '@renderer/containers/Connect';
 import Layout from '@renderer/containers/Layout';
 import {connect, connectAndStoreLocalData, fetchNonDefaultNodeConfigs} from '@renderer/dispatchers/app';
-import {useBooleanState, useWebSockets} from '@renderer/hooks';
+import {useBooleanState, useCrawlSockets, useCleanSockets, useWebSockets} from '@renderer/hooks';
 import {getActiveBank, getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch, ProtocolType} from '@renderer/types';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 const DEFAULT_BANK = {
-  ip_address: '143.110.137.54',
-  port: null,
+  ip_address: '54.193.31.159',
+  port: 80,
   protocol: 'http' as ProtocolType,
 };
 
@@ -26,6 +26,8 @@ const App: FC = () => {
   const activeBankConfig = useSelector(getActiveBankConfig);
   const [getStartedModalIsOpen, toggleGetStartedModal, openGetStartedModal] = useBooleanState(false);
   const [loading, setLoading] = useState<boolean>(true);
+  useCrawlSockets();
+  useCleanSockets();
   useWebSockets();
 
   useEffect(() => {

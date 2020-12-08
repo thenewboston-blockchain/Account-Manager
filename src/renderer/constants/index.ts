@@ -1,6 +1,7 @@
 const APP = 'app';
 export const BANKS = 'banks';
 export const NOTIFICATIONS = 'notifications';
+export const SOCKETS = 'sockets';
 export const VALIDATORS = 'validators';
 
 export const ACCOUNTS = 'accounts';
@@ -27,6 +28,10 @@ export const BANK_CONFIRMATION_BLOCKS = `${BANKS}/${CONFIRMATION_BLOCKS}`;
 export const BANK_INVALID_BLOCKS = `${BANKS}/${INVALID_BLOCKS}`;
 export const BANK_VALIDATORS = `${BANKS}/${VALIDATORS}`;
 export const BANK_VALIDATOR_CONFIRMATION_SERVICES = `${BANKS}/${VALIDATOR_CONFIRMATION_SERVICES}`;
+
+// Sockets (crawl & clean)
+export const CRAWL_SOCKETS = `${SOCKETS}/crawl`;
+export const CLEAN_SOCKETS = `${SOCKETS}/clean`;
 
 // Validators
 export const VALIDATOR_ACCOUNTS = `${VALIDATORS}/${ACCOUNTS}`;
