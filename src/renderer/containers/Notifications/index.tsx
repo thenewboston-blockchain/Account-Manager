@@ -198,6 +198,7 @@ const Notifications: FC = () => {
 
   const renderValidatorConfirmationServiceNotification = ({
     data,
+    id,
     timestamp,
   }: ValidatorConfirmationServiceNotificationPayload): ReactNode => {
     const read = lastReadTime > timestamp;
@@ -211,7 +212,7 @@ const Notifications: FC = () => {
     });
 
     return (
-      <div className="Notifications__notification" key="TODO">
+      <div className="Notifications__notification" key={id}>
         {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
         <div className="Notifications__description">
           Your bank purchased a validator confirmation service for{' '}

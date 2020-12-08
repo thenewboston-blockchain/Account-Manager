@@ -8,8 +8,6 @@ const handleValidatorConfirmationServiceNotifications = async (
   dispatch: AppDispatch,
   notification: any,
 ): Promise<void> => {
-  // eslint-disable-next-line no-console
-  console.log(bankSocketAddress, notification);
   try {
     dispatch(
       setValidatorConfirmationServiceNotification({
