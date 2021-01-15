@@ -30,9 +30,10 @@ const BankOverview: FC<ComponentProps> = ({isAuthenticated, managedBank}) => {
     managedBank,
     isAuthenticated,
   );
-  const {count: confirmationServiceCount, loading: confirmationServiceLoading} = usePaginatedNetworkDataFetcher<
-    ValidatorConfirmationService
-  >(BANK_VALIDATOR_CONFIRMATION_SERVICES, address);
+  const {
+    count: confirmationServiceCount,
+    loading: confirmationServiceLoading,
+  } = usePaginatedNetworkDataFetcher<ValidatorConfirmationService>(BANK_VALIDATOR_CONFIRMATION_SERVICES, address);
   const bankAccountNumberRef = useRef<HTMLDivElement>(null);
   const bankNetworkIdRef = useRef<HTMLDivElement>(null);
 
