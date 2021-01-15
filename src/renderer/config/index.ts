@@ -4,4 +4,4 @@ export const defaultPaginatedQueryParam = {
   limit: PAGINATED_RESULTS_LIMIT,
 };
 
-export const AXIOS_TIMEOUT_MS = 5000;
+export const AXIOS_TIMEOUT_MS = 10_000;
