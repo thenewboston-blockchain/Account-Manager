@@ -101,9 +101,9 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
     return yup.object().shape({
       nickname: yup
         .string()
-        .notOneOf(managedAccountNicknames, NICKNAME_EXISTS_ERROR)
+        .matches(/[\S]/, 'Must contain non-whitespace characters.')
         .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR)
-        .matches(new RegExp('[\\S]'), 'Must contain non-whitespace characters.'),
+        .notOneOf(managedAccountNicknames, NICKNAME_EXISTS_ERROR),
       signingKey: yup.string().when('type', {
         is: 'create',
         otherwise: yup
