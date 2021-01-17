@@ -5,12 +5,12 @@
   "description": "thenewboston Account Manager Electron Application",
   "main": "./bundle/main/index.js",
   "scripts": {
-    "build": "yarn package && electron-builder",
+    "build": "npm run package && electron-builder",
     "lint": "tsc --noEmit && eslint \"./src/**/*.{js,ts,tsx}\"",
     "package": "electron-forge package",
     "postinstall": "electron-builder install-app-deps",
     "prettier": "prettier --write \"{,!(.webpack|bundle|node_modules|out|release)/**/}*.{ts,tsx,js,json,css,less,scss}\"",
-    "release": "yarn package && electron-builder --publish always",
+    "release": "npm run package && electron-builder --publish always",
     "start": "electron-forge start",
     "test": "jest"
   },
@@ -99,6 +99,7 @@
     "clsx": "^1.1.1",
     "date-fns": "^2.16.1",
     "electron-context-menu": "^2.4.0",
+    "electron-is-dev": "^1.2.0",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^5.2.0",
     "electron-updater": "^4.3.5",
