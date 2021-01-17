@@ -121,7 +121,6 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       className="AddBankModal"
       close={close}
       header="Add Bank"
-      ignoreDirty
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitButton="Add"

@@ -122,7 +122,6 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
       className="AddValidatorModal"
       close={close}
       header="Add Validator"
-      ignoreDirty
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitButton="Add"
