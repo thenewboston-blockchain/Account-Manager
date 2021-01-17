@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {MemoryRouter as Router} from 'react-router-dom';
 import {Flip, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import electronIsDev from 'electron-is-dev';
 
 import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import Connect from '@renderer/containers/Connect';
@@ -95,5 +96,4 @@ const App: FC = () => {
   );
 };
 
-const exportedApp = process.env.NODE_ENV === 'development' ? hot((): JSX.Element => <App />) : App;
-export default exportedApp;
+export default electronIsDev ? hot((): JSX.Element => <App />) : App;
