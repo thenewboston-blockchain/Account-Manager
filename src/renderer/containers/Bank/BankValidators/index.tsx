@@ -36,9 +36,14 @@ interface ComponentProps {
 
 const BankValidators: FC<ComponentProps> = ({managedBank}) => {
   const address = useAddress();
-  const {count, currentPage, loading, results: bankValidators, setPage, totalPages} = usePaginatedNetworkDataFetcher<
-    BaseValidator
-  >(BANK_VALIDATORS, address);
+  const {
+    count,
+    currentPage,
+    loading,
+    results: bankValidators,
+    setPage,
+    totalPages,
+  } = usePaginatedNetworkDataFetcher<BaseValidator>(BANK_VALIDATORS, address);
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustValidator, setEditTrustValidator] = useState<BaseValidator | null>(null);
   const [purchaseServicesModalIsOpen, togglePurchaseServicesModal] = useBooleanState(false);

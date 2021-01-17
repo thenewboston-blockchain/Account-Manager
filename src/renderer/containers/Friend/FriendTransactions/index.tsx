@@ -25,9 +25,16 @@ const FriendTransactions: FC = () => {
   const {accountNumber} = useParams<{accountNumber: string}>();
   const activeBank = useSelector(getActiveBankConfig)!;
   const activeBankAddress = formatAddressFromNode(activeBank);
-  const {count, currentPage, loading, results: bankTransactions, setPage, totalPages} = usePaginatedNetworkDataFetcher<
-    BankTransaction
-  >(BANK_BANK_TRANSACTIONS, activeBankAddress, {account_number: accountNumber});
+  const {
+    count,
+    currentPage,
+    loading,
+    results: bankTransactions,
+    setPage,
+    totalPages,
+  } = usePaginatedNetworkDataFetcher<BankTransaction>(BANK_BANK_TRANSACTIONS, activeBankAddress, {
+    account_number: accountNumber,
+  });
 
   const bankTransactionsTableData = useMemo<PageTableData[]>(
     () =>
