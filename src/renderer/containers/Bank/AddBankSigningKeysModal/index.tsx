@@ -3,7 +3,12 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {FormTextArea} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import {SIGNING_KEY_LENGTH_ERROR, SIGNING_KEY_REQUIRED_ERROR} from '@renderer/constants/form-validation';
+import {
+  SIGNING_KEY_INVALID_ACCOUNT_ERROR,
+  SIGNING_KEY_INVALID_NID_ERROR,
+  SIGNING_KEY_LENGTH_ERROR,
+  SIGNING_KEY_REQUIRED_ERROR,
+} from '@renderer/constants/form-validation';
 import {useAddress} from '@renderer/hooks';
 import {getBankConfigs, getManagedAccounts, getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
@@ -72,7 +77,7 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
         .length(64, SIGNING_KEY_LENGTH_ERROR)
         .required(SIGNING_KEY_REQUIRED_ERROR)
         .test({
-          message: 'Resulting public key does not match Account',
+          message: SIGNING_KEY_INVALID_ACCOUNT_ERROR,
           name: 'is-valid-private-key-account',
           test: (key: any) => checkPrivateSigningKey(accountNumber, key),
         }),
@@ -81,7 +86,7 @@ const AddBankSigningKeysModal: FC<ComponentProps> = ({close}) => {
         .length(64, SIGNING_KEY_LENGTH_ERROR)
         .required(SIGNING_KEY_REQUIRED_ERROR)
         .test({
-          message: 'Resulting public key does not match NID',
+          message: SIGNING_KEY_INVALID_NID_ERROR,
           name: 'is-valid-private-key-nid',
           test: (key: any) => checkPrivateSigningKey(nodeIdentifier, key),
         }),
