@@ -15,9 +15,14 @@ enum TableKeys {
 
 const ValidatorAccounts: FC = () => {
   const address = useAddress();
-  const {count, currentPage, loading, results: validatorAccounts, setPage, totalPages} = usePaginatedNetworkDataFetcher<
-    ValidatorAccount
-  >(VALIDATOR_ACCOUNTS, address);
+  const {
+    count,
+    currentPage,
+    loading,
+    results: validatorAccounts,
+    setPage,
+    totalPages,
+  } = usePaginatedNetworkDataFetcher<ValidatorAccount>(VALIDATOR_ACCOUNTS, address);
 
   const validatorAccountsTableData = useMemo<PageTableData[]>(
     () =>

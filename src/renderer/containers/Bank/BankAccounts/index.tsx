@@ -26,9 +26,14 @@ interface ComponentProps {
 
 const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
   const address = useAddress();
-  const {count, currentPage, loading, results: bankAccounts, setPage, totalPages} = usePaginatedNetworkDataFetcher<
-    BankAccount
-  >(BANK_ACCOUNTS, address);
+  const {
+    count,
+    currentPage,
+    loading,
+    results: bankAccounts,
+    setPage,
+    totalPages,
+  } = usePaginatedNetworkDataFetcher<BankAccount>(BANK_ACCOUNTS, address);
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustAccount, setEditTrustAccount] = useState<BankAccount | null>(null);
 

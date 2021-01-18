@@ -13,6 +13,8 @@ import yup from '@renderer/utils/yup';
 import SendCoinsModalFields, {FormValues, INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendCoinsModalFields';
 import './SendCoinsModal.scss';
 
+const COIN_AMOUNT_CEILING = 100_000_000;
+
 interface ComponentProps {
   close(): void;
   initialRecipient: string;
@@ -96,6 +98,7 @@ const SendCoinsModal: FC<ComponentProps> = ({close, initialRecipient, initialSen
         .number()
         .callbackWithRef(senderAccountNumberRef, checkCoinsWithBalance, INVALID_AMOUNT_ERROR)
         .moreThan(0, 'Coins must be greater than 0')
+        .lessThan(COIN_AMOUNT_CEILING, `Coins must be less than ${COIN_AMOUNT_CEILING.toLocaleString()}`)
         .integer('Coins cannot be a decimal')
         .required('Coins is a required field'),
       recipientAccountNumber: yup
