@@ -21,6 +21,7 @@ import {
   ValidatorConfirmationServiceNotificationPayload,
 } from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
+import {sortByNumberKey} from '@renderer/utils/sort';
 
 import NotificationsMenu from './NotificationsMenu';
 import './Notifications.scss';
@@ -173,9 +174,12 @@ const Notifications: FC = () => {
   };
 
   const renderNotifications = (): ReactNode[] => {
-    return notifications.map((notification) => {
-      return <Fragment key={notification.id}>{renderNotificationReducer(notification)}</Fragment>;
-    });
+    return notifications
+      .slice()
+      .sort(sortByNumberKey('timestamp'))
+      .map((notification) => {
+        return <Fragment key={notification.id}>{renderNotificationReducer(notification)}</Fragment>;
+      });
   };
 
   const renderPrimaryValidatorUpdatedNotification = ({

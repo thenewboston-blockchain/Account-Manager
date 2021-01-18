@@ -8,6 +8,12 @@ export function sortByBooleanKey<T>(key: keyof T) {
   };
 }
 
+export function sortByNumberKey<T>(key: keyof T) {
+  return (a: T, b: T) => {
+    return Number(b[key]) - Number(a[key]);
+  };
+}
+
 export function sortDictValuesByPreferredKey<T>(items: Dict<T>, preferredKey: keyof T, fallbackKey: keyof T): T[] {
   const preferredItems: T[] = [];
   const fallbackItems: T[] = [];
