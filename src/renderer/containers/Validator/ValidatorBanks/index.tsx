@@ -30,9 +30,14 @@ interface ComponentProps {
 
 const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
   const address = useAddress();
-  const {count, currentPage, loading, results: validatorBanks, setPage, totalPages} = usePaginatedNetworkDataFetcher<
-    ValidatorBank
-  >(VALIDATOR_BANKS, address);
+  const {
+    count,
+    currentPage,
+    loading,
+    results: validatorBanks,
+    setPage,
+    totalPages,
+  } = usePaginatedNetworkDataFetcher<ValidatorBank>(VALIDATOR_BANKS, address);
   const [editTrustModalIsOpen, toggleEditTrustModal] = useBooleanState(false);
   const [editTrustBank, setEditTrustBank] = useState<Node | null>(null);
 

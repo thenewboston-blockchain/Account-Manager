@@ -19,9 +19,14 @@ enum TableKeys {
 
 const BankBlocks: FC = () => {
   const address = useAddress();
-  const {count, currentPage, loading, results: bankBlocks, setPage, totalPages} = usePaginatedNetworkDataFetcher<
-    BlockResponse
-  >(BANK_BLOCKS, address);
+  const {
+    count,
+    currentPage,
+    loading,
+    results: bankBlocks,
+    setPage,
+    totalPages,
+  } = usePaginatedNetworkDataFetcher<BlockResponse>(BANK_BLOCKS, address);
 
   const bankBlocksTableData = useMemo<PageTableData[]>(
     () =>

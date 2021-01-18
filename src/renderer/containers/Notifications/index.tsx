@@ -11,10 +11,13 @@ import {useBooleanState} from '@renderer/hooks';
 import {getManagedAccounts, getManagedFriends, getNotifications} from '@renderer/selectors';
 import {
   ConfirmationBlockNotificationPayload,
+  CrawlStatusNotificationPayload,
+  CleanStatusNotificationPayload,
   NotificationPayload,
   NotificationType,
   PrimaryValidatorUpdatedNotificationPayload,
 } from '@renderer/types';
+import {formatAddressFromNode} from '@renderer/utils/address';
 
 import NotificationsMenu from './NotificationsMenu';
 import './Notifications.scss';
@@ -123,9 +126,38 @@ const Notifications: FC = () => {
       });
   };
 
+  const renderCrawlStatusNotification = ({data, id, timestamp}: CrawlStatusNotificationPayload): ReactNode => {
+    const nodeAddress = formatAddressFromNode(data);
+    const read = lastReadTime > timestamp;
+
+    return (
+      <div className="Notifications__notification" key={id}>
+        {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
+        <div className="Notifications__description">{nodeAddress} has stopped crawling</div>
+      </div>
+    );
+  };
+  const renderCleanStatusNotification = ({data, id, timestamp}: CleanStatusNotificationPayload): ReactNode => {
+    const nodeAddress = formatAddressFromNode(data);
+    const read = lastReadTime > timestamp;
+
+    return (
+      <div className="Notifications__notification" key={id}>
+        {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
+        <div className="Notifications__description">{nodeAddress} has stopped cleaning</div>
+      </div>
+    );
+  };
+
   const renderNotification = (notification: NotificationPayload): ReactNode => {
     if (notification.type === NotificationType.confirmationBlockNotification) {
       return renderConfirmationBlockNotification(notification as ConfirmationBlockNotificationPayload);
+    }
+    if (notification.type === NotificationType.crawlStatusNotification) {
+      return renderCrawlStatusNotification(notification as CrawlStatusNotificationPayload);
+    }
+    if (notification.type === NotificationType.cleanStatusNotification) {
+      return renderCleanStatusNotification(notification as CleanStatusNotificationPayload);
     }
     if (notification.type === NotificationType.primaryValidatorUpdatedNotification) {
       return renderPrimaryValidatorUpdatedNotification(notification as PrimaryValidatorUpdatedNotificationPayload);
@@ -141,12 +173,13 @@ const Notifications: FC = () => {
 
   const renderPrimaryValidatorUpdatedNotification = ({
     data: primaryValidatorAddress,
+    id,
     timestamp,
   }: PrimaryValidatorUpdatedNotificationPayload): ReactNode => {
     const read = lastReadTime > timestamp;
 
     return (
-      <div className="Notifications__notification" key="TODO">
+      <div className="Notifications__notification" key={id}>
         {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
         <div className="Notifications__description">
           The networks Primary Validator has been changed to {primaryValidatorAddress}

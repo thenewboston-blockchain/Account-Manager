@@ -17,6 +17,9 @@ export const getBankValidators = (state: RootState) => state.banks.validators;
 
 export const getNotifications = (state: RootState) => state.notifications;
 
+export const getCrawlSockets = (state: RootState) => state.sockets.crawl;
+export const getCleanSockets = (state: RootState) => state.sockets.clean;
+
 export const getValidatorAccounts = (state: RootState) => state.validators.accounts;
 export const getValidatorBanks = (state: RootState) => state.validators.banks;
 export const getValidatorConfigs = (state: RootState) => state.validators.configs;

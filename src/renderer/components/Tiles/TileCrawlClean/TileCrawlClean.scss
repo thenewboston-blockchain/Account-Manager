@@ -1,0 +1,52 @@
+.TileCrawlClean {
+  &__button {
+    color: var(--color-secondary);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &--disabled {
+      color: var(--color-gray-300);
+      cursor: default;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  &__button-container {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  &__label {
+    color: var(--color-gray-500);
+    min-width: 112px;
+  }
+
+  &__row {
+    display: flex;
+
+    &:first-child {
+      margin-bottom: 12px;
+    }
+  }
+
+  &__status {
+    color: var(--color-gray-500);
+    font-family: var(--font-family-inter-bold);
+    min-width: 84px;
+
+    &--danger {
+      color: var(--color-red-500);
+    }
+
+    &--active {
+      color: var(--color-green-500);
+    }
+  }
+}

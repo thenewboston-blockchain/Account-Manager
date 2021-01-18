@@ -4,7 +4,15 @@ import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 
 import Modal from '@renderer/components/Modal';
-import {SIGNING_KEY_LENGTH_ERROR, SIGNING_KEY_REQUIRED_ERROR} from '@renderer/constants/form-validation';
+import {
+  ACCOUNT_EXISTS_ERROR,
+  NICKNAME_EXISTS_ERROR,
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MAX_LENGTH_ERROR,
+  SIGNING_KEY_LENGTH,
+  SIGNING_KEY_LENGTH_ERROR,
+  SIGNING_KEY_REQUIRED_ERROR,
+} from '@renderer/constants/form-validation';
 import {getActivePrimaryValidator, getManagedAccounts} from '@renderer/selectors';
 import {setManagedAccount} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
@@ -91,13 +99,17 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
 
   const validationSchema = useMemo(() => {
     return yup.object().shape({
-      nickname: yup.string().notOneOf(managedAccountNicknames, 'That nickname is already taken'),
+      nickname: yup
+        .string()
+        .matches(/[\S]/, 'Must contain non-whitespace characters.')
+        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR)
+        .notOneOf(managedAccountNicknames, NICKNAME_EXISTS_ERROR),
       signingKey: yup.string().when('type', {
         is: 'create',
         otherwise: yup
           .string()
-          .length(64, SIGNING_KEY_LENGTH_ERROR)
-          .notOneOf(managedAccountSigningKeys, 'That account already exists')
+          .length(SIGNING_KEY_LENGTH, SIGNING_KEY_LENGTH_ERROR)
+          .notOneOf(managedAccountSigningKeys, ACCOUNT_EXISTS_ERROR)
           .required(SIGNING_KEY_REQUIRED_ERROR),
         then: yup.string(),
       }),
