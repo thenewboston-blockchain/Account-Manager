@@ -100,59 +100,58 @@ const Notifications: FC = () => {
     return txs
       .filter(({recipient}) => managedAccountNumbers.includes(recipient))
       .map(({amount, recipient}) => {
-        const read = lastReadTime > timestamp;
-
-        return (
-          <div className="Notifications__notification" key={recipient}>
-            {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
-            <div className="Notifications__description">
-              <div>
-                <NavLink className="Notifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
-                  {getAccountNickname(senderAccountNumber)}
-                </NavLink>{' '}
-                paid you{' '}
-                <NavLink className="Notifications__NavLink" to={`/account/${recipient}/overview`}>
-                  ({getAccountNickname(recipient)})
-                </NavLink>
-              </div>
-              <div
-                className={clsx('Notifications__time', {
-                  'Notifications__time--read': read,
-                })}
-              >
-                {formatDistanceToNow(timestamp, {includeSeconds: true})} ago
-              </div>
-            </div>
-            <div className="Notifications__amount">+ {amount}</div>
-          </div>
+        const description = (
+          <>
+            <NavLink className="Notifications__NavLink" to={`/account/${senderAccountNumber}/overview`}>
+              {getAccountNickname(senderAccountNumber)}
+            </NavLink>{' '}
+            paid you{' '}
+            <NavLink className="Notifications__NavLink" to={`/account/${recipient}/overview`}>
+              ({getAccountNickname(recipient)})
+            </NavLink>
+          </>
         );
+
+        return renderNotification({amount, description, id: recipient, timestamp});
       });
   };
 
   const renderCrawlStatusNotification = ({data, id, timestamp}: CrawlStatusNotificationPayload): ReactNode => {
     const nodeAddress = formatAddressFromNode(data);
-    const read = lastReadTime > timestamp;
-
-    return (
-      <div className="Notifications__notification" key={id}>
-        {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
-        <div className="Notifications__description">{nodeAddress} has stopped crawling</div>
-      </div>
-    );
+    return renderNotification({description: `${nodeAddress} has stopped crawling`, id, timestamp});
   };
+
   const renderCleanStatusNotification = ({data, id, timestamp}: CleanStatusNotificationPayload): ReactNode => {
     const nodeAddress = formatAddressFromNode(data);
+    return renderNotification({description: `${nodeAddress} has stopped cleaning`, id, timestamp});
+  };
+
+  const renderNotification = ({
+    amount,
+    description,
+    id,
+    timestamp,
+  }: {
+    amount?: number;
+    description: ReactNode;
+    id: string;
+    timestamp: number;
+  }): ReactNode => {
     const read = lastReadTime > timestamp;
 
     return (
       <div className="Notifications__notification" key={id}>
         {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
-        <div className="Notifications__description">{nodeAddress} has stopped cleaning</div>
+        <div className="Notifications__description">
+          <div>{description}</div>
+          {renderTimeAgo(timestamp, read)}
+        </div>
+        {amount !== undefined && <div className="Notifications__amount">+ {amount}</div>}
       </div>
     );
   };
 
-  const renderNotification = (notification: NotificationPayload): ReactNode => {
+  const renderNotificationReducer = (notification: NotificationPayload): ReactNode => {
     if (notification.type === NotificationType.confirmationBlockNotification) {
       return renderConfirmationBlockNotification(notification as ConfirmationBlockNotificationPayload);
     }
@@ -175,7 +174,7 @@ const Notifications: FC = () => {
 
   const renderNotifications = (): ReactNode[] => {
     return notifications.map((notification) => {
-      return <Fragment key={notification.id}>{renderNotification(notification)}</Fragment>;
+      return <Fragment key={notification.id}>{renderNotificationReducer(notification)}</Fragment>;
     });
   };
 
@@ -184,14 +183,21 @@ const Notifications: FC = () => {
     id,
     timestamp,
   }: PrimaryValidatorUpdatedNotificationPayload): ReactNode => {
-    const read = lastReadTime > timestamp;
+    return renderNotification({
+      description: `The networks Primary Validator has been changed to ${primaryValidatorAddress}`,
+      id,
+      timestamp,
+    });
+  };
 
+  const renderTimeAgo = (timestamp: number, read: boolean): ReactNode => {
     return (
-      <div className="Notifications__notification" key={id}>
-        {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
-        <div className="Notifications__description">
-          The networks Primary Validator has been changed to {primaryValidatorAddress}
-        </div>
+      <div
+        className={clsx('Notifications__time-ago', {
+          'Notifications__time-ago--read': read,
+        })}
+      >
+        {formatDistanceToNow(timestamp, {includeSeconds: true})} ago
       </div>
     );
   };
@@ -201,25 +207,21 @@ const Notifications: FC = () => {
     id,
     timestamp,
   }: ValidatorConfirmationServiceNotificationPayload): ReactNode => {
-    const read = lastReadTime > timestamp;
     const {
       validator_confirmation_service: {start, end},
     } = data;
-
     const validatorConfirmationServiceDuration = intervalToDuration({
       end: new Date(end),
       start: new Date(start),
     });
 
-    return (
-      <div className="Notifications__notification" key={id}>
-        {!read && <StatusBadge className="Notifications__row-alert-badge" status="alert" />}
-        <div className="Notifications__description">
-          Your bank purchased a validator confirmation service for{' '}
-          {formatDuration(validatorConfirmationServiceDuration)}.
-        </div>
-      </div>
-    );
+    return renderNotification({
+      description: `Your bank purchased a validator confirmation service for ${formatDuration(
+        validatorConfirmationServiceDuration,
+      )}`,
+      id,
+      timestamp,
+    });
   };
 
   const truncate = (str: string, size: number): string => {

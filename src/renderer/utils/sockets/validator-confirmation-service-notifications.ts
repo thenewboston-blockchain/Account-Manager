@@ -18,7 +18,7 @@ const handleValidatorConfirmationServiceNotifications = async (
       }),
     );
 
-    displayToast(`Your bank purchased a validator confirmation service`);
+    displayToast(`Your bank purchased a validator confirmation service`, 'success');
   } catch (err) {
     displayToast('An error occurred');
   }
