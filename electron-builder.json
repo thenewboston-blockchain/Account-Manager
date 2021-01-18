@@ -16,8 +16,8 @@
     "target": ["dmg", "zip"],
     "hardenedRuntime": true,
     "gatekeeperAssess": false,
-    "entitlements": "./assets/entitlements.mac.plist",
-    "entitlementsInherit": "./assets/entitlements.mac.inherit.plist",
+    "entitlements": "./assets/mac/entitlements.mac.plist",
+    "entitlementsInherit": "./assets/mac/entitlements.mac.inherit.plist",
     "artifactName": "${productName}-${version}-${os}.${ext}"
   },
   "win": {
