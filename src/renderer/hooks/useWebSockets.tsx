@@ -7,6 +7,7 @@ import {AppDispatch} from '@renderer/types';
 import {formatSocketAddressFromNode} from '@renderer/utils/address';
 import {
   initializeSocketForPrimaryValidatorUpdated,
+  initializeSocketForValidatorConfirmationService,
   initializeSocketsForConfirmationBlocks,
   processSocketEvent,
 } from '@renderer/utils/sockets';
@@ -44,14 +45,20 @@ const useWebSockets = (): void => {
 
   useEffect(() => {
     if (!bankSocketAddress) return;
-    const socket = initializeSocketForPrimaryValidatorUpdated(bankSocketAddress);
+    const socketPrimaryValidatorUpdated = initializeSocketForPrimaryValidatorUpdated(bankSocketAddress);
+    const socketValidatorConfirmedService = initializeSocketForValidatorConfirmationService(bankSocketAddress);
 
-    socket.onmessage = (event) => {
+    socketPrimaryValidatorUpdated.onmessage = (event) => {
+      processSocketEvent(bankSocketAddress, dispatch, event);
+    };
+
+    socketValidatorConfirmedService.onmessage = (event) => {
       processSocketEvent(bankSocketAddress, dispatch, event);
     };
 
     return () => {
-      socket.close();
+      socketPrimaryValidatorUpdated.close();
+      socketValidatorConfirmedService.close();
     };
   }, [bankSocketAddress, dispatch]);
 };

@@ -35,6 +35,7 @@ import {
   NotificationPayload,
   NotificationType,
   PrimaryValidatorUpdatedNotificationPayload,
+  ValidatorConfirmationServiceNotificationPayload,
 } from './notifications';
 import {
   CrawlCommand,
@@ -119,4 +120,5 @@ export {
   ValidatorConfig,
   ValidatorConfirmationBlock,
   ValidatorConfirmationService,
+  ValidatorConfirmationServiceNotificationPayload,
 };

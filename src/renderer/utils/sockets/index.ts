@@ -7,6 +7,7 @@ import handleConfirmationBlockNotification from './confirmation-block-notificati
 import handleCrawlSocketEvent from './crawl';
 import handleCleanSocketEvent from './clean';
 import handlePrimaryValidatorUpdatedNotifications from './primary-validator-updated-notifications';
+import handleValidatorConfirmationServiceNotifications from './validator-confirmation-service-notifications';
 
 export const initializeSocketForCrawlStatus = (bankSocketAddress: string): ReconnectingWebSocket => {
   return new ReconnectingWebSocket(`${bankSocketAddress}/ws/crawl_status`);
@@ -27,6 +28,10 @@ export const initializeSocketForPrimaryValidatorUpdated = (bankSocketAddress: st
   return new ReconnectingWebSocket(`${bankSocketAddress}/ws/primary_validator_updated`);
 };
 
+export const initializeSocketForValidatorConfirmationService = (bankSocketAddress: string): ReconnectingWebSocket => {
+  return new ReconnectingWebSocket(`${bankSocketAddress}/ws/validator_confirmation_services`);
+};
+
 export const processSocketEvent = (payload: any, dispatch: AppDispatch, event: MessageEvent): void => {
   try {
     const notification = JSON.parse(event.data);
@@ -42,6 +47,9 @@ export const processSocketEvent = (payload: any, dispatch: AppDispatch, event: M
         break;
       case NotificationType.primaryValidatorUpdatedNotification:
         handlePrimaryValidatorUpdatedNotifications(payload, dispatch, notification);
+        break;
+      case NotificationType.validatorConfirmationServiceNotification:
+        handleValidatorConfirmationServiceNotifications(payload, dispatch, notification);
         break;
       default:
         displayErrorToast(`${notification.notification_type} is an unhandled notification type.`);
