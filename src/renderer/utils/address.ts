@@ -1,10 +1,8 @@
 import {parse, ParsedUrlQuery, stringify} from 'querystring';
 import {AddressData, ProtocolType} from '@renderer/types';
 
-export const formatAddress = (ipAddress: string, port: number | string | null, protocol: string): string => {
-  const portNumber = Number(port);
-  const formattedPort = portNumber && portNumber !== 80 ? `:${port}` : '';
-  return `${protocol}://${ipAddress}${formattedPort}`;
+export const formatAddress = (ipAddress: string, port: number | string, protocol: string): string => {
+  return `${protocol}://${ipAddress}:${port}`;
 };
 
 export const formatAddressFromNode = (node: AddressData): string => {
@@ -16,8 +14,8 @@ export const formatQueryParams = (params: {[key: string]: any}): string => {
   return queryParams.length ? `?${queryParams}` : '';
 };
 
-export const formatPath = (ipAddress: string, port: number | string | null, protocol: string): string => {
-  return `${protocol}/${ipAddress}/${port ?? 'port'}`;
+export const formatPath = (ipAddress: string, port: number | string, protocol: string): string => {
+  return `${protocol}/${ipAddress}/${port}`;
 };
 
 export const formatPathFromNode = (node: AddressData): string => {
@@ -29,13 +27,12 @@ export const formatSocketAddressFromNode = (node: AddressData): string => {
   return formatAddress(ipAddress, port, 'ws');
 };
 
-export const parseAddressData = (address: string): {ipAddress: string; port: number | null; protocol: ProtocolType} => {
+export const parseAddressData = (address: string): {ipAddress: string; port: number; protocol: ProtocolType} => {
   const [protocol, ipAddress, port] = address.replace('//', '').split(':');
-  const formattedPort = port ? parseInt(port, 10) : null;
 
   return {
     ipAddress,
-    port: formattedPort,
+    port: parseInt(port, 10),
     protocol: protocol as ProtocolType,
   };
 };

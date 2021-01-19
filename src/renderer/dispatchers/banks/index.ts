@@ -43,9 +43,10 @@ import {
   Node,
   NodeType,
   PaginatedQueryParams,
+  RawBankConfig,
   ValidatorConfirmationService,
 } from '@renderer/types';
-import {fetchPaginatedResults} from '@renderer/utils/api';
+import {fetchPaginatedResults, sanitizePortFieldFromRawBankConfig} from '@renderer/utils/api';
 
 export const fetchBankAccounts = (address: string, params: PaginatedQueryParams = defaultPaginatedQueryParam) => async (
   dispatch: AppDispatch,
@@ -83,7 +84,8 @@ export const fetchBankConfig = (address: string) => async (
   dispatch: AppDispatch,
 ): Promise<{address: string; data?: BankConfig; error?: any}> => {
   try {
-    const {data} = await axios.get<BankConfig>(`${address}/config`, {timeout: AXIOS_TIMEOUT_MS});
+    const {data: rawData} = await axios.get<RawBankConfig>(`${address}/config`, {timeout: AXIOS_TIMEOUT_MS});
+    const data = sanitizePortFieldFromRawBankConfig(rawData);
 
     if (data.node_type !== NodeType.bank) {
       const errorObject = {address, error: 'Node not a bank'};

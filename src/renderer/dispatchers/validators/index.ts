@@ -17,11 +17,12 @@ import {
   BaseValidator,
   NodeType,
   PaginatedQueryParams,
+  RawPrimaryValidatorConfig,
   ValidatorAccount,
   ValidatorBank,
   ValidatorConfig,
 } from '@renderer/types';
-import {fetchPaginatedResults} from '@renderer/utils/api';
+import {fetchPaginatedResults, sanitizePortFieldFromRawPrimaryValidatorConfig} from '@renderer/utils/api';
 
 export const fetchValidatorAccounts = (
   address: string,
@@ -55,7 +56,10 @@ export const fetchValidatorConfig = (address: string) => async (
   dispatch: AppDispatch,
 ): Promise<{address: string; data?: ValidatorConfig; error?: any}> => {
   try {
-    const {data} = await axios.get<ValidatorConfig>(`${address}/config`, {timeout: AXIOS_TIMEOUT_MS});
+    const {data: rawData} = await axios.get<RawPrimaryValidatorConfig>(`${address}/config`, {
+      timeout: AXIOS_TIMEOUT_MS,
+    });
+    const data = sanitizePortFieldFromRawPrimaryValidatorConfig(rawData);
 
     if (data.node_type !== NodeType.primaryValidator && data.node_type !== NodeType.confirmationValidator) {
       const errorObject = {address, error: 'Node not a validator'};

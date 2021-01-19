@@ -1,6 +1,6 @@
 import {PayloadAction} from '@reduxjs/toolkit';
 
-import localStore from '@renderer/store/localStore';
+import localStore from '@renderer/store/local';
 import {
   AccountNumber,
   AddressData,
@@ -8,6 +8,7 @@ import {
   DictWithDataAndError,
   DictWithError,
   DictWithPaginatedResultsAndError,
+  LocalStore,
   ManagedNode,
   NodeIdentifier,
   PaginatedResults,
@@ -28,7 +29,7 @@ type PayloadActionErrorWithAddress = PayloadAction<Error & Address>;
 export type SetResults<T> = (payload: PaginatedResults<T> & Address) => PayloadAction<PaginatedResults<T> & Address>;
 export type SetError = (payload: Address & Error) => PayloadAction<Address & Error>;
 
-export const getStateName = (actionType: string) => actionType.split('/')[1];
+export const getStateName = (actionType: string) => actionType.split('/')[1] as keyof LocalStore;
 
 export function changeActiveNodeReducer<T extends ManagedNode>(sliceName: string) {
   return (state: Dict<T>, {payload}: PayloadAction<T>) => {
@@ -55,7 +56,7 @@ export function setLocalAndAccountReducer<T extends AccountNumber>(sliceName: st
 
 export function setLocalAndStateReducer<T>() {
   return (state: any, action: PayloadAction<T>) => {
-    localStore.set(getStateName(action.type), action.payload);
+    localStore.set(getStateName(action.type), action.payload as any);
     return action.payload;
   };
 }

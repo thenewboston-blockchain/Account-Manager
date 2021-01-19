@@ -1,5 +1,13 @@
 import axios from 'axios';
-import {AppDispatch, PaginatedQueryParams, PaginatedResults} from '@renderer/types';
+import {
+  AppDispatch,
+  BankConfig,
+  PaginatedQueryParams,
+  PaginatedResults,
+  PrimaryValidatorConfig,
+  RawBankConfig,
+  RawPrimaryValidatorConfig,
+} from '@renderer/types';
 import {formatQueryParams} from '@renderer/utils/address';
 import {SetError, SetResults} from '@renderer/utils/store';
 
@@ -12,7 +20,22 @@ export async function fetchPaginatedResults<T>(
   setError: SetError,
 ) {
   try {
-    const {data} = await axios.get<PaginatedResults<T>>(`${address}/${urlParam}${formatQueryParams(queryParams)}`);
+    const {data: rawData} = await axios.get<PaginatedResults<T>>(
+      `${address}/${urlParam}${formatQueryParams(queryParams)}`,
+    );
+
+    const data: PaginatedResults<T> = {
+      ...rawData,
+      results: rawData.results.map((result: any) => {
+        if (result.port) {
+          return {
+            ...result,
+            port: replaceNullPortFieldWithDefaultValue(result.port),
+          };
+        }
+        return result;
+      }),
+    };
 
     dispatch(setResults({address, ...data}));
     return data.results;
@@ -23,3 +46,27 @@ export async function fetchPaginatedResults<T>(
     dispatch(setError({address, error: error.response.data}));
   }
 }
+
+const replaceNullPortFieldWithDefaultValue = (port: number | null): number => {
+  if (port === null) {
+    return 80;
+  }
+  return port;
+};
+
+export const sanitizePortFieldFromRawBankConfig = (data: RawBankConfig): BankConfig => {
+  return {
+    ...data,
+    port: replaceNullPortFieldWithDefaultValue(data.port),
+    primary_validator: sanitizePortFieldFromRawPrimaryValidatorConfig(data.primary_validator),
+  };
+};
+
+export const sanitizePortFieldFromRawPrimaryValidatorConfig = (
+  data: RawPrimaryValidatorConfig,
+): PrimaryValidatorConfig => {
+  return {
+    ...data,
+    port: replaceNullPortFieldWithDefaultValue(data.port),
+  };
+};
