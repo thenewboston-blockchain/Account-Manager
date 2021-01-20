@@ -40,6 +40,4 @@ const migrationFunction: MigrationFunction = (localStore) => {
 export default migrationFunction;
 
 // TODO: add a button to import/export/reset localStore
-// TODO: Make tests file to be able to be TS
-// TODO: reenable tests
 // TODO: Write a migrations.md file detailing how to 1) checkout migration branches, 2) work on issues involving migrations

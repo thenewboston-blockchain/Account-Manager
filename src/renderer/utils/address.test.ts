@@ -1,3 +1,4 @@
+import {ProtocolType} from '@renderer/types';
 import {
   formatAddress,
   formatAddressFromNode,
@@ -23,18 +24,9 @@ describe('formatAddressFromNode to return the following:', () => {
     const nodeAddress = {
       ip_address: '127.0.0.1',
       port: 80,
-      protocol: 'https',
+      protocol: 'https' as ProtocolType,
     };
     expect(formatAddressFromNode(nodeAddress)).toBe('https://127.0.0.1:80');
-  });
-
-  test('correct IP from node with port as string', () => {
-    const nodeAddress = {
-      ip_address: '127.0.0.1',
-      port: '80',
-      protocol: 'http',
-    };
-    expect(formatAddressFromNode(nodeAddress)).toBe('http://127.0.0.1:80');
   });
 });
 
@@ -76,18 +68,9 @@ describe('formatPathFromNode to return the following:', () => {
     const nodePath = {
       ip_address: '127.0.0.1',
       port: 8080,
-      protocol: 'http',
+      protocol: 'http' as ProtocolType,
     };
     expect(formatPathFromNode(nodePath)).toBe('http/127.0.0.1/8080');
-  });
-
-  test('correct Path when port as string is passed', () => {
-    const nodePath = {
-      ip_address: '127.0.0.1',
-      port: '80',
-      protocol: 'https',
-    };
-    expect(formatPathFromNode(nodePath)).toBe('https/127.0.0.1/80');
   });
 });
 
@@ -103,7 +86,7 @@ describe('parseAddressData to return the following:', () => {
 
   test('port if provided should be a number type', () => {
     const parsedData = parseAddressData('http://127.0.0.1:8081');
-    expect(typeof parsedData.port === 'number').toBeTruthy();
+    expect(typeof parsedData.port).toBe('number');
   });
 });
 
