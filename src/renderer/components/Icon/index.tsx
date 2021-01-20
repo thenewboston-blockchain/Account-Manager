@@ -14,6 +14,7 @@ import ChevronLeftIcon from 'mdi-react/ChevronLeftIcon';
 import ChevronRightIcon from 'mdi-react/ChevronRightIcon';
 import CloseIcon from 'mdi-react/CloseIcon';
 import ContentCopyIcon from 'mdi-react/ContentCopyIcon';
+import DevToIcon from 'mdi-react/DevToIcon';
 import DotsVerticalIcon from 'mdi-react/DotsVerticalIcon';
 import DownloadIcon from 'mdi-react/DownloadIcon';
 import EyeIcon from 'mdi-react/EyeIcon';
@@ -25,7 +26,6 @@ import LoadingIcon from 'mdi-react/LoadingIcon';
 import PencilIcon from 'mdi-react/PencilIcon';
 import PlayIcon from 'mdi-react/PlayIcon';
 import PlusIcon from 'mdi-react/PlusIcon';
-import PowerIcon from 'mdi-react/PowerIcon';
 import RadioboxBlankIcon from 'mdi-react/RadioboxBlankIcon';
 import RadioboxMarkedIcon from 'mdi-react/RadioboxMarkedIcon';
 import RefreshIcon from 'mdi-react/RefreshIcon';
@@ -49,6 +49,7 @@ export enum IconType {
   chevronRight,
   close,
   contentCopy,
+  devTo,
   dotsVertical,
   download,
   eye,
@@ -60,7 +61,6 @@ export enum IconType {
   pencil,
   play,
   plus,
-  power,
   radioboxBlank,
   radioboxMarked,
   refresh,
@@ -130,6 +130,8 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
           return <CloseIcon size={size || 24} />;
         case IconType.contentCopy:
           return <ContentCopyIcon size={size || 22} />;
+        case IconType.devTo:
+          return <DevToIcon size={size || 24} />;
         case IconType.dotsVertical:
           return <DotsVerticalIcon size={size || 24} />;
         case IconType.download:
@@ -152,8 +154,6 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
           return <PlayIcon size={size || 24} />;
         case IconType.plus:
           return <PlusIcon size={size || 24} />;
-        case IconType.power:
-          return <PowerIcon size={size || 24} />;
         case IconType.radioboxBlank:
           return <RadioboxBlankIcon size={size || 24} />;
         case IconType.radioboxMarked:

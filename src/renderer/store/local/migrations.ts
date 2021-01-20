@@ -1,44 +1,27 @@
 import ElectronStore from 'electron-store';
-import {Dict, LocalStore, ManagedNode} from '@renderer/types';
+import {LocalStore} from '@renderer/types';
 
-const migrations: Array<(localStore: ElectronStore<LocalStore>, index: number) => void> = [
-  (localStore, index) => {
-    if (localStore.get('version') > index) return;
+import migration0 from './migrationFiles/00000';
+import {MigrationFunction} from './types';
+import {runMigrationFunction} from './utils';
 
-    // Remove `sockets` data, as it was never used
-    localStore.delete('sockets' as any);
+const migrationFunctions: MigrationFunction[] = [migration0];
 
-    // "port" is now required
-    const addPortToManagedNodes = (managedNodes: Dict<ManagedNode>): Dict<ManagedNode> => {
-      const updatedNodes: Dict<ManagedNode> = {};
-      for (const [address, managedNode] of Object.entries(managedNodes)) {
-        const hasPortInAddress = address.split('').filter((char) => char === ':').length === 2;
-        const updatedAddress = hasPortInAddress ? address : `${address}:80`;
-
-        updatedNodes[updatedAddress] = {
-          ...managedNode,
-          port: managedNode.port === null ? 80 : managedNode.port,
-        };
-      }
-      return updatedNodes;
-    };
-
-    const managedBanks = localStore.get('managed_banks');
-    const updatedManagedBanks = addPortToManagedNodes(managedBanks);
-    localStore.set('managed_banks', updatedManagedBanks);
-
-    const managedValidators = localStore.get('managed_validators');
-    const updatedManagedValidators = addPortToManagedNodes(managedValidators);
-    localStore.set('managed_validators', updatedManagedValidators);
-
-    localStore.set('version', index);
-  },
-];
+const STORE_VERSION = migrationFunctions.length - 1;
 
 export const runMigrations = (localStore: ElectronStore<LocalStore>): void => {
-  const version = localStore.get('version');
+  // Brand new install
+  if (!localStore.store || !Object.keys(localStore.store).length) {
+    localStore.set('version', STORE_VERSION);
+    return;
+  }
 
-  for (let i = version === undefined ? 0 : version + 1; i < migrations.length; i += 1) {
-    migrations[i](localStore, i);
+  // Default to -1 if user did not have the `version` property.
+  // that way it will set 'i=0' in the for loop below.
+  const currentUserVersion = localStore.get('version') || -1;
+
+  for (let i = currentUserVersion + 1; i < migrationFunctions.length; i += 1) {
+    const migrationFunction = migrationFunctions[i];
+    runMigrationFunction(localStore, i, migrationFunction);
   }
 };

@@ -24,12 +24,18 @@ export interface DropdownMenuOption {
 interface ComponentProps {
   className?: string;
   direction?: DropdownMenuDirection;
+  icon?: IconType;
   options: DropdownMenuOption[];
 }
 
 const dropdownRoot = document.getElementById('dropdown-root')!;
 
-const DropdownMenuButton: FC<ComponentProps> = ({className, direction = DropdownMenuDirection.right, options}) => {
+const DropdownMenuButton: FC<ComponentProps> = ({
+  className,
+  direction = DropdownMenuDirection.right,
+  icon = IconType.dotsVertical,
+  options,
+}) => {
   const iconRef = useRef<HTMLDivElement>(null);
   const optionsRef = useRef<HTMLDivElement[]>([]);
   const [open, toggleOpen, , closeMenu] = useBooleanState(false);
@@ -94,7 +100,7 @@ const DropdownMenuButton: FC<ComponentProps> = ({className, direction = Dropdown
           'DropdownMenuButton--active': open,
           ...getCustomClassNames(className, '--active', open),
         })}
-        icon={IconType.dotsVertical}
+        icon={icon}
         onClick={handleOpenDropdown}
         ref={iconRef}
       />

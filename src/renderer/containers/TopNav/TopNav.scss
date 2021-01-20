@@ -31,5 +31,11 @@
     &:last-of-type {
       margin-right: 0;
     }
+
+    &--dev {
+      &:hover {
+        color: var(--color-red-500);
+      }
+    }
   }
 }

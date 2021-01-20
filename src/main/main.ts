@@ -6,6 +6,7 @@ import {app, BrowserWindow, ipcMain, Menu} from 'electron';
 import contextMenu from 'electron-context-menu';
 import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from 'electron-devtools-installer';
 import fs from 'fs';
+import {getFailChannel, getSuccessChannel, IpcChannel} from '@shared/ipc';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
@@ -135,12 +136,57 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('download-signing-key', (event, {filePath, signingKey}) => {
+ipcMain.on(IpcChannel.downloadSigningKey, (event, {filePath, payload: signingKey}) => {
   try {
     fs.writeFileSync(filePath, signingKey);
-    event.reply('download-signing-key-success');
+    event.reply(getSuccessChannel(IpcChannel.downloadSigningKey));
   } catch (error) {
-    console.log('Failed to save file', error);
-    event.reply('download-signing-key-fail');
+    console.log(`Failed to save file: ${IpcChannel.downloadSigningKey}`, error);
+    event.reply(getFailChannel(IpcChannel.downloadSigningKey), error.toString());
+  }
+});
+
+ipcMain.on(IpcChannel.exportStoreData, (event, {filePath, payload: storeData}) => {
+  try {
+    fs.writeFileSync(filePath, storeData);
+    event.reply(getSuccessChannel(IpcChannel.exportStoreData));
+  } catch (error) {
+    console.log(`Failed to save file: ${IpcChannel.exportStoreData}`, error);
+    event.reply(getFailChannel(IpcChannel.exportStoreData), error.toString());
+  }
+});
+
+ipcMain.on(IpcChannel.importStoreData, (event, {filePath}) => {
+  try {
+    fs.readFile(filePath, 'utf-8', (err, jsonData) => {
+      if (err) {
+        throw err;
+      }
+
+      const data = JSON.parse(jsonData);
+      if (!data.managed_banks) {
+        event.reply(getFailChannel(IpcChannel.importStoreData), 'Data is improperly formatted');
+        return;
+      }
+      // eslint-disable-next-line no-underscore-dangle
+      if (data.__internal__) {
+        // eslint-disable-next-line no-underscore-dangle
+        delete data.__internal__;
+      }
+
+      event.reply(getSuccessChannel(IpcChannel.importStoreData), data);
+    });
+  } catch (error) {
+    console.log(`Failed to read file: ${IpcChannel.importStoreData}`, error);
+    event.reply(getFailChannel(IpcChannel.importStoreData), error.toString());
+  }
+});
+
+ipcMain.on(IpcChannel.restartApp, () => {
+  try {
+    console.log('Trying to restart app');
+    app.exit();
+  } catch (error) {
+    console.log('Failed to restart app', error);
   }
 });
