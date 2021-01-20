@@ -14,7 +14,8 @@
     "paths": {
       "@main/*": ["./src/main/*"],
       "@models/*": ["./src/models/*"],
-      "@renderer/*": ["./src/renderer/*"]
+      "@renderer/*": ["./src/renderer/*"],
+      "@shared/*": ["./src/shared/*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

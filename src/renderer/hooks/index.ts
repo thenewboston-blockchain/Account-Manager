@@ -2,6 +2,8 @@ import useAddress from './useAddress';
 import useBooleanState from './useBooleanState';
 import useCrawlSockets from './useCrawlSockets';
 import useCleanSockets from './useCleanSockets';
+import useReadIpc from './ipc/useReadIpc';
+import useWriteIpc from './ipc/useWriteIpc';
 import useEventListener from './useEventListener';
 import useFormContext from './useFormContext';
 import useFormSelect from './useFormSelect';
@@ -18,6 +20,8 @@ export {
   useBooleanState,
   useCrawlSockets,
   useCleanSockets,
+  useReadIpc,
+  useWriteIpc,
   useEventListener,
   useFormContext,
   useFormSelect,
