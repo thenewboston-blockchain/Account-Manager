@@ -31,7 +31,8 @@ This will be a guide on how to review PRs with migrations, and on creating PRs w
 2) Check out the branch with migrations.
 
 
-3) Review the changes. You can even click the `export` again (to a different file from your first step's exported file) 
+3) Review the changes. You can even click the `export` again 
+   (to a different file from your first step's exported file) 
    to compare how the `Electon Store`'s data has changed.
    
 
@@ -49,12 +50,14 @@ This will be a guide on how to review PRs with migrations, and on creating PRs w
 <a name="creating"></a>
 ## Submitting a PR With Migrations
 
-1) Before starting on data migrations, `export` your current data (same as step #1 above within the `Reviewing a PR`),
+1) Before starting on data migrations, `export` your current data 
+   (same as step #1 above within the `Reviewing a PR`),
    such that you can always fallback to it in case you inadvertently effect the store data. 
    Keep this file in a secure location until you get to step #6.
    
 
-2) Write your migrations & tests, using the file: `renderer/store/local/migrationFiles/00000/index.ts` as a model.
+2) Write your migrations & tests, using the file: 
+   `renderer/store/local/migrationFiles/00000/index.ts` as a model.
    
    - Separate different types of data change as separate function. 
      This will make it easier for PR reviewers to understand, and also to write unit tests.
