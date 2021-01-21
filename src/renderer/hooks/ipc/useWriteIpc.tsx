@@ -13,12 +13,14 @@ interface DownloadOptions {
 function useWriteIpc({
   channel,
   downloadOptions,
+  extension,
   failCallback,
   payload,
   postSendCallback,
   successCallback,
 }: {
   channel: IpcChannel;
+  extension: 'json' | 'txt';
   downloadOptions: DownloadOptions;
   failCallback: GenericVoidFunction;
   payload: string;
@@ -33,12 +35,12 @@ function useWriteIpc({
       buttonLabel: downloadOptions.buttonLabel,
       defaultPath: downloadOptions.defaultPath,
       filters: [
-        {extensions: ['json'], name: 'json'},
+        {extensions: [extension], name: extension},
         {extensions: ['*'], name: 'All Files'},
       ],
       title: downloadOptions.title,
     }),
-    [downloadOptions.buttonLabel, downloadOptions.defaultPath, downloadOptions.title],
+    [downloadOptions.buttonLabel, downloadOptions.defaultPath, downloadOptions.title, extension],
   );
 
   return useCallback(async (): Promise<void> => {

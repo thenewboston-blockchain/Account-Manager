@@ -56,6 +56,7 @@ const TopNav: FC = () => {
   const handleExportClick = useWriteIpc({
     channel: IpcChannel.exportStoreData,
     downloadOptions: {buttonLabel: 'Export', defaultPath: 'store-data.json', title: 'Export Store Data'},
+    extension: 'json',
     failCallback: exportFailToast,
     payload: JSON.stringify(localStore.store),
     successCallback: exportSuccessToast,

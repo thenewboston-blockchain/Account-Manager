@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef} from 'react';
+import React, {FC, useCallback, useEffect, useRef} from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
 
@@ -32,12 +32,17 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, 
   const eyeRef = useRef<HTMLDivElement>(null);
   const [showSigningKey, toggleSigningKey, , hideSigningKey] = useBooleanState(false);
 
+  const handleDownloadBlur = useCallback(() => {
+    downloadRef.current?.blur();
+  }, [downloadRef]);
+
   const handleDownloadClick = useWriteIpc({
     channel: IpcChannel.downloadSigningKey,
     downloadOptions: {buttonLabel: 'Save', defaultPath: `${accountNumber}.txt`, title: 'Save Signing Key'},
+    extension: 'txt',
     failCallback: downloadFailToast,
     payload: signingKey,
-    postSendCallback: downloadRef.current?.blur,
+    postSendCallback: handleDownloadBlur,
     successCallback: downloadSuccessToast,
   });
 
