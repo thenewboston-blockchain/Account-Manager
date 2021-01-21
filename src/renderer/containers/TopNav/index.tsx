@@ -30,7 +30,7 @@ const importFailToast = (event: any, errorMessage: string) => {
 };
 
 const restartAppSuccessToast = () => {
-  displayToast('Successfuly Imported Data', 'success');
+  displayToast('Successfully Imported Data', 'success');
 };
 
 const restartAppFailToast = (event: any, errorMessage: string) => {
