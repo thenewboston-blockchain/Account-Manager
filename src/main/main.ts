@@ -102,6 +102,8 @@ ipcMain.on(IpcChannel.importStoreData, (event, {filePath}) => {
   }
 });
 
+console.log('hello world');
+
 ipcMain.on(IpcChannel.restartApp, (event) => {
   try {
     console.log('Trying to restart app');
