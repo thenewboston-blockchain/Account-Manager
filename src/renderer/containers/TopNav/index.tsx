@@ -8,12 +8,12 @@ import Modal from '@renderer/components/Modal';
 import ChangeActiveBankModal from '@renderer/containers/ChangeActiveBankModal';
 import Notifications from '@renderer/containers//Notifications';
 import {clearLocalState} from '@renderer/dispatchers/app';
-import {useBooleanState, useNavigationalHistory, useReadIpc, useWriteIpc} from '@renderer/hooks';
+import {useBooleanState, useIpcEffect, useNavigationalHistory, useReadIpc, useWriteIpc} from '@renderer/hooks';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
 import localStore from '@renderer/store/local';
 import {AppDispatch, LocalStore} from '@renderer/types';
 import {displayToast} from '@renderer/utils/toast';
-import {IpcChannel} from '@shared/ipc';
+import {getFailChannel, getSuccessChannel, IpcChannel} from '@shared/ipc';
 
 import './TopNav.scss';
 
@@ -29,11 +29,21 @@ const importFailToast = (event: any, errorMessage: string) => {
   displayToast(`Could not import Store Data: ${errorMessage}`);
 };
 
+const restartAppSuccessToast = () => {
+  displayToast('Successfuly Imported Data', 'success');
+};
+
+const restartAppFailToast = (event: any, errorMessage: string) => {
+  displayToast(`There was a problem restarting the app: ${errorMessage}`);
+};
+
 const TopNav: FC = () => {
   const [changeActiveBankModalIsOpen, toggleActiveBankModal] = useBooleanState(false);
   const [resetAppModalIsOpen, toggleResetAppModal] = useBooleanState(false);
   const [importStoreDataModalIsOpen, toggleImportStoreDataModal, , closeImportStoreDataModal] = useBooleanState(false);
   const dispatch = useDispatch<AppDispatch>();
+  useIpcEffect(getSuccessChannel(IpcChannel.restartApp), restartAppSuccessToast);
+  useIpcEffect(getFailChannel(IpcChannel.restartApp), restartAppFailToast);
   const {back, backEnabled, forward, forwardEnabled, reload} = useNavigationalHistory();
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
 
@@ -45,7 +55,7 @@ const TopNav: FC = () => {
 
   const handleExportClick = useWriteIpc({
     channel: IpcChannel.exportStoreData,
-    downloadOptions: {buttonLabel: 'Export', defaultPath: 'store-data.txt', title: 'Export Store Data'},
+    downloadOptions: {buttonLabel: 'Export', defaultPath: 'store-data.json', title: 'Export Store Data'},
     failCallback: exportFailToast,
     payload: JSON.stringify(localStore.store),
     successCallback: exportSuccessToast,

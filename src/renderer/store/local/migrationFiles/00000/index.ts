@@ -38,5 +38,3 @@ const migrationFunction: MigrationFunction = (localStore) => {
 };
 
 export default migrationFunction;
-
-// TODO: Make the app relaunch when importing

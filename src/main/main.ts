@@ -1,106 +1,26 @@
 /* eslint-disable no-console  */
-/* eslint-disable global-require */
-/* eslint-disable @typescript-eslint/no-var-requires */
 
 import {app, BrowserWindow, ipcMain, Menu} from 'electron';
 import contextMenu from 'electron-context-menu';
 import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from 'electron-devtools-installer';
 import fs from 'fs';
 import {getFailChannel, getSuccessChannel, IpcChannel} from '@shared/ipc';
+import menu from './menu';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
 const isMac = process.platform === 'darwin';
 
-const template = [
-  ...(isMac
-    ? [
-        {
-          label: app.name,
-          submenu: [
-            {role: 'about'},
-            {type: 'separator'},
-            {role: 'services'},
-            {type: 'separator'},
-            {role: 'hide'},
-            {role: 'hideothers'},
-            {role: 'unhide'},
-            {type: 'separator'},
-            {role: 'quit'},
-          ],
-        },
-      ]
-    : []),
-  {
-    label: 'File',
-    submenu: [isMac ? {role: 'close'} : {role: 'quit'}],
-  },
-  {
-    label: 'Edit',
-    submenu: [
-      {role: 'undo'},
-      {role: 'redo'},
-      {type: 'separator'},
-      {role: 'cut'},
-      {role: 'copy'},
-      {role: 'paste'},
-      ...(isMac
-        ? [
-            {role: 'pasteAndMatchStyle'},
-            {role: 'delete'},
-            {role: 'selectAll'},
-            {type: 'separator'},
-            {
-              label: 'Speech',
-              submenu: [{role: 'startspeaking'}, {role: 'stopspeaking'}],
-            },
-          ]
-        : [{role: 'delete'}, {type: 'separator'}, {role: 'selectAll'}]),
-    ],
-  },
-  {
-    label: 'View',
-    submenu: [
-      {role: 'forcereload'},
-      {role: 'toggledevtools'},
-      {type: 'separator'},
-      {role: 'resetzoom'},
-      {role: 'zoomin'},
-      {role: 'zoomout'},
-      {type: 'separator'},
-      {role: 'togglefullscreen'},
-    ],
-  },
-  {
-    label: 'Window',
-    submenu: [
-      {role: 'minimize'},
-      ...(isMac ? [{type: 'separator'}, {role: 'front'}, {type: 'separator'}, {role: 'window'}] : [{role: 'close'}]),
-    ],
-  },
-  {
-    role: 'help',
-    submenu: [
-      {
-        click: async () => {
-          const {shell} = require('electron');
-          await shell.openExternal('https://thenewboston.com');
-        },
-        label: 'Learn More',
-      },
-    ],
-  },
-] as Electron.MenuItemConstructorOptions[];
-
-const menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
 
 contextMenu({
   menu: (defaultActions) => [defaultActions.inspect()],
 });
 
+let mainWindow: BrowserWindow;
+
 const createWindow = (): void => {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     height: 1080,
     webPreferences: {
       nodeIntegration: true,
@@ -182,11 +102,17 @@ ipcMain.on(IpcChannel.importStoreData, (event, {filePath}) => {
   }
 });
 
-ipcMain.on(IpcChannel.restartApp, () => {
+ipcMain.on(IpcChannel.restartApp, (event) => {
   try {
     console.log('Trying to restart app');
-    app.exit();
+    mainWindow.webContents.reloadIgnoringCache();
+    setTimeout(() => {
+      event.reply(getSuccessChannel(IpcChannel.restartApp));
+    }, 1000);
   } catch (error) {
     console.log('Failed to restart app', error);
+    setTimeout(() => {
+      event.reply(getFailChannel(IpcChannel.restartApp), error.toString());
+    }, 1000);
   }
 });

@@ -29,7 +29,7 @@ function useReadIpc({
     () => ({
       buttonLabel: downloadOptions.buttonLabel,
       filters: [
-        {extensions: ['txt'], name: 'txt'},
+        {extensions: ['json'], name: 'json'},
         {extensions: ['*'], name: 'All Files'},
       ],
       title: downloadOptions.title,
