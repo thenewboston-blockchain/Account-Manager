@@ -4,7 +4,7 @@ export interface AccountNumber {
 
 export interface AddressData {
   ip_address: string;
-  port: number | null;
+  port: number;
   protocol: ProtocolType;
 }
 
@@ -120,6 +120,15 @@ export interface PrimaryValidatorConfig extends BaseValidator {
 }
 
 export type ProtocolType = 'http' | 'https';
+
+export interface RawBankConfig extends Omit<BankConfig, 'port' | 'primary_validator'> {
+  port: number | null;
+  primary_validator: RawPrimaryValidatorConfig;
+}
+
+export interface RawPrimaryValidatorConfig extends Omit<PrimaryValidatorConfig, 'port'> {
+  port: number | null;
+}
 
 export interface Tx {
   amount: number;

@@ -21,6 +21,7 @@ module.exports = {
       '@main': srcPaths('src/main'),
       '@models': srcPaths('src/models'),
       '@renderer': srcPaths('src/renderer'),
+      '@shared': srcPaths('src/shared'),
       'react-dom': '@hot-loader/react-dom',
     },
     extensions: ['.js', '.ts', '.tsx', '.jsx', '.json'],

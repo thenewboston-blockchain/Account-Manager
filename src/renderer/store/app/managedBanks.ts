@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 import {MANAGED_BANKS} from '@renderer/constants';
-import localStore from '@renderer/store/localStore';
+import localStore from '@renderer/store/local';
 import {Dict, ManagedNode} from '@renderer/types';
 import {
   changeActiveNodeReducer,

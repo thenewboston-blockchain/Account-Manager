@@ -1,12 +1,12 @@
 import React, {FC, useCallback, useEffect, useRef} from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
-import {ipcRenderer, remote, SaveDialogOptions} from 'electron';
 
 import Icon, {IconType} from '@renderer/components/Icon';
-import {useBooleanState} from '@renderer/hooks';
+import {useBooleanState, useWriteIpc} from '@renderer/hooks';
 import {getCustomClassNames} from '@renderer/utils/components';
 import {displayToast} from '@renderer/utils/toast';
+import {IpcChannel} from '@shared/ipc';
 
 import Tile from '../Tile';
 import './TileSigningKey.scss';
@@ -18,61 +18,41 @@ interface ComponentProps {
   signingKey: string;
 }
 
+const downloadSuccessToast = () => {
+  displayToast('Signing Key has been saved locally', 'success');
+};
+
+const downloadFailToast = (e: any, error: string) => {
+  displayToast(`Could not save signing key: ${error}`);
+};
+
 const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, signingKey}) => {
   const copyRef = useRef<HTMLDivElement>(null);
   const downloadRef = useRef<HTMLDivElement>(null);
   const eyeRef = useRef<HTMLDivElement>(null);
   const [showSigningKey, toggleSigningKey, , hideSigningKey] = useBooleanState(false);
 
+  const handleDownloadBlur = useCallback(() => {
+    downloadRef.current?.blur();
+  }, [downloadRef]);
+
+  const handleDownloadClick = useWriteIpc({
+    channel: IpcChannel.downloadSigningKey,
+    downloadOptions: {buttonLabel: 'Save', defaultPath: `${accountNumber}.txt`, title: 'Save Signing Key'},
+    extension: 'txt',
+    failCallback: downloadFailToast,
+    payload: signingKey,
+    postSendCallback: handleDownloadBlur,
+    successCallback: downloadSuccessToast,
+  });
+
   useEffect(() => {
     hideSigningKey();
   }, [accountNumber, hideSigningKey]);
 
-  const displayDownloadSuccessToast = useCallback(() => {
-    displayToast('Signing Key has been saved locally', 'success');
-  }, []);
-
-  const displayDownloadFailToast = useCallback(() => {
-    displayToast('Error: could not save signing key');
-  }, []);
-
-  useEffect(() => {
-    ipcRenderer.on('download-signing-key-success', displayDownloadSuccessToast);
-
-    return () => {
-      ipcRenderer.removeListener('download-signing-key-success', displayDownloadSuccessToast);
-    };
-  }, [displayDownloadSuccessToast]);
-
-  useEffect(() => {
-    ipcRenderer.on('download-signing-key-fail', displayDownloadFailToast);
-
-    return () => {
-      ipcRenderer.removeListener('download-signing-key-fail', displayDownloadFailToast);
-    };
-  }, [displayDownloadFailToast]);
-
   const handleCopy = (): void => {
     displayToast('Signing Key copied to the clipboard', 'success');
     copyRef.current?.blur();
-  };
-
-  const handleDownloadClick = async (): Promise<void> => {
-    const options = {
-      buttonLabel: 'Save',
-      defaultPath: `${accountNumber}.txt`,
-      filters: [
-        {extensions: ['txt'], name: 'txt'},
-        {extensions: ['*'], name: 'All Files'},
-      ],
-      title: 'Save Signing Key',
-    } as SaveDialogOptions;
-
-    remote.dialog.showSaveDialog(options).then(({canceled, filePath}) => {
-      if (canceled) return;
-      ipcRenderer.send('download-signing-key', {filePath, signingKey});
-    });
-    downloadRef.current?.blur();
   };
 
   const handleEyeClick = (): void => {

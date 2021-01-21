@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom';
 
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
+import {IP_INVALID_FORMAT_ERROR, REQUIRED_FIELD_ERROR} from '@renderer/constants/form-validation';
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch, InputOption, ProtocolType} from '@renderer/types';
@@ -16,7 +17,7 @@ import './Connect.scss';
 const initialValues = {
   ipAddress: '143.110.137.54',
   nickname: '',
-  port: '',
+  port: '80',
   protocol: 'http' as ProtocolType,
 };
 
@@ -29,11 +30,11 @@ const genericIpAddressRegex = /([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(\d{1,3}\.
 const validationSchema = yup.object().shape({
   ipAddress: yup
     .string()
-    .required('This field is required')
-    .matches(genericIpAddressRegex, {excludeEmptyString: true, message: 'IPv4 or IPv6 addresses only'}),
+    .required(REQUIRED_FIELD_ERROR)
+    .matches(genericIpAddressRegex, {excludeEmptyString: true, message: IP_INVALID_FORMAT_ERROR}),
   nickname: yup.string(),
-  port: yup.number().integer(),
-  protocol: yup.string().required(),
+  port: yup.number().integer().required(REQUIRED_FIELD_ERROR),
+  protocol: yup.string().required(REQUIRED_FIELD_ERROR),
 });
 
 const Connect: FC = () => {
@@ -51,7 +52,7 @@ const Connect: FC = () => {
       setSubmitting(true);
       const bankAddressData = {
         ip_address: ipAddress,
-        port: port ? parseInt(port, 10) : null,
+        port: parseInt(port, 10),
         protocol,
       };
       const response = await dispatch(connectAndStoreLocalData(bankAddressData, nickname));
@@ -88,7 +89,7 @@ const Connect: FC = () => {
           searchable={false}
         />
         <FormInput className="Connect__field" label="IP Address" name="ipAddress" required />
-        <FormInput className="Connect__field" label="Port" name="port" type="number" />
+        <FormInput className="Connect__field" label="Port" name="port" type="number" required />
         <FormInput className="Connect__field" label="Nickname" name="nickname" />
 
         <FormButton ignoreDirty submitting={submitting} type="submit">

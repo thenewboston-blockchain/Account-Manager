@@ -26,7 +26,7 @@ const initialValues = {
   form: '',
   ipAddress: '',
   nickname: '',
-  port: '',
+  port: '80',
   protocol: 'http' as ProtocolType,
 };
 
@@ -62,7 +62,7 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
 
       const bankAddressData = {
         ip_address: ipAddress,
-        port: port ? parseInt(port, 10) : null,
+        port: parseInt(port, 10),
         protocol,
       };
 
@@ -111,8 +111,8 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
         .string()
         .notOneOf(managedBankNicknames, NICKNAME_EXISTS_ERROR)
         .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
-      port: yup.number().integer(),
-      protocol: yup.string().required(),
+      port: yup.number().integer().required(REQUIRED_FIELD_ERROR),
+      protocol: yup.string().required(REQUIRED_FIELD_ERROR),
     });
   }, [managedBankAddresses, managedBankNicknames]);
 

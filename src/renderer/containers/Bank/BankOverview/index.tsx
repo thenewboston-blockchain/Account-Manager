@@ -58,7 +58,7 @@ const BankOverview: FC<ComponentProps> = ({isAuthenticated, managedBank}) => {
                 },
                 {
                   key: 'Port',
-                  value: bankConfig.port || '-',
+                  value: bankConfig.port,
                 },
                 {
                   key: 'Protocol',

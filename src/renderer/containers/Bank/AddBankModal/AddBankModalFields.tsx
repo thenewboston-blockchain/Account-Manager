@@ -14,7 +14,7 @@ const AddBankModalFields: FC = () => {
       {addressError ? <span className="AddBankModal__form-error">{addressError}</span> : null}
       <FormSelect focused label="Protocol" name="protocol" options={protocolOptions} required searchable={false} />
       <FormInput label="IP Address" name="ipAddress" required />
-      <FormInput label="Port" name="port" type="number" />
+      <FormInput label="Port" name="port" type="number" required />
       <FormInput label="Nickname" name="nickname" />
     </>
   );

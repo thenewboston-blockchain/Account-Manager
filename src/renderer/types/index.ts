@@ -1,6 +1,7 @@
 import {AppNodeAddressData, ManagedAccount, ManagedFriend, ManagedNode} from './app';
 import {BaseFormComponentProps, BaseFormInlineComponentProps, GenericFormValues, InputOption} from './forms';
 import {GenericFunction, GenericVoidFunction} from './generic';
+import {LocalStore} from './localStore';
 import {
   AccountNumber,
   AddressData,
@@ -21,6 +22,8 @@ import {
   PaginatedResultsWithError,
   PrimaryValidatorConfig,
   ProtocolType,
+  RawBankConfig,
+  RawPrimaryValidatorConfig,
   Tx,
   ValidatorAccount,
   ValidatorBank,
@@ -93,6 +96,7 @@ export {
   Id,
   InputOption,
   InvalidBlock,
+  LocalStore,
   ManagedAccount,
   ManagedFriend,
   ManagedNode,
@@ -111,6 +115,8 @@ export {
   PrimaryValidatorConfig,
   PrimaryValidatorUpdatedNotificationPayload,
   ProtocolType,
+  RawBankConfig,
+  RawPrimaryValidatorConfig,
   RootState,
   SocketConnectionStatus,
   SocketType,

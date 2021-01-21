@@ -23,7 +23,7 @@ const useNetworkCleanFetcher = (
   submittingClean: boolean;
 } => {
   const {ipAddress, port: portStr, protocol} = useParams<{ipAddress: string; port: string; protocol: ProtocolType}>();
-  const port = portStr === '80' || !portStr.length ? null : parseInt(portStr, 10);
+  const port = parseInt(portStr, 10);
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
   const cleanSockets = useSelector(getCleanSockets);

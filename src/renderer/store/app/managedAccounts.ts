@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 import {MANAGED_ACCOUNTS} from '@renderer/constants';
-import localStore from '@renderer/store/localStore';
+import localStore from '@renderer/store/local';
 import {AccountNumber, Balance, Dict, ManagedAccount} from '@renderer/types';
 import {
   clearLocalAndStateReducer,

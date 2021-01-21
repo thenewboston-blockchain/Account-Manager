@@ -22,6 +22,7 @@ module.exports = {
       '@main': srcPaths('src/main'),
       '@models': srcPaths('src/models'),
       '@renderer': srcPaths('src/renderer'),
+      '@shared': srcPaths('src/shared'),
     },
     extensions: ['.js', '.ts', '.tsx', '.jsx', '.json'],
   },
