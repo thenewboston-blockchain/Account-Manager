@@ -27,7 +27,7 @@ export async function fetchPaginatedResults<T>(
     const data: PaginatedResults<T> = {
       ...rawData,
       results: rawData.results.map((result: any) => {
-        if (result.port) {
+        if (!result.port) {
           return {
             ...result,
             port: replaceNullPortFieldWithDefaultValue(result.port),
