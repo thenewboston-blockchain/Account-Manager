@@ -22,8 +22,8 @@ const downloadSuccessToast = () => {
   displayToast('Signing Key has been saved locally', 'success');
 };
 
-const downloadFailToast = () => {
-  displayToast('Error: could not save signing key');
+const downloadFailToast = (e: any, error: string) => {
+  displayToast(`Could not save signing key: ${error}`);
 };
 
 const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, signingKey}) => {
