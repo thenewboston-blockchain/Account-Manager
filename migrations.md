@@ -25,7 +25,7 @@ This will be a guide on how to review PRs with migrations, and on creating PRs w
 
 ![export data](./assets/migrations/export.png)
 
-<b>IMPORTANT</b>: This exported file contains sensitive information! Never share it to anyone!
+<b>IMPORTANT</b>: This exported file contains sensitive information! Never share it with anyone!
 
 2. Check out the branch with migrations.
 
@@ -69,11 +69,16 @@ This will be a guide on how to review PRs with migrations, and on creating PRs w
    (This is the same step as step #4 within the `Reviewing a PR`).
 
 5. Once you are done with your branch, submit a PR.
-   Make sure you write clearly that you have data migrations,
-   and link the `Reviewing a PR With Migrations` section within the description.
-   Add the `HAS MIGRATIONS` tag on your PR:
+   Copy and paste this snippet in the description of the PR:
+   
+   ```
+   ⚠️⚠️⚠️ This PR contains <b>Data Migrations</b> ⚠️⚠️⚠️
+   ⚠️⚠️⚠️ Please [read this article](https://github.com/thenewboston-developers/Account-Manager/blob/master/migrations.md#reviewing-a-pr-with-migrations) to ensure you don't lose your data when reviewing this branch! ⚠️⚠️⚠️
+   ```
+   
+6. Add the `HAS MIGRATIONS` tag on your PR:
 
 ![migration tag](./assets/migrations/tag.png)
 
-6. Once the PR has fully been reviewed and merged,
+7. Once the PR has fully been reviewed and merged,
    delete the `exported` data from step #1 (and any other exported data you might have).
