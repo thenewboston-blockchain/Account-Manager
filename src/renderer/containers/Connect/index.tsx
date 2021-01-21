@@ -4,13 +4,13 @@ import {useHistory} from 'react-router-dom';
 
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
-import {IP_INVALID_FORMAT_ERROR, REQUIRED_FIELD_ERROR} from '@renderer/constants/form-validation';
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch, InputOption, ProtocolType} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
+import {getIpAddressField, getNicknameField, getPortField, getProtocolField} from '@renderer/utils/forms/fields';
+import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
-import yup from '@renderer/utils/yup';
 
 import './Connect.scss';
 
@@ -25,16 +25,11 @@ type FormValues = typeof initialValues;
 
 const protocolOptions: InputOption[] = [{value: 'http'}, {value: 'https'}];
 
-const genericIpAddressRegex = /([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(\d{1,3}\.){3}\d{1,3}/;
-
 const validationSchema = yup.object().shape({
-  ipAddress: yup
-    .string()
-    .required(REQUIRED_FIELD_ERROR)
-    .matches(genericIpAddressRegex, {excludeEmptyString: true, message: IP_INVALID_FORMAT_ERROR}),
-  nickname: yup.string(),
-  port: yup.number().integer().required(REQUIRED_FIELD_ERROR),
-  protocol: yup.string().required(REQUIRED_FIELD_ERROR),
+  ipAddress: getIpAddressField(),
+  nickname: getNicknameField(),
+  port: getPortField(),
+  protocol: getProtocolField(),
 });
 
 const Connect: FC = () => {

@@ -3,21 +3,20 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 
 import Modal from '@renderer/components/Modal';
-import {
-  BANK_ADDRESS_EXISTS_ERROR,
-  IP_INVALID_FORMAT_ERROR,
-  NICKNAME_EXISTS_ERROR,
-  NICKNAME_MAX_LENGTH,
-  NICKNAME_MAX_LENGTH_ERROR,
-  REQUIRED_FIELD_ERROR,
-} from '@renderer/constants/form-validation';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
 import {AppDispatch, ProtocolType} from '@renderer/types';
-import {formatAddress, formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
+import {formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
+import {
+  getAddressFormField,
+  getIpAddressField,
+  getNicknameField,
+  getPortField,
+  getProtocolField,
+} from '@renderer/utils/forms/fields';
+import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
-import yup from '@renderer/utils/yup';
 
 import AddBankModalFields from './AddBankModalFields';
 import './AddBankModal.scss';
@@ -32,8 +31,6 @@ const initialValues = {
 
 type FormValues = typeof initialValues;
 
-const genericIpAddressRegex = /([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(\d{1,3}\.){3}\d{1,3}/;
-
 interface ComponentProps {
   close(): void;
 }
@@ -43,18 +40,6 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
   const history = useHistory();
   const managedBanks = useSelector(getManagedBanks);
   const [submitting, setSubmitting] = useState<boolean>(false);
-
-  const managedBankAddresses = useMemo(() => Object.values(managedBanks).map((bank) => formatAddressFromNode(bank)), [
-    managedBanks,
-  ]);
-
-  const managedBankNicknames = useMemo(
-    () =>
-      Object.values(managedBanks)
-        .filter(({nickname}) => !!nickname)
-        .map(({nickname}) => nickname),
-    [managedBanks],
-  );
 
   const handleSubmit = async ({ipAddress, nickname, port, protocol}: FormValues): Promise<void> => {
     try {
@@ -98,23 +83,13 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
 
   const validationSchema = useMemo(() => {
     return yup.object().shape({
-      form: yup.string().when(['ipAddress', 'port', 'protocol'], {
-        is: (ipAddress, port, protocol) => managedBankAddresses.includes(formatAddress(ipAddress, port, protocol)),
-        otherwise: yup.string(),
-        then: yup.string().required(BANK_ADDRESS_EXISTS_ERROR),
-      }),
-      ipAddress: yup
-        .string()
-        .required(REQUIRED_FIELD_ERROR)
-        .matches(genericIpAddressRegex, {excludeEmptyString: true, message: IP_INVALID_FORMAT_ERROR}),
-      nickname: yup
-        .string()
-        .notOneOf(managedBankNicknames, NICKNAME_EXISTS_ERROR)
-        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
-      port: yup.number().integer().required(REQUIRED_FIELD_ERROR),
-      protocol: yup.string().required(REQUIRED_FIELD_ERROR),
+      form: getAddressFormField(managedBanks, 'This address is already a managed bank'),
+      ipAddress: getIpAddressField(),
+      nickname: getNicknameField(managedBanks),
+      port: getPortField(),
+      protocol: getProtocolField(),
     });
-  }, [managedBankAddresses, managedBankNicknames]);
+  }, [managedBanks]);
 
   return (
     <Modal

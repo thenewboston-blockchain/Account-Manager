@@ -6,9 +6,9 @@ import Modal from '@renderer/components/Modal';
 import {useNavigationalHistory} from '@renderer/hooks';
 import {ManagedNode} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
+import yup from '@renderer/utils/forms/yup';
 import {generateSignature, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayToast} from '@renderer/utils/toast';
-import yup from '@renderer/utils/yup';
 
 interface ComponentProps {
   close(): void;

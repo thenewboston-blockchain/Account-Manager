@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import {BaseSelectProps, SelectDetailed} from '@renderer/components/FormElements';
 import useFormSelect from '@renderer/hooks/useFormSelect';
 import {BaseFormComponentProps} from '@renderer/types';
-import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
+import {renderFormError, renderFormLabel} from '@renderer/utils/forms/formComponents';
 
 type ComponentProps = BaseFormComponentProps<BaseSelectProps>;
 

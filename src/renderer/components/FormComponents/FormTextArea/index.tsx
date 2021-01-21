@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import {BaseInputProps, TextArea} from '@renderer/components/FormElements';
 import {useFormContext} from '@renderer/hooks';
 import {BaseFormComponentProps} from '@renderer/types';
-import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
+import {renderFormError, renderFormLabel} from '@renderer/utils/forms/formComponents';
 
 type ComponentProps = BaseFormComponentProps<BaseInputProps>;
 

@@ -3,15 +3,11 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import Modal from '@renderer/components/Modal';
 import {FormInput} from '@renderer/components/FormComponents';
-import {
-  NICKNAME_EXISTS_ERROR,
-  NICKNAME_MAX_LENGTH,
-  NICKNAME_MAX_LENGTH_ERROR,
-} from '@renderer/constants/form-validation';
 import {getManagedFriends} from '@renderer/selectors';
 import {setManagedFriend} from '@renderer/store/app';
 import {AppDispatch, ManagedFriend} from '@renderer/types';
-import yup from '@renderer/utils/yup';
+import {getNicknameField} from '@renderer/utils/forms/fields';
+import yup from '@renderer/utils/forms/yup';
 
 interface ComponentProps {
   close(): void;
@@ -31,14 +27,6 @@ const EditFriendNicknameModal: FC<ComponentProps> = ({close, managedFriend}) => 
 
   type FormValues = typeof initialValues;
 
-  const managedFriendsNicknames = useMemo(
-    () =>
-      Object.values(managedFriends)
-        .filter(({nickname}) => initialValues.nickname !== nickname)
-        .map(({nickname}) => nickname),
-    [initialValues, managedFriends],
-  );
-
   const handleSubmit = ({nickname}: FormValues): void => {
     dispatch(
       setManagedFriend({
@@ -51,18 +39,16 @@ const EditFriendNicknameModal: FC<ComponentProps> = ({close, managedFriend}) => 
 
   const validationSchema = useMemo(() => {
     return yup.object().shape({
-      nickname: yup
-        .string()
-        .notOneOf(managedFriendsNicknames, NICKNAME_EXISTS_ERROR)
-        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
+      nickname: getNicknameField(managedFriends, managedFriend.nickname),
     });
-  }, [managedFriendsNicknames]);
+  }, [managedFriend.nickname, managedFriends]);
 
   return (
     <Modal
       cancelButton="Cancel"
       close={close}
       header="Edit Friend Nickname"
+      ignoreDirty
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitButton="Save"

@@ -16,10 +16,10 @@ import {
 import {AppDispatch, BankConfig, BaseValidator} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 import {sendBlock} from '@renderer/utils/blocks';
+import yup from '@renderer/utils/forms/yup';
 import {generateSignedMessage, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
-import yup from '@renderer/utils/yup';
 
 import ConnectionStatus, {Status} from './ConnectionStatus';
 import PurchaseConfirmationServicesModalFields, {FormValues} from './PurchaseConfirmationServicesModalFields';

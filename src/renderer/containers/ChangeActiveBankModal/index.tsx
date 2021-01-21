@@ -1,17 +1,27 @@
-import React, {FC, useState} from 'react';
-import {useDispatch} from 'react-redux';
+import React, {FC, useMemo, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
-import {FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import {IP_INVALID_FORMAT_ERROR, REQUIRED_FIELD_ERROR} from '@renderer/constants/form-validation';
-import {AppDispatch, InputOption, ProtocolType} from '@renderer/types';
+import {AppDispatch, ProtocolType} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
+import {
+  getAddressFormField,
+  getIpAddressField,
+  getNicknameField,
+  getPortField,
+  getProtocolField,
+} from '@renderer/utils/forms/fields';
+import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
-import yup from '@renderer/utils/yup';
+import {getManagedBanks} from '@renderer/selectors';
+
+import ChangeActiveBankModalFields from './ChangeActiveBankModalFields';
+import './ChangeActiveBankModal.scss';
 
 const initialValues = {
+  form: '',
   ipAddress: '',
   nickname: '',
   port: '80',
@@ -19,20 +29,6 @@ const initialValues = {
 };
 
 type FormValues = typeof initialValues;
-
-const protocolOptions: InputOption[] = [{value: 'http'}, {value: 'https'}];
-
-const genericIpAddressRegex = /([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(\d{1,3}\.){3}\d{1,3}/;
-
-const validationSchema = yup.object().shape({
-  ipAddress: yup
-    .string()
-    .required(REQUIRED_FIELD_ERROR)
-    .matches(genericIpAddressRegex, {excludeEmptyString: true, message: IP_INVALID_FORMAT_ERROR}),
-  nickname: yup.string(),
-  port: yup.number().integer().required(REQUIRED_FIELD_ERROR),
-  protocol: yup.string().required(REQUIRED_FIELD_ERROR),
-});
 
 interface ComponentProps {
   close(): void;
@@ -42,6 +38,7 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
+  const managedBanks = useSelector(getManagedBanks);
 
   const handleSubmit = async ({ipAddress, nickname, port, protocol}: FormValues): Promise<void> => {
     try {
@@ -67,6 +64,18 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
     }
   };
 
+  const validationSchema = useMemo(
+    () =>
+      yup.object().shape({
+        form: getAddressFormField(managedBanks, 'This address is already a managed bank'),
+        ipAddress: getIpAddressField(),
+        nickname: getNicknameField(managedBanks),
+        port: getPortField(),
+        protocol: getProtocolField(),
+      }),
+    [managedBanks],
+  );
+
   return (
     <Modal
       className="ChangeActiveBankModal"
@@ -78,10 +87,7 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
       submitting={submitting}
       validationSchema={validationSchema}
     >
-      <FormSelect focused label="Protocol" name="protocol" options={protocolOptions} required searchable={false} />
-      <FormInput label="IP Address" name="ipAddress" required />
-      <FormInput label="Port" name="port" type="number" required />
-      <FormInput label="Nickname" name="nickname" />
+      <ChangeActiveBankModalFields />
     </Modal>
   );
 };

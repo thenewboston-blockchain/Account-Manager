@@ -6,9 +6,9 @@ import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
 import {sendBlock} from '@renderer/utils/blocks';
+import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
-import yup from '@renderer/utils/yup';
 
 import SendCoinsModalFields, {FormValues, INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendCoinsModalFields';
 import './SendCoinsModal.scss';

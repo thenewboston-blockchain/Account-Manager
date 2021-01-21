@@ -9,15 +9,13 @@ import {
   ACCOUNT_NUMBER_LENGTH_ERROR,
   FRIEND_AS_OWN_ACCOUNT_ERROR,
   FRIEND_EXISTS_ERROR,
-  NICKNAME_EXISTS_ERROR,
-  NICKNAME_MAX_LENGTH,
-  NICKNAME_MAX_LENGTH_ERROR,
   REQUIRED_FIELD_ERROR,
 } from '@renderer/constants/form-validation';
 import {getManagedAccounts, getManagedFriends} from '@renderer/selectors';
 import {setManagedFriend} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
-import yup from '@renderer/utils/yup';
+import {getNicknameField} from '@renderer/utils/forms/fields';
+import yup from '@renderer/utils/forms/yup';
 
 import './AddFriendModal.scss';
 
@@ -54,14 +52,6 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
     [managedFriends],
   );
 
-  const managedFriendNicknames = useMemo(
-    () =>
-      Object.values(managedFriends)
-        .filter(({nickname}) => !!nickname)
-        .map(({nickname}) => nickname),
-    [managedFriends],
-  );
-
   const handleSubmit = ({accountNumber, nickname}: FormValues): void => {
     dispatch(
       setManagedFriend({
@@ -85,12 +75,9 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
         .test('friend-already-exists', FRIEND_EXISTS_ERROR, (accountNumber) => {
           return !managedFriendsAccountNumbers.includes(accountNumber || '');
         }),
-      nickname: yup
-        .string()
-        .notOneOf(managedFriendNicknames, NICKNAME_EXISTS_ERROR)
-        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
+      nickname: getNicknameField(managedFriends),
     });
-  }, [managedAccountNumbers, managedFriendsAccountNumbers, managedFriendNicknames]);
+  }, [managedAccountNumbers, managedFriends, managedFriendsAccountNumbers]);
 
   return (
     <Modal
