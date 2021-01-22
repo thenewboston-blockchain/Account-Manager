@@ -1,6 +1,5 @@
 import {AddressData, Id} from '@renderer/types/network';
 
-/* CRAWL */
 export enum CrawlCommand {
   start = 'start',
   stop = 'stop',
@@ -25,7 +24,6 @@ export interface NodeCrawlStatus {
 
 export type NodeCrawlStatusWithAddress = NodeCrawlStatus & AddressData;
 
-/* CLEAN */
 export enum CleanCommand {
   start = 'start',
   stop = 'stop',

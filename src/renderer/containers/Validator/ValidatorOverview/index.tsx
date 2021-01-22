@@ -7,17 +7,32 @@ import {
   TileKeyValueList,
   TilePrimaryAmount,
   TileDailyRate,
+  TileCrawlClean,
 } from '@renderer/components/Tiles';
 import {VALIDATOR_CONFIGS} from '@renderer/constants';
-import {useNetworkConfigFetcher} from '@renderer/hooks';
-import {ValidatorConfig} from '@renderer/types';
+import {useNetworkCleanFetcher, useNetworkConfigFetcher, useNetworkCrawlFetcher} from '@renderer/hooks';
+import {ManagedNode, ValidatorConfig} from '@renderer/types';
 
 import './ValidatorOverview.scss';
 
-const ValidatorOverview: FC = () => {
+interface ComponentProps {
+  isActivePrimaryValidator: boolean;
+  isAuthenticated: boolean;
+  managedValidator?: ManagedNode;
+}
+
+const ValidatorOverview: FC<ComponentProps> = ({isActivePrimaryValidator, isAuthenticated, managedValidator}) => {
+  const {data: validatorConfig, loading} = useNetworkConfigFetcher<ValidatorConfig>(VALIDATOR_CONFIGS);
+  const {crawlStatus, handleCrawlClick, loadingCrawl, submittingCrawl} = useNetworkCrawlFetcher(
+    managedValidator,
+    isAuthenticated && !isActivePrimaryValidator,
+  );
+  const {cleanStatus, handleCleanClick, loadingClean, submittingClean} = useNetworkCleanFetcher(
+    managedValidator,
+    isAuthenticated && !isActivePrimaryValidator,
+  );
   const validatorAccountNumberRef = useRef<HTMLDivElement>(null);
   const validatorNetworkIdRef = useRef<HTMLDivElement>(null);
-  const {data: validatorConfig, loading} = useNetworkConfigFetcher<ValidatorConfig>(VALIDATOR_CONFIGS);
 
   return (
     <div className="ValidatorOverview">
@@ -70,6 +85,18 @@ const ValidatorOverview: FC = () => {
             />
           </div>
           <div className="ValidatorOverview__right">
+            {isAuthenticated && !isActivePrimaryValidator ? (
+              <TileCrawlClean
+                crawlStatus={crawlStatus}
+                handleCrawlClick={handleCrawlClick}
+                loadingCrawlStatus={loadingCrawl}
+                submittingCrawl={submittingCrawl}
+                cleanStatus={cleanStatus}
+                handleCleanClick={handleCleanClick}
+                loadingCleanStatus={loadingClean}
+                submittingClean={submittingClean}
+              />
+            ) : null}
             <TileValidatorSigningDetails
               items={[
                 {
