@@ -1,11 +1,53 @@
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  15% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotateZ(0);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
 .TileAccountBalance {
+  $self: &;
+
   &__amount {
     color: var(--color-tertiary);
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-extra-large);
+
+    &--updated {
+      animation: flash 1s linear;
+    }
+  }
+
+  &__refresh-icon {
+    color: var(--color-secondary);
+
+    &--disabled {
+      animation: spin 1s linear infinite;
+      color: var(--color-gray-300);
+    }
   }
 
   &__title {
     color: var(--color-gray-500);
-    margin-bottom: 6px;
+  }
+
+  &__top {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
   }
 }
