@@ -1,5 +1,5 @@
-import {ManagedNode} from '../../../../types';
-import TestElectronStore from '../../../../models/store/TestElectronStore';
+import TestElectronStore from '@renderer/models/store/TestElectronStore';
+import {ManagedNode} from '@renderer/types';
 import {addPortToManagedNodes, addPortPropertyToStore, deleteSocketsPropertyFromStore} from './index';
 
 const defaultIpAddress = '1.1.1.1';

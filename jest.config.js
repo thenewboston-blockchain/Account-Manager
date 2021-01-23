@@ -10,6 +10,9 @@ module.exports = {
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
+    '@main/(.*)': '<rootDir>/src/main/$1',
+    '@renderer/(.*)': '<rootDir>/src/renderer/$1',
+    '@shared/(.*)': '<rootDir>/src/shared/$1',
     '^.+\\.(css|less|scss)$': 'identity-obj-proxy',
   },
 
