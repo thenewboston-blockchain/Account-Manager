@@ -1,5 +1,5 @@
-import {Balance, ManagedAccount} from '../../../../types';
-import TestElectronStore from '../../../../models/store/TestElectronStore';
+import TestElectronStore from '@renderer/models/store/TestElectronStore';
+import {Balance, ManagedAccount} from '@renderer/types';
 import {removeBalanceFromManagedAccount, removeBalanceFromStoreManagedAccounts} from './index';
 
 const accountNumber1 = 'test123';
