@@ -1,4 +1,4 @@
-import {BankConfig, NodeType, ValidatorConfig} from '../types';
+import {BankConfig, NodeType, ValidatorConfig} from '@renderer/types';
 import {getBankTxFee, getPrimaryValidatorTxFee} from './transactions';
 
 describe('getBankTxFee to return the following:', () => {
