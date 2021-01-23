@@ -19,7 +19,7 @@ export enum CrawlStatus {
 
 export interface NodeCrawlStatus {
   crawl_last_completed: string;
-  crawl_status: CrawlStatus;
+  crawl_status: CrawlStatus | null;
 }
 
 export type NodeCrawlStatusWithAddress = NodeCrawlStatus & AddressData;
@@ -43,7 +43,7 @@ export enum CleanStatus {
 
 export interface NodeCleanStatus {
   clean_last_completed: string;
-  clean_status: CleanStatus;
+  clean_status: CleanStatus | null;
 }
 
 export type NodeCleanStatusWithAddress = NodeCleanStatus & AddressData;

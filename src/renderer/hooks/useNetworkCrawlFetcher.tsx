@@ -42,7 +42,7 @@ const useNetworkCrawlFetcher = (
       try {
         setLoading(true);
         const {data} = await axios.get<NodeCrawlStatusWithAddress>(`${address}/crawl`);
-        setCrawlStatus(data.crawl_status);
+        setCrawlStatus(data.crawl_status || CrawlStatus.notCrawling);
         setCrawlLastCompleted(data.crawl_last_completed);
       } catch (error) {
         displayToast('An error occurred when getting crawl status');

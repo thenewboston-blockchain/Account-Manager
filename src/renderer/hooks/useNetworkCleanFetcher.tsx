@@ -42,7 +42,7 @@ const useNetworkCleanFetcher = (
       try {
         setLoading(true);
         const {data} = await axios.get<NodeCleanStatusWithAddress>(`${address}/clean`);
-        setCleanStatus(data.clean_status);
+        setCleanStatus(data.clean_status || CleanStatus.notCleaning);
         setCleanLastCompleted(data.clean_last_completed);
       } catch (error) {
         displayToast('An error occurred when getting clean status');
