@@ -16,4 +16,4 @@ const bankBlocks = createSlice({
 
 export const {setBankBlocks, setBankBlocksError, unsetBankBlocks} = bankBlocks.actions;
 
-export default bankBlocks;
+export default bankBlocks.reducer;

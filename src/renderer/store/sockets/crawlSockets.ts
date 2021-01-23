@@ -59,4 +59,4 @@ const crawlSockets = createSlice({
 
 export const {toggleCrawlProcess, updateCrawlProcess} = crawlSockets.actions;
 
-export default crawlSockets;
+export default crawlSockets.reducer;

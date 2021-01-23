@@ -9,6 +9,7 @@ import {getIsActiveBank, getIsManagedBank} from './banks';
 import {getNewCrawlNotification, getNewCleanNotification} from './notifications';
 
 import {
+  getAccountBalances,
   getBankAccounts,
   getBankBankTransactions,
   getBankBanks,
@@ -34,6 +35,7 @@ import {
 import {getIsActivePrimaryValidator, getIsManagedValidator} from './validators';
 
 export {
+  getAccountBalances,
   getActiveBank,
   getActiveBankConfig,
   getActivePrimaryValidator,

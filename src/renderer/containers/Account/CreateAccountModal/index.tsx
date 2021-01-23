@@ -12,6 +12,7 @@ import {
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
 import {getManagedAccounts} from '@renderer/selectors';
 import {setManagedAccount} from '@renderer/store/app';
+import {setAccountBalance} from '@renderer/store/accountBalances';
 import {setManagedAccountBalance} from '@renderer/store/managedAccountBalances';
 import {AppDispatch} from '@renderer/types';
 import {generateAccount} from '@renderer/utils/accounts';
@@ -72,7 +73,9 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
         signing_key: signingKeyStr,
       }),
     );
-    dispatch(setManagedAccountBalance({account_number: accountNumberStr, balance: balance || 0}));
+    const balancePayload = {account_number: accountNumberStr, balance: balance || 0};
+    dispatch(setAccountBalance(balancePayload));
+    dispatch(setManagedAccountBalance(balancePayload));
 
     history.push(`/account/${accountNumberStr}/overview`);
     close();

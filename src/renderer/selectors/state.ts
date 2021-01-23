@@ -15,6 +15,7 @@ export const getBankInvalidBlocks = (state: RootState) => state.banks.invalid_bl
 export const getBankValidatorConfirmationServices = (state: RootState) => state.banks.validator_confirmation_services;
 export const getBankValidators = (state: RootState) => state.banks.validators;
 
+export const getAccountBalances = (state: RootState) => state.accountBalances;
 export const getManagedAccountBalances = (state: RootState) => state.managedAccountBalances;
 
 export const getNotifications = (state: RootState) => state.notifications;

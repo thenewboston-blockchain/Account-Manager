@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {getActivePrimaryValidator, getManagedAccounts} from '@renderer/selectors';
+import {setAccountBalance} from '@renderer/store/accountBalances';
 import {setManagedAccountBalance} from '@renderer/store/managedAccountBalances';
 import {AppDispatch, Balance, RootState} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
@@ -22,6 +23,7 @@ export const fetchAccountBalance = (accountNumber: string) => async (
     account_number: accountNumber,
     balance,
   };
+  dispatch(setAccountBalance(balancePayload));
   if (isManagedAccount) {
     dispatch(setManagedAccountBalance(balancePayload));
   }

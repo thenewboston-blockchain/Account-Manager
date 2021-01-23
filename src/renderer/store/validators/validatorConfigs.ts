@@ -15,4 +15,4 @@ const validatorConfigs = createSlice({
 
 export const {setValidatorConfig, setValidatorConfigError} = validatorConfigs.actions;
 
-export default validatorConfigs;
+export default validatorConfigs.reducer;

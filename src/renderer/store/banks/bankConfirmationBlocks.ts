@@ -20,4 +20,4 @@ export const {
   unsetBankConfirmationBlocks,
 } = bankConfirmationBlocks.actions;
 
-export default bankConfirmationBlocks;
+export default bankConfirmationBlocks.reducer;

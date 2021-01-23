@@ -16,4 +16,4 @@ const bankInvalidBlocks = createSlice({
 
 export const {setBankInvalidBlocks, setBankInvalidBlocksError, unsetBankInvalidBlocks} = bankInvalidBlocks.actions;
 
-export default bankInvalidBlocks;
+export default bankInvalidBlocks.reducer;

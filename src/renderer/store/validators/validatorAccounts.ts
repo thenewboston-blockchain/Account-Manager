@@ -16,4 +16,4 @@ const validatorAccounts = createSlice({
 
 export const {setValidatorAccounts, setValidatorAccountsError, unsetValidatorAccounts} = validatorAccounts.actions;
 
-export default validatorAccounts;
+export default validatorAccounts.reducer;

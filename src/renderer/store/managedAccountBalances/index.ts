@@ -14,4 +14,4 @@ const managedAccountBalances = createSlice({
 
 export const {setManagedAccountBalance, unsetManagedAccountBalance} = managedAccountBalances.actions;
 
-export default managedAccountBalances;
+export default managedAccountBalances.reducer;

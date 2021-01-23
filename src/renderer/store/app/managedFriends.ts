@@ -22,4 +22,4 @@ const managedFriends = createSlice({
 
 export const {clearManagedFriends, setManagedFriend, unsetManagedFriend} = managedFriends.actions;
 
-export default managedFriends;
+export default managedFriends.reducer;

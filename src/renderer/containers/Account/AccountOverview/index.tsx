@@ -1,50 +1,43 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 
 import {TileAccountBalance, TileAccountNumber, TileSigningKey} from '@renderer/components/Tiles';
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
-import {getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
+import {getAccountBalances, getManagedAccounts} from '@renderer/selectors';
 import {AppDispatch} from '@renderer/types';
 import {displayErrorToast} from '@renderer/utils/toast';
 
 import './AccountOverview.scss';
 
 const AccountOverview: FC = () => {
-  const {accountNumber} = useParams<{accountNumber: string}>();
-  const [balance, setBalance] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(true);
-  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
   const dispatch = useDispatch<AppDispatch>();
+  const {accountNumber} = useParams<{accountNumber: string}>();
+  const accountBalances = useSelector(getAccountBalances);
   const managedAccounts = useSelector(getManagedAccounts);
+
+  const accountBalanceObject = accountBalances[accountNumber];
   const managedAccount = managedAccounts[accountNumber];
+  const balance = accountBalanceObject ? accountBalanceObject.balance : null;
   const type = !managedAccount ? 'default' : 'account';
 
   useEffect(() => {
-    if (!activePrimaryValidator) return;
-
     const fetchData = async (): Promise<void> => {
       try {
-        setLoading(true);
-        const accountBalance = await dispatch(fetchAccountBalance(accountNumber));
-        setBalance(accountBalance);
+        await dispatch(fetchAccountBalance(accountNumber));
       } catch (error) {
         displayErrorToast(error);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchData();
-  }, [accountNumber, activePrimaryValidator, dispatch, managedAccount]);
+  }, [accountNumber, dispatch]);
 
   return (
     <div className="AccountOverview">
-      <TileAccountBalance balance={balance} loading={loading} type={type} />
+      <TileAccountBalance balance={balance} type={type} />
       <TileAccountNumber accountNumber={accountNumber} type={type} />
-      {managedAccount && (
-        <TileSigningKey accountNumber={accountNumber} loading={loading} signingKey={managedAccount.signing_key} />
-      )}
+      {managedAccount && <TileSigningKey accountNumber={accountNumber} signingKey={managedAccount.signing_key} />}
     </div>
   );
 };
