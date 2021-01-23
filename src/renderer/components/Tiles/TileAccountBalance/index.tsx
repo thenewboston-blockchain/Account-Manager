@@ -7,13 +7,12 @@ import Tile from '../Tile';
 import './TileAccountBalance.scss';
 
 interface ComponentProps {
-  balance: number;
+  balance: number | null;
   className?: string;
-  loading: boolean;
   type: 'account' | 'friend' | 'default';
 }
 
-const TileAccountBalance: FC<ComponentProps> = ({balance, className, loading, type}) => {
+const TileAccountBalance: FC<ComponentProps> = ({balance, className, type}) => {
   const title = useMemo(() => {
     switch (type) {
       case 'account':
@@ -28,9 +27,9 @@ const TileAccountBalance: FC<ComponentProps> = ({balance, className, loading, ty
   }, [type]);
 
   const balanceStr = useMemo(() => {
-    if (loading) return '-';
+    if (balance === null) return '-';
     return balance.toLocaleString();
-  }, [balance, loading]);
+  }, [balance]);
 
   return (
     <Tile className={clsx('TileAccountBalance', className)}>

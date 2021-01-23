@@ -22,4 +22,4 @@ const managedAccounts = createSlice({
 
 export const {clearManagedAccounts, setManagedAccount, unsetManagedAccount} = managedAccounts.actions;
 
-export default managedAccounts;
+export default managedAccounts.reducer;

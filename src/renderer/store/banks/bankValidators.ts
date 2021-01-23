@@ -16,4 +16,4 @@ const bankValidators = createSlice({
 
 export const {setBankValidators, setBankValidatorsError, unsetBankValidators} = bankValidators.actions;
 
-export default bankValidators;
+export default bankValidators.reducer;

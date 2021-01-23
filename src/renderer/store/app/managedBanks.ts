@@ -24,4 +24,4 @@ const managedBanks = createSlice({
 
 export const {clearManagedBanks, setManagedBank, changeActiveBank, unsetManagedBank} = managedBanks.actions;
 
-export default managedBanks;
+export default managedBanks.reducer;

@@ -14,7 +14,6 @@ import './TileSigningKey.scss';
 interface ComponentProps {
   accountNumber: string;
   className?: string;
-  loading: boolean;
   signingKey: string;
 }
 
@@ -26,7 +25,7 @@ const downloadFailToast = (e: any, error: string) => {
   displayToast(`Could not save signing key: ${error}`);
 };
 
-const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, signingKey}) => {
+const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, signingKey}) => {
   const copyRef = useRef<HTMLDivElement>(null);
   const downloadRef = useRef<HTMLDivElement>(null);
   const eyeRef = useRef<HTMLDivElement>(null);
@@ -61,7 +60,6 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, loading, 
   };
 
   const renderSigningKeyDisplay = () => {
-    if (loading) return '-';
     return <div>{showSigningKey ? signingKey : '*'.repeat(64)}</div>;
   };
 

@@ -1,5 +1,4 @@
-import {Dict, ManagedNode} from '@renderer/types';
-import {MigrationFunction} from '../../types';
+import {Dict, ManagedNode, MigrationFunction} from '@renderer/types';
 
 export const addPortToManagedNodes = (managedNodes: Dict<ManagedNode>): Dict<ManagedNode> => {
   const updatedNodes: Dict<ManagedNode> = {};

@@ -1,5 +1,4 @@
-import {Balance, Dict, ManagedAccount} from '@renderer/types';
-import {MigrationFunction} from '../../types';
+import {Balance, Dict, ManagedAccount, MigrationFunction} from '@renderer/types';
 
 export const removeBalanceFromManagedAccount = (managedAccount: ManagedAccount & Balance) => {
   return {

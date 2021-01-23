@@ -11,31 +11,31 @@ import {
   VALIDATOR_CONFIRMATION_SERVICES,
   VALIDATORS,
 } from '@renderer/constants';
-import bankAccounts, {setBankAccounts, setBankAccountsError, unsetBankAccounts} from './bankAccounts';
-import bankBanks, {setBankBanks, setBankBanksError, unsetBankBanks} from './bankBanks';
-import bankBankTransactions, {
+import bankAccountsReducer, {setBankAccounts, setBankAccountsError, unsetBankAccounts} from './bankAccounts';
+import bankBanksReducer, {setBankBanks, setBankBanksError, unsetBankBanks} from './bankBanks';
+import bankBankTransactionsReducer, {
   setBankBankTransactions,
   setBankBankTransactionsError,
   unsetBankBankTransactions,
 } from './bankBankTransactions';
-import bankBlocks, {setBankBlocks, setBankBlocksError, unsetBankBlocks} from './bankBlocks';
-import bankConfigs, {setBankConfig, setBankConfigError} from './bankConfigs';
-import bankConfirmationBlocks, {
+import bankBlocksReducer, {setBankBlocks, setBankBlocksError, unsetBankBlocks} from './bankBlocks';
+import bankConfigsReducer, {setBankConfig, setBankConfigError} from './bankConfigs';
+import bankConfirmationBlocksReducer, {
   setBankConfirmationBlocks,
   setBankConfirmationBlocksError,
   unsetBankConfirmationBlocks,
 } from './bankConfirmationBlocks';
-import bankInvalidBlocks, {
+import bankInvalidBlocksReducer, {
   setBankInvalidBlocks,
   setBankInvalidBlocksError,
   unsetBankInvalidBlocks,
 } from './bankInvalidBlocks';
-import bankValidatorConfirmationServices, {
+import bankValidatorConfirmationServicesReducer, {
   setBankValidatorConfirmationServices,
   setBankValidatorConfirmationServicesError,
   unsetBankValidatorConfirmationServices,
 } from './bankValidatorConfirmationServices';
-import bankValidators, {setBankValidators, setBankValidatorsError, unsetBankValidators} from './bankValidators';
+import bankValidatorsReducer, {setBankValidators, setBankValidatorsError, unsetBankValidators} from './bankValidators';
 
 export {
   setBankAccounts,
@@ -67,15 +67,15 @@ export {
 };
 
 const bankReducers = combineReducers({
-  [ACCOUNTS]: bankAccounts.reducer,
-  [BANK_TRANSACTIONS]: bankBankTransactions.reducer,
-  [BANKS]: bankBanks.reducer,
-  [BLOCKS]: bankBlocks.reducer,
-  [CONFIGS]: bankConfigs.reducer,
-  [CONFIRMATION_BLOCKS]: bankConfirmationBlocks.reducer,
-  [INVALID_BLOCKS]: bankInvalidBlocks.reducer,
-  [VALIDATOR_CONFIRMATION_SERVICES]: bankValidatorConfirmationServices.reducer,
-  [VALIDATORS]: bankValidators.reducer,
+  [ACCOUNTS]: bankAccountsReducer,
+  [BANK_TRANSACTIONS]: bankBankTransactionsReducer,
+  [BANKS]: bankBanksReducer,
+  [BLOCKS]: bankBlocksReducer,
+  [CONFIGS]: bankConfigsReducer,
+  [CONFIRMATION_BLOCKS]: bankConfirmationBlocksReducer,
+  [INVALID_BLOCKS]: bankInvalidBlocksReducer,
+  [VALIDATOR_CONFIRMATION_SERVICES]: bankValidatorConfirmationServicesReducer,
+  [VALIDATORS]: bankValidatorsReducer,
 });
 
 export default bankReducers;

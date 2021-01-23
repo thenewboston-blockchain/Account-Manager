@@ -2,7 +2,7 @@ import {AddressDataWithNickname, AppNodeAddressData, ManagedAccount, ManagedFrie
 import {AccountBalance} from './balances';
 import {BaseFormComponentProps, BaseFormInlineComponentProps, GenericFormValues, InputOption} from './forms';
 import {GenericFunction, GenericVoidFunction} from './generic';
-import {LocalStore} from './localStore';
+import {AppElectronStore, LocalStore, MigrationFunction} from './localStore';
 import {
   AccountNumber,
   AddressData,
@@ -70,6 +70,7 @@ export {
   AddressData,
   AddressDataWithNickname,
   AppDispatch,
+  AppElectronStore,
   AppNodeAddressData,
   Balance,
   BankAccount,
@@ -103,6 +104,7 @@ export {
   ManagedAccount,
   ManagedFriend,
   ManagedNode,
+  MigrationFunction,
   Nickname,
   Node,
   NodeCrawlStatus,

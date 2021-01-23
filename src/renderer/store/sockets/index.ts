@@ -1,13 +1,13 @@
 import {combineReducers} from '@reduxjs/toolkit';
 
-import crawlSockets, {toggleCrawlProcess, updateCrawlProcess} from './crawlSockets';
-import cleanSockets, {toggleCleanProcess, updateCleanProcess} from './cleanSockets';
+import crawlSocketsReducer, {toggleCrawlProcess, updateCrawlProcess} from './crawlSockets';
+import cleanSocketsReducer, {toggleCleanProcess, updateCleanProcess} from './cleanSockets';
 
 export {toggleCrawlProcess, updateCrawlProcess, toggleCleanProcess, updateCleanProcess};
 
 const socketReducers = combineReducers({
-  clean: cleanSockets.reducer,
-  crawl: crawlSockets.reducer,
+  clean: cleanSocketsReducer,
+  crawl: crawlSocketsReducer,
 });
 
 export default socketReducers;

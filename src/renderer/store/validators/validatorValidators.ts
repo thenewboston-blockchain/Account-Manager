@@ -20,4 +20,4 @@ export const {
   unsetValidatorValidators,
 } = validatorValidators.actions;
 
-export default validatorValidators;
+export default validatorValidators.reducer;

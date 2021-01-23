@@ -20,4 +20,4 @@ export const {
   unsetBankValidatorConfirmationServices,
 } = bankValidatorConfirmationServices.actions;
 
-export default bankValidatorConfirmationServices;
+export default bankValidatorConfirmationServices.reducer;

@@ -15,4 +15,4 @@ const bankConfigs = createSlice({
 
 export const {setBankConfig, setBankConfigError} = bankConfigs.actions;
 
-export default bankConfigs;
+export default bankConfigs.reducer;

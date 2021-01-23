@@ -16,4 +16,4 @@ const bankAccounts = createSlice({
 
 export const {setBankAccounts, setBankAccountsError, unsetBankAccounts} = bankAccounts.actions;
 
-export default bankAccounts;
+export default bankAccounts.reducer;

@@ -20,8 +20,8 @@ import {
 import {AddressData, AppDispatch, RootState, ValidatorConfig} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 
-import {fetchBankConfig} from '../banks';
-import {fetchValidatorConfig} from '../validators';
+import {fetchBankConfig} from './banks';
+import {fetchValidatorConfig} from './validators';
 
 export const clearLocalState = () => (dispatch: AppDispatch) => {
   dispatch(clearManagedAccounts());
