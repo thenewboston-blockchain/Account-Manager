@@ -38,3 +38,6 @@ export const VALIDATOR_ACCOUNTS = `${VALIDATORS}/${ACCOUNTS}`;
 export const VALIDATOR_BANKS = `${VALIDATORS}/${BANKS}`;
 export const VALIDATOR_CONFIGS = `${VALIDATORS}/${CONFIGS}`;
 export const VALIDATOR_VALIDATORS = `${VALIDATORS}/${VALIDATORS}`;
+
+// Managed Account Balances
+export const MANAGED_ACCOUNT_BALANCES = 'managed_account_balances';

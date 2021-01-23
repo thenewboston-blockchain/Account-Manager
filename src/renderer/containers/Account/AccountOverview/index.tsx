@@ -1,19 +1,18 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
-import axios from 'axios';
 
 import {TileAccountBalance, TileAccountNumber, TileSigningKey} from '@renderer/components/Tiles';
+import {fetchAccountBalance} from '@renderer/dispatchers/balances';
 import {getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
-import {setManagedAccountBalance} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
-import {formatAddress} from '@renderer/utils/address';
+import {displayErrorToast} from '@renderer/utils/toast';
 
 import './AccountOverview.scss';
 
 const AccountOverview: FC = () => {
   const {accountNumber} = useParams<{accountNumber: string}>();
-  const [balance, setBalance] = useState<number | null>(null);
+  const [balance, setBalance] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
   const dispatch = useDispatch<AppDispatch>();
@@ -25,23 +24,15 @@ const AccountOverview: FC = () => {
     if (!activePrimaryValidator) return;
 
     const fetchData = async (): Promise<void> => {
-      const {ip_address: ipAddress, port, protocol} = activePrimaryValidator;
-      const address = formatAddress(ipAddress, port, protocol);
-
-      setLoading(true);
-      const {data} = await axios.get(`${address}/accounts/${accountNumber}/balance`);
-
-      if (managedAccount) {
-        dispatch(
-          setManagedAccountBalance({
-            account_number: managedAccount.account_number,
-            balance: data.balance || 0,
-          }),
-        );
+      try {
+        setLoading(true);
+        const accountBalance = await dispatch(fetchAccountBalance(accountNumber));
+        setBalance(accountBalance);
+      } catch (error) {
+        displayErrorToast(error);
+      } finally {
+        setLoading(false);
       }
-
-      setBalance(data.balance);
-      setLoading(false);
     };
 
     fetchData();
@@ -49,7 +40,7 @@ const AccountOverview: FC = () => {
 
   return (
     <div className="AccountOverview">
-      <TileAccountBalance balance={managedAccount?.balance || balance || 0} loading={loading} type={type} />
+      <TileAccountBalance balance={balance} loading={loading} type={type} />
       <TileAccountNumber accountNumber={accountNumber} type={type} />
       {managedAccount && (
         <TileSigningKey accountNumber={accountNumber} loading={loading} signingKey={managedAccount.signing_key} />

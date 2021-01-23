@@ -1,6 +1,6 @@
 import intersection from 'lodash/intersection';
 
-import {setManagedAccountBalance} from '@renderer/store/app';
+import {setManagedAccountBalance} from '@renderer/store/managedAccountBalances';
 import {setConfirmationBlockNotification} from '@renderer/store/notifications';
 import {AppDispatch} from '@renderer/types';
 import {generateUuid} from '@renderer/utils/local';

@@ -1,10 +1,17 @@
 import React, {FC, ReactNode, useCallback, useMemo, useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {FormButton} from '@renderer/components/FormComponents';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
-import {getActiveBankConfig, getActivePrimaryValidatorConfig, getManagedAccounts} from '@renderer/selectors';
+import {fetchAccountBalance} from '@renderer/dispatchers/balances';
+import {
+  getActiveBankConfig,
+  getActivePrimaryValidatorConfig,
+  getManagedAccountBalances,
+  getManagedAccounts,
+} from '@renderer/selectors';
+import {AppDispatch} from '@renderer/types';
 import {sendBlock} from '@renderer/utils/blocks';
 import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
@@ -22,22 +29,25 @@ interface ComponentProps {
 }
 
 const SendCoinsModal: FC<ComponentProps> = ({close, initialRecipient, initialSender}) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [submitting, setSubmitting] = useState<boolean>(false);
   const activeBank = useSelector(getActiveBankConfig)!;
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
   const managedAccounts = useSelector(getManagedAccounts);
+  const managedAccountBalances = useSelector(getManagedAccountBalances);
 
   const checkCoinsWithBalance = useCallback(
     (coins: number, accountNumber: string): boolean => {
       if (!accountNumber || !coins) return true;
-      const {balance} = managedAccounts[accountNumber];
+      const {balance} = managedAccountBalances[accountNumber];
+      if (!balance) return false;
       const totalCost =
         getBankTxFee(activeBank, accountNumber) +
         getPrimaryValidatorTxFee(activePrimaryValidator, accountNumber) +
         coins;
       return totalCost <= balance;
     },
-    [activeBank, activePrimaryValidator, managedAccounts],
+    [activeBank, activePrimaryValidator, managedAccountBalances],
   );
 
   const initialValues = useMemo(
@@ -61,6 +71,10 @@ const SendCoinsModal: FC<ComponentProps> = ({close, initialRecipient, initialSen
         recipientAccountNumber,
         senderAccountNumber,
       );
+      await Promise.all([
+        dispatch(fetchAccountBalance(senderAccountNumber)),
+        dispatch(fetchAccountBalance(recipientAccountNumber)),
+      ]);
       displayToast('Your payment has been sent', 'success');
       close();
     } catch (error) {

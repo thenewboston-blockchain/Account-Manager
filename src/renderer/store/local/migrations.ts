@@ -2,12 +2,14 @@ import ElectronStore from 'electron-store';
 import {LocalStore} from '@renderer/types';
 
 import migration0 from './migrationFiles/00000';
+import migration1 from './migrationFiles/00001';
+
 import {MigrationFunction} from './types';
 import {runMigrationFunction} from './utils';
 
 // Before you add migrations, be sure to follow the directions!
 // https://github.com/thenewboston-developers/Account-Manager/blob/master/migrations.md#submitting-a-pr-with-migrations
-const migrationFunctions: MigrationFunction[] = [migration0];
+const migrationFunctions: MigrationFunction[] = [migration0, migration1];
 
 const STORE_VERSION = migrationFunctions.length - 1;
 

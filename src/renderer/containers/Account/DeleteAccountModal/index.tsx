@@ -4,6 +4,7 @@ import {useDispatch} from 'react-redux';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import {unsetManagedAccount} from '@renderer/store/app';
+import {unsetManagedAccountBalance} from '@renderer/store/managedAccountBalances';
 import {AppDispatch, ManagedAccount} from '@renderer/types';
 
 import './DeleteAccountModal.scss';
@@ -18,6 +19,7 @@ const DeleteAccountModal: FC<ComponentProps> = ({close, managedAccount}) => {
 
   const handleSubmit = async (): Promise<void> => {
     dispatch(unsetManagedAccount(managedAccount));
+    dispatch(unsetManagedAccountBalance(managedAccount));
     close();
   };
 

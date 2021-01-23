@@ -1,35 +1,35 @@
 import React, {FC, useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {useParams} from 'react-router-dom';
-import axios from 'axios';
 
 import {TileAccountBalance, TileAccountNumber} from '@renderer/components/Tiles';
-import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
-import {formatAddress} from '@renderer/utils/address';
+import {fetchAccountBalance} from '@renderer/dispatchers/balances';
+import {AppDispatch} from '@renderer/types';
+import {displayErrorToast} from '@renderer/utils/toast';
 
 import './FriendOverview.scss';
 
 const FriendOverview: FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const {accountNumber} = useParams<{accountNumber: string}>();
   const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
 
   useEffect(() => {
-    if (!activePrimaryValidator) return;
-
     const fetchData = async (): Promise<void> => {
-      const {ip_address: ipAddress, port, protocol} = activePrimaryValidator;
-      const address = formatAddress(ipAddress, port, protocol);
-
-      setLoading(true);
-      const {data} = await axios.get(`${address}/accounts/${accountNumber}/balance`);
-      setBalance(data.balance);
-      setLoading(false);
+      try {
+        setLoading(true);
+        const accountBalance = await dispatch(fetchAccountBalance(accountNumber));
+        setBalance(accountBalance);
+      } catch (error) {
+        displayErrorToast(error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchData();
-  }, [accountNumber, activePrimaryValidator]);
+  }, [accountNumber, dispatch]);
 
   return (
     <div className="FriendOverview">

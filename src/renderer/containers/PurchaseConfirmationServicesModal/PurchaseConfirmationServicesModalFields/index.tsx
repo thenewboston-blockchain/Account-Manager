@@ -8,7 +8,7 @@ import {
   getActiveBankConfig,
   getActivePrimaryValidatorConfig,
   getBankConfigs,
-  getManagedAccounts,
+  getManagedAccountBalances,
   getManagedBanks,
 } from '@renderer/selectors';
 import {BaseValidator, InputOption} from '@renderer/types';
@@ -31,7 +31,7 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
   const activeBankConfig = useSelector(getActiveBankConfig)!;
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
   const bankConfigs = useSelector(getBankConfigs);
-  const managedAccounts = useSelector(getManagedAccounts);
+  const managedAccountBalances = useSelector(getManagedAccountBalances);
   const managedBanks = useSelector(getManagedBanks);
 
   const getBanksAccountNumberFromAddress = (bankAddress: string) => {
@@ -59,8 +59,8 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
     const {bankAddress} = values;
     if (!bankAddress) return '-';
     const accountNumber = getBanksAccountNumberFromAddress(bankAddress);
-    const managedAccount = managedAccounts[accountNumber];
-    return managedAccount?.balance?.toLocaleString() || '0';
+    const managedAccountBalance = managedAccountBalances[accountNumber];
+    return managedAccountBalance?.balance.toLocaleString() || '0';
   };
 
   const renderDays = (): string => {
