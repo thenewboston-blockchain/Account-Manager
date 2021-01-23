@@ -1,21 +1,21 @@
 import {AccountNumber, AddressData, Balance, NodeIdentifier} from './network';
 
-export interface AppNodeAddressData extends AddressData, NodeIdentifier {
-  nickname: string;
-}
+export type AddressDataWithNickname = AddressData & Nickname;
 
-export interface ManagedAccount extends AccountNumber, Balance {
-  nickname: string;
+export type AppNodeAddressData = AddressDataWithNickname & NodeIdentifier;
+
+export interface ManagedAccount extends AccountNumber, Balance, Nickname {
   signing_key: string;
 }
 
-export interface ManagedFriend extends AccountNumber {
-  nickname: string;
-}
+export type ManagedFriend = AccountNumber & Nickname;
 
-export interface ManagedNode extends AddressData {
+export interface ManagedNode extends AddressData, Nickname {
   account_signing_key: string;
   is_default?: boolean;
-  nickname: string;
   nid_signing_key: string;
+}
+
+export interface Nickname {
+  nickname: string;
 }

@@ -3,21 +3,20 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 
 import Modal from '@renderer/components/Modal';
-import {
-  IP_INVALID_FORMAT_ERROR,
-  NICKNAME_EXISTS_ERROR,
-  NICKNAME_MAX_LENGTH,
-  NICKNAME_MAX_LENGTH_ERROR,
-  REQUIRED_FIELD_ERROR,
-  VALIDATOR_ADDRESS_EXISTS_ERROR,
-} from '@renderer/constants/form-validation';
 import {fetchValidatorConfig} from '@renderer/dispatchers/validators';
 import {getManagedValidators} from '@renderer/selectors';
 import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch, ProtocolType} from '@renderer/types';
-import {formatAddress, formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
+import {formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
+import {
+  getAddressFormField,
+  getIpAddressField,
+  getNicknameField,
+  getPortField,
+  getProtocolField,
+} from '@renderer/utils/forms/fields';
+import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
-import yup from '@renderer/utils/yup';
 
 import AddValidatorModalFields from './AddValidatorModalFields';
 import './AddValidatorModal.scss';
@@ -32,8 +31,6 @@ const initialValues = {
 
 type FormValues = typeof initialValues;
 
-const genericIpAddressRegex = /([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(\d{1,3}\.){3}\d{1,3}/;
-
 interface ComponentProps {
   close(): void;
 }
@@ -43,19 +40,6 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
   const history = useHistory();
   const managedValidators = useSelector(getManagedValidators);
   const [submitting, setSubmitting] = useState<boolean>(false);
-
-  const managedValidatorAddresses = useMemo(
-    () => Object.values(managedValidators).map((validator) => formatAddressFromNode(validator)),
-    [managedValidators],
-  );
-
-  const managedValidatorNicknames = useMemo(
-    () =>
-      Object.values(managedValidators)
-        .filter(({nickname}) => !!nickname)
-        .map(({nickname}) => nickname),
-    [managedValidators],
-  );
 
   const handleSubmit = async ({ipAddress, nickname, port, protocol}: FormValues): Promise<void> => {
     try {
@@ -99,23 +83,13 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
 
   const validationSchema = useMemo(() => {
     return yup.object().shape({
-      form: yup.string().when(['ipAddress', 'port', 'protocol'], {
-        is: (ipAddress, port, protocol) => managedValidatorAddresses.includes(formatAddress(ipAddress, port, protocol)),
-        otherwise: yup.string(),
-        then: yup.string().required(VALIDATOR_ADDRESS_EXISTS_ERROR),
-      }),
-      ipAddress: yup
-        .string()
-        .required(REQUIRED_FIELD_ERROR)
-        .matches(genericIpAddressRegex, {excludeEmptyString: true, message: IP_INVALID_FORMAT_ERROR}),
-      nickname: yup
-        .string()
-        .notOneOf(managedValidatorNicknames, NICKNAME_EXISTS_ERROR)
-        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
-      port: yup.number().integer().required(REQUIRED_FIELD_ERROR),
-      protocol: yup.string().required(REQUIRED_FIELD_ERROR),
+      form: getAddressFormField(managedValidators, 'This address is already a managed validator'),
+      ipAddress: getIpAddressField(),
+      nickname: getNicknameField(managedValidators),
+      port: getPortField(),
+      protocol: getProtocolField(),
     });
-  }, [managedValidatorAddresses, managedValidatorNicknames]);
+  }, [managedValidators]);
 
   return (
     <Modal

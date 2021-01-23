@@ -6,9 +6,6 @@ import axios from 'axios';
 import Modal from '@renderer/components/Modal';
 import {
   ACCOUNT_EXISTS_ERROR,
-  NICKNAME_EXISTS_ERROR,
-  NICKNAME_MAX_LENGTH,
-  NICKNAME_MAX_LENGTH_ERROR,
   SIGNING_KEY_LENGTH,
   SIGNING_KEY_LENGTH_ERROR,
   SIGNING_KEY_REQUIRED_ERROR,
@@ -18,9 +15,10 @@ import {setManagedAccount} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
 import {generateAccount} from '@renderer/utils/accounts';
 import {formatAddress} from '@renderer/utils/address';
+import {getNicknameField} from '@renderer/utils/forms/fields';
+import yup from '@renderer/utils/forms/yup';
 import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
-import yup from '@renderer/utils/yup';
 
 import CreateAccountModalFields, {FormValues, initialValues} from './CreateAccountModalFields';
 import './CreateAccountModal.scss';
@@ -36,14 +34,6 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
   const managedAccounts = useSelector(getManagedAccounts);
-
-  const managedAccountNicknames = useMemo(
-    () =>
-      Object.values(managedAccounts)
-        .filter(({nickname}) => !!nickname)
-        .map(({nickname}) => nickname),
-    [managedAccounts],
-  );
 
   const managedAccountSigningKeys = useMemo(
     () =>
@@ -99,11 +89,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
 
   const validationSchema = useMemo(() => {
     return yup.object().shape({
-      nickname: yup
-        .string()
-        .matches(/[\S]/, 'Must contain non-whitespace characters.')
-        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR)
-        .notOneOf(managedAccountNicknames, NICKNAME_EXISTS_ERROR),
+      nickname: getNicknameField(managedAccounts),
       signingKey: yup.string().when('type', {
         is: 'create',
         otherwise: yup
@@ -115,7 +101,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
       }),
       type: yup.string(),
     });
-  }, [managedAccountNicknames, managedAccountSigningKeys]);
+  }, [managedAccounts, managedAccountSigningKeys]);
 
   return (
     <Modal

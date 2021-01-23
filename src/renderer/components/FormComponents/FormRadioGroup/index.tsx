@@ -7,8 +7,8 @@ import noop from 'lodash/noop';
 import {BaseRadioProps, Radio} from '@renderer/components/FormElements';
 import {useFormContext} from '@renderer/hooks';
 import {BaseFormComponentProps, InputOption} from '@renderer/types';
-import {renderFormError, renderFormLabel} from '@renderer/utils/forms';
 import {getCustomClassNames} from '@renderer/utils/components';
+import {renderFormError, renderFormLabel} from '@renderer/utils/forms/formComponents';
 
 interface BaseRadioGroupProps extends Omit<BaseRadioProps, 'checked'> {
   options: InputOption[];

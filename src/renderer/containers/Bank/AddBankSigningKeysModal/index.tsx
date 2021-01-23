@@ -13,9 +13,9 @@ import {useAddress} from '@renderer/hooks';
 import {getBankConfigs, getManagedAccounts, getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
 import {AppDispatch} from '@renderer/types';
+import yup from '@renderer/utils/forms/yup';
 import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayToast} from '@renderer/utils/toast';
-import yup from '@renderer/utils/yup';
 
 interface ComponentProps {
   close(): void;

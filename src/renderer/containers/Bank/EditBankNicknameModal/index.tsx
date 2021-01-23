@@ -3,15 +3,11 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
-import {
-  NICKNAME_EXISTS_ERROR,
-  NICKNAME_MAX_LENGTH,
-  NICKNAME_MAX_LENGTH_ERROR,
-} from '@renderer/constants/form-validation';
 import {setManagedBank} from '@renderer/store/app';
 import {getManagedBanks} from '@renderer/selectors';
 import {AppDispatch, ManagedNode} from '@renderer/types';
-import yup from '@renderer/utils/yup';
+import {getNicknameField} from '@renderer/utils/forms/fields';
+import yup from '@renderer/utils/forms/yup';
 
 interface ComponentProps {
   bank: ManagedNode;
@@ -28,22 +24,11 @@ const EditBankNicknameModal: FC<ComponentProps> = ({bank, close}) => {
 
   const managedBanks = useSelector(getManagedBanks);
 
-  const managedBankNicknames = useMemo(
-    () =>
-      Object.values(managedBanks)
-        .filter(({nickname}) => !!nickname)
-        .map(({nickname}) => nickname),
-    [managedBanks],
-  );
-
   const validationSchema = useMemo(() => {
     return yup.object().shape({
-      nickname: yup
-        .string()
-        .notOneOf(managedBankNicknames, NICKNAME_EXISTS_ERROR)
-        .max(NICKNAME_MAX_LENGTH, NICKNAME_MAX_LENGTH_ERROR),
+      nickname: getNicknameField(managedBanks, bank.nickname),
     });
-  }, [managedBankNicknames]);
+  }, [bank.nickname, managedBanks]);
 
   const handleSubmit = ({nickname}: FormValues): void => {
     dispatch(
@@ -60,6 +45,7 @@ const EditBankNicknameModal: FC<ComponentProps> = ({bank, close}) => {
       className="EditBankNicknameModal"
       close={close}
       header="Edit Bank Nickname"
+      ignoreDirty
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitButton="Save"

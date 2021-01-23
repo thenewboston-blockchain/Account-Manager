@@ -1,4 +1,4 @@
-import {AppNodeAddressData, ManagedAccount, ManagedFriend, ManagedNode} from './app';
+import {AddressDataWithNickname, AppNodeAddressData, ManagedAccount, ManagedFriend, ManagedNode, Nickname} from './app';
 import {BaseFormComponentProps, BaseFormInlineComponentProps, GenericFormValues, InputOption} from './forms';
 import {GenericFunction, GenericVoidFunction} from './generic';
 import {LocalStore} from './localStore';
@@ -66,6 +66,7 @@ import {
 export {
   AccountNumber,
   AddressData,
+  AddressDataWithNickname,
   AppDispatch,
   AppNodeAddressData,
   Balance,
@@ -100,6 +101,7 @@ export {
   ManagedAccount,
   ManagedFriend,
   ManagedNode,
+  Nickname,
   Node,
   NodeCrawlStatus,
   NodeCrawlStatusWithAddress,
