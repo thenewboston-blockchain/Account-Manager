@@ -127,7 +127,13 @@ const Validator: FC = () => {
         page: 'banks',
       },
       {
-        content: <ValidatorOverview />,
+        content: (
+          <ValidatorOverview
+            isActivePrimaryValidator={isActivePrimaryValidator}
+            isAuthenticated={isAuthenticated}
+            managedValidator={managedValidator}
+          />
+        ),
         page: 'overview',
       },
       {

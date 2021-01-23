@@ -13,8 +13,8 @@ import {formatAddress} from '@renderer/utils/address';
 import useAddress from './useAddress';
 
 const useNetworkCrawlFetcher = (
-  managedBank: ManagedNode | undefined,
-  isAuthenticated: boolean,
+  managedNode: ManagedNode | undefined,
+  crawlingIsEnabled: boolean,
 ): {
   crawlLastCompleted: string;
   crawlStatus: CrawlStatus | null;
@@ -42,7 +42,7 @@ const useNetworkCrawlFetcher = (
       try {
         setLoading(true);
         const {data} = await axios.get<NodeCrawlStatusWithAddress>(`${address}/crawl`);
-        setCrawlStatus(data.crawl_status);
+        setCrawlStatus(data.crawl_status || CrawlStatus.notCrawling);
         setCrawlLastCompleted(data.crawl_last_completed);
       } catch (error) {
         displayToast('An error occurred when getting crawl status');
@@ -51,12 +51,12 @@ const useNetworkCrawlFetcher = (
       }
     };
 
-    if (isAuthenticated) {
+    if (crawlingIsEnabled) {
       fetchData();
     } else {
       setLoading(false);
     }
-  }, [address, isAuthenticated]);
+  }, [address, crawlingIsEnabled]);
 
   useEffect(() => {
     if (!crawlSocket) return;
@@ -67,7 +67,7 @@ const useNetworkCrawlFetcher = (
   }, [crawlSocket, crawlSocket?.crawl_status, crawlStatus]);
 
   const handleClick = useCallback(async (): Promise<void> => {
-    if (!managedBank?.account_signing_key) return;
+    if (!managedNode?.account_signing_key) return;
 
     setSubmitting(true);
     if (crawlStatus === CrawlStatus.notCrawling || crawlStatus === CrawlStatus.crawling) {
@@ -79,7 +79,7 @@ const useNetworkCrawlFetcher = (
           ip_address: ipAddress,
           port,
           protocol,
-          signingKey: managedBank.nid_signing_key,
+          signingKey: managedNode.nid_signing_key,
         }),
       );
     }
@@ -88,8 +88,8 @@ const useNetworkCrawlFetcher = (
     crawlStatus,
     dispatch,
     ipAddress,
-    managedBank?.account_signing_key,
-    managedBank?.nid_signing_key,
+    managedNode?.account_signing_key,
+    managedNode?.nid_signing_key,
     port,
     protocol,
     socketEntry,

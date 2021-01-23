@@ -13,8 +13,8 @@ import {formatAddress} from '@renderer/utils/address';
 import useAddress from './useAddress';
 
 const useNetworkCleanFetcher = (
-  managedBank: ManagedNode | undefined,
-  isAuthenticated: boolean,
+  managedNode: ManagedNode | undefined,
+  cleaningIsEnabled: boolean,
 ): {
   cleanLastCompleted: string;
   cleanStatus: CleanStatus | null;
@@ -42,7 +42,7 @@ const useNetworkCleanFetcher = (
       try {
         setLoading(true);
         const {data} = await axios.get<NodeCleanStatusWithAddress>(`${address}/clean`);
-        setCleanStatus(data.clean_status);
+        setCleanStatus(data.clean_status || CleanStatus.notCleaning);
         setCleanLastCompleted(data.clean_last_completed);
       } catch (error) {
         displayToast('An error occurred when getting clean status');
@@ -51,12 +51,12 @@ const useNetworkCleanFetcher = (
       }
     };
 
-    if (isAuthenticated) {
+    if (cleaningIsEnabled) {
       fetchData();
     } else {
       setLoading(false);
     }
-  }, [address, isAuthenticated]);
+  }, [address, cleaningIsEnabled]);
 
   useEffect(() => {
     if (!cleanSocket) return;
@@ -67,8 +67,7 @@ const useNetworkCleanFetcher = (
   }, [cleanSocket, cleanSocket?.clean_status, cleanStatus]);
 
   const handleClick = useCallback(async (): Promise<void> => {
-    if (!managedBank?.account_signing_key) return;
-
+    if (!managedNode?.account_signing_key) return;
     setSubmitting(true);
     if (cleanStatus === CleanStatus.notCleaning || cleanStatus === CleanStatus.cleaning) {
       const id = (socketEntry && socketEntry[0]) || generateUuid();
@@ -79,7 +78,7 @@ const useNetworkCleanFetcher = (
           ip_address: ipAddress,
           port,
           protocol,
-          signingKey: managedBank.nid_signing_key,
+          signingKey: managedNode.nid_signing_key,
         }),
       );
     }
@@ -88,8 +87,8 @@ const useNetworkCleanFetcher = (
     cleanStatus,
     dispatch,
     ipAddress,
-    managedBank?.account_signing_key,
-    managedBank?.nid_signing_key,
+    managedNode?.account_signing_key,
+    managedNode?.nid_signing_key,
     port,
     protocol,
     socketEntry,
