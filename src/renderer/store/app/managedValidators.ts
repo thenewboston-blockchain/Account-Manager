@@ -29,4 +29,4 @@ export const {
   unsetManagedValidator,
 } = managedValidators.actions;
 
-export default managedValidators;
+export default managedValidators.reducer;

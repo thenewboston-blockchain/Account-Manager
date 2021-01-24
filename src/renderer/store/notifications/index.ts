@@ -53,4 +53,4 @@ export const {
   setValidatorConfirmationServiceNotification,
 } = notifications.actions;
 
-export default notifications;
+export default notifications.reducer;

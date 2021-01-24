@@ -2,6 +2,7 @@ import {PayloadAction} from '@reduxjs/toolkit';
 
 import localStore from '@renderer/store/local';
 import {
+  AccountBalance,
   AccountNumber,
   AddressData,
   Dict,
@@ -45,11 +46,17 @@ export const clearLocalAndStateReducer = () => (state: any, action: PayloadActio
   return {};
 };
 
+export const setBalanceReducer = () => (state: Dict<AccountBalance>, {payload}: PayloadAction<AccountBalance>) => {
+  const {account_number: accountNumber} = payload;
+  const account = state[accountNumber];
+  state[accountNumber] = account ? {...account, ...payload} : payload;
+};
+
 export function setLocalAndAccountReducer<T extends AccountNumber>(sliceName: string) {
   return (state: any, {payload}: PayloadAction<T>) => {
     const {account_number: accountNumber} = payload;
     const account = state[accountNumber];
-    state[accountNumber] = account ? {account, ...payload} : payload;
+    state[accountNumber] = account ? {...account, ...payload} : payload;
     localStore.set(getStateName(sliceName), state);
   };
 }
@@ -158,6 +165,13 @@ export function unsetDataReducer() {
   };
 }
 
+export const unsetBalanceReducer = () => (
+  state: Dict<AccountBalance>,
+  {payload: {account_number: accountNumber}}: PayloadAction<AccountNumber>,
+) => {
+  delete state[accountNumber];
+};
+
 export function unsetLocalAndAccountReducer(sliceName: string) {
   return (state: any, {payload: {account_number: accountNumber}}: PayloadAction<AccountNumber>) => {
     delete state[accountNumber];
@@ -171,8 +185,4 @@ export function unsetLocalAndAddressReducer(sliceName: string) {
     delete state[address];
     localStore.set(getStateName(sliceName), state);
   };
-}
-
-export function unsetStateToNullReducer() {
-  return () => null;
 }

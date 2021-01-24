@@ -1,6 +1,12 @@
 import {createSelector} from '@reduxjs/toolkit';
 import {formatAddressFromNode} from '@renderer/utils/address';
-import {getBankConfigs, getManagedAccounts, getManagedBanks, getManagedValidators, getValidatorConfigs} from './state';
+import {
+  getBankConfigs,
+  getManagedAccountBalances,
+  getManagedBanks,
+  getManagedValidators,
+  getValidatorConfigs,
+} from './state';
 
 export const getActiveBank = createSelector([getManagedBanks], (managedBanks) => {
   return Object.values(managedBanks).find((bank) => bank.is_default) || null;
@@ -25,6 +31,6 @@ export const getActivePrimaryValidatorConfig = createSelector(
   },
 );
 
-export const getCoinBalance = createSelector([getManagedAccounts], (managedAccounts) => {
-  return Object.values(managedAccounts).reduce((acc, account) => acc + (account.balance || 0), 0);
+export const getCoinBalance = createSelector([getManagedAccountBalances], (managedAccountBalances) => {
+  return Object.values(managedAccountBalances).reduce((acc, account) => acc + account.balance, 0);
 });

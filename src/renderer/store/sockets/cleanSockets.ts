@@ -58,4 +58,4 @@ const cleanSockets = createSlice({
 
 export const {toggleCleanProcess, updateCleanProcess} = cleanSockets.actions;
 
-export default cleanSockets;
+export default cleanSockets.reducer;

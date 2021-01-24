@@ -20,4 +20,4 @@ export const {
   unsetBankBankTransactions,
 } = bankBankTransactions.actions;
 
-export default bankBankTransactions;
+export default bankBankTransactions.reducer;

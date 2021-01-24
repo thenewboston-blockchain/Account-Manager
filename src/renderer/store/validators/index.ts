@@ -1,14 +1,14 @@
 import {combineReducers} from '@reduxjs/toolkit';
 
 import {ACCOUNTS, BANKS, CONFIGS, VALIDATORS} from '@renderer/constants';
-import validatorAccounts, {
+import validatorAccountsReducer, {
   setValidatorAccounts,
   setValidatorAccountsError,
   unsetValidatorAccounts,
 } from './validatorAccounts';
-import validatorBanks, {setValidatorBanks, setValidatorBanksError, unsetValidatorBanks} from './validatorBanks';
-import validatorConfigs, {setValidatorConfig, setValidatorConfigError} from './validatorConfigs';
-import validatorValidators, {
+import validatorBanksReducer, {setValidatorBanks, setValidatorBanksError, unsetValidatorBanks} from './validatorBanks';
+import validatorConfigsReducer, {setValidatorConfig, setValidatorConfigError} from './validatorConfigs';
+import validatorValidatorsReducer, {
   setValidatorValidators,
   setValidatorValidatorsError,
   unsetValidatorValidators,
@@ -29,10 +29,10 @@ export {
 };
 
 const validatorReducers = combineReducers({
-  [ACCOUNTS]: validatorAccounts.reducer,
-  [BANKS]: validatorBanks.reducer,
-  [CONFIGS]: validatorConfigs.reducer,
-  [VALIDATORS]: validatorValidators.reducer,
+  [ACCOUNTS]: validatorAccountsReducer,
+  [BANKS]: validatorBanksReducer,
+  [CONFIGS]: validatorConfigsReducer,
+  [VALIDATORS]: validatorValidatorsReducer,
 });
 
 export default validatorReducers;

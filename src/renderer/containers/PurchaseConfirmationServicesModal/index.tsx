@@ -10,6 +10,7 @@ import {
   getActiveBankConfig,
   getActivePrimaryValidatorConfig,
   getBankConfigs,
+  getManagedAccountBalances,
   getManagedAccounts,
   getManagedBanks,
 } from '@renderer/selectors';
@@ -48,6 +49,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
   const bankConfigs = useSelector(getBankConfigs);
   const dispatch = useDispatch<AppDispatch>();
   const managedAccounts = useSelector(getManagedAccounts);
+  const managedAccountBalances = useSelector(getManagedAccountBalances);
   const managedBanks = useSelector(getManagedBanks);
 
   const bankSigningKey = useCallback(
@@ -216,17 +218,17 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
       if (!amount || !bankAddress) return true;
 
       const accountNumber = getBanksAccountNumberFromAddress(bankAddress);
-      const managedAccount = managedAccounts[accountNumber];
-      if (!managedAccount) return false;
+      const managedAccountBalance = managedAccountBalances[accountNumber];
+      if (!managedAccountBalance) return false;
 
       const totalCost =
         getBankTxFee(activeBank, accountNumber) +
         getPrimaryValidatorTxFee(activePrimaryValidator, accountNumber) +
         amount;
 
-      return totalCost <= managedAccount.balance;
+      return totalCost <= managedAccountBalance.balance;
     },
-    [activeBank, activePrimaryValidator, getBanksAccountNumberFromAddress, managedAccounts],
+    [activeBank, activePrimaryValidator, getBanksAccountNumberFromAddress, managedAccountBalances],
   );
 
   const validationSchema = useMemo(() => {

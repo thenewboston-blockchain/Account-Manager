@@ -1,8 +1,29 @@
-import {Dict, ManagedNode} from '@renderer/types';
-import {MigrationFunction} from '../../types';
+import {Dict, MigrationFunction} from '@renderer/types';
 
-export const addPortToManagedNodes = (managedNodes: Dict<ManagedNode>): Dict<ManagedNode> => {
-  const updatedNodes: Dict<ManagedNode> = {};
+type ProtocolType = 'http' | 'https';
+
+export interface OldManagedNode {
+  account_signing_key: string;
+  ip_address: string;
+  is_default?: boolean;
+  nickname: string;
+  nid_signing_key: string;
+  port: number | null;
+  protocol: ProtocolType;
+}
+
+export interface NewManagedNode {
+  account_signing_key: string;
+  ip_address: string;
+  is_default?: boolean;
+  nickname: string;
+  nid_signing_key: string;
+  port: number;
+  protocol: ProtocolType;
+}
+
+export const addPortToManagedNodes = (managedNodes: Dict<OldManagedNode>): Dict<NewManagedNode> => {
+  const updatedNodes: Dict<NewManagedNode> = {};
   for (const [address, managedNode] of Object.entries(managedNodes)) {
     const hasPortInAddress = address.split('').filter((char) => char === ':').length === 2;
     const updatedAddress = hasPortInAddress ? address : `${address}:80`;

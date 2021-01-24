@@ -1,12 +1,13 @@
 import intersection from 'lodash/intersection';
 
-import {setManagedAccountBalance} from '@renderer/store/app';
+import {setAccountBalance} from '@renderer/store/accountBalances';
+import {setManagedAccountBalance} from '@renderer/store/managedAccountBalances';
 import {setConfirmationBlockNotification} from '@renderer/store/notifications';
 import {AppDispatch} from '@renderer/types';
 import {generateUuid} from '@renderer/utils/local';
 
 const handleConfirmationBlockNotification = (
-  accountNumbers: string[],
+  relevantManagedAccountNumbers: string[],
   dispatch: AppDispatch,
   notification: any,
 ): void => {
@@ -22,10 +23,10 @@ const handleConfirmationBlockNotification = (
   } = notification;
 
   const recipients = txs.map(({recipient}: any) => recipient);
-  const managedAccountRecipients = intersection(accountNumbers, recipients);
+  const managedAccountRecipients = intersection(relevantManagedAccountNumbers, recipients);
   if (!managedAccountRecipients.length) return;
 
-  processUpdatedBalances(accountNumbers, dispatch, updatedBalances);
+  processUpdatedBalances(relevantManagedAccountNumbers, dispatch, updatedBalances);
 
   dispatch(
     setConfirmationBlockNotification({
@@ -37,16 +38,20 @@ const handleConfirmationBlockNotification = (
   );
 };
 
-const processUpdatedBalances = (accountNumbers: string[], dispatch: AppDispatch, updatedBalances: any[]): void => {
+const processUpdatedBalances = (
+  relevantManagedAccountNumbers: string[],
+  dispatch: AppDispatch,
+  updatedBalances: any[],
+): void => {
   updatedBalances
-    .filter(({account_number: accountNumber}) => accountNumbers.includes(accountNumber))
+    .filter(({account_number: accountNumber}) => relevantManagedAccountNumbers.includes(accountNumber))
     .forEach(({account_number: accountNumber, balance}) => {
-      dispatch(
-        setManagedAccountBalance({
-          account_number: accountNumber,
-          balance: balance || 0,
-        }),
-      );
+      const balancePayload = {
+        account_number: accountNumber,
+        balance: balance || 0,
+      };
+      dispatch(setAccountBalance(balancePayload));
+      dispatch(setManagedAccountBalance(balancePayload));
     });
 };
 

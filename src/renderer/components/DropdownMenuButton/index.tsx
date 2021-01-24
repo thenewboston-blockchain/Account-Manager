@@ -88,8 +88,8 @@ const DropdownMenuButton: FC<ComponentProps> = ({
     }
 
     if (e.key === 'Enter' && !disabled) {
-      await optionOnClick();
       closeMenu();
+      await optionOnClick();
     }
   };
 

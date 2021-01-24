@@ -1,10 +1,15 @@
-import {AccountNumber, AddressData, Balance, NodeIdentifier} from './network';
+import {AccountNumber, AddressData, NodeIdentifier} from './network';
+
+export enum AccountType {
+  'managedAccount' = 'managedAccount',
+  'managedFriend' = 'managedFriend',
+}
 
 export type AddressDataWithNickname = AddressData & Nickname;
 
 export type AppNodeAddressData = AddressDataWithNickname & NodeIdentifier;
 
-export interface ManagedAccount extends AccountNumber, Balance, Nickname {
+export interface ManagedAccount extends AccountNumber, Nickname {
   signing_key: string;
 }
 

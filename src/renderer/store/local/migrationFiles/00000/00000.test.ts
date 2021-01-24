@@ -1,13 +1,12 @@
 import TestElectronStore from '@renderer/models/store/TestElectronStore';
-import {ManagedNode} from '@renderer/types';
-import {addPortToManagedNodes, addPortPropertyToStore, deleteSocketsPropertyFromStore} from './index';
+import {addPortToManagedNodes, addPortPropertyToStore, deleteSocketsPropertyFromStore, OldManagedNode} from './index';
 
 const defaultIpAddress = '1.1.1.1';
 const defaultProtocol = 'http';
 
 const defaultAddress = `${defaultProtocol}://${defaultIpAddress}`;
 
-const defaultManagedNode: ManagedNode = {
+const defaultManagedNode: OldManagedNode = {
   account_signing_key: '',
   ip_address: defaultIpAddress,
   nickname: 'test',

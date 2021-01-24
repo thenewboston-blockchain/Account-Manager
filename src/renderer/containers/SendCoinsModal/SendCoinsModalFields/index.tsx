@@ -7,6 +7,7 @@ import {useFormContext} from '@renderer/hooks';
 import {
   getActiveBankConfig,
   getActivePrimaryValidatorConfig,
+  getManagedAccountBalances,
   getManagedAccounts,
   getManagedFriends,
 } from '@renderer/selectors';
@@ -33,6 +34,7 @@ const SendCoinsModalFields: FC<ComponentProps> = ({submitting}) => {
   const activeBankConfig = useSelector(getActiveBankConfig)!;
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig);
   const managedAccounts = useSelector(getManagedAccounts);
+  const managedAccountBalances = useSelector(getManagedAccountBalances);
   const managedFriends = useSelector(getManagedFriends);
 
   const coinsError = touched.coins ? errors.coins : '';
@@ -58,7 +60,7 @@ const SendCoinsModalFields: FC<ComponentProps> = ({submitting}) => {
   const renderSenderAccountBalance = (): string => {
     const {senderAccountNumber} = values;
     if (!senderAccountNumber) return '-';
-    const {balance} = managedAccounts[senderAccountNumber];
+    const {balance} = managedAccountBalances[senderAccountNumber];
     return balance?.toLocaleString() || '0';
   };
 

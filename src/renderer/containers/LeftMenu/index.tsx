@@ -1,12 +1,13 @@
-import React, {FC, ReactNode, useMemo} from 'react';
-import {useSelector} from 'react-redux';
+import React, {FC, ReactNode, useEffect, useMemo, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 
 import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import AddBankModal from '@renderer/containers/Bank/AddBankModal';
-import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
+import AddFriendModal from '@renderer/containers/Account/AddFriendModal';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import AddValidatorModal from '@renderer/containers/Validator/AddValidatorModal';
+import {fetchAccountBalance} from '@renderer/dispatchers/balances';
 import {useBooleanState} from '@renderer/hooks';
 import {
   getActivePrimaryValidatorConfig,
@@ -18,9 +19,10 @@ import {
   getManagedValidators,
   getValidatorConfigs,
 } from '@renderer/selectors';
-import {ManagedAccount, ManagedFriend, ManagedNode, RootState} from '@renderer/types';
+import {AppDispatch, ManagedAccount, ManagedFriend, ManagedNode, RootState} from '@renderer/types';
 import {formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
 import {sortByBooleanKey, sortDictValuesByPreferredKey} from '@renderer/utils/sort';
+import {displayErrorToast} from '@renderer/utils/toast';
 
 import LeftSubmenu from './LeftSubmenu';
 
@@ -53,6 +55,26 @@ const LeftMenu: FC = () => {
   const [addFriendModalIsOpen, toggleAddFriendModal] = useBooleanState(false);
   const [addValidatorModalIsOpen, toggleAddValidatorModal] = useBooleanState(false);
   const [createAccountModalIsOpen, toggleCreateAccountModal] = useBooleanState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const [loadingBalance, setLoadingBalance] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoadingBalance(true);
+        const managedAccountNumbers = Object.keys(managedAccounts);
+        await Promise.all(managedAccountNumbers.map((accountNumber) => dispatch(fetchAccountBalance(accountNumber))));
+        setLoadingBalance(false);
+      } catch (error) {
+        displayErrorToast('There was an error fetching your account balances');
+      }
+    };
+
+    fetchData();
+
+    // suppressing exhaustive-deps so that this only runs initially
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const accountItems = useMemo<ReactNode[]>(() => {
     const getRelatedNodePath = (signingKey: string) => {
@@ -107,10 +129,10 @@ const LeftMenu: FC = () => {
     () =>
       sortDictValuesByPreferredKey<ManagedFriend>(managedFriends, 'nickname', 'account_number')
         .map(({account_number, nickname}) => ({
-          baseUrl: `/friend/${account_number}`,
+          baseUrl: `/account/${account_number}`,
           key: account_number,
           label: nickname || account_number,
-          to: `/friend/${account_number}/overview`,
+          to: `/account/${account_number}/overview`,
         }))
         .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />),
     [managedFriends],
@@ -145,7 +167,7 @@ const LeftMenu: FC = () => {
     <div className="LeftMenu">
       <div className="coins">
         <div className="coins__title">Balance</div>
-        <div className="coins__amount">{coinBalance.toLocaleString()}</div>
+        <div className="coins__amount">{loadingBalance ? '-' : coinBalance.toLocaleString()}</div>
       </div>
       <LeftSubmenu menuItems={validatorMenuItems} rightOnClick={toggleAddValidatorModal} title="Validators" />
       <LeftSubmenu menuItems={bankMenuItems} rightOnClick={toggleAddBankModal} title="Banks" />

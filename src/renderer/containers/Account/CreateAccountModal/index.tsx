@@ -1,7 +1,6 @@
 import React, {FC, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
-import axios from 'axios';
 
 import Modal from '@renderer/components/Modal';
 import {
@@ -10,11 +9,13 @@ import {
   SIGNING_KEY_LENGTH_ERROR,
   SIGNING_KEY_REQUIRED_ERROR,
 } from '@renderer/constants/form-validation';
-import {getActivePrimaryValidator, getManagedAccounts} from '@renderer/selectors';
+import {fetchAccountBalance} from '@renderer/dispatchers/balances';
+import {getManagedAccounts, getManagedFriends} from '@renderer/selectors';
 import {setManagedAccount} from '@renderer/store/app';
+import {setAccountBalance} from '@renderer/store/accountBalances';
+import {setManagedAccountBalance} from '@renderer/store/managedAccountBalances';
 import {AppDispatch} from '@renderer/types';
 import {generateAccount} from '@renderer/utils/accounts';
-import {formatAddress} from '@renderer/utils/address';
 import {getNicknameField} from '@renderer/utils/forms/fields';
 import yup from '@renderer/utils/forms/yup';
 import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
@@ -30,10 +31,10 @@ interface ComponentProps {
 
 const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = false}) => {
   const [isCreatingNewAccount, setIsCreatingNewAccount] = useState<boolean>(true);
-  const activePrimaryValidator = useSelector(getActivePrimaryValidator)!;
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
   const managedAccounts = useSelector(getManagedAccounts);
+  const managedFriends = useSelector(getManagedFriends);
 
   const managedAccountSigningKeys = useMemo(
     () =>
@@ -43,13 +44,6 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
     [managedAccounts],
   );
 
-  const fetchAccountBalance = async (accountNumber: string) => {
-    const {ip_address: ipAddress, port, protocol} = activePrimaryValidator;
-    const address = formatAddress(ipAddress, port, protocol);
-    const {data} = await axios.get(`${address}/accounts/${accountNumber}/balance`);
-    return data;
-  };
-
   const handleSubmit = async ({nickname, signingKey, type}: FormValues): Promise<void> => {
     let [accountNumberStr, balance, signingKeyStr] = ['', 0, ''];
 
@@ -58,8 +52,25 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
         const {publicKeyHex, signingKeyHex} = getKeyPairFromSigningKeyHex(signingKey);
         accountNumberStr = publicKeyHex;
         signingKeyStr = signingKeyHex;
-        const {balance: accountBalance} = await fetchAccountBalance(accountNumberStr);
-        balance = accountBalance;
+
+        // check if accountNumber is a friend
+        const friendAccount = Object.values(managedFriends).find(
+          (managedFriend) => managedFriend.account_number === accountNumberStr,
+        );
+
+        if (friendAccount) {
+          displayErrorToast(
+            `This account with account number:
+            ${friendAccount.account_number.slice(0, friendAccount.account_number.length / 2)}
+            ${friendAccount.account_number.slice(friendAccount.account_number.length / 2)}
+            has already been added as your friend${
+              friendAccount.nickname ? `: ${friendAccount.nickname}` : ''
+            }. Unable to add friend as your own account.`,
+          );
+          return;
+        }
+
+        balance = await dispatch(fetchAccountBalance(accountNumberStr));
         displayToast('You successfully added an account!', 'success');
       } catch (error) {
         displayErrorToast(error);
@@ -77,11 +88,13 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
     dispatch(
       setManagedAccount({
         account_number: accountNumberStr,
-        balance: balance || 0,
         nickname,
         signing_key: signingKeyStr,
       }),
     );
+    const balancePayload = {account_number: accountNumberStr, balance: balance || 0};
+    dispatch(setAccountBalance(balancePayload));
+    dispatch(setManagedAccountBalance(balancePayload));
 
     history.push(`/account/${accountNumberStr}/overview`);
     close();
