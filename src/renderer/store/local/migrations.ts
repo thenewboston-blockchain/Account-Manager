@@ -4,10 +4,11 @@ import {runMigrationFunction} from '@renderer/utils/local';
 
 import migration0 from './migrationFiles/00000';
 import migration1 from './migrationFiles/00001';
+import migration2 from './migrationFiles/00002';
 
 // Before you add migrations, be sure to follow the directions!
 // https://github.com/thenewboston-developers/Account-Manager/blob/master/migrations.md#submitting-a-pr-with-migrations
-const migrationFunctions: MigrationFunction[] = [migration0, migration1];
+const migrationFunctions: MigrationFunction[] = [migration0, migration1, migration2];
 
 const STORE_VERSION = migrationFunctions.length - 1;
 

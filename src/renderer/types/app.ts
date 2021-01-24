@@ -1,5 +1,10 @@
 import {AccountNumber, AddressData, NodeIdentifier} from './network';
 
+export enum AccountType {
+  'managedAccount' = 'managedAccount',
+  'managedFriend' = 'managedFriend',
+}
+
 export type AddressDataWithNickname = AddressData & Nickname;
 
 export type AppNodeAddressData = AddressDataWithNickname & NodeIdentifier;

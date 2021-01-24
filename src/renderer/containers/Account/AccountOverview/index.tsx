@@ -1,11 +1,11 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 
 import {TileAccountBalance, TileAccountNumber, TileSigningKey} from '@renderer/components/Tiles';
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
-import {getManagedAccounts} from '@renderer/selectors';
-import {AppDispatch} from '@renderer/types';
+import {getManagedAccounts, getManagedFriends} from '@renderer/selectors';
+import {AccountType, AppDispatch} from '@renderer/types';
 import {displayErrorToast} from '@renderer/utils/toast';
 
 import './AccountOverview.scss';
@@ -14,9 +14,21 @@ const AccountOverview: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {accountNumber} = useParams<{accountNumber: string}>();
   const managedAccounts = useSelector(getManagedAccounts);
-
+  const managedFriends = useSelector(getManagedFriends);
   const managedAccount = managedAccounts[accountNumber];
-  const type = !managedAccount ? 'default' : 'account';
+  const managedFriend = managedFriends[accountNumber];
+
+  const type = useMemo<AccountType | null>(() => {
+    let output: AccountType | null = null;
+
+    if (managedAccount) {
+      output = AccountType.managedAccount;
+    } else if (managedFriend) {
+      output = AccountType.managedFriend;
+    }
+
+    return output;
+  }, [managedAccount, managedFriend]);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {

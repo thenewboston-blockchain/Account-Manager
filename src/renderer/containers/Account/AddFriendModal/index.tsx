@@ -59,7 +59,7 @@ const AddFriendModal: FC<ComponentProps> = ({close}) => {
         nickname,
       }),
     );
-    history.push(`/friend/${accountNumber}/overview`);
+    history.push(`/account/${accountNumber}/overview`);
     close();
   };
 

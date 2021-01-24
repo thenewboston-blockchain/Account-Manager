@@ -4,6 +4,7 @@ import clsx from 'clsx';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import Qr from '@renderer/components/Qr';
+import {AccountType} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';
 import {displayToast} from '@renderer/utils/toast';
 
@@ -13,7 +14,7 @@ import './TileAccountNumber.scss';
 interface ComponentProps {
   accountNumber: string;
   className?: string;
-  type: 'account' | 'friend' | 'default';
+  type: AccountType | null;
 }
 
 const TileAccountNumber: FC<ComponentProps> = ({accountNumber, className, type}) => {
@@ -21,14 +22,12 @@ const TileAccountNumber: FC<ComponentProps> = ({accountNumber, className, type})
 
   const title = useMemo(() => {
     switch (type) {
-      case 'account':
+      case AccountType.managedAccount:
         return 'My Account Number';
-      case 'friend':
+      case AccountType.managedFriend:
         return "Friend's Account Number";
-      case 'default':
-        return 'Account Number';
       default:
-        break;
+        return 'Account Number';
     }
   }, [type]);
 

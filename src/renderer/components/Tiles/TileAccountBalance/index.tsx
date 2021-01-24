@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import Icon, {IconType} from '@renderer/components/Icon';
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
 import {getAccountBalances} from '@renderer/selectors';
-import {AppDispatch} from '@renderer/types';
+import {AccountType, AppDispatch} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';
 import {displayErrorToast} from '@renderer/utils/toast';
 
@@ -15,7 +15,7 @@ import './TileAccountBalance.scss';
 interface ComponentProps {
   accountNumber: string;
   className?: string;
-  type: 'account' | 'friend' | 'default';
+  type: AccountType | null;
 }
 
 const TileAccountBalance: FC<ComponentProps> = ({accountNumber, className, type}) => {
@@ -30,14 +30,12 @@ const TileAccountBalance: FC<ComponentProps> = ({accountNumber, className, type}
 
   const title = useMemo(() => {
     switch (type) {
-      case 'account':
+      case AccountType.managedAccount:
         return 'My Account Balance';
-      case 'friend':
+      case AccountType.managedFriend:
         return "Friend's Account Balance";
-      case 'default':
-        return 'Account Balance';
       default:
-        break;
+        return 'Account Balance';
     }
   }, [type]);
 

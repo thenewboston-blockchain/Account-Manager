@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import AddBankModal from '@renderer/containers/Bank/AddBankModal';
-import AddFriendModal from '@renderer/containers/Friend/AddFriendModal';
+import AddFriendModal from '@renderer/containers/Account/AddFriendModal';
 import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
 import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import AddValidatorModal from '@renderer/containers/Validator/AddValidatorModal';
@@ -129,10 +129,10 @@ const LeftMenu: FC = () => {
     () =>
       sortDictValuesByPreferredKey<ManagedFriend>(managedFriends, 'nickname', 'account_number')
         .map(({account_number, nickname}) => ({
-          baseUrl: `/friend/${account_number}`,
+          baseUrl: `/account/${account_number}`,
           key: account_number,
           label: nickname || account_number,
-          to: `/friend/${account_number}/overview`,
+          to: `/account/${account_number}/overview`,
         }))
         .map(({baseUrl, key, label, to}) => <LeftSubmenuItem baseUrl={baseUrl} key={key} label={label} to={to} />),
     [managedFriends],

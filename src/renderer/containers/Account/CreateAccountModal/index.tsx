@@ -10,7 +10,7 @@ import {
   SIGNING_KEY_REQUIRED_ERROR,
 } from '@renderer/constants/form-validation';
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
-import {getManagedAccounts} from '@renderer/selectors';
+import {getManagedAccounts, getManagedFriends} from '@renderer/selectors';
 import {setManagedAccount} from '@renderer/store/app';
 import {setAccountBalance} from '@renderer/store/accountBalances';
 import {setManagedAccountBalance} from '@renderer/store/managedAccountBalances';
@@ -34,6 +34,7 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
   const managedAccounts = useSelector(getManagedAccounts);
+  const managedFriends = useSelector(getManagedFriends);
 
   const managedAccountSigningKeys = useMemo(
     () =>
@@ -51,6 +52,24 @@ const CreateAccountModal: FC<ComponentProps> = ({close, isGetStartedModal = fals
         const {publicKeyHex, signingKeyHex} = getKeyPairFromSigningKeyHex(signingKey);
         accountNumberStr = publicKeyHex;
         signingKeyStr = signingKeyHex;
+
+        // check if accountNumber is a friend
+        const friendAccount = Object.values(managedFriends).find(
+          (managedFriend) => managedFriend.account_number === accountNumberStr,
+        );
+
+        if (friendAccount) {
+          displayErrorToast(
+            `This account with account number:
+            ${friendAccount.account_number.slice(0, friendAccount.account_number.length / 2)}
+            ${friendAccount.account_number.slice(friendAccount.account_number.length / 2)}
+            has already been added as your friend${
+              friendAccount.nickname ? `: ${friendAccount.nickname}` : ''
+            }. Unable to add friend as your own account.`,
+          );
+          return;
+        }
+
         balance = await dispatch(fetchAccountBalance(accountNumberStr));
         displayToast('You successfully added an account!', 'success');
       } catch (error) {

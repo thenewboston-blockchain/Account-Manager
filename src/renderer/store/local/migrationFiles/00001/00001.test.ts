@@ -1,12 +1,11 @@
 import TestElectronStore from '@renderer/models/store/TestElectronStore';
-import {Balance, ManagedAccount} from '@renderer/types';
-import {removeBalanceFromManagedAccount, removeBalanceFromStoreManagedAccounts} from './index';
+import {OldManagedAccount, removeBalanceFromManagedAccount, removeBalanceFromStoreManagedAccounts} from './index';
 
 const accountNumber1 = 'test123';
 const balance1 = 111;
 const nickname1 = 'nickname 1';
 const signingKey1 = 'signing key 1';
-const oldManagedAccount1: ManagedAccount & Balance = {
+const oldManagedAccount1: OldManagedAccount = {
   account_number: accountNumber1,
   balance: balance1,
   nickname: nickname1,
@@ -17,7 +16,7 @@ const accountNumber2 = 'test456';
 const balance2 = 222;
 const nickname2 = 'nickname 2';
 const signingKey2 = 'signing key 2';
-const oldManagedAccount2: ManagedAccount & Balance = {
+const oldManagedAccount2: OldManagedAccount = {
   account_number: accountNumber2,
   balance: balance2,
   nickname: nickname2,

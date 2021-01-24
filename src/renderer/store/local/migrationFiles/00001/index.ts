@@ -1,6 +1,19 @@
-import {Balance, Dict, ManagedAccount, MigrationFunction} from '@renderer/types';
+import {Dict, MigrationFunction} from '@renderer/types';
 
-export const removeBalanceFromManagedAccount = (managedAccount: ManagedAccount & Balance) => {
+export interface OldManagedAccount {
+  account_number: string;
+  balance: number;
+  nickname: string;
+  signing_key: string;
+}
+
+export interface NewManagedAccount {
+  account_number: string;
+  nickname: string;
+  signing_key: string;
+}
+
+export const removeBalanceFromManagedAccount = (managedAccount: OldManagedAccount): NewManagedAccount => {
   return {
     account_number: managedAccount.account_number,
     nickname: managedAccount.nickname,
@@ -9,8 +22,8 @@ export const removeBalanceFromManagedAccount = (managedAccount: ManagedAccount &
 };
 
 export const removeBalanceFromStoreManagedAccounts: MigrationFunction = (localStore) => {
-  const managedAccounts = (localStore.get('managed_accounts') as Dict<ManagedAccount & Balance>) || undefined;
-  const updatedManagedAccounts: Dict<ManagedAccount> = managedAccounts
+  const managedAccounts = (localStore.get('managed_accounts') as Dict<OldManagedAccount>) || undefined;
+  const updatedManagedAccounts: Dict<NewManagedAccount> = managedAccounts
     ? Object.values(managedAccounts).reduce((acc, managedAccount) => {
         return {
           ...acc,
