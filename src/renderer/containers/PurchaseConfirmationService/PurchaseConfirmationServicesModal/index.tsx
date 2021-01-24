@@ -3,8 +3,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 
 import Modal from '@renderer/components/Modal';
-import {INVALID_AMOUNT_ERROR} from '@renderer/containers/SendCoinsModal/SendCoinsModalFields';
 import {AXIOS_TIMEOUT_MS} from '@renderer/config';
+import {INVALID_AMOUNT_ERROR} from '@renderer/constants/form-validation';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {
   getActiveBankConfig,

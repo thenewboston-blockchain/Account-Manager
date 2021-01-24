@@ -3,17 +3,19 @@ import {NavLink, RouteComponentProps, useHistory, withRouter} from 'react-router
 import clsx from 'clsx';
 
 import Icon, {IconType} from '@renderer/components/Icon';
+import {getCustomClassNames} from '@renderer/utils/components';
 import './LeftSubmenuItem.scss';
 
 export interface LeftSubmenuItemProps extends RouteComponentProps {
   baseUrl: string;
+  className?: string;
   key: string;
   label: ReactNode;
   relatedNodePath?: string;
   to: string;
 }
 
-const LeftSubmenuItem: FC<LeftSubmenuItemProps> = ({baseUrl, key, label, location, relatedNodePath, to}) => {
+const LeftSubmenuItem: FC<LeftSubmenuItemProps> = ({baseUrl, className, key, label, location, relatedNodePath, to}) => {
   const history = useHistory();
   const linkIconRef = useRef<HTMLDivElement>(null);
 
@@ -30,7 +32,9 @@ const LeftSubmenuItem: FC<LeftSubmenuItemProps> = ({baseUrl, key, label, locatio
     if (!relatedNodePath) return null;
     return (
       <Icon
-        className="LeftSubmenuItem__chain-link-icon"
+        className={clsx('LeftSubmenuItem__chain-link-icon', {
+          ...getCustomClassNames(className, '__chain-link-icon', true),
+        })}
         icon={IconType.link}
         onClick={handleLinkIconClick}
         ref={linkIconRef}
@@ -42,16 +46,19 @@ const LeftSubmenuItem: FC<LeftSubmenuItemProps> = ({baseUrl, key, label, locatio
 
   return (
     <NavLink
-      activeClassName="LeftSubmenuItem--active"
-      className={clsx('LeftSubmenuItem', {
+      activeClassName={clsx('LeftSubmenuItem--active', {...getCustomClassNames(className, '--active', true)})}
+      className={clsx('LeftSubmenuItem', className, {
         'LeftSubmenuItem--has-related-node': !!relatedNodePath,
+        ...getCustomClassNames(className, '--has-related-node', !!relatedNodePath),
       })}
       isActive={getIsActive}
       key={key}
       to={to}
     >
       {renderLinkIcon()}
-      <div className="LeftSubmenuItem__label">{label}</div>
+      <div className={clsx('LeftSubmenuItem__label', {...getCustomClassNames(className, '__label', true)})}>
+        {label}
+      </div>
     </NavLink>
   );
 };

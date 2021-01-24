@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import {getCrawlSockets} from '@renderer/selectors';
 import {toggleCrawlProcess} from '@renderer/store/sockets';
-import {AppDispatch, CrawlStatus, ManagedNode, NodeCrawlStatusWithAddress, ProtocolType} from '@renderer/types';
+import {AddressParams, AppDispatch, CrawlStatus, ManagedNode, NodeCrawlStatusWithAddress} from '@renderer/types';
 import {generateUuid} from '@renderer/utils/local';
 import {displayToast} from '@renderer/utils/toast';
 import {formatAddress} from '@renderer/utils/address';
@@ -22,7 +22,7 @@ const useNetworkCrawlFetcher = (
   loadingCrawl: boolean;
   submittingCrawl: boolean;
 } => {
-  const {ipAddress, port: portStr, protocol} = useParams<{ipAddress: string; port: string; protocol: ProtocolType}>();
+  const {ipAddress, port: portStr, protocol} = useParams<AddressParams>();
   const port = parseInt(portStr, 10);
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();

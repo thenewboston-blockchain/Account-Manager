@@ -17,7 +17,7 @@ import {
   VALIDATOR_BANKS,
   VALIDATOR_CONFIGS,
   VALIDATOR_VALIDATORS,
-} from '@renderer/constants';
+} from '@renderer/constants/actions';
 import {
   fetchBankAccounts,
   fetchBankBanks,

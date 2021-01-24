@@ -4,8 +4,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import AddBankModal from '@renderer/containers/Bank/AddBankModal';
 import AddFriendModal from '@renderer/containers/Account/AddFriendModal';
-import LeftSubmenuItem from '@renderer/containers/LeftMenu/LeftSubmenuItem';
-import LeftSubmenuItemStatus from '@renderer/containers/LeftMenu/LeftSubmenuItemStatus';
 import AddValidatorModal from '@renderer/containers/Validator/AddValidatorModal';
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
 import {useBooleanState} from '@renderer/hooks';
@@ -13,6 +11,7 @@ import {
   getActivePrimaryValidatorConfig,
   getBankConfigs,
   getCoinBalance,
+  getHasAuthenticatedBanks,
   getManagedAccounts,
   getManagedBanks,
   getManagedFriends,
@@ -25,7 +24,8 @@ import {sortByBooleanKey, sortDictValuesByPreferredKey} from '@renderer/utils/so
 import {displayErrorToast} from '@renderer/utils/toast';
 
 import LeftSubmenu from './LeftSubmenu';
-
+import LeftSubmenuItem from './LeftSubmenuItem';
+import LeftSubmenuItemStatus from './LeftSubmenuItemStatus';
 import './LeftMenu.scss';
 
 const LeftMenuSelector = (state: RootState) => {
@@ -56,6 +56,7 @@ const LeftMenu: FC = () => {
   const [addValidatorModalIsOpen, toggleAddValidatorModal] = useBooleanState(false);
   const [createAccountModalIsOpen, toggleCreateAccountModal] = useBooleanState(false);
   const dispatch = useDispatch<AppDispatch>();
+  const hasAuthenticatedBanks = useSelector(getHasAuthenticatedBanks);
   const [loadingBalance, setLoadingBalance] = useState(true);
 
   useEffect(() => {
@@ -100,30 +101,43 @@ const LeftMenu: FC = () => {
       ));
   }, [managedAccounts, managedBanks, managedValidators]);
 
-  const bankMenuItems = useMemo<ReactNode[]>(
-    () =>
-      sortDictValuesByPreferredKey<ManagedNode>(managedBanks, 'nickname', 'ip_address')
-        .sort(sortByBooleanKey<ManagedNode>('is_default'))
-        .map((managedBank) => ({
-          baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
-          isDefault: managedBank.is_default || false,
-          isOnline: bankConfigs[formatAddressFromNode(managedBank)]?.error === null || false,
-          key: managedBank.ip_address,
-          label: managedBank.nickname || managedBank.ip_address,
-          to: `/bank/${formatPathFromNode(managedBank)}/overview`,
-        }))
-        .map(({baseUrl, isDefault, isOnline, key, label, to}) => (
-          <LeftSubmenuItemStatus
-            badge={isDefault ? 'active-bank' : null}
-            baseUrl={baseUrl}
-            isOnline={isOnline}
-            key={key}
-            label={label}
-            to={to}
-          />
-        )),
-    [bankConfigs, managedBanks],
-  );
+  const bankMenuItems = useMemo<ReactNode[]>(() => {
+    const banks = sortDictValuesByPreferredKey<ManagedNode>(managedBanks, 'nickname', 'ip_address')
+      .sort(sortByBooleanKey<ManagedNode>('is_default'))
+      .map((managedBank) => ({
+        baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
+        isDefault: managedBank.is_default || false,
+        isOnline: bankConfigs[formatAddressFromNode(managedBank)]?.error === null || false,
+        key: managedBank.ip_address,
+        label: managedBank.nickname || managedBank.ip_address,
+        to: `/bank/${formatPathFromNode(managedBank)}/overview`,
+      }))
+      .map(({baseUrl, isDefault, isOnline, key, label, to}) => (
+        <LeftSubmenuItemStatus
+          badge={isDefault ? 'active-bank' : null}
+          baseUrl={baseUrl}
+          isOnline={isOnline}
+          key={key}
+          label={label}
+          to={to}
+        />
+      ));
+
+    if (hasAuthenticatedBanks) {
+      return [
+        ...banks,
+        <LeftSubmenuItem
+          baseUrl="/purchase-confirmation-services"
+          className="LeftMenu__purchase-confirmation-services"
+          key="purchase-services"
+          label="Purchase Services"
+          to="/purchase-confirmation-services"
+        />,
+      ];
+    }
+
+    return banks;
+  }, [bankConfigs, hasAuthenticatedBanks, managedBanks]);
 
   const friendMenuItems = useMemo<ReactNode[]>(
     () =>

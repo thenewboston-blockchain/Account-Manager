@@ -3,7 +3,7 @@ import React, {FC, useMemo} from 'react';
 import AccountLink from '@renderer/components/AccountLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {BANK_BLOCKS} from '@renderer/constants';
+import {BANK_BLOCKS} from '@renderer/constants/actions';
 import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BlockResponse} from '@renderer/types';
 import {formatDate} from '@renderer/utils/dates';

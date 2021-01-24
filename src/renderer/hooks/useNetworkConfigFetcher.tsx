@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {BANK_CONFIGS, VALIDATOR_CONFIGS} from '@renderer/constants';
+import {BANK_CONFIGS, VALIDATOR_CONFIGS} from '@renderer/constants/actions';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {fetchValidatorConfig} from '@renderer/dispatchers/validators';
 import {getBankConfigs, getValidatorConfigs} from '@renderer/selectors';

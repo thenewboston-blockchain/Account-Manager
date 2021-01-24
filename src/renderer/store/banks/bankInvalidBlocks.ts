@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {BANK_INVALID_BLOCKS} from '@renderer/constants';
+import {BANK_INVALID_BLOCKS} from '@renderer/constants/actions';
 import {DictWithPaginatedResultsAndError, InvalidBlock} from '@renderer/types';
 import {setPaginatedResultErrorReducer, setPaginatedResultReducer, unsetDataReducer} from '@renderer/utils/store';
 

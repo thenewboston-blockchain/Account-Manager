@@ -2,7 +2,7 @@ import React, {FC, useRef} from 'react';
 
 import {Loader} from '@renderer/components/FormElements';
 import {TileBankSigningDetails, TileCrawlClean, TileKeyValueList, TilePrimaryAmount} from '@renderer/components/Tiles';
-import {BANK_CONFIGS, BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants';
+import {BANK_CONFIGS, BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants/actions';
 import {
   useAddress,
   useNetworkConfigFetcher,

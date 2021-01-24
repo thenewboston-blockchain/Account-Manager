@@ -5,7 +5,7 @@ import {
   getActivePrimaryValidatorConfig,
   getCoinBalance,
 } from './app';
-import {getIsActiveBank, getIsManagedBank} from './banks';
+import {getHasAuthenticatedBanks, getIsActiveBank, getIsManagedBank} from './banks';
 import {getNewCrawlNotification, getNewCleanNotification} from './notifications';
 
 import {
@@ -52,6 +52,7 @@ export {
   getCleanSockets,
   getCoinBalance,
   getCrawlSockets,
+  getHasAuthenticatedBanks,
   getIsActiveBank,
   getIsActivePrimaryValidator,
   getIsManagedBank,

@@ -1,3 +1,4 @@
+import {createSelector} from '@reduxjs/toolkit';
 import {createCachedSelector} from 're-reselect';
 
 import {getNthArg} from '@renderer/selectors/utils';
@@ -6,6 +7,12 @@ import {formatAddressFromNode} from '@renderer/utils/address';
 
 import {getActiveBank} from './app';
 import {getManagedBanks} from './state';
+
+export const getHasAuthenticatedBanks = createSelector([getManagedBanks], (managedBanks): boolean => {
+  return !!Object.values(managedBanks).find(
+    (managedBank) => !!managedBank.account_signing_key && !!managedBank.nid_signing_key,
+  );
+});
 
 export const getIsActiveBank: (state: RootState, address: string) => boolean = createCachedSelector(
   [getActiveBank, getNthArg(1)],

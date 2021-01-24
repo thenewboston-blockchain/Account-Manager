@@ -5,10 +5,10 @@ import {useParams} from 'react-router-dom';
 import AccountLink from '@renderer/components/AccountLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {BANK_BANK_TRANSACTIONS} from '@renderer/constants';
+import {BANK_BANK_TRANSACTIONS} from '@renderer/constants/actions';
 import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {getActiveBankConfig} from '@renderer/selectors';
-import {BankTransaction} from '@renderer/types';
+import {AccountNumberParams, BankTransaction} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 import {formatDate} from '@renderer/utils/dates';
 
@@ -22,7 +22,7 @@ enum TableKeys {
 }
 
 const AccountTransactions: FC = () => {
-  const {accountNumber} = useParams<{accountNumber: string}>();
+  const {accountNumber} = useParams<AccountNumberParams>();
   const activeBank = useSelector(getActiveBankConfig)!;
   const activeBankAddress = formatAddressFromNode(activeBank);
   const {

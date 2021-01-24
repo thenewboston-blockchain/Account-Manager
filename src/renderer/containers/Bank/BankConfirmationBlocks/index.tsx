@@ -2,7 +2,7 @@ import React, {FC, useMemo} from 'react';
 
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {BANK_CONFIRMATION_BLOCKS} from '@renderer/constants';
+import {BANK_CONFIRMATION_BLOCKS} from '@renderer/constants/actions';
 import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BankConfirmationBlock} from '@renderer/types';
 

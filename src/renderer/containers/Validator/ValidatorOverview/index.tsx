@@ -9,7 +9,7 @@ import {
   TileDailyRate,
   TileCrawlClean,
 } from '@renderer/components/Tiles';
-import {VALIDATOR_CONFIGS} from '@renderer/constants';
+import {VALIDATOR_CONFIGS} from '@renderer/constants/actions';
 import {useNetworkCleanFetcher, useNetworkConfigFetcher, useNetworkCrawlFetcher} from '@renderer/hooks';
 import {ManagedNode, ValidatorConfig} from '@renderer/types';
 

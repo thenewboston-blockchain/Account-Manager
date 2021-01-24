@@ -7,10 +7,10 @@ import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
 import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-import SendCoinsModal from '@renderer/containers/SendCoinsModal';
+import SendCoinsModal from '@renderer/containers/Account/SendCoinsModal';
 import {useBooleanState} from '@renderer/hooks';
 import {getManagedAccounts, getManagedFriends} from '@renderer/selectors';
-import {AccountType, ManagedAccount, ManagedFriend} from '@renderer/types';
+import {AccountNumberParams, AccountType, ManagedAccount, ManagedFriend} from '@renderer/types';
 
 import AccountOverview from './AccountOverview';
 import AccountTransactions from './AccountTransactions';
@@ -20,7 +20,7 @@ import EditAccountNicknameModal from './EditAccountNicknameModal';
 import './Account.scss';
 
 const Account: FC = () => {
-  const {accountNumber} = useParams<{accountNumber: string}>();
+  const {accountNumber} = useParams<AccountNumberParams>();
   const {path, url} = useRouteMatch();
   const [deleteAccountModalIsOpen, toggleDeleteAccountModal] = useBooleanState(false);
   const [deleteFriendModalIsOpen, toggleDeleteFriendModal] = useBooleanState(false);

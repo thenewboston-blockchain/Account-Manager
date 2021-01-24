@@ -4,12 +4,13 @@ import {Redirect, Route, Switch} from 'react-router-dom';
 
 import Account from '@renderer/containers/Account';
 import Bank from '@renderer/containers/Bank';
-import LeftMenu from '@renderer/containers/LeftMenu';
-import TopNav from '@renderer/containers/TopNav';
+import PurchaseConfirmationService from '@renderer/containers/PurchaseConfirmationService';
 import Validator from '@renderer/containers/Validator';
 import {getActiveBankConfig} from '@renderer/selectors';
 import {formatPathFromNode} from '@renderer/utils/address';
 
+import LeftMenu from './LeftMenu';
+import TopNav from './TopNav';
 import './Layout.scss';
 
 export const Layout: FC = () => {
@@ -36,6 +37,9 @@ export const Layout: FC = () => {
           </Route>
           <Route path="/bank/:protocol/:ipAddress/:port">
             <Bank />
+          </Route>
+          <Route path="/purchase-confirmation-services/:protocol?/:ipAddress?/:port?">
+            <PurchaseConfirmationService />
           </Route>
           <Route path="/validator/:protocol/:ipAddress/:port">
             <Validator />

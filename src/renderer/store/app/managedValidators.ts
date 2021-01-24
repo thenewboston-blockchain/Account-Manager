@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {MANAGED_VALIDATORS} from '@renderer/constants';
+import {MANAGED_VALIDATORS} from '@renderer/constants/actions';
 import localStore from '@renderer/store/local';
 import {Dict, ManagedNode} from '@renderer/types';
 import {

@@ -5,14 +5,14 @@ import {useParams} from 'react-router-dom';
 import {TileAccountBalance, TileAccountNumber, TileSigningKey} from '@renderer/components/Tiles';
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
 import {getManagedAccounts, getManagedFriends} from '@renderer/selectors';
-import {AccountType, AppDispatch} from '@renderer/types';
+import {AccountNumberParams, AccountType, AppDispatch} from '@renderer/types';
 import {displayErrorToast} from '@renderer/utils/toast';
 
 import './AccountOverview.scss';
 
 const AccountOverview: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const {accountNumber} = useParams<{accountNumber: string}>();
+  const {accountNumber} = useParams<AccountNumberParams>();
   const managedAccounts = useSelector(getManagedAccounts);
   const managedFriends = useSelector(getManagedFriends);
   const managedAccount = managedAccounts[accountNumber];

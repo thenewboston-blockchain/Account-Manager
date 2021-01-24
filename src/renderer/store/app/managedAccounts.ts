@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {MANAGED_ACCOUNTS} from '@renderer/constants';
+import {MANAGED_ACCOUNTS} from '@renderer/constants/actions';
 import localStore from '@renderer/store/local';
 import {Dict, ManagedAccount} from '@renderer/types';
 import {

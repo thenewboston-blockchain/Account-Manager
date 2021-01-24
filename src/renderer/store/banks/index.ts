@@ -10,7 +10,7 @@ import {
   INVALID_BLOCKS,
   VALIDATOR_CONFIRMATION_SERVICES,
   VALIDATORS,
-} from '@renderer/constants';
+} from '@renderer/constants/actions';
 import bankAccountsReducer, {setBankAccounts, setBankAccountsError, unsetBankAccounts} from './bankAccounts';
 import bankBanksReducer, {setBankBanks, setBankBanksError, unsetBankBanks} from './bankBanks';
 import bankBankTransactionsReducer, {

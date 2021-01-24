@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import {AXIOS_TIMEOUT_MS, defaultPaginatedQueryParam} from '@renderer/config';
-import {ACCOUNTS, BANKS, VALIDATORS} from '@renderer/constants';
+import {ACCOUNTS, BANKS, VALIDATORS} from '@renderer/constants/actions';
 import {
   setValidatorAccounts,
   setValidatorAccountsError,

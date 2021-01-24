@@ -5,7 +5,7 @@ import Icon, {IconType} from '@renderer/components/Icon';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
-import {BANK_ACCOUNTS} from '@renderer/constants';
+import {BANK_ACCOUNTS} from '@renderer/constants/actions';
 import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BankAccount, ManagedNode} from '@renderer/types';
 import {formatDate} from '@renderer/utils/dates';

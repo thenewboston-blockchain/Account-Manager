@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {MANAGED_ACCOUNT_BALANCES} from '@renderer/constants';
+import {MANAGED_ACCOUNT_BALANCES} from '@renderer/constants/actions';
 import {AccountBalance, Dict} from '@renderer/types';
 import {setBalanceReducer, unsetBalanceReducer} from '@renderer/utils/store';
 

@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {BANK_CONFIRMATION_BLOCKS} from '@renderer/constants';
+import {BANK_CONFIRMATION_BLOCKS} from '@renderer/constants/actions';
 import {BankConfirmationBlock, DictWithPaginatedResultsAndError} from '@renderer/types';
 import {setPaginatedResultErrorReducer, setPaginatedResultReducer, unsetDataReducer} from '@renderer/utils/store';
 

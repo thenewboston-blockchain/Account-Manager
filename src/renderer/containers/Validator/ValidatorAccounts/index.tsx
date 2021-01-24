@@ -3,7 +3,7 @@ import React, {FC, useMemo} from 'react';
 import AccountLink from '@renderer/components/AccountLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
-import {VALIDATOR_ACCOUNTS} from '@renderer/constants';
+import {VALIDATOR_ACCOUNTS} from '@renderer/constants/actions';
 import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {ValidatorAccount} from '@renderer/types';
 
