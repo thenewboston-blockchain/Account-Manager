@@ -5,5 +5,26 @@
 
   .header {
     @include layout.main-container-header;
+    margin-bottom: 18px;
+  }
+
+  .main {
+    .bank-select {
+      align-items: center;
+      display: flex;
+
+      &__label {
+        margin-right: 6px;
+      }
+
+      &__input {
+        width: 420px;
+      }
+    }
+  }
+
+  &__no-authenticated-banks {
+    color: var(--color-red-500);
+    font-weight: bold;
   }
 }

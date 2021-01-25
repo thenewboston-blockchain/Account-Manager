@@ -149,6 +149,8 @@ const getUnsetActionCreatorFromType = (type: string) => {
 interface QueryParams {
   [param: string]: any;
 }
+
+// TODO: Make this hold an address State, that way you can update the address if you want
 function usePaginatedNetworkDataFetcher<T>(
   type: string,
   address: string,
