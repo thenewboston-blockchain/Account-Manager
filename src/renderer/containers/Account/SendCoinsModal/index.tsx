@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {FormButton} from '@renderer/components/FormComponents';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
+import {INVALID_AMOUNT_ERROR, MATCH_ERROR} from '@renderer/constants/form-validation';
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
 import {
   getActiveBankConfig,
@@ -17,7 +18,7 @@ import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 
-import SendCoinsModalFields, {FormValues, INVALID_AMOUNT_ERROR, MATCH_ERROR} from './SendCoinsModalFields';
+import SendCoinsModalFields, {FormValues} from './SendCoinsModalFields';
 import './SendCoinsModal.scss';
 
 const COIN_AMOUNT_CEILING = 100_000_000;

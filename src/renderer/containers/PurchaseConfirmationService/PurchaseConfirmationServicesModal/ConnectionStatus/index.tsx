@@ -12,9 +12,9 @@ interface ComponentProps {
 
 const ConnectionStatus: FC<ComponentProps> = ({status}) => {
   const renderConnectionStatusBadge = (): ReactNode => {
-    let icon;
-    let mainTitle;
-    let subTitle;
+    let icon: IconType;
+    let mainTitle: string;
+    let subTitle: string;
 
     if (status === 'checking') {
       icon = IconType.sync;

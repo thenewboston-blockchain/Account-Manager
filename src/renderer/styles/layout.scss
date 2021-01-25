@@ -6,5 +6,11 @@
 
 @mixin main-container {
   height: 100%;
-  padding: 12px;
+  padding: 18px 12px 12px;
+}
+
+@mixin main-container-header {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 6px;
 }

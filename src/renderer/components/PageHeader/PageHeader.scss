@@ -1,6 +1,7 @@
+@use 'src/renderer/styles/layout';
+
 .PageHeader {
-  display: flex;
-  justify-content: space-between;
+  @include layout.main-container-header;
   margin-bottom: 30px;
 
   &__DropdownMenuButton {

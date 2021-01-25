@@ -2,4 +2,8 @@
 
 .PurchaseConfirmationService {
   @include layout.main-container;
+
+  .header {
+    @include layout.main-container-header;
+  }
 }

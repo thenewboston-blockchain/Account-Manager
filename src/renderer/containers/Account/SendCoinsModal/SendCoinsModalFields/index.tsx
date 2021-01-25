@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux';
 
 import {FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
+import {MATCH_ERROR} from '@renderer/constants/form-validation';
 import {useFormContext} from '@renderer/hooks';
 import {
   getActiveBankConfig,
@@ -15,9 +16,6 @@ import {InputOption} from '@renderer/types';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 
 import './SendCoinsModalFields.scss';
-
-export const INVALID_AMOUNT_ERROR = 'Invalid amount';
-export const MATCH_ERROR = 'Sender and recipient cannot be same';
 
 export interface FormValues {
   coins: string;
