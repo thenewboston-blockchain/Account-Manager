@@ -3,11 +3,10 @@ import React, {FC, useRef} from 'react';
 import A from '@renderer/components/A';
 import {Loader} from '@renderer/components/FormElements';
 import {
-  TileValidatorSigningDetails,
-  TileKeyValueList,
-  TilePrimaryAmount,
-  TileDailyRate,
   TileCrawlClean,
+  TileKeyValueList,
+  TileValidatorSigningDetails,
+  TileWithAmount,
 } from '@renderer/components/Tiles';
 import {VALIDATOR_CONFIGS} from '@renderer/constants/actions';
 import {useNetworkCleanFetcher, useNetworkConfigFetcher, useNetworkCrawlFetcher} from '@renderer/hooks';
@@ -41,8 +40,8 @@ const ValidatorOverview: FC<ComponentProps> = ({isActivePrimaryValidator, isAuth
       ) : (
         <>
           <div className="ValidatorOverview__left">
-            <TilePrimaryAmount amount={validatorConfig.default_transaction_fee} title="Tx Fee" />
-            <TileDailyRate amount={validatorConfig.daily_confirmation_rate || '-'} title="Daily Rate" />
+            <TileWithAmount amount={validatorConfig.default_transaction_fee} title="Tx Fee" />
+            <TileWithAmount amount={validatorConfig.daily_confirmation_rate || '-'} title="Daily Rate" />
             <TileKeyValueList
               items={[
                 {
