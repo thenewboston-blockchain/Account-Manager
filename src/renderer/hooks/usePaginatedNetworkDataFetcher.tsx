@@ -150,14 +150,13 @@ interface QueryParams {
   [param: string]: any;
 }
 
-// TODO: Make this hold an address State, that way you can update the address if you want
 function usePaginatedNetworkDataFetcher<T>(
   type: string,
   address: string,
   queryParams: QueryParams = {},
 ): {
-  currentPage: number;
   count: number;
+  currentPage: number;
   error: string | null;
   loading: boolean;
   results: T[];

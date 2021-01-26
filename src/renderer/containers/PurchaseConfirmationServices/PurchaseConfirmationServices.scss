@@ -1,0 +1,28 @@
+@use 'src/renderer/styles/layout';
+
+.PurchaseConfirmationServices {
+  @include layout.main-container;
+
+  &__no-authenticated-banks {
+    color: var(--color-red-500);
+    font-weight: bold;
+  }
+
+  .header {
+    @include layout.main-container-header;
+    margin-bottom: 18px;
+  }
+
+  .bank-select {
+    align-items: center;
+    display: flex;
+
+    &__label {
+      margin-right: 6px;
+    }
+
+    &__input {
+      width: 420px;
+    }
+  }
+}

@@ -2,8 +2,9 @@ import React, {FC, ReactNode, useState} from 'react';
 import clsx from 'clsx';
 
 import ArrowToggle from '@renderer/components/ArrowToggle';
-import Loader from '@renderer/components/FormElements/Loader';
+import {Checkbox, Loader} from '@renderer/components/FormElements';
 import PaginationSummary from '@renderer/components/PaginationSummary';
+import {GenericVoidFunction} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';
 
 import './PageTable.scss';
@@ -27,13 +28,25 @@ interface ComponentProps {
   className?: string;
   count: number;
   currentPage: number;
+  handleSelectRow?(i: number): GenericVoidFunction;
   items: PageTableItems;
   loading: boolean;
+  selectedData?: {[key: string]: true};
 }
 
-const PageTable: FC<ComponentProps> = ({className, count, currentPage, items, loading}) => {
+const PageTable: FC<ComponentProps> = ({
+  className,
+  count,
+  currentPage,
+  handleSelectRow,
+  items,
+  loading,
+  selectedData,
+}) => {
   const {headers, data, orderedKeys} = items;
   const [expanded, setExpanded] = useState<number[]>([]);
+
+  const hasCheckbox = !!handleSelectRow && !!selectedData;
 
   const toggleExpanded = (indexToToggle: number) => (): void => {
     setExpanded(
@@ -54,7 +67,12 @@ const PageTable: FC<ComponentProps> = ({className, count, currentPage, items, lo
           })}
           key={item.key}
         >
-          <td>
+          {hasCheckbox ? (
+            <td className="PageTable__td PageTable__td--checkbox">
+              <Checkbox checked={selectedData![item.key]} onClick={handleSelectRow!(dataIndex)} value={item.key} />
+            </td>
+          ) : null}
+          <td className="PageTable__td">
             <ArrowToggle
               className={clsx('PageTable__ArrowToggle', {...getCustomClassNames(className, '__ArrowToggle', true)})}
               expanded={rowIsExpanded}
@@ -62,7 +80,9 @@ const PageTable: FC<ComponentProps> = ({className, count, currentPage, items, lo
             />
           </td>
           {orderedKeys.map((key) => (
-            <td key={key}>{item[key] || '-'}</td>
+            <td className="PageTable__td" key={key}>
+              {item[key] || '-'}
+            </td>
           ))}
         </tr>
       );
@@ -77,9 +97,12 @@ const PageTable: FC<ComponentProps> = ({className, count, currentPage, items, lo
       <table className={clsx('PageTable', className)}>
         <thead className={clsx('PageTable__thead', {...getCustomClassNames(className, '__thead', true)})}>
           <tr>
-            <th />
+            {hasCheckbox ? <th className="PageTable__th" /> : null}
+            <th className="PageTable__th" />
             {orderedKeys.map((key) => (
-              <td key={key}>{headers[key]}</td>
+              <th className="PageTable__th" key={key}>
+                {headers[key]}
+              </th>
             ))}
           </tr>
         </thead>

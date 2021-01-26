@@ -7,7 +7,7 @@ import NodeLink from '@renderer/components/NodeLink';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
-import PurchaseConfirmationServicesModal from '@renderer/containers/PurchaseConfirmationService/PurchaseConfirmationServicesModal';
+import PurchaseConfirmationServicesModal from '@renderer/containers/PurchaseConfirmationServices/PurchaseConfirmationServicesModal';
 import {BANK_VALIDATORS} from '@renderer/constants/actions';
 import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {getActivePrimaryValidatorConfig} from '@renderer/selectors';

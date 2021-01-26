@@ -1,12 +1,8 @@
 .PageTable {
+  $self: &;
   font-family: var(--font-family-mono);
   padding: var(--page-table-padding);
   width: 100%;
-
-  td,
-  th {
-    border-bottom: 1px solid var(--color-gray-100);
-  }
 
   &__ArrowToggle {
     height: 16px;
@@ -19,35 +15,44 @@
   }
 
   &__row {
-    td {
-      max-width: 120px;
-      overflow: hidden;
-      padding: 6px 4px;
-      text-overflow: ellipsis;
-      vertical-align: top;
-      white-space: nowrap;
-
-      &:first-of-type {
-        width: 32px;
-      }
-    }
-
     &--expanded {
-      td {
+      #{$self}__td {
         white-space: normal;
         word-wrap: break-word;
       }
     }
   }
 
+  &__td,
+  &__th {
+    border-bottom: 1px solid var(--color-gray-100);
+  }
+
+  &__td {
+    max-width: 120px;
+    overflow: hidden;
+    padding: 6px 4px;
+    text-overflow: ellipsis;
+    vertical-align: top;
+    white-space: nowrap;
+
+    &:first-of-type {
+      width: 32px;
+    }
+
+    &--checkbox {
+      padding: 3px 4px;
+    }
+  }
+
+  &__th {
+    padding: 0 4px 6px;
+    white-space: nowrap;
+  }
+
   &__thead {
     color: var(--color-gray-500);
     font-weight: 500;
     text-align: left;
-
-    td {
-      padding: 0 4px 6px;
-      white-space: nowrap;
-    }
   }
 }

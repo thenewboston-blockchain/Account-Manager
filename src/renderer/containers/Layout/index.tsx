@@ -4,7 +4,7 @@ import {Redirect, Route, Switch} from 'react-router-dom';
 
 import Account from '@renderer/containers/Account';
 import Bank from '@renderer/containers/Bank';
-import PurchaseConfirmationService from '@renderer/containers/PurchaseConfirmationService';
+import PurchaseConfirmationServices from '@renderer/containers/PurchaseConfirmationServices';
 import Validator from '@renderer/containers/Validator';
 import {getActiveBankConfig} from '@renderer/selectors';
 import {formatPathFromNode} from '@renderer/utils/address';
@@ -39,7 +39,7 @@ export const Layout: FC = () => {
             <Bank />
           </Route>
           <Route path="/purchase-confirmation-services/:protocol?/:ipAddress?/:port?">
-            <PurchaseConfirmationService />
+            <PurchaseConfirmationServices />
           </Route>
           <Route path="/validator/:protocol/:ipAddress/:port">
             <Validator />

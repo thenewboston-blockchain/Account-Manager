@@ -14,7 +14,9 @@ export const renderFormError = ({
   hideErrorText?: boolean;
   name: string;
 }): ReactNode => (
-  <span className={clsx({...getCustomClassNames(className, '__error-message', true)})}>
+  <span
+    className={clsx('FormFieldComponent__error-message', {...getCustomClassNames(className, '__error-message', true)})}
+  >
     {hideErrorText ? null : <ErrorMessage name={name} />}
   </span>
 );
@@ -31,7 +33,10 @@ export const renderFormLabel = ({
   required?: boolean;
 }): ReactNode =>
   label ? (
-    <label className={clsx({...getCustomClassNames(className, '__label', true)})} htmlFor={name}>
+    <label
+      className={clsx('FormFieldComponent__label', {...getCustomClassNames(className, '__label', true)})}
+      htmlFor={name}
+    >
       {label}
       {required ? <RequiredAsterisk /> : null}
     </label>
