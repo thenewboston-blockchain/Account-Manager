@@ -1,6 +1,7 @@
 import React, {Dispatch, FC, useMemo} from 'react';
 import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
 import Pagination from '@renderer/components/Pagination';
+import {PAGINATED_RESULTS_LIMIT} from '@renderer/config';
 import {BANK_VALIDATORS} from '@renderer/constants/actions';
 import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BaseValidator} from '@renderer/types';
@@ -40,8 +41,10 @@ const PurchaseConfirmationServicesTable: FC<ComponentProps> = ({
   } = usePaginatedNetworkDataFetcher<BaseValidator>(BANK_VALIDATORS, address);
 
   const handleCheckboxClick = (validatorIndex: number) => () => {
-    const validatorNid = bankValidators[validatorIndex].node_identifier;
-    dispatchSelectedValidators(toggleSelectedValidator(validatorNid));
+    const nodeIdentifier = bankValidators[validatorIndex].node_identifier;
+    dispatchSelectedValidators(
+      toggleSelectedValidator({index: (currentPage - 1) * PAGINATED_RESULTS_LIMIT + validatorIndex, nodeIdentifier}),
+    );
   };
 
   const bankValidatorsTableData = useMemo<PageTableData[]>(

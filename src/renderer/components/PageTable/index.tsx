@@ -31,7 +31,7 @@ interface ComponentProps {
   handleSelectRow?(i: number): GenericVoidFunction;
   items: PageTableItems;
   loading: boolean;
-  selectedData?: {[key: string]: true};
+  selectedData?: {[key: string]: number};
 }
 
 const PageTable: FC<ComponentProps> = ({
@@ -69,7 +69,11 @@ const PageTable: FC<ComponentProps> = ({
         >
           {hasCheckbox ? (
             <td className="PageTable__td PageTable__td--checkbox">
-              <Checkbox checked={selectedData![item.key]} onClick={handleSelectRow!(dataIndex)} value={item.key} />
+              <Checkbox
+                checked={selectedData![item.key] !== undefined}
+                onClick={handleSelectRow!(dataIndex)}
+                value={item.key}
+              />
             </td>
           ) : null}
           <td className="PageTable__td">

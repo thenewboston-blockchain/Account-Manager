@@ -1,7 +1,7 @@
 import omit from 'lodash/omit';
 
 export type SelectedValidatorState = {
-  [validatorNid: string]: true;
+  [nodeIdentifier: string]: number;
 };
 
 enum SelectedValidatorTypes {
@@ -9,9 +9,14 @@ enum SelectedValidatorTypes {
   toggle = 'toggle',
 }
 
+interface SelectedValidatorPayload {
+  index: number;
+  nodeIdentifier: string;
+}
+
 export interface SelectedValidatorAction {
   type: SelectedValidatorTypes;
-  payload?: string;
+  payload?: SelectedValidatorPayload;
 }
 
 export const clearSelectedValidator = (): SelectedValidatorAction => {
@@ -20,25 +25,27 @@ export const clearSelectedValidator = (): SelectedValidatorAction => {
   };
 };
 
-export const toggleSelectedValidator = (validatorNid: string): SelectedValidatorAction => {
+export const toggleSelectedValidator = (payload: SelectedValidatorPayload): SelectedValidatorAction => {
   return {
-    payload: validatorNid,
+    payload,
     type: SelectedValidatorTypes.toggle,
   };
 };
 
 export const selectedValidatorReducer = (
   state: SelectedValidatorState,
-  {payload = '', type}: SelectedValidatorAction,
+  {payload = {index: -1, nodeIdentifier: ''}, type}: SelectedValidatorAction,
 ): SelectedValidatorState => {
+  const {index, nodeIdentifier} = payload;
+
   switch (type) {
     case SelectedValidatorTypes.toggle: {
-      if (payload in state) {
-        return omit(state, payload);
+      if (nodeIdentifier in state) {
+        return omit(state, nodeIdentifier);
       }
       return {
         ...state,
-        [payload]: true,
+        [nodeIdentifier]: index,
       };
     }
     case SelectedValidatorTypes.clearAll: {
