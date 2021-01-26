@@ -1,7 +1,6 @@
 import React, {FC, useMemo} from 'react';
 
-import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
-import Pagination from '@renderer/components/Pagination';
+import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import {BANK_INVALID_BLOCKS} from '@renderer/constants/actions';
 import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {InvalidBlock} from '@renderer/types';
@@ -51,10 +50,15 @@ const BankInvalidBlocks: FC = () => {
   );
 
   return (
-    <div className="BankInvalidBlocks">
-      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
-      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-    </div>
+    <PaginatedTable
+      className="BankInvalidBlocks"
+      count={count}
+      currentPage={currentPage}
+      items={pageTableItems}
+      loading={loading}
+      setPage={setPage}
+      totalPages={totalPages}
+    />
   );
 };
 

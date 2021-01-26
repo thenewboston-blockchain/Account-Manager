@@ -76,6 +76,7 @@ const PurchaseConfirmationServices: FC = () => {
         </div>
         <PurchaseConfirmationServicesTable
           address={selectedBank.value}
+          className="PurchaseConfirmationServices__table"
           dispatchSelectedValidators={dispatchSelectedValidators}
           selectedValidators={selectedValidators}
         />

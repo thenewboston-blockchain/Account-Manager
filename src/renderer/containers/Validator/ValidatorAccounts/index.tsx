@@ -1,8 +1,7 @@
 import React, {FC, useMemo} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
-import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
-import Pagination from '@renderer/components/Pagination';
+import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import {VALIDATOR_ACCOUNTS} from '@renderer/constants/actions';
 import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {ValidatorAccount} from '@renderer/types';
@@ -49,10 +48,15 @@ const ValidatorAccounts: FC = () => {
   );
 
   return (
-    <div className="ValidatorAccounts">
-      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
-      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-    </div>
+    <PaginatedTable
+      className="ValidatorAccounts"
+      count={count}
+      currentPage={currentPage}
+      items={pageTableItems}
+      loading={loading}
+      setPage={setPage}
+      totalPages={totalPages}
+    />
   );
 };
 

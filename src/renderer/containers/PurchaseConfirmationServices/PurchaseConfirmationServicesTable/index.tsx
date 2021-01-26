@@ -1,6 +1,7 @@
 import React, {Dispatch, FC, useMemo} from 'react';
-import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
-import Pagination from '@renderer/components/Pagination';
+import clsx from 'clsx';
+
+import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import {PAGINATED_RESULTS_LIMIT} from '@renderer/config';
 import {BANK_VALIDATORS} from '@renderer/constants/actions';
 import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
@@ -10,6 +11,7 @@ import {SelectedValidatorAction, SelectedValidatorState, toggleSelectedValidator
 
 interface ComponentProps {
   address: string;
+  className?: string;
   dispatchSelectedValidators: Dispatch<SelectedValidatorAction>;
   selectedValidators: SelectedValidatorState;
 }
@@ -28,6 +30,7 @@ enum TableKeys {
 
 const PurchaseConfirmationServicesTable: FC<ComponentProps> = ({
   address,
+  className,
   dispatchSelectedValidators,
   selectedValidators,
 }) => {
@@ -94,17 +97,17 @@ const PurchaseConfirmationServicesTable: FC<ComponentProps> = ({
   );
 
   return (
-    <div className="PurchaseConfirmationServicesTable">
-      <PageTable
-        count={count}
-        currentPage={currentPage}
-        handleSelectRow={handleCheckboxClick}
-        items={pageTableItems}
-        loading={loading}
-        selectedData={selectedValidators}
-      />
-      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-    </div>
+    <PaginatedTable
+      className={clsx('PurchaseConfirmationServicesTable', className)}
+      count={count}
+      currentPage={currentPage}
+      handleSelectRow={handleCheckboxClick}
+      items={pageTableItems}
+      loading={loading}
+      selectedData={selectedValidators}
+      setPage={setPage}
+      totalPages={totalPages}
+    />
   );
 };
 

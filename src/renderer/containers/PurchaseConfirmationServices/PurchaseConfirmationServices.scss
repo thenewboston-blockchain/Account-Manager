@@ -8,6 +8,11 @@
     font-weight: bold;
   }
 
+  &__table {
+    position: relative;
+    top: -30px;
+  }
+
   .header {
     @include layout.main-container-header;
     margin-bottom: 18px;
@@ -16,6 +21,8 @@
   .bank-select {
     align-items: center;
     display: flex;
+    position: relative;
+    z-index: 1;
 
     &__label {
       margin-right: 6px;

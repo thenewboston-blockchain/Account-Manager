@@ -4,8 +4,7 @@ import {useSelector} from 'react-redux';
 import AccountLink from '@renderer/components/AccountLink';
 import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
-import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
-import Pagination from '@renderer/components/Pagination';
+import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
 import PurchaseConfirmationServicesModal from '@renderer/containers/PurchaseConfirmationServices/PurchaseConfirmationServicesModal';
 import {BANK_VALIDATORS} from '@renderer/constants/actions';
@@ -153,9 +152,16 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
   );
 
   return (
-    <div className="BankValidators">
-      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
-      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
+    <>
+      <PaginatedTable
+        className="BankValidators"
+        count={count}
+        currentPage={currentPage}
+        items={pageTableItems}
+        loading={loading}
+        setPage={setPage}
+        totalPages={totalPages}
+      />
       {editTrustModalIsOpen && !!editTrustValidator && !!managedBank && (
         <EditTrustModal
           close={toggleEditTrustModal}
@@ -168,7 +174,7 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
       {purchaseServicesModalIsOpen && !!purchaseServicesValidator && (
         <PurchaseConfirmationServicesModal close={togglePurchaseServicesModal} validator={purchaseServicesValidator} />
       )}
-    </div>
+    </>
   );
 };
 

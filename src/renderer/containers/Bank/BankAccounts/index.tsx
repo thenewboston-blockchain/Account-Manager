@@ -2,8 +2,7 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
 import Icon, {IconType} from '@renderer/components/Icon';
-import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
-import Pagination from '@renderer/components/Pagination';
+import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
 import {BANK_ACCOUNTS} from '@renderer/constants/actions';
 import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
@@ -95,9 +94,16 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
   );
 
   return (
-    <div className="BankAccounts">
-      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
-      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
+    <>
+      <PaginatedTable
+        className="BankAccounts"
+        count={count}
+        currentPage={currentPage}
+        items={pageTableItems}
+        loading={loading}
+        setPage={setPage}
+        totalPages={totalPages}
+      />
       {editTrustModalIsOpen && !!editTrustAccount && !!managedBank && (
         <EditTrustModal
           close={toggleEditTrustModal}
@@ -107,7 +113,7 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
           trust={editTrustAccount.trust}
         />
       )}
-    </div>
+    </>
   );
 };
 

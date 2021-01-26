@@ -9,11 +9,6 @@
     width: 16px;
   }
 
-  &__PaginationSummary {
-    margin: 12px 0;
-    padding: 2px 0;
-  }
-
   &__row {
     &--expanded {
       #{$self}__td {

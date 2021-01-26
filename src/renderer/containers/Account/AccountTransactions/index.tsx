@@ -3,8 +3,7 @@ import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 
 import AccountLink from '@renderer/components/AccountLink';
-import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
-import Pagination from '@renderer/components/Pagination';
+import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import {BANK_BANK_TRANSACTIONS} from '@renderer/constants/actions';
 import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {getActiveBankConfig} from '@renderer/selectors';
@@ -74,10 +73,15 @@ const AccountTransactions: FC = () => {
   );
 
   return (
-    <div className="AccountTransactions">
-      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
-      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-    </div>
+    <PaginatedTable
+      className="AccountTransactions"
+      count={count}
+      currentPage={currentPage}
+      items={pageTableItems}
+      loading={loading}
+      setPage={setPage}
+      totalPages={totalPages}
+    />
   );
 };
 

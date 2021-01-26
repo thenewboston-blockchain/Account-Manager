@@ -1,11 +1,9 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
-import {Loader} from '@renderer/components/FormElements';
 import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
-import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
-import Pagination from '@renderer/components/Pagination';
+import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
 import {BANK_BANKS} from '@renderer/constants/actions';
 import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
@@ -104,25 +102,26 @@ const BankBanks: FC<ComponentProps> = ({managedBank}) => {
   );
 
   return (
-    <div className="BankBanks">
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
-          <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-          {editTrustModalIsOpen && !!editTrustBank && !!managedBank && (
-            <EditTrustModal
-              close={toggleEditTrustModal}
-              requestingNode={managedBank}
-              targetIdentifier={editTrustBank.node_identifier}
-              targetType="banks"
-              trust={editTrustBank.trust}
-            />
-          )}
-        </>
+    <>
+      <PaginatedTable
+        className="BankBanks"
+        count={count}
+        currentPage={currentPage}
+        items={pageTableItems}
+        loading={loading}
+        setPage={setPage}
+        totalPages={totalPages}
+      />
+      {editTrustModalIsOpen && !!editTrustBank && !!managedBank && (
+        <EditTrustModal
+          close={toggleEditTrustModal}
+          requestingNode={managedBank}
+          targetIdentifier={editTrustBank.node_identifier}
+          targetType="banks"
+          trust={editTrustBank.trust}
+        />
       )}
-    </div>
+    </>
   );
 };
 

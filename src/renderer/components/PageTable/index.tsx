@@ -2,8 +2,7 @@ import React, {FC, ReactNode, useState} from 'react';
 import clsx from 'clsx';
 
 import ArrowToggle from '@renderer/components/ArrowToggle';
-import {Checkbox, Loader} from '@renderer/components/FormElements';
-import PaginationSummary from '@renderer/components/PaginationSummary';
+import {Checkbox} from '@renderer/components/FormElements';
 import {GenericVoidFunction} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';
 
@@ -24,25 +23,14 @@ export interface PageTableItems {
   data: PageTableData[];
 }
 
-interface ComponentProps {
+export interface PageTableProps {
   className?: string;
-  count: number;
-  currentPage: number;
   handleSelectRow?(i: number): GenericVoidFunction;
   items: PageTableItems;
-  loading: boolean;
   selectedData?: {[key: string]: number};
 }
 
-const PageTable: FC<ComponentProps> = ({
-  className,
-  count,
-  currentPage,
-  handleSelectRow,
-  items,
-  loading,
-  selectedData,
-}) => {
+const PageTable: FC<PageTableProps> = ({className, handleSelectRow, items, selectedData}) => {
   const {headers, data, orderedKeys} = items;
   const [expanded, setExpanded] = useState<number[]>([]);
 
@@ -93,26 +81,21 @@ const PageTable: FC<ComponentProps> = ({
     });
   };
 
-  return loading ? (
-    <Loader />
-  ) : (
-    <>
-      <PaginationSummary className="PageTable__PaginationSummary" count={count} currentPage={currentPage} />
-      <table className={clsx('PageTable', className)}>
-        <thead className={clsx('PageTable__thead', {...getCustomClassNames(className, '__thead', true)})}>
-          <tr>
-            {hasCheckbox ? <th className="PageTable__th" /> : null}
-            <th className="PageTable__th" />
-            {orderedKeys.map((key) => (
-              <th className="PageTable__th" key={key}>
-                {headers[key]}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>{renderRows()}</tbody>
-      </table>
-    </>
+  return (
+    <table className={clsx('PageTable', className)}>
+      <thead className={clsx('PageTable__thead', {...getCustomClassNames(className, '__thead', true)})}>
+        <tr>
+          {hasCheckbox ? <th className="PageTable__th" /> : null}
+          <th className="PageTable__th" />
+          {orderedKeys.map((key) => (
+            <th className="PageTable__th" key={key}>
+              {headers[key]}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>{renderRows()}</tbody>
+    </table>
   );
 };
 

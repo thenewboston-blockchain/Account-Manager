@@ -6,7 +6,7 @@ import Icon, {IconType} from '@renderer/components/Icon';
 import {getCustomClassNames} from '@renderer/utils/components';
 import './Pagination.scss';
 
-interface ComponentProps {
+export interface PaginationProps {
   className?: string;
   currentPage: number;
   setPage(page: number): () => void;
@@ -15,7 +15,7 @@ interface ComponentProps {
 
 const TOTAL_VISIBLE_PAGES = 11;
 
-const Pagination: FC<ComponentProps> = ({className, currentPage, setPage, totalPages}) => {
+const Pagination: FC<PaginationProps> = ({className, currentPage, setPage, totalPages}) => {
   const nextIsDisabled = useMemo(() => currentPage >= totalPages, [currentPage, totalPages]);
   const prevIsDisabled = useMemo(() => currentPage === 1, [currentPage]);
   const leftEllipsesIsVisible = useMemo(() => currentPage > Math.floor(TOTAL_VISIBLE_PAGES / 2) + 1, [currentPage]);
