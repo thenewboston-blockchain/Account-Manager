@@ -164,19 +164,27 @@ function usePaginatedNetworkDataFetcher<T>(
   totalPages: number;
 } {
   const [count, setCount] = useState<number>(0);
+  const [currentAddress, setCurrentAddress] = useState<string>(address);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [memoizedQueryParams, setMemoizedQueryParams] = useState<QueryParams>(queryParams);
   const [totalPages, setTotalPages] = useState<number>(1);
   const dispatch = useDispatch<AppDispatch>();
   const paginatedResultsDataObject = useSelector(getSelectorFromType<T>(type));
-  const paginatedResultsData = paginatedResultsDataObject[address];
+  const paginatedResultsData = paginatedResultsDataObject[currentAddress];
 
   useEffect(() => {
     if (!isEqual(memoizedQueryParams, queryParams)) {
       setMemoizedQueryParams(queryParams);
     }
   }, [memoizedQueryParams, queryParams]);
+
+  useEffect(() => {
+    if (address !== currentAddress) {
+      setCurrentAddress(address);
+      setCurrentPage(1);
+    }
+  }, [address, currentAddress]);
 
   useEffect(() => {
     if (paginatedResultsData) {
@@ -192,7 +200,7 @@ function usePaginatedNetworkDataFetcher<T>(
         limit: PAGINATED_RESULTS_LIMIT,
         offset: (currentPage - 1) * PAGINATED_RESULTS_LIMIT,
       };
-      await dispatch(getDispatcherFromType(type)(address, {...memoizedQueryParams, ...paginatedQueryParams}));
+      await dispatch(getDispatcherFromType(type)(currentAddress, {...memoizedQueryParams, ...paginatedQueryParams}));
       setLoading(false);
     };
 
@@ -200,10 +208,10 @@ function usePaginatedNetworkDataFetcher<T>(
 
     return () => {
       if (type !== BANK_CONFIGS && type !== VALIDATOR_CONFIGS) {
-        dispatch(getUnsetActionCreatorFromType(type)({address}));
+        dispatch(getUnsetActionCreatorFromType(type)({address: currentAddress}));
       }
     };
-  }, [address, currentPage, dispatch, memoizedQueryParams, type]);
+  }, [currentAddress, currentPage, dispatch, memoizedQueryParams, type]);
 
   const setPage = useCallback(
     (page: number) => (): void => {
