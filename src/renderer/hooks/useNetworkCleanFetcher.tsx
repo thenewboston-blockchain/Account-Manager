@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
 
+import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 import {getCleanSockets} from '@renderer/selectors';
 import {toggleCleanProcess} from '@renderer/store/sockets';
 import {AddressParams, AppDispatch, CleanStatus, ManagedNode, NodeCleanStatusWithAddress} from '@renderer/types';
@@ -41,7 +42,7 @@ const useNetworkCleanFetcher = (
     const fetchData = async (): Promise<void> => {
       try {
         setLoading(true);
-        const {data} = await axios.get<NodeCleanStatusWithAddress>(`${address}/clean`);
+        const {data} = await axios.get<NodeCleanStatusWithAddress>(`${address}/clean`, {timeout: AXIOS_TIMEOUT_MS});
         setCleanStatus(data.clean_status || CleanStatus.notCleaning);
         setCleanLastCompleted(data.clean_last_completed);
       } catch (error) {

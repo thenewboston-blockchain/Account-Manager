@@ -172,7 +172,11 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
         />
       )}
       {purchaseServicesModalIsOpen && !!purchaseServicesValidator && (
-        <PurchaseConfirmationServicesModal close={togglePurchaseServicesModal} validator={purchaseServicesValidator} />
+        <PurchaseConfirmationServicesModal
+          initialBankAddress={address}
+          close={togglePurchaseServicesModal}
+          validator={purchaseServicesValidator}
+        />
       )}
     </>
   );

@@ -108,8 +108,8 @@ const LeftMenu: FC = () => {
         baseUrl: `/bank/${formatPathFromNode(managedBank)}`,
         isDefault: managedBank.is_default || false,
         isOnline: bankConfigs[formatAddressFromNode(managedBank)]?.error === null || false,
-        key: managedBank.ip_address,
-        label: managedBank.nickname || managedBank.ip_address,
+        key: formatAddressFromNode(managedBank),
+        label: managedBank.nickname || formatAddressFromNode(managedBank),
         to: `/bank/${formatPathFromNode(managedBank)}/overview`,
       }))
       .map(({baseUrl, isDefault, isOnline, key, label, to}) => (
@@ -160,8 +160,8 @@ const LeftMenu: FC = () => {
           baseUrl: `/validator/${formatPathFromNode(managedValidator)}`,
           isDefault: managedValidator.is_default || false,
           isOnline: validatorConfigs[formatAddressFromNode(managedValidator)]?.error === null || false,
-          key: managedValidator.ip_address,
-          label: managedValidator.nickname || managedValidator.ip_address,
+          key: formatAddressFromNode(managedValidator),
+          label: managedValidator.nickname || formatAddressFromNode(managedValidator),
           to: `/validator/${formatPathFromNode(managedValidator)}/overview`,
         }))
         .map(({baseUrl, isDefault, isOnline, key, label, to}) => (

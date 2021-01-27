@@ -26,12 +26,14 @@ interface ComponentProps {
   displaySubmitButton?: boolean;
   footer?: ReactNode;
   header?: ReactNode;
+  hideFooter?: boolean;
   ignoreDirty?: boolean;
   initialValues?: GenericFormValues;
   onSubmit: GenericFunction;
   style?: CSSProperties;
   submitButton?: ModalButtonProps | string;
   submitting?: boolean;
+  validateOnMount?: boolean;
   validationSchema?: any;
 }
 
@@ -45,6 +47,7 @@ const Modal: FC<ComponentProps> = ({
   displaySubmitButton = true,
   footer,
   header,
+  hideFooter = false,
   displayCloseButton = true,
   ignoreDirty: ignoreDirtyProps = false,
   initialValues = {},
@@ -52,6 +55,7 @@ const Modal: FC<ComponentProps> = ({
   style,
   submitButton,
   submitting = false,
+  validateOnMount,
   validationSchema,
 }) => {
   const ignoreDirty = useMemo<boolean>(() => ignoreDirtyProps || Object.keys(initialValues).length === 0, [
@@ -176,13 +180,27 @@ const Modal: FC<ComponentProps> = ({
             />
           )}
         </div>
-        <Form initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
-          <div className={clsx('Modal__content', {...getCustomClassNames(className, '__content', true)})}>
+        <Form
+          className={clsx('Modal__form', {...getCustomClassNames(className, '__form', true)})}
+          initialValues={initialValues}
+          onSubmit={onSubmit}
+          validateOnMount={validateOnMount}
+          validationSchema={validationSchema}
+        >
+          <div
+            className={clsx('Modal__content', {
+              'Modal__content--no-footer': hideFooter,
+              ...getCustomClassNames(className, '__content', true),
+              ...getCustomClassNames(className, '__content--no-footer', hideFooter),
+            })}
+          >
             {children}
           </div>
-          <div className={clsx('Modal__footer', {...getCustomClassNames(className, '__footer', true)})}>
-            {footer || renderDefaultFooter()}
-          </div>
+          {!hideFooter && (
+            <div className={clsx('Modal__footer', {...getCustomClassNames(className, '__footer', true)})}>
+              {footer || renderDefaultFooter()}
+            </div>
+          )}
         </Form>
       </div>
     </>,

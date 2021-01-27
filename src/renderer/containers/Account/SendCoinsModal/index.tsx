@@ -68,7 +68,7 @@ const SendCoinsModal: FC<ComponentProps> = ({close, initialRecipient, initialSen
         activeBank,
         activePrimaryValidator,
         coinAmount,
-        managedAccounts,
+        managedAccounts[senderAccountNumber].signing_key,
         recipientAccountNumber,
         senderAccountNumber,
       );

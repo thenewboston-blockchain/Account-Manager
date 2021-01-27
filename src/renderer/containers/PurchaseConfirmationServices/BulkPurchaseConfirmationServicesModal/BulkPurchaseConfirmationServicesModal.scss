@@ -1,0 +1,7 @@
+.BulkPurchaseConfirmationServicesModal {
+  width: 90%;
+
+  &__content {
+    max-height: calc(85vh - var(--modal-header-height));
+  }
+}

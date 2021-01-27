@@ -1,19 +1,19 @@
 import axios from 'axios';
 
-import {BankConfig, Dict, ManagedAccount, Tx, ValidatorConfig} from '@renderer/types';
+import {BankConfig, Tx, ValidatorConfig} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
+import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 
 const createBlock = async (
   activePrimaryValidator: ValidatorConfig,
-  managedAccounts: Dict<ManagedAccount>,
+  senderSigningKey: string,
   recipientAccountNumber: string,
   senderAccountNumber: string,
   txs: Tx[],
 ): Promise<string> => {
-  const {signing_key: signingKeyHex} = managedAccounts[senderAccountNumber];
-  const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
+  const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(senderSigningKey);
   const balanceLock = await fetchAccountBalanceLock(senderAccountNumber, activePrimaryValidator);
   return generateBlock(balanceLock, publicKeyHex, signingKey, txs);
 };
@@ -26,7 +26,7 @@ const fetchAccountBalanceLock = async (
   const address = formatAddress(ipAddress, port, protocol);
   const {
     data: {balance_lock: balanceLock},
-  } = await axios.get(`${address}/accounts/${accountNumber}/balance_lock`);
+  } = await axios.get(`${address}/accounts/${accountNumber}/balance_lock`, {timeout: AXIOS_TIMEOUT_MS});
   return balanceLock;
 };
 
@@ -34,7 +34,7 @@ export const sendBlock = async (
   activeBank: BankConfig,
   activePrimaryValidator: ValidatorConfig,
   coins: number,
-  managedAccounts: Dict<ManagedAccount>,
+  senderSigningKey: string,
   recipientAccountNumber: string,
   senderAccountNumber: string,
 ): Promise<void> => {
@@ -72,9 +72,10 @@ export const sendBlock = async (
 
   const {ip_address: ipAddress, port, protocol} = activeBank;
   const address = formatAddress(ipAddress, port, protocol);
+
   const block = await createBlock(
     activePrimaryValidator,
-    managedAccounts,
+    senderSigningKey,
     recipientAccountNumber,
     senderAccountNumber,
     txs,

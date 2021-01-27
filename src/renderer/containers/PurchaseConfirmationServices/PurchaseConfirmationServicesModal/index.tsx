@@ -1,20 +1,18 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import axios from 'axios';
 
 import Modal from '@renderer/components/Modal';
 import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 import {INVALID_AMOUNT_ERROR} from '@renderer/constants/form-validation';
-import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {
+  getAccountBalances,
   getActiveBankConfig,
   getActivePrimaryValidatorConfig,
+  getAuthenticatedBanks,
   getBankConfigs,
-  getManagedAccountBalances,
-  getManagedAccounts,
-  getManagedBanks,
 } from '@renderer/selectors';
-import {AppDispatch, BankConfig, BaseValidator} from '@renderer/types';
+import {BaseValidator} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 import {sendBlock} from '@renderer/utils/blocks';
 import yup from '@renderer/utils/forms/yup';
@@ -26,13 +24,9 @@ import ConnectionStatus, {Status} from './ConnectionStatus';
 import PurchaseConfirmationServicesModalFields, {FormValues} from './PurchaseConfirmationServicesModalFields';
 import './PurchaseConfirmationServicesModal.scss';
 
-const initialValues = {
-  amount: '',
-  bankAddress: '',
-};
-
 interface ComponentProps {
   close(): void;
+  initialBankAddress: string;
   validator: BaseValidator;
 }
 
@@ -40,33 +34,22 @@ export interface KnownStatus {
   [key: string]: boolean;
 }
 
-const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator}) => {
+const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, initialBankAddress, validator}) => {
   const [connectionStatus, setConnectionStatus] = useState<Status | null>(null);
   const [knownStatuses, setKnownStatuses] = useState<KnownStatus>({});
   const [submitting, setSubmitting] = useState<boolean>(false);
   const activeBank = useSelector(getActiveBankConfig)!;
   const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
+  const authenticatedBanks = useSelector(getAuthenticatedBanks);
   const bankConfigs = useSelector(getBankConfigs);
-  const dispatch = useDispatch<AppDispatch>();
-  const managedAccounts = useSelector(getManagedAccounts);
-  const managedAccountBalances = useSelector(getManagedAccountBalances);
-  const managedBanks = useSelector(getManagedBanks);
-
-  const bankSigningKey = useCallback(
-    (bankConfig: BankConfig): string | null => {
-      const bankAccountNumber = bankConfig?.account_number || '';
-      const managedAccount = bankAccountNumber ? managedAccounts[bankAccountNumber] : null;
-      return managedAccount ? managedAccount.signing_key : null;
-    },
-    [managedAccounts],
-  );
+  const accountBalances = useSelector(getAccountBalances);
 
   const checkConnectionBankToValidator = useCallback(
     async (bankAddress: string): Promise<void> => {
       try {
         await axios.get(`${bankAddress}/validators/${validator.node_identifier}`, {timeout: AXIOS_TIMEOUT_MS});
       } catch (error) {
-        const managedBank = managedBanks[bankAddress];
+        const managedBank = authenticatedBanks[bankAddress];
         if (!(managedBank && managedBank.nid_signing_key)) throw new Error('No NID SK');
         const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(managedBank.nid_signing_key);
         const validatorData = {
@@ -88,7 +71,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
         });
       }
     },
-    [managedBanks, validator],
+    [authenticatedBanks, validator],
   );
 
   const checkConnectionValidatorToBank = useCallback(
@@ -101,7 +84,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
       try {
         await axios.get(`${validatorAddress}/banks/${nodeIdentifier}`, {timeout: AXIOS_TIMEOUT_MS});
       } catch (error) {
-        const managedBank = managedBanks[bankAddress];
+        const managedBank = authenticatedBanks[bankAddress];
         if (!(managedBank && managedBank.nid_signing_key)) throw new Error('No NID SK');
         const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(managedBank.nid_signing_key);
         const connectionRequestData = {
@@ -117,29 +100,20 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
         });
       }
     },
-    [bankConfigs, managedBanks, validator],
-  );
-
-  const getBanksAccountNumberFromAddress = useCallback(
-    (bankAddress: string) => {
-      const {
-        data: {account_number: accountNumber},
-      } = bankConfigs[bankAddress];
-      return accountNumber;
-    },
-    [bankConfigs],
+    [authenticatedBanks, bankConfigs, validator],
   );
 
   const handleSubmit = async ({amount, bankAddress}: FormValues): Promise<void> => {
     try {
       setSubmitting(true);
-      const accountNumber = getBanksAccountNumberFromAddress(bankAddress);
+      const selectedBank = authenticatedBanks[bankAddress];
+      const {publicKeyHex: accountNumber} = getKeyPairFromSigningKeyHex(selectedBank.account_signing_key);
       const coinAmount = parseInt(amount, 10);
       await sendBlock(
         activeBank,
         activePrimaryValidator,
         coinAmount,
-        managedAccounts,
+        selectedBank.account_signing_key,
         validator.account_number,
         accountNumber,
       );
@@ -150,36 +124,6 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
       setSubmitting(false);
     }
   };
-
-  const testBankHasSigningKey = useCallback(
-    async (address: string | any) => {
-      if (!address) return true;
-      const bankConfig = bankConfigs[address];
-
-      if (!bankConfig) {
-        try {
-          setSubmitting(true);
-          const {data, error} = await dispatch(fetchBankConfig(address));
-
-          if (error) {
-            displayErrorToast(error);
-            setSubmitting(false);
-            return false;
-          }
-
-          return data ? !!bankSigningKey(data) : false;
-        } catch (error) {
-          setSubmitting(false);
-          return false;
-        } finally {
-          setSubmitting(false);
-        }
-      }
-
-      return !!bankSigningKey(bankConfig?.data);
-    },
-    [bankConfigs, bankSigningKey, dispatch],
-  );
 
   const testConnection = useCallback(
     async (address: string | any) => {
@@ -217,8 +161,10 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
     (amount: number, bankAddress: string): boolean => {
       if (!amount || !bankAddress) return true;
 
-      const accountNumber = getBanksAccountNumberFromAddress(bankAddress);
-      const managedAccountBalance = managedAccountBalances[accountNumber];
+      const selectedBank = authenticatedBanks[bankAddress];
+      const {publicKeyHex: accountNumber} = getKeyPairFromSigningKeyHex(selectedBank.account_signing_key);
+
+      const managedAccountBalance = accountBalances[accountNumber];
       if (!managedAccountBalance) return false;
 
       const totalCost =
@@ -228,7 +174,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
 
       return totalCost <= managedAccountBalance.balance;
     },
-    [activeBank, activePrimaryValidator, getBanksAccountNumberFromAddress, managedAccountBalances],
+    [accountBalances, activeBank, activePrimaryValidator, authenticatedBanks],
   );
 
   const validationSchema = useMemo(() => {
@@ -242,32 +188,27 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
         .required('Amount is a required field'),
       bankAddress: yup
         .string()
-        .test('bank-has-sk', 'Signing key required to purchase confirmation services.', testBankHasSigningKey)
-        .test('bank-has-nid-sk', 'NID signing key required to purchase confirmation services.', (address) => {
-          if (!address) return true;
-          const managedBank = managedBanks[address];
-          return !!(managedBank && managedBank.nid_signing_key);
-        })
         .test(
           'bank-has-unique-account-number',
           'The account number for this bank matches the validators account number.',
           (address) => {
             if (!address) return true;
-            const accountNumber = getBanksAccountNumberFromAddress(address);
+            const selectedBank = authenticatedBanks[address];
+            const {publicKeyHex: accountNumber} = getKeyPairFromSigningKeyHex(selectedBank.account_signing_key);
             return accountNumber !== validator.account_number;
           },
         )
         .test('bank-is-connected', '', testConnection)
         .required('This field is required'),
     });
-  }, [
-    checkCoinsWithBalance,
-    getBanksAccountNumberFromAddress,
-    managedBanks,
-    testBankHasSigningKey,
-    testConnection,
-    validator,
-  ]);
+  }, [authenticatedBanks, checkCoinsWithBalance, testConnection, validator.account_number]);
+
+  const initialValues = useMemo(() => {
+    return {
+      amount: '',
+      bankAddress: initialBankAddress,
+    };
+  }, [initialBankAddress]);
 
   return (
     <Modal
@@ -278,6 +219,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, validator
       onSubmit={handleSubmit}
       submitButton="Purchase"
       submitting={submitting}
+      validateOnMount
       validationSchema={validationSchema}
     >
       {connectionStatus && <ConnectionStatus status={connectionStatus} />}

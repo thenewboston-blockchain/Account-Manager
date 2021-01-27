@@ -1,4 +1,4 @@
-import React, {Dispatch, FC, useMemo} from 'react';
+import React, {Dispatch, FC, useCallback, useMemo} from 'react';
 import clsx from 'clsx';
 
 import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
@@ -8,6 +8,7 @@ import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BaseValidator} from '@renderer/types';
 
 import {SelectedValidatorAction, SelectedValidatorState, toggleSelectedValidator} from '../utils';
+import './PurchaseConfirmationServicesTable.scss';
 
 interface ComponentProps {
   address: string;
@@ -43,28 +44,35 @@ const PurchaseConfirmationServicesTable: FC<ComponentProps> = ({
     totalPages,
   } = usePaginatedNetworkDataFetcher<BaseValidator>(BANK_VALIDATORS, address);
 
-  const handleCheckboxClick = (validatorIndex: number) => () => {
-    const nodeIdentifier = bankValidators[validatorIndex].node_identifier;
-    dispatchSelectedValidators(
-      toggleSelectedValidator({index: (currentPage - 1) * PAGINATED_RESULTS_LIMIT + validatorIndex, nodeIdentifier}),
-    );
-  };
+  const handleCheckboxClick = useCallback(
+    (validatorIndex: number) => () => {
+      const nodeIdentifier = bankValidators[validatorIndex].node_identifier;
+      dispatchSelectedValidators(
+        toggleSelectedValidator({index: (currentPage - 1) * PAGINATED_RESULTS_LIMIT + validatorIndex, nodeIdentifier}),
+      );
+    },
+    [bankValidators, currentPage, dispatchSelectedValidators],
+  );
 
   const bankValidatorsTableData = useMemo<PageTableData[]>(
     () =>
-      bankValidators.map((validator) => ({
+      bankValidators.map((validator, index) => ({
         key: validator.node_identifier,
         [TableKeys.accountNumber]: validator.account_number,
         [TableKeys.dailyConfirmationRate]: validator.daily_confirmation_rate,
         [TableKeys.defaultTransactionFee]: validator.default_transaction_fee,
         [TableKeys.ipAddress]: validator.ip_address,
-        [TableKeys.nodeIdentifier]: validator.node_identifier,
+        [TableKeys.nodeIdentifier]: (
+          <span className="PurchaseConfirmationServicesTable__node-identifier" onClick={handleCheckboxClick(index)}>
+            {validator.node_identifier}
+          </span>
+        ),
         [TableKeys.port]: validator.port,
         [TableKeys.protocol]: validator.protocol,
         [TableKeys.trust]: validator.trust,
         [TableKeys.version]: validator.version,
       })) || [],
-    [bankValidators],
+    [bankValidators, handleCheckboxClick],
   );
 
   const pageTableItems = useMemo<PageTableItems>(

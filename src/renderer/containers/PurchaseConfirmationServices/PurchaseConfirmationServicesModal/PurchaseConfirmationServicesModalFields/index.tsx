@@ -1,17 +1,19 @@
-import React, {FC, useMemo} from 'react';
-import {useSelector} from 'react-redux';
+import React, {FC, useEffect, useMemo} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
+import {fetchAccountBalance} from '@renderer/dispatchers/balances';
 import {useFormContext} from '@renderer/hooks';
 import {
+  getAccountBalances,
   getActiveBankConfig,
   getActivePrimaryValidatorConfig,
-  getBankConfigs,
-  getManagedAccountBalances,
-  getManagedBanks,
+  getAuthenticatedBanks,
 } from '@renderer/selectors';
-import {BaseValidator, InputOption} from '@renderer/types';
+import {AppDispatch, BaseValidator, InputOption} from '@renderer/types';
+import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
+import {displayErrorToast} from '@renderer/utils/toast';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 
 import './PurchaseConfirmationServicesModalFields.scss';
@@ -27,40 +29,36 @@ interface ComponentProps {
 }
 
 const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting, validator}) => {
+  const dispatch = useDispatch<AppDispatch>();
   const {values} = useFormContext<FormValues>();
   const activeBankConfig = useSelector(getActiveBankConfig)!;
   const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
-  const bankConfigs = useSelector(getBankConfigs);
-  const managedAccountBalances = useSelector(getManagedAccountBalances);
-  const managedBanks = useSelector(getManagedBanks);
+  const authenticatedBanks = useSelector(getAuthenticatedBanks);
+  const accountBalances = useSelector(getAccountBalances);
+  const selectedBank = authenticatedBanks[values.bankAddress];
+  const {publicKeyHex: accountNumber} = getKeyPairFromSigningKeyHex(selectedBank.account_signing_key);
+  const selectedAccountBalance = accountBalances[accountNumber];
 
-  const getBanksAccountNumberFromAddress = (bankAddress: string) => {
-    const {
-      data: {account_number: accountNumber},
-    } = bankConfigs[bankAddress];
-    return accountNumber;
-  };
+  useEffect(() => {
+    try {
+      dispatch(fetchAccountBalance(accountNumber));
+    } catch (error) {
+      displayErrorToast(error);
+    }
+  }, [accountNumber, dispatch]);
 
   const getFromOptions = useMemo<InputOption[]>(
     () =>
-      Object.entries(managedBanks).map(([key, managedBank]) => ({
+      Object.entries(authenticatedBanks).map(([key, managedBank]) => ({
         label: managedBank.nickname,
         value: key,
       })),
-    [managedBanks],
+    [authenticatedBanks],
   );
 
   const renderActiveBankFee = (): string => {
     if (!values?.bankAddress) return activeBankConfig.default_transaction_fee.toLocaleString();
-    return getBankTxFee(activeBankConfig, getBanksAccountNumberFromAddress(values.bankAddress)).toLocaleString() || '-';
-  };
-
-  const renderBanksAccountBalance = (): string => {
-    const {bankAddress} = values;
-    if (!bankAddress) return '-';
-    const accountNumber = getBanksAccountNumberFromAddress(bankAddress);
-    const managedAccountBalance = managedAccountBalances[accountNumber];
-    return managedAccountBalance?.balance.toLocaleString() || '0';
+    return getBankTxFee(activeBankConfig, accountNumber).toLocaleString() || '-';
   };
 
   const renderDays = (): string => {
@@ -72,9 +70,8 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
   };
 
   const renderTotal = (): string => {
-    const {amount, bankAddress} = values;
-    if (!amount || !bankAddress) return '-';
-    const accountNumber = getBanksAccountNumberFromAddress(bankAddress);
+    const {amount} = values;
+    if (!amount) return '-';
     const bankTxFee = getBankTxFee(activeBankConfig, accountNumber);
     const validatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidatorConfig, accountNumber);
     return (parseInt(amount, 10) + bankTxFee + validatorTxFee).toLocaleString();
@@ -101,7 +98,7 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
             <td>Account Balance</td>
             <td>
               <span className="PurchaseConfirmationServicesModalFields__account-balance">
-                {renderBanksAccountBalance()}
+                {selectedAccountBalance?.balance.toLocaleString() || '-'}
               </span>
             </td>
           </tr>
