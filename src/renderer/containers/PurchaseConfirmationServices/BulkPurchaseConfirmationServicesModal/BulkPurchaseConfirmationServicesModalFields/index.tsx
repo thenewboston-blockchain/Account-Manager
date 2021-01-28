@@ -109,6 +109,7 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
           key: nodeIdentifier,
           [TableKeys.amount]: (
             <Input
+              className="BulkPurchaseConfirmationServicesModalFields__Input"
               onChange={handleAmountChange(nodeIdentifier)}
               disabled={formData.status !== ValidatorConnectionStatus.connected || submitting}
               type="number"

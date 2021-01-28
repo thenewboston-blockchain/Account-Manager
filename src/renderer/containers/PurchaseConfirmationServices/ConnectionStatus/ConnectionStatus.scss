@@ -53,7 +53,6 @@
 
   &__main-title {
     @include title;
-    font-size: var(--font-size-medium);
 
     &--subtitled {
       @include title;

@@ -20,7 +20,7 @@ const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close,
     Object.keys(selectedValidators).reduce(
       (acc, nodeIdentifier) => ({
         ...acc,
-        [nodeIdentifier]: {amount: '', status: ValidatorConnectionStatus.notConnected},
+        [nodeIdentifier]: {amount: '', status: ValidatorConnectionStatus.checking},
       }),
       {},
     ),

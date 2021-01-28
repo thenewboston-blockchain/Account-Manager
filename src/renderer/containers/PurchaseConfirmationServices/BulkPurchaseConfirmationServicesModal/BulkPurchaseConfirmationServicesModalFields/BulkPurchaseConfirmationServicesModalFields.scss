@@ -11,6 +11,10 @@
     margin-bottom: 30px;
   }
 
+  &__Input {
+    width: 100%;
+  }
+
   &__left {
     flex: 1;
     margin-left: 12px;
@@ -21,6 +25,7 @@
 
   &__right {
     background: var(--color-white);
+    border-left: 1px solid var(--color-gray-100);
     height: calc(85vh - var(--modal-header-height) - 24px);
     padding: 12px 18px;
     width: 334px;
@@ -28,10 +33,31 @@
 
   &__table {
     &__td {
+      // nodeIdentifier column
+      &--0 {
+        width: 285px;
+      }
+
       // ConnectionStatus column
       &--1 {
         padding-right: 12px;
-        width: 275px;
+        max-width: 150px;
+      }
+
+      // dailyRate column
+      &--2 {
+        max-width: 125px;
+      }
+
+      // amount column
+      &--3 {
+        max-width: 130px;
+      }
+
+      // delete row column
+      &--4 {
+        text-align: center;
+        max-width: 50px;
       }
     }
 

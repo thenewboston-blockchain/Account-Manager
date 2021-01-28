@@ -35,14 +35,15 @@ const ConnectionStatus: FC<ComponentProps> = ({className, showDescription = fals
   }, [status]);
 
   const renderIcon = () => {
+    const size = showDescription ? 32 : 22;
     return (
       <Icon
         className={clsx('ConnectionStatus__icon', {
           'ConnectionStatus__icon--spin': status === ValidatorConnectionStatus.checking,
         })}
         icon={icon}
-        size={32}
-        totalSize={32}
+        size={size}
+        totalSize={size}
       />
     );
   };
