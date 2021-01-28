@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {FormInput, FormSelectDetailed} from '@renderer/components/FormComponents';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
+import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
 import {useFormContext} from '@renderer/hooks';
 import {
@@ -38,6 +39,12 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
   const selectedBank = authenticatedBanks[values.bankAddress];
   const {publicKeyHex: accountNumber} = getKeyPairFromSigningKeyHex(selectedBank.account_signing_key);
   const selectedAccountBalance = accountBalances[accountNumber];
+
+  useEffect(() => {
+    if (values.bankAddress) {
+      dispatch(fetchBankConfig(values.bankAddress));
+    }
+  }, [dispatch, values.bankAddress]);
 
   useEffect(() => {
     try {

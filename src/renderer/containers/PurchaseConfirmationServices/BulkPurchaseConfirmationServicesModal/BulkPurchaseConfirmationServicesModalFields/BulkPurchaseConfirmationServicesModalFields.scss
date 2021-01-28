@@ -35,29 +35,34 @@
     &__td {
       // nodeIdentifier column
       &--0 {
+        max-width: 285px;
         width: 285px;
       }
 
       // ConnectionStatus column
       &--1 {
         padding-right: 12px;
-        max-width: 150px;
+        max-width: 220px;
+        width: 220px;
       }
 
       // dailyRate column
       &--2 {
-        max-width: 125px;
+        max-width: 110px;
+        width: 110px;
       }
 
       // amount column
       &--3 {
         max-width: 130px;
+        width: 130px;
       }
 
       // delete row column
       &--4 {
         text-align: center;
         max-width: 50px;
+        width: 50px;
       }
     }
 

@@ -1,7 +1,10 @@
-import React, {FC, useMemo, useReducer, useState} from 'react';
+import React, {FC, useEffect, useMemo, useReducer, useState} from 'react';
+import {useDispatch} from 'react-redux';
 
 import Modal from '@renderer/components/Modal';
-import {ManagedNode} from '@renderer/types';
+import {fetchBankConfig} from '@renderer/dispatchers/banks';
+import {AppDispatch, ManagedNode} from '@renderer/types';
+import {formatAddressFromNode} from '@renderer/utils/address';
 
 import BulkPurchaseConfirmationServicesModalFields from './BulkPurchaseConfirmationServicesModalFields';
 import {SelectedValidatorState, ValidatorConnectionStatus, validatorFormReducer} from '../utils';
@@ -14,6 +17,7 @@ interface ComponentProps {
 }
 
 const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close, selectedValidators}) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [submitting] = useState<boolean>(false);
   const [formValues, dispatchFormValues] = useReducer(
     validatorFormReducer,
@@ -25,6 +29,11 @@ const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close,
       {},
     ),
   );
+
+  useEffect(() => {
+    const bankAddress = formatAddressFromNode(bank);
+    dispatch(fetchBankConfig(bankAddress));
+  }, [bank, dispatch]);
 
   const orderedValidatorNodeIdentifiers = useMemo(() => {
     return Object.entries(selectedValidators)
