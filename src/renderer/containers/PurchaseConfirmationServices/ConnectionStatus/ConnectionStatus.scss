@@ -7,10 +7,20 @@
   }
 }
 
-.ConnectionStatus {
+@mixin connection-status {
+  align-items: center;
   border-radius: 3px;
-  margin-bottom: 24px;
-  padding: 10px 18px;
+  display: flex;
+  font-family: var(--font-family-default);
+}
+
+@mixin title {
+  font-weight: bold;
+}
+
+.ConnectionStatus {
+  @include connection-status;
+  padding: 6px;
 
   &--checking {
     background: var(--color-yellow-100);
@@ -27,8 +37,10 @@
     color: var(--color-red-500);
   }
 
-  &__badge {
-    display: flex;
+  &--subtitled {
+    @include connection-status;
+    margin-bottom: 24px;
+    padding: 10px 18px;
   }
 
   &__icon {
@@ -40,8 +52,13 @@
   }
 
   &__main-title {
-    font-weight: bold;
-    margin-bottom: 3px;
+    @include title;
+    font-size: var(--font-size-medium);
+
+    &--subtitled {
+      @include title;
+      margin-bottom: 3px;
+    }
   }
 
   &__sub-title {

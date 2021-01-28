@@ -1,0 +1,47 @@
+.BulkPurchaseConfirmationServicesModalFields {
+  display: flex;
+
+  &__bank-address {
+    color: var(--color-gray-500);
+    margin-bottom: 16px;
+  }
+
+  &__bank-nickname {
+    font-size: var(--font-size-large);
+    margin-bottom: 30px;
+  }
+
+  &__left {
+    flex: 1;
+    margin-left: 12px;
+    max-height: calc(85vh - var(--modal-header-height) - 24px);
+    overflow-y: auto;
+    position: relative;
+  }
+
+  &__right {
+    background: var(--color-white);
+    height: calc(85vh - var(--modal-header-height) - 24px);
+    padding: 12px 18px;
+    width: 334px;
+  }
+
+  &__table {
+    &__td {
+      // ConnectionStatus column
+      &--1 {
+        padding-right: 12px;
+        width: 275px;
+      }
+    }
+
+    &__th {
+      background: var(--color-gray-050);
+      height: 35px;
+      padding: 6px 4px;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+  }
+}

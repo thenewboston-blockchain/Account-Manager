@@ -31,12 +31,12 @@
     vertical-align: top;
     white-space: nowrap;
 
-    &:first-of-type {
-      width: 32px;
-    }
-
     &--checkbox {
       padding: 3px 4px;
+    }
+
+    &--toggle {
+      width: 32px;
     }
   }
 

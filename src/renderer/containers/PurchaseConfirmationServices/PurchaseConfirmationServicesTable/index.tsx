@@ -11,7 +11,7 @@ import {SelectedValidatorAction, SelectedValidatorState, toggleSelectedValidator
 import './PurchaseConfirmationServicesTable.scss';
 
 interface ComponentProps {
-  address: string;
+  bankAddress: string;
   className?: string;
   dispatchSelectedValidators: Dispatch<SelectedValidatorAction>;
   selectedValidators: SelectedValidatorState;
@@ -30,7 +30,7 @@ enum TableKeys {
 }
 
 const PurchaseConfirmationServicesTable: FC<ComponentProps> = ({
-  address,
+  bankAddress,
   className,
   dispatchSelectedValidators,
   selectedValidators,
@@ -42,13 +42,16 @@ const PurchaseConfirmationServicesTable: FC<ComponentProps> = ({
     results: bankValidators,
     setPage,
     totalPages,
-  } = usePaginatedNetworkDataFetcher<BaseValidator>(BANK_VALIDATORS, address);
+  } = usePaginatedNetworkDataFetcher<BaseValidator>(BANK_VALIDATORS, bankAddress);
 
   const handleCheckboxClick = useCallback(
     (validatorIndex: number) => () => {
-      const nodeIdentifier = bankValidators[validatorIndex].node_identifier;
+      const validator = bankValidators[validatorIndex];
       dispatchSelectedValidators(
-        toggleSelectedValidator({index: (currentPage - 1) * PAGINATED_RESULTS_LIMIT + validatorIndex, nodeIdentifier}),
+        toggleSelectedValidator({
+          ...validator,
+          index: (currentPage - 1) * PAGINATED_RESULTS_LIMIT + validatorIndex,
+        }),
       );
     },
     [bankValidators, currentPage, dispatchSelectedValidators],

@@ -3,5 +3,7 @@
 
   &__content {
     max-height: calc(85vh - var(--modal-header-height));
+    overflow-y: hidden;
+    padding: 0;
   }
 }

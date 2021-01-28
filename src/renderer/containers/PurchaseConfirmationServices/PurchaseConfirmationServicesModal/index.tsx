@@ -1,9 +1,7 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
-import axios from 'axios';
 
 import Modal from '@renderer/components/Modal';
-import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 import {INVALID_AMOUNT_ERROR} from '@renderer/constants/form-validation';
 import {
   getAccountBalances,
@@ -13,14 +11,14 @@ import {
   getBankConfigs,
 } from '@renderer/selectors';
 import {BaseValidator} from '@renderer/types';
-import {formatAddressFromNode} from '@renderer/utils/address';
 import {sendBlock} from '@renderer/utils/blocks';
 import yup from '@renderer/utils/forms/yup';
-import {generateSignedMessage, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
+import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 
-import ConnectionStatus, {Status} from './ConnectionStatus';
+import ConnectionStatus from '../ConnectionStatus';
+import {checkConnectionBankToValidator, checkConnectionValidatorToBank, ValidatorConnectionStatus} from '../utils';
 import PurchaseConfirmationServicesModalFields, {FormValues} from './PurchaseConfirmationServicesModalFields';
 import './PurchaseConfirmationServicesModal.scss';
 
@@ -35,7 +33,7 @@ export interface KnownStatus {
 }
 
 const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, initialBankAddress, validator}) => {
-  const [connectionStatus, setConnectionStatus] = useState<Status | null>(null);
+  const [connectionStatus, setConnectionStatus] = useState<ValidatorConnectionStatus | null>(null);
   const [knownStatuses, setKnownStatuses] = useState<KnownStatus>({});
   const [submitting, setSubmitting] = useState<boolean>(false);
   const activeBank = useSelector(getActiveBankConfig)!;
@@ -43,65 +41,6 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, initialBa
   const authenticatedBanks = useSelector(getAuthenticatedBanks);
   const bankConfigs = useSelector(getBankConfigs);
   const accountBalances = useSelector(getAccountBalances);
-
-  const checkConnectionBankToValidator = useCallback(
-    async (bankAddress: string): Promise<void> => {
-      try {
-        await axios.get(`${bankAddress}/validators/${validator.node_identifier}`, {timeout: AXIOS_TIMEOUT_MS});
-      } catch (error) {
-        const managedBank = authenticatedBanks[bankAddress];
-        if (!(managedBank && managedBank.nid_signing_key)) throw new Error('No NID SK');
-        const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(managedBank.nid_signing_key);
-        const validatorData = {
-          account_number: validator.account_number,
-          daily_confirmation_rate: validator.daily_confirmation_rate,
-          ip_address: validator.ip_address,
-          node_identifier: validator.node_identifier,
-          protocol: validator.protocol,
-          root_account_file: validator.root_account_file,
-          root_account_file_hash: validator.root_account_file_hash,
-          trust: 0,
-          version: validator.version,
-        };
-        const signedMessage = generateSignedMessage(validatorData, publicKeyHex, signingKey);
-        await axios.post(`${bankAddress}/validators`, signedMessage, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-      }
-    },
-    [authenticatedBanks, validator],
-  );
-
-  const checkConnectionValidatorToBank = useCallback(
-    async (bankAddress: string): Promise<void> => {
-      const {
-        data: {node_identifier: nodeIdentifier},
-      } = bankConfigs[bankAddress];
-      const validatorAddress = formatAddressFromNode(validator);
-
-      try {
-        await axios.get(`${validatorAddress}/banks/${nodeIdentifier}`, {timeout: AXIOS_TIMEOUT_MS});
-      } catch (error) {
-        const managedBank = authenticatedBanks[bankAddress];
-        if (!(managedBank && managedBank.nid_signing_key)) throw new Error('No NID SK');
-        const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(managedBank.nid_signing_key);
-        const connectionRequestData = {
-          ip_address: managedBank.ip_address,
-          port: managedBank.port,
-          protocol: managedBank.protocol,
-        };
-        const signedMessage = generateSignedMessage(connectionRequestData, publicKeyHex, signingKey);
-        await axios.post(`${validatorAddress}/connection_requests`, signedMessage, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-      }
-    },
-    [authenticatedBanks, bankConfigs, validator],
-  );
 
   const handleSubmit = async ({amount, bankAddress}: FormValues): Promise<void> => {
     try {
@@ -126,35 +65,43 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, initialBa
   };
 
   const testConnection = useCallback(
-    async (address: string | any) => {
-      if (!address) return true;
-      const knownStatus = knownStatuses[address];
+    async (bankAddress: string | any) => {
+      if (!bankAddress) return true;
+      const knownStatus = knownStatuses[bankAddress];
       if (knownStatus) return knownStatus;
 
       try {
-        setConnectionStatus('checking');
+        setConnectionStatus(ValidatorConnectionStatus.checking);
         setSubmitting(true);
 
-        await Promise.all([checkConnectionBankToValidator(address), checkConnectionValidatorToBank(address)]);
+        const managedBank = authenticatedBanks[bankAddress];
+        const {
+          data: {node_identifier: bankNodeIdentifier},
+        } = bankConfigs[bankAddress];
 
-        setConnectionStatus('connected');
+        await Promise.all([
+          checkConnectionBankToValidator(managedBank, validator),
+          checkConnectionValidatorToBank(managedBank, validator, bankNodeIdentifier),
+        ]);
+
+        setConnectionStatus(ValidatorConnectionStatus.connected);
         setKnownStatuses({
           ...knownStatuses,
-          [address]: true,
+          [bankAddress]: true,
         });
         setSubmitting(false);
       } catch (error) {
-        setConnectionStatus('not-connected');
+        setConnectionStatus(ValidatorConnectionStatus.notConnected);
         setKnownStatuses({
           ...knownStatuses,
-          [address]: false,
+          [bankAddress]: false,
         });
         setSubmitting(false);
       }
 
       return false;
     },
-    [checkConnectionBankToValidator, checkConnectionValidatorToBank, knownStatuses],
+    [authenticatedBanks, bankConfigs, knownStatuses, validator],
   );
 
   const checkCoinsWithBalance = useCallback(
@@ -222,7 +169,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, initialBa
       validateOnMount
       validationSchema={validationSchema}
     >
-      {connectionStatus && <ConnectionStatus status={connectionStatus} />}
+      {connectionStatus && <ConnectionStatus showDescription status={connectionStatus} />}
       <PurchaseConfirmationServicesModalFields submitting={submitting} validator={validator} />
     </Modal>
   );

@@ -1,5 +1,7 @@
 input,
 textarea {
+  font-family: var(--font-family-default);
+
   &:hover {
     border-color: var(--color-secondary);
   }

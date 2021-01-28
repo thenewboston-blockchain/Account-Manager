@@ -29,7 +29,7 @@ interface ComponentProps {
   hideFooter?: boolean;
   ignoreDirty?: boolean;
   initialValues?: GenericFormValues;
-  onSubmit: GenericFunction;
+  onSubmit?: GenericFunction;
   style?: CSSProperties;
   submitButton?: ModalButtonProps | string;
   submitting?: boolean;
@@ -183,7 +183,7 @@ const Modal: FC<ComponentProps> = ({
         <Form
           className={clsx('Modal__form', {...getCustomClassNames(className, '__form', true)})}
           initialValues={initialValues}
-          onSubmit={onSubmit}
+          onSubmit={onSubmit || noop}
           validateOnMount={validateOnMount}
           validationSchema={validationSchema}
         >

@@ -35,21 +35,23 @@ const PurchaseConfirmationServices: FC = () => {
   }, [bankOptionsObject]);
 
   const [purchaseModalIsOpen, togglePurchaseModal] = useBooleanState(false);
-  const [selectedBank, setSelectedBank] = useState<InputOption | null>(
+  const [selectedBankOption, setSelectedBankOption] = useState<InputOption | null>(
     initialBankIsAuthenticated ? bankOptionsObject[initialAddress] : bankOptionsList[0] || null,
   );
   const [selectedValidators, dispatchSelectedValidators] = useReducer(selectedValidatorReducer, {});
+
+  const selectedBank = selectedBankOption ? authenticatedBanks[selectedBankOption.value] : null;
 
   const selectedCount = useMemo<number>(() => {
     return Object.keys(selectedValidators).length;
   }, [selectedValidators]);
 
   const handleBankChange = (option: InputOption): void => {
-    if (!selectedBank) return;
+    if (!selectedBankOption) return;
 
-    if (option.value !== selectedBank.value) {
+    if (option.value !== selectedBankOption.value) {
       dispatchSelectedValidators(clearSelectedValidator());
-      setSelectedBank(option);
+      setSelectedBankOption(option);
     }
   };
 
@@ -60,7 +62,7 @@ const PurchaseConfirmationServices: FC = () => {
   };
 
   const renderMainContent = (): ReactNode => {
-    if (!selectedBank) {
+    if (!selectedBankOption) {
       return (
         <div className="PurchaseConfirmationServices__no-authenticated-banks">
           You don't have any authenticated banks
@@ -79,11 +81,11 @@ const PurchaseConfirmationServices: FC = () => {
             name="bank-select"
             onChange={handleBankChange}
             options={bankOptionsList}
-            value={selectedBank}
+            value={selectedBankOption}
           />
         </div>
         <PurchaseConfirmationServicesTable
-          address={selectedBank.value}
+          bankAddress={selectedBankOption.value}
           className="PurchaseConfirmationServices__table"
           dispatchSelectedValidators={dispatchSelectedValidators}
           selectedValidators={selectedValidators}
@@ -103,8 +105,12 @@ const PurchaseConfirmationServices: FC = () => {
         </div>
         {renderMainContent()}
       </div>
-      {purchaseModalIsOpen && (
-        <BulkPurchaseConfirmationServicesModal close={togglePurchaseModal} selectedValidators={selectedValidators} />
+      {purchaseModalIsOpen && selectedBank && (
+        <BulkPurchaseConfirmationServicesModal
+          bank={selectedBank}
+          close={togglePurchaseModal}
+          selectedValidators={selectedValidators}
+        />
       )}
     </>
   );

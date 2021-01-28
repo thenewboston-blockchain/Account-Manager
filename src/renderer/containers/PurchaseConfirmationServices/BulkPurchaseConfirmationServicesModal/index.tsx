@@ -1,50 +1,38 @@
-import React, {FC, useMemo, useState} from 'react';
+import React, {FC, useMemo, useReducer, useState} from 'react';
 
 import Modal from '@renderer/components/Modal';
-import {displayErrorToast} from '@renderer/utils/toast';
+import {ManagedNode} from '@renderer/types';
 
-import BulkPurchaseConfirmationServicesModalFields, {FormValues} from './BulkPurchaseConfirmationServicesModalFields';
-import {SelectedValidatorState} from '../utils';
+import BulkPurchaseConfirmationServicesModalFields from './BulkPurchaseConfirmationServicesModalFields';
+import {SelectedValidatorState, ValidatorConnectionStatus, validatorFormReducer} from '../utils';
 import './BulkPurchaseConfirmationServicesModal.scss';
 
 interface ComponentProps {
+  bank: ManagedNode;
   close(): void;
   selectedValidators: SelectedValidatorState;
 }
 
-const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, selectedValidators}) => {
-  const [submitting, setSubmitting] = useState<boolean>(false);
+const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close, selectedValidators}) => {
+  const [submitting] = useState<boolean>(false);
+  const [formValues, dispatchFormValues] = useReducer(
+    validatorFormReducer,
+    Object.keys(selectedValidators).reduce(
+      (acc, nodeIdentifier) => ({
+        ...acc,
+        [nodeIdentifier]: {amount: '', status: ValidatorConnectionStatus.notConnected},
+      }),
+      {},
+    ),
+  );
 
-  const orderedValidators = useMemo(() => {
+  const orderedValidatorNodeIdentifiers = useMemo(() => {
     return Object.entries(selectedValidators)
-      .sort(([, positionA], [, positionB]) => {
-        return positionA - positionB;
+      .sort(([, {index: indexA}], [, {index: indexB}]) => {
+        return indexA - indexB;
       })
       .map(([nodeIdentifier]) => nodeIdentifier);
   }, [selectedValidators]);
-
-  const initialValues = useMemo<FormValues>(() => {
-    return {
-      validators: orderedValidators.map((nodeIdentifier) => {
-        return {
-          amount: '',
-          nodeIdentifier,
-        };
-      }),
-    };
-  }, [orderedValidators]);
-
-  const handleSubmit = async ({validators}: FormValues): Promise<void> => {
-    try {
-      // TODO: update this logic
-      if (validators) {
-        setSubmitting(true);
-      }
-    } catch (error) {
-      displayErrorToast(error);
-      setSubmitting(false);
-    }
-  };
 
   return (
     <Modal
@@ -52,11 +40,16 @@ const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, selec
       close={close}
       header="Purchase Confirmation Services"
       hideFooter
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
       submitting={submitting}
     >
-      <BulkPurchaseConfirmationServicesModalFields submitting={submitting} />
+      <BulkPurchaseConfirmationServicesModalFields
+        bank={bank}
+        dispatchFormValues={dispatchFormValues}
+        formValues={formValues}
+        initialValidatorsData={selectedValidators}
+        orderedNodeIdentifiers={orderedValidatorNodeIdentifiers}
+        submitting={submitting}
+      />
     </Modal>
   );
 };
