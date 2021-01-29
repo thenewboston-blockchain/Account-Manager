@@ -5,9 +5,9 @@ import {Input} from '@renderer/components/FormElements';
 import PageTable from '@renderer/components/PageTable';
 import {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
-import {getBankConfigs} from '@renderer/selectors';
+import {getActivePrimaryValidator, getBankConfigs} from '@renderer/selectors';
 import {ManagedNode} from '@renderer/types';
-import {formatAddressFromNode} from '@renderer/utils/address';
+import {formatAddressFromNode, isSameNode} from '@renderer/utils/address';
 
 import ConnectionStatus from '../../ConnectionStatus';
 import {
@@ -48,6 +48,7 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
 }) => {
   const bankAddress = formatAddressFromNode(bank);
   const bankConfigs = useSelector(getBankConfigs);
+  const primaryValidator = useSelector(getActivePrimaryValidator);
   const {
     data: {node_identifier: bankNodeIdentifier},
   } = bankConfigs[bankAddress];
@@ -105,13 +106,18 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
         const formData = formValues[nodeIdentifier];
         const validatorData = initialValidatorsData[nodeIdentifier];
 
+        const noDailyRate = !validatorData.daily_confirmation_rate;
+        const validatorIsPv = primaryValidator && isSameNode(primaryValidator, validatorData);
+        const amountIsDisabled =
+          noDailyRate || validatorIsPv || formData.status !== ValidatorConnectionStatus.connected || submitting;
+
         return {
           key: nodeIdentifier,
           [TableKeys.amount]: (
             <Input
               className="BulkPurchaseConfirmationServicesModalFields__Input"
               onChange={handleAmountChange(nodeIdentifier)}
-              disabled={formData.status !== ValidatorConnectionStatus.connected || submitting}
+              disabled={amountIsDisabled}
               type="number"
               value={formData.amount}
             />
@@ -122,7 +128,7 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
           [TableKeys.status]: <ConnectionStatus status={formData.status} />,
         };
       }),
-    [formValues, handleAmountChange, initialValidatorsData, orderedNodeIdentifiers, submitting],
+    [formValues, handleAmountChange, initialValidatorsData, orderedNodeIdentifiers, submitting, primaryValidator],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
