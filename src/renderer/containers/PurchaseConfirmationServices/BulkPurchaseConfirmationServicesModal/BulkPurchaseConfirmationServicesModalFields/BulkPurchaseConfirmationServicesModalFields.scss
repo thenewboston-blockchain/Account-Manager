@@ -74,6 +74,10 @@
     tr:nth-last-child(2) td {
       border-bottom: 0;
     }
+
+    .total-tx--error {
+      color: var(--color-red-500);
+    }
   }
 
   &__validator-table {

@@ -1,5 +1,6 @@
 import React, {ChangeEvent, Dispatch, FC, useCallback, useEffect, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import clsx from 'clsx';
 import noop from 'lodash/noop';
 
 import {Button, Input, Loader} from '@renderer/components/FormElements';
@@ -235,6 +236,10 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
     [formValues],
   );
 
+  const totalTx = bankFee + pvFee + totalAmount;
+
+  const totalExceedsAvailableBalance = totalTx > (bankBalance?.balance || 0);
+
   return (
     <div className="BulkPurchaseConfirmationServicesModalFields">
       <div className="BulkPurchaseConfirmationServicesModalFields__left">
@@ -268,7 +273,9 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
             <tr>
               <td>TOTAL Tx</td>
               <td>
-                <strong>{(bankFee + pvFee + totalAmount).toLocaleString()}</strong>
+                <strong className={clsx({'total-tx--error': totalExceedsAvailableBalance})}>
+                  {totalTx.toLocaleString()}
+                </strong>
               </td>
             </tr>
             <tr>
@@ -281,7 +288,7 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
         </table>
         <Button
           className="BulkPurchaseConfirmationServicesModalFields__purchase-button"
-          disabled={!totalAmount || submitting}
+          disabled={!totalAmount || submitting || totalExceedsAvailableBalance}
           onClick={totalAmount ? handleSubmit : noop}
         >
           {submitting ? <Loader /> : 'Purchase'}
