@@ -136,7 +136,7 @@ export const setValidatorInForm = (payload: ValidatorFormSetPayload): ValidatorF
 export const removeValidatorInForm = (payload: ValidatorFormRemovePayload): ValidatorFormAction => {
   return {
     payload,
-    type: ValidatorFormTypes.set,
+    type: ValidatorFormTypes.remove,
   };
 };
 
@@ -188,15 +188,7 @@ export const validatorFormReducer = (
       }, {});
     }
     case ValidatorFormTypes.remove: {
-      return Object.entries(state).reduce((acc, [nodeIdentifier, oldState]) => {
-        if (nodeIdentifier === payload.nodeIdentifier) {
-          return acc;
-        }
-        return {
-          ...acc,
-          [nodeIdentifier]: oldState,
-        };
-      }, {});
+      return omit(state, payload.nodeIdentifier);
     }
     default:
       throw new Error('Invalid SelectedValidatorActionType');

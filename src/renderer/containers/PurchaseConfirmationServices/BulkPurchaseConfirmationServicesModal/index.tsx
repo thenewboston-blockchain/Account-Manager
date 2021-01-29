@@ -5,6 +5,7 @@ import Modal from '@renderer/components/Modal';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {AppDispatch, ManagedNode} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
+import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 import BulkPurchaseConfirmationServicesModalFields from './BulkPurchaseConfirmationServicesModalFields';
 import {SelectedValidatorState, ValidatorConnectionStatus, validatorFormReducer} from '../utils';
@@ -18,7 +19,7 @@ interface ComponentProps {
 
 const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close, selectedValidators}) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [submitting] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [formValues, dispatchFormValues] = useReducer(
     validatorFormReducer,
     Object.keys(selectedValidators).reduce(
@@ -34,6 +35,18 @@ const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close,
     const bankAddress = formatAddressFromNode(bank);
     dispatch(fetchBankConfig(bankAddress));
   }, [bank, dispatch]);
+
+  const handleSubmit = async (): Promise<void> => {
+    try {
+      const count = 2;
+      setSubmitting(true);
+      displayToast(`You have purchased ${count} services`, 'success');
+      close();
+    } catch (error) {
+      displayErrorToast(error);
+      setSubmitting(false);
+    }
+  };
 
   const orderedValidatorNodeIdentifiers = useMemo(() => {
     return Object.entries(selectedValidators)
@@ -55,6 +68,7 @@ const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close,
         bank={bank}
         dispatchFormValues={dispatchFormValues}
         formValues={formValues}
+        handleSubmit={handleSubmit}
         initialValidatorsData={selectedValidators}
         orderedNodeIdentifiers={orderedValidatorNodeIdentifiers}
         submitting={submitting}
