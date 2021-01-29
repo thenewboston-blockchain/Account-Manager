@@ -46,16 +46,10 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, initialBa
     try {
       setSubmitting(true);
       const selectedBank = authenticatedBanks[bankAddress];
-      const {publicKeyHex: accountNumber} = getKeyPairFromSigningKeyHex(selectedBank.account_signing_key);
-      const coinAmount = parseInt(amount, 10);
-      await sendBlock(
-        activeBank,
-        activePrimaryValidator,
-        coinAmount,
-        selectedBank.account_signing_key,
-        validator.account_number,
-        accountNumber,
-      );
+      const {publicKeyHex: bankAccountNumber} = getKeyPairFromSigningKeyHex(selectedBank.account_signing_key);
+      await sendBlock(activeBank, activePrimaryValidator, selectedBank.account_signing_key, bankAccountNumber, [
+        {accountNumber: validator.account_number, amount: parseInt(amount, 10)},
+      ]);
       displayToast('Your payment has been sent', 'success');
       close();
     } catch (error) {

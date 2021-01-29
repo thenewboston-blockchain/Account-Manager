@@ -1,10 +1,13 @@
 import React, {FC, useEffect, useMemo, useReducer, useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import Modal from '@renderer/components/Modal';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
+import {getActiveBankConfig, getActivePrimaryValidatorConfig} from '@renderer/selectors';
 import {AppDispatch, ManagedNode} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
+import {sendBlock} from '@renderer/utils/blocks';
+import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 import BulkPurchaseConfirmationServicesModalFields from './BulkPurchaseConfirmationServicesModalFields';
@@ -19,6 +22,9 @@ interface ComponentProps {
 
 const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close, selectedValidators}) => {
   const dispatch = useDispatch<AppDispatch>();
+  const activeBank = useSelector(getActiveBankConfig)!;
+  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
+
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [formValues, dispatchFormValues] = useReducer(
     validatorFormReducer,
@@ -38,9 +44,20 @@ const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close,
 
   const handleSubmit = async (): Promise<void> => {
     try {
-      const count = 2;
       setSubmitting(true);
-      displayToast(`You have purchased ${count} services`, 'success');
+      const {publicKeyHex: bankAccountNumber} = getKeyPairFromSigningKeyHex(bank.account_signing_key);
+      const recipients = Object.entries(formValues)
+        .map(([nodeIdentifier, {amount}]) => {
+          const validatorData = selectedValidators[nodeIdentifier];
+          return {
+            accountNumber: validatorData.account_number,
+            amount: parseInt(amount, 10),
+          };
+        })
+        .filter(({amount}) => !!amount);
+
+      await sendBlock(activeBank, activePrimaryValidator, bank.account_signing_key, bankAccountNumber, recipients);
+      displayToast(`You have purchased ${recipients.length} services`, 'success');
       close();
     } catch (error) {
       displayErrorToast(error);
