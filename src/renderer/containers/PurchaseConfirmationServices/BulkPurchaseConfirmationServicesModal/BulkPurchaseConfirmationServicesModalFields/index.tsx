@@ -62,10 +62,8 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
   const bankConfigs = useSelector(getBankConfigs);
   const primaryValidator = useSelector(getPrimaryValidator);
   const primaryValidatorConfig = useSelector(getPrimaryValidatorConfig)!;
-  const bankConfig = bankConfigs[bankAddress];
-  const {
-    data: {node_identifier: bankNodeIdentifier},
-  } = bankConfig;
+  const {data: bankConfig} = bankConfigs[bankAddress];
+  const {node_identifier: bankNodeIdentifier} = bankConfig;
   const {publicKeyHex: bankAccountNumber} = getKeyPairFromSigningKeyHex(bank.account_signing_key);
   const bankBalance = accountBalances[bankAccountNumber];
 
