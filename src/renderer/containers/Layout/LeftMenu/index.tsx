@@ -8,7 +8,6 @@ import AddValidatorModal from '@renderer/containers/Validator/AddValidatorModal'
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
 import {useBooleanState} from '@renderer/hooks';
 import {
-  getActivePrimaryValidatorConfig,
   getBankConfigs,
   getCoinBalance,
   getHasAuthenticatedBanks,
@@ -30,7 +29,6 @@ import './LeftMenu.scss';
 
 const LeftMenuSelector = (state: RootState) => {
   return {
-    activePrimaryValidator: getActivePrimaryValidatorConfig(state),
     bankConfigs: getBankConfigs(state),
     coinBalance: getCoinBalance(state),
     managedAccounts: getManagedAccounts(state),

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getActivePrimaryValidator, getManagedAccounts} from '@renderer/selectors';
+import {getPrimaryValidator, getManagedAccounts} from '@renderer/selectors';
 import {setAccountBalance} from '@renderer/store/accountBalances';
 import {setManagedAccountBalance} from '@renderer/store/managedAccountBalances';
 import {AppDispatch, Balance, RootState} from '@renderer/types';
@@ -12,7 +12,7 @@ export const fetchAccountBalance = (accountNumber: string) => async (
 ): Promise<number> => {
   const state = getState();
   const managedAccounts = getManagedAccounts(state);
-  const primaryValidator = getActivePrimaryValidator(state);
+  const primaryValidator = getPrimaryValidator(state);
   const isManagedAccount = !!managedAccounts[accountNumber];
 
   if (!primaryValidator) throw new Error('No primary validator. Unable to fetch account balance.');

@@ -6,7 +6,7 @@ import {INVALID_AMOUNT_ERROR} from '@renderer/constants/form-validation';
 import {
   getAccountBalances,
   getActiveBankConfig,
-  getActivePrimaryValidatorConfig,
+  getPrimaryValidatorConfig,
   getAuthenticatedBanks,
   getBankConfigs,
 } from '@renderer/selectors';
@@ -37,7 +37,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, initialBa
   const [knownStatuses, setKnownStatuses] = useState<KnownStatus>({});
   const [submitting, setSubmitting] = useState<boolean>(false);
   const activeBank = useSelector(getActiveBankConfig)!;
-  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
+  const activePrimaryValidator = useSelector(getPrimaryValidatorConfig)!;
   const authenticatedBanks = useSelector(getAuthenticatedBanks);
   const bankConfigs = useSelector(getBankConfigs);
   const accountBalances = useSelector(getAccountBalances);

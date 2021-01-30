@@ -1,8 +1,8 @@
 import {
   getActiveBank,
   getActiveBankConfig,
-  getActivePrimaryValidator,
-  getActivePrimaryValidatorConfig,
+  getPrimaryValidator,
+  getPrimaryValidatorConfig,
   getCoinBalance,
 } from './app';
 import {getAuthenticatedBanks, getHasAuthenticatedBanks, getIsActiveBank, getIsManagedBank} from './banks';
@@ -38,8 +38,8 @@ export {
   getAccountBalances,
   getActiveBank,
   getActiveBankConfig,
-  getActivePrimaryValidator,
-  getActivePrimaryValidatorConfig,
+  getPrimaryValidator,
+  getPrimaryValidatorConfig,
   getAuthenticatedBanks,
   getBankAccounts,
   getBankBankTransactions,

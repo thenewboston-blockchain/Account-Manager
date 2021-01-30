@@ -18,19 +18,19 @@ export const getActiveBankConfig = createSelector([getActiveBank, getBankConfigs
   return bankConfigs[address]?.data || null;
 });
 
-export const getActivePrimaryValidator = createSelector([getManagedValidators], (managedValidators) => {
+export const getCoinBalance = createSelector([getManagedAccountBalances], (managedAccountBalances) => {
+  return Object.values(managedAccountBalances).reduce((acc, account) => acc + account.balance, 0);
+});
+
+export const getPrimaryValidator = createSelector([getManagedValidators], (managedValidators) => {
   return Object.values(managedValidators).find((validator) => validator.is_default) || null;
 });
 
-export const getActivePrimaryValidatorConfig = createSelector(
-  [getActivePrimaryValidator, getValidatorConfigs],
+export const getPrimaryValidatorConfig = createSelector(
+  [getPrimaryValidator, getValidatorConfigs],
   (activePrimaryValidator, validatorConfigs) => {
     if (!activePrimaryValidator) return null;
     const address = formatAddressFromNode(activePrimaryValidator);
     return validatorConfigs[address]?.data || null;
   },
 );
-
-export const getCoinBalance = createSelector([getManagedAccountBalances], (managedAccountBalances) => {
-  return Object.values(managedAccountBalances).reduce((acc, account) => acc + account.balance, 0);
-});

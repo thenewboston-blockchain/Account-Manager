@@ -8,7 +8,7 @@ import {INVALID_AMOUNT_ERROR, MATCH_ERROR} from '@renderer/constants/form-valida
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
 import {
   getActiveBankConfig,
-  getActivePrimaryValidatorConfig,
+  getPrimaryValidatorConfig,
   getManagedAccountBalances,
   getManagedAccounts,
 } from '@renderer/selectors';
@@ -33,7 +33,7 @@ const SendCoinsModal: FC<ComponentProps> = ({close, initialRecipient, initialSen
   const dispatch = useDispatch<AppDispatch>();
   const [submitting, setSubmitting] = useState<boolean>(false);
   const activeBank = useSelector(getActiveBankConfig)!;
-  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
+  const primaryValidator = useSelector(getPrimaryValidatorConfig)!;
   const managedAccounts = useSelector(getManagedAccounts);
   const managedAccountBalances = useSelector(getManagedAccountBalances);
 
@@ -43,12 +43,10 @@ const SendCoinsModal: FC<ComponentProps> = ({close, initialRecipient, initialSen
       const {balance} = managedAccountBalances[accountNumber];
       if (!balance) return false;
       const totalCost =
-        getBankTxFee(activeBank, accountNumber) +
-        getPrimaryValidatorTxFee(activePrimaryValidator, accountNumber) +
-        coins;
+        getBankTxFee(activeBank, accountNumber) + getPrimaryValidatorTxFee(primaryValidator, accountNumber) + coins;
       return totalCost <= balance;
     },
-    [activeBank, activePrimaryValidator, managedAccountBalances],
+    [activeBank, primaryValidator, managedAccountBalances],
   );
 
   const initialValues = useMemo(
@@ -65,7 +63,7 @@ const SendCoinsModal: FC<ComponentProps> = ({close, initialRecipient, initialSen
       setSubmitting(true);
       await sendBlock(
         activeBank,
-        activePrimaryValidator,
+        primaryValidator,
         managedAccounts[senderAccountNumber].signing_key,
         senderAccountNumber,
         [{accountNumber: recipientAccountNumber, amount: parseInt(coins, 10)}],

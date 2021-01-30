@@ -9,7 +9,7 @@ import {useFormContext} from '@renderer/hooks';
 import {
   getAccountBalances,
   getActiveBankConfig,
-  getActivePrimaryValidatorConfig,
+  getPrimaryValidatorConfig,
   getAuthenticatedBanks,
 } from '@renderer/selectors';
 import {AppDispatch, BaseValidator, InputOption} from '@renderer/types';
@@ -33,7 +33,7 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
   const dispatch = useDispatch<AppDispatch>();
   const {values} = useFormContext<FormValues>();
   const activeBankConfig = useSelector(getActiveBankConfig)!;
-  const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
+  const primaryValidatorConfig = useSelector(getPrimaryValidatorConfig)!;
   const authenticatedBanks = useSelector(getAuthenticatedBanks);
   const accountBalances = useSelector(getAccountBalances);
   const selectedBank = authenticatedBanks[values.bankAddress];
@@ -80,7 +80,7 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
     const {amount} = values;
     if (!amount) return '-';
     const bankTxFee = getBankTxFee(activeBankConfig, accountNumber);
-    const validatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidatorConfig, accountNumber);
+    const validatorTxFee = getPrimaryValidatorTxFee(primaryValidatorConfig, accountNumber);
     return (parseInt(amount, 10) + bankTxFee + validatorTxFee).toLocaleString();
   };
 
@@ -134,7 +134,7 @@ const PurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({submitting
           </tr>
           <tr>
             <td>Primary Validator Fee</td>
-            <td>{getPrimaryValidatorTxFee(activePrimaryValidatorConfig, values?.bankAddress) || '-'}</td>
+            <td>{getPrimaryValidatorTxFee(primaryValidatorConfig, values?.bankAddress) || '-'}</td>
           </tr>
           <tr>
             <td>Total Tx Cost</td>

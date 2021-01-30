@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import Modal from '@renderer/components/Modal';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
-import {getActiveBankConfig, getActivePrimaryValidatorConfig} from '@renderer/selectors';
+import {getActiveBankConfig, getPrimaryValidatorConfig} from '@renderer/selectors';
 import {AppDispatch, ManagedNode} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 import {sendBlock} from '@renderer/utils/blocks';
@@ -23,7 +23,7 @@ interface ComponentProps {
 const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close, selectedValidators}) => {
   const dispatch = useDispatch<AppDispatch>();
   const activeBank = useSelector(getActiveBankConfig)!;
-  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig)!;
+  const primaryValidator = useSelector(getPrimaryValidatorConfig)!;
 
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [formValues, dispatchFormValues] = useReducer(
@@ -56,7 +56,7 @@ const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close,
         })
         .filter(({amount}) => !!amount);
 
-      await sendBlock(activeBank, activePrimaryValidator, bank.account_signing_key, bankAccountNumber, recipients);
+      await sendBlock(activeBank, primaryValidator, bank.account_signing_key, bankAccountNumber, recipients);
       displayToast(`You have purchased ${recipients.length} services`, 'success');
       close();
     } catch (error) {

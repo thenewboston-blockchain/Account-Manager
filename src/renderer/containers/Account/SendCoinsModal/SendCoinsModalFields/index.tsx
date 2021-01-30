@@ -7,7 +7,7 @@ import {MATCH_ERROR} from '@renderer/constants/form-validation';
 import {useFormContext} from '@renderer/hooks';
 import {
   getActiveBankConfig,
-  getActivePrimaryValidatorConfig,
+  getPrimaryValidatorConfig,
   getManagedAccountBalances,
   getManagedAccounts,
   getManagedFriends,
@@ -30,10 +30,10 @@ interface ComponentProps {
 const SendCoinsModalFields: FC<ComponentProps> = ({submitting}) => {
   const {errors, touched, values} = useFormContext<FormValues>();
   const activeBankConfig = useSelector(getActiveBankConfig)!;
-  const activePrimaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig);
-  const managedAccounts = useSelector(getManagedAccounts);
   const managedAccountBalances = useSelector(getManagedAccountBalances);
+  const managedAccounts = useSelector(getManagedAccounts);
   const managedFriends = useSelector(getManagedFriends);
+  const primaryValidatorConfig = useSelector(getPrimaryValidatorConfig);
 
   const coinsError = touched.coins ? errors.coins : '';
   const matchError = errors.recipientAccountNumber === MATCH_ERROR;
@@ -64,15 +64,15 @@ const SendCoinsModalFields: FC<ComponentProps> = ({submitting}) => {
 
   const renderTotal = (): string => {
     const {coins, senderAccountNumber} = values;
-    if (!activePrimaryValidatorConfig || !coins) return '-';
+    if (!primaryValidatorConfig || !coins) return '-';
     const bankTxFee = getBankTxFee(activeBankConfig, senderAccountNumber);
-    const validatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidatorConfig, senderAccountNumber);
+    const validatorTxFee = getPrimaryValidatorTxFee(primaryValidatorConfig, senderAccountNumber);
     return (parseInt(coins, 10) + bankTxFee + validatorTxFee).toLocaleString();
   };
 
   const renderValidatorFee = (): number | string => {
-    if (!activePrimaryValidatorConfig) return '-';
-    return getPrimaryValidatorTxFee(activePrimaryValidatorConfig, values?.senderAccountNumber) || '-';
+    if (!primaryValidatorConfig) return '-';
+    return getPrimaryValidatorTxFee(primaryValidatorConfig, values?.senderAccountNumber) || '-';
   };
 
   return (

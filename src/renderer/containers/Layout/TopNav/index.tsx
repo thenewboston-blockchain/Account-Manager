@@ -9,7 +9,7 @@ import ChangeActiveBankModal from '@renderer/containers/Bank/ChangeActiveBankMod
 import Notifications from '@renderer/containers/Notifications';
 import {clearLocalState} from '@renderer/dispatchers/app';
 import {useBooleanState, useIpcEffect, useNavigationalHistory, useReadIpc, useWriteIpc} from '@renderer/hooks';
-import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
+import {getPrimaryValidatorConfig} from '@renderer/selectors';
 import localStore from '@renderer/store/local';
 import {AppDispatch, LocalStore} from '@renderer/types';
 import {displayToast} from '@renderer/utils/toast';
@@ -45,7 +45,7 @@ const TopNav: FC = () => {
   useIpcEffect(getSuccessChannel(IpcChannel.restartApp), restartAppSuccessToast);
   useIpcEffect(getFailChannel(IpcChannel.restartApp), restartAppFailToast);
   const {back, backEnabled, forward, forwardEnabled, reload} = useNavigationalHistory();
-  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
+  const primaryValidatorConfig = useSelector(getPrimaryValidatorConfig);
 
   const handleImportSuccessCallback = useCallback((event: any, storeData: LocalStore) => {
     localStore.clear();
@@ -91,7 +91,7 @@ const TopNav: FC = () => {
   );
 
   const renderRight = (): ReactNode => {
-    if (!activePrimaryValidator) return null;
+    if (!primaryValidatorConfig) return null;
     return (
       <div className="TopNav__container">
         <span className="TopNav__change-bank" onClick={toggleActiveBankModal}>

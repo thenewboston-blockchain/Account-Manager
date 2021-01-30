@@ -9,12 +9,7 @@ import PageTable from '@renderer/components/PageTable';
 import {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
-import {
-  getAccountBalances,
-  getActivePrimaryValidator,
-  getActivePrimaryValidatorConfig,
-  getBankConfigs,
-} from '@renderer/selectors';
+import {getAccountBalances, getPrimaryValidator, getPrimaryValidatorConfig, getBankConfigs} from '@renderer/selectors';
 import {AppDispatch, ManagedNode} from '@renderer/types';
 import {formatAddressFromNode, isSameNode} from '@renderer/utils/address';
 import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
@@ -65,8 +60,8 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
   const dispatch = useDispatch<AppDispatch>();
   const accountBalances = useSelector(getAccountBalances);
   const bankConfigs = useSelector(getBankConfigs);
-  const primaryValidator = useSelector(getActivePrimaryValidator);
-  const primaryValidatorConfig = useSelector(getActivePrimaryValidatorConfig)!;
+  const primaryValidator = useSelector(getPrimaryValidator);
+  const primaryValidatorConfig = useSelector(getPrimaryValidatorConfig)!;
   const {
     data: {default_transaction_fee: bankFee, node_identifier: bankNodeIdentifier},
   } = bankConfigs[bankAddress];

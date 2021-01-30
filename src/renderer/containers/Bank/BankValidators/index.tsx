@@ -9,7 +9,7 @@ import EditTrustModal from '@renderer/containers/EditTrustModal';
 import PurchaseConfirmationServicesModal from '@renderer/containers/PurchaseConfirmationServices/PurchaseConfirmationServicesModal';
 import {BANK_VALIDATORS} from '@renderer/constants/actions';
 import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
-import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
+import {getPrimaryValidatorConfig} from '@renderer/selectors';
 import {BaseValidator, ManagedNode} from '@renderer/types';
 
 import './BankValidators.scss';
@@ -47,7 +47,7 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
   const [editTrustValidator, setEditTrustValidator] = useState<BaseValidator | null>(null);
   const [purchaseServicesModalIsOpen, togglePurchaseServicesModal] = useBooleanState(false);
   const [purchaseServicesValidator, setPurchaseServicesValidator] = useState<BaseValidator | null>(null);
-  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
+  const primaryValidator = useSelector(getPrimaryValidatorConfig);
 
   const handleEditTrustButton = useCallback(
     (validator: BaseValidator) => (): void => {
@@ -69,7 +69,7 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
 
   const renderValidatorDailyRate = useCallback(
     (validator) => {
-      if (activePrimaryValidator?.node_identifier === validator.node_identifier || !validator.daily_confirmation_rate) {
+      if (primaryValidator?.node_identifier === validator.node_identifier || !validator.daily_confirmation_rate) {
         return '-';
       }
       return hasSigningKey ? (
@@ -80,7 +80,7 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
         validator.daily_confirmation_rate
       );
     },
-    [activePrimaryValidator, handlePurchaseServicesClick, hasSigningKey],
+    [handlePurchaseServicesClick, hasSigningKey, primaryValidator],
   );
 
   const bankValidatorsTableData = useMemo<PageTableData[]>(
