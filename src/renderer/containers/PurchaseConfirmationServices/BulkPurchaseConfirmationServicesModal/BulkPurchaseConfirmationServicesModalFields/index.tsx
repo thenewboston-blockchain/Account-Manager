@@ -14,7 +14,7 @@ import {AppDispatch, ManagedNode} from '@renderer/types';
 import {formatAddressFromNode, isSameNode} from '@renderer/utils/address';
 import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayErrorToast} from '@renderer/utils/toast';
-import {getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
+import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 
 import ConnectionStatus from '../../ConnectionStatus';
 import {
@@ -62,9 +62,10 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
   const bankConfigs = useSelector(getBankConfigs);
   const primaryValidator = useSelector(getPrimaryValidator);
   const primaryValidatorConfig = useSelector(getPrimaryValidatorConfig)!;
+  const bankConfig = bankConfigs[bankAddress];
   const {
-    data: {default_transaction_fee: bankFee, node_identifier: bankNodeIdentifier},
-  } = bankConfigs[bankAddress];
+    data: {node_identifier: bankNodeIdentifier},
+  } = bankConfig;
   const {publicKeyHex: bankAccountNumber} = getKeyPairFromSigningKeyHex(bank.account_signing_key);
   const bankBalance = accountBalances[bankAccountNumber];
 
@@ -203,6 +204,8 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
     }),
     [validatorsTableData],
   );
+
+  const bankFee = useMemo(() => getBankTxFee(bankConfig), [bankConfig]);
 
   const pvFee = useMemo(() => getPrimaryValidatorTxFee(primaryValidatorConfig, bankAddress), [
     bankAddress,

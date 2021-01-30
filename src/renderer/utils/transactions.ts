@@ -1,7 +1,7 @@
 import {BankConfig, ValidatorConfig} from '@renderer/types';
 
-export const getBankTxFee = (activeBankConfig: BankConfig, senderAccountNumber: string): number => {
-  if (activeBankConfig.account_number === senderAccountNumber) return 0;
+export const getBankTxFee = (activeBankConfig: BankConfig, senderAccountNumber?: string): number => {
+  if (senderAccountNumber && activeBankConfig.account_number === senderAccountNumber) return 0;
   return activeBankConfig.default_transaction_fee;
 };
 
