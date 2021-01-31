@@ -22,7 +22,7 @@ interface ComponentProps {
 
 const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close, selectedValidators}) => {
   const dispatch = useDispatch<AppDispatch>();
-  const activeBank = useSelector(getActiveBankConfig)!;
+  const activeBankConfig = useSelector(getActiveBankConfig)!;
   const primaryValidator = useSelector(getPrimaryValidatorConfig)!;
 
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -56,7 +56,7 @@ const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close,
         })
         .filter(({amount}) => !!amount);
 
-      await sendBlock(activeBank, primaryValidator, bank.account_signing_key, bankAccountNumber, recipients);
+      await sendBlock(activeBankConfig, primaryValidator, bank.account_signing_key, bankAccountNumber, recipients);
       displayToast(`You have purchased ${recipients.length} services`, 'success');
       close();
     } catch (error) {
@@ -82,7 +82,7 @@ const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close,
       submitting={submitting}
     >
       <BulkPurchaseConfirmationServicesModalFields
-        bank={bank}
+        selectedBank={bank}
         dispatchFormValues={dispatchFormValues}
         formValues={formValues}
         handleSubmit={handleSubmit}

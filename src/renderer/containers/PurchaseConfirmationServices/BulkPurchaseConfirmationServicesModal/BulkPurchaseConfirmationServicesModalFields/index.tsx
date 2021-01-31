@@ -9,7 +9,13 @@ import PageTable from '@renderer/components/PageTable';
 import {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
-import {getAccountBalances, getPrimaryValidator, getPrimaryValidatorConfig, getBankConfigs} from '@renderer/selectors';
+import {
+  getAccountBalances,
+  getPrimaryValidator,
+  getPrimaryValidatorConfig,
+  getBankConfigs,
+  getActiveBankConfig,
+} from '@renderer/selectors';
 import {AppDispatch, ManagedNode} from '@renderer/types';
 import {formatAddressFromNode, isSameNode} from '@renderer/utils/address';
 import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
@@ -30,12 +36,12 @@ import {
 import './BulkPurchaseConfirmationServicesModalFields.scss';
 
 interface ComponentProps {
-  bank: ManagedNode;
   dispatchFormValues: Dispatch<ValidatorFormAction>;
   formValues: ValidatorFormState;
   handleSubmit(): Promise<void>;
   initialValidatorsData: SelectedValidatorState;
   orderedNodeIdentifiers: string[];
+  selectedBank: ManagedNode;
   submitting: boolean;
 }
 
@@ -48,24 +54,25 @@ enum TableKeys {
 }
 
 const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
-  bank,
   dispatchFormValues,
   formValues,
   handleSubmit,
   initialValidatorsData,
   orderedNodeIdentifiers,
+  selectedBank,
   submitting,
 }) => {
-  const bankAddress = formatAddressFromNode(bank);
+  const selectedBankAddress = formatAddressFromNode(selectedBank);
   const dispatch = useDispatch<AppDispatch>();
   const accountBalances = useSelector(getAccountBalances);
+  const activeBankConfig = useSelector(getActiveBankConfig)!;
   const bankConfigs = useSelector(getBankConfigs);
-  const primaryValidator = useSelector(getPrimaryValidator);
+  const primaryValidator = useSelector(getPrimaryValidator)!;
   const primaryValidatorConfig = useSelector(getPrimaryValidatorConfig)!;
-  const {data: bankConfig} = bankConfigs[bankAddress];
-  const {node_identifier: bankNodeIdentifier} = bankConfig;
-  const {publicKeyHex: bankAccountNumber} = getKeyPairFromSigningKeyHex(bank.account_signing_key);
-  const bankBalance = accountBalances[bankAccountNumber];
+  const {data: selectedBankConfig} = bankConfigs[selectedBankAddress];
+  const {node_identifier: selectedBankNodeIdentifier} = selectedBankConfig;
+  const {publicKeyHex: selectedBankAccountNumber} = getKeyPairFromSigningKeyHex(selectedBank.account_signing_key);
+  const selectedBankBalance = accountBalances[selectedBankAccountNumber];
 
   const testConnection = useCallback(
     async (validatorNodeIdentifier: string) => {
@@ -73,8 +80,8 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
       const formValue = formValues[validatorNodeIdentifier];
       try {
         await Promise.all([
-          checkConnectionBankToValidator(bank, validator),
-          checkConnectionValidatorToBank(bank, validator, bankNodeIdentifier),
+          checkConnectionBankToValidator(selectedBank, validator),
+          checkConnectionValidatorToBank(selectedBank, validator, selectedBankNodeIdentifier),
         ]);
         dispatchFormValues(
           setValidatorInForm({
@@ -93,7 +100,7 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
         );
       }
     },
-    [bank, bankNodeIdentifier, dispatchFormValues, formValues, initialValidatorsData],
+    [selectedBank, selectedBankNodeIdentifier, dispatchFormValues, formValues, initialValidatorsData],
   );
 
   useEffect(() => {
@@ -106,11 +113,11 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
 
   useEffect(() => {
     try {
-      dispatch(fetchAccountBalance(bankAccountNumber));
+      dispatch(fetchAccountBalance(selectedBankAccountNumber));
     } catch (error) {
       displayErrorToast(error);
     }
-  }, [bankAccountNumber, dispatch]);
+  }, [selectedBankAccountNumber, dispatch]);
 
   const handleAmountChange = useCallback(
     (nodeIdentifier: string) => (e: ChangeEvent<HTMLInputElement>): void => {
@@ -203,10 +210,13 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
     [validatorsTableData],
   );
 
-  const bankFee = useMemo(() => getBankTxFee(bankConfig), [bankConfig]);
+  const bankFee = useMemo(() => getBankTxFee(activeBankConfig, selectedBankConfig.account_number), [
+    activeBankConfig,
+    selectedBankConfig,
+  ]);
 
-  const pvFee = useMemo(() => getPrimaryValidatorTxFee(primaryValidatorConfig, bankAddress), [
-    bankAddress,
+  const pvFee = useMemo(() => getPrimaryValidatorTxFee(primaryValidatorConfig, selectedBankAddress), [
+    selectedBankAddress,
     primaryValidatorConfig,
   ]);
 
@@ -234,7 +244,7 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
 
   const totalTx = bankFee + pvFee + totalAmount;
 
-  const totalExceedsAvailableBalance = totalTx > (bankBalance?.balance || 0);
+  const totalExceedsAvailableBalance = totalTx > (selectedBankBalance?.balance || 0);
 
   return (
     <div className="BulkPurchaseConfirmationServicesModalFields">
@@ -246,13 +256,13 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
         />
       </div>
       <div className="BulkPurchaseConfirmationServicesModalFields__right">
-        <div className="BulkPurchaseConfirmationServicesModalFields__bank-address">{bankAddress}</div>
-        <div className="BulkPurchaseConfirmationServicesModalFields__bank-nickname">{bank.nickname}</div>
+        <div className="BulkPurchaseConfirmationServicesModalFields__bank-address">{selectedBankAddress}</div>
+        <div className="BulkPurchaseConfirmationServicesModalFields__bank-nickname">{selectedBank.nickname}</div>
         <table className="BulkPurchaseConfirmationServicesModalFields__summary-table">
           <tbody>
             <tr>
               <td>Account Balance</td>
-              <td>{bankBalance?.balance.toLocaleString() || '-'}</td>
+              <td>{selectedBankBalance?.balance.toLocaleString() || '-'}</td>
             </tr>
             <tr>
               <td>Active Bank Fee</td>

@@ -6,9 +6,9 @@ export const getBankTxFee = (activeBankConfig: BankConfig, senderAccountNumber?:
 };
 
 export const getPrimaryValidatorTxFee = (
-  activePrimaryValidatorConfig: ValidatorConfig,
+  primaryValidatorConfig: ValidatorConfig,
   senderAccountNumber: string,
 ): number => {
-  if (activePrimaryValidatorConfig.account_number === senderAccountNumber) return 0;
-  return activePrimaryValidatorConfig.default_transaction_fee;
+  if (primaryValidatorConfig.account_number === senderAccountNumber) return 0;
+  return primaryValidatorConfig.default_transaction_fee;
 };

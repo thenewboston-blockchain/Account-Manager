@@ -36,7 +36,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, initialBa
   const [connectionStatus, setConnectionStatus] = useState<ValidatorConnectionStatus | null>(null);
   const [knownStatuses, setKnownStatuses] = useState<KnownStatus>({});
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const activeBank = useSelector(getActiveBankConfig)!;
+  const activeBankConfig = useSelector(getActiveBankConfig)!;
   const activePrimaryValidator = useSelector(getPrimaryValidatorConfig)!;
   const authenticatedBanks = useSelector(getAuthenticatedBanks);
   const bankConfigs = useSelector(getBankConfigs);
@@ -47,7 +47,7 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, initialBa
       setSubmitting(true);
       const selectedBank = authenticatedBanks[bankAddress];
       const {publicKeyHex: bankAccountNumber} = getKeyPairFromSigningKeyHex(selectedBank.account_signing_key);
-      await sendBlock(activeBank, activePrimaryValidator, selectedBank.account_signing_key, bankAccountNumber, [
+      await sendBlock(activeBankConfig, activePrimaryValidator, selectedBank.account_signing_key, bankAccountNumber, [
         {accountNumber: validator.account_number, amount: parseInt(amount, 10)},
       ]);
       displayToast('Your payment has been sent', 'success');
@@ -109,13 +109,13 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, initialBa
       if (!managedAccountBalance) return false;
 
       const totalCost =
-        getBankTxFee(activeBank, accountNumber) +
+        getBankTxFee(activeBankConfig, accountNumber) +
         getPrimaryValidatorTxFee(activePrimaryValidator, accountNumber) +
         amount;
 
       return totalCost <= managedAccountBalance.balance;
     },
-    [accountBalances, activeBank, activePrimaryValidator, authenticatedBanks],
+    [accountBalances, activeBankConfig, activePrimaryValidator, authenticatedBanks],
   );
 
   const validationSchema = useMemo(() => {

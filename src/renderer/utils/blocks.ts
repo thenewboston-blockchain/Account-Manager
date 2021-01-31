@@ -30,8 +30,8 @@ const fetchAccountBalanceLock = async (
 };
 
 export const sendBlock = async (
-  activeBank: BankConfig,
-  activePrimaryValidator: ValidatorConfig,
+  activeBankConfig: BankConfig,
+  primaryValidatorConfig: ValidatorConfig,
   senderSigningKey: string,
   senderAccountNumber: string,
   recipients: Array<{accountNumber: string; amount: number}>,
@@ -39,18 +39,18 @@ export const sendBlock = async (
   let recipientWasActiveBank = false;
   let recipientWasPv = false;
 
-  const bankTxFee = getBankTxFee(activeBank, senderAccountNumber);
-  const primaryValidatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidator, senderAccountNumber);
+  const bankTxFee = getBankTxFee(activeBankConfig, senderAccountNumber);
+  const primaryValidatorTxFee = getPrimaryValidatorTxFee(primaryValidatorConfig, senderAccountNumber);
 
   let txs: Tx[] = [];
 
   for (const recipient of recipients) {
     let {amount} = recipient;
-    if (!recipientWasActiveBank && recipient.accountNumber === activeBank.account_number) {
+    if (!recipientWasActiveBank && recipient.accountNumber === activeBankConfig.account_number) {
       amount += bankTxFee;
       recipientWasActiveBank = true;
     }
-    if (!recipientWasPv && recipient.accountNumber === activePrimaryValidator.account_number) {
+    if (!recipientWasPv && recipient.accountNumber === primaryValidatorConfig.account_number) {
       amount += primaryValidatorTxFee;
       recipientWasPv = true;
     }
@@ -61,23 +61,23 @@ export const sendBlock = async (
   if (!recipientWasActiveBank) {
     txs.push({
       amount: bankTxFee,
-      recipient: activeBank.account_number,
+      recipient: activeBankConfig.account_number,
     });
   }
 
   if (!recipientWasPv) {
     txs.push({
       amount: primaryValidatorTxFee,
-      recipient: activePrimaryValidator.account_number,
+      recipient: primaryValidatorConfig.account_number,
     });
   }
 
   txs = txs.filter((tx) => !!tx.amount);
 
-  const {ip_address: ipAddress, port, protocol} = activeBank;
+  const {ip_address: ipAddress, port, protocol} = activeBankConfig;
   const address = formatAddress(ipAddress, port, protocol);
 
-  const block = await createBlock(activePrimaryValidator, senderSigningKey, senderAccountNumber, txs);
+  const block = await createBlock(primaryValidatorConfig, senderSigningKey, senderAccountNumber, txs);
   await axios.post(`${address}/blocks`, block, {
     headers: {
       'Content-Type': 'application/json',
