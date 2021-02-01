@@ -4,13 +4,12 @@ import {useSelector} from 'react-redux';
 import AccountLink from '@renderer/components/AccountLink';
 import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
-import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
-import Pagination from '@renderer/components/Pagination';
+import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
-import PurchaseConfirmationServicesModal from '@renderer/containers/PurchaseConfirmationServicesModal';
-import {BANK_VALIDATORS} from '@renderer/constants';
+import PurchaseConfirmationServicesModal from '@renderer/containers/PurchaseConfirmationServices/PurchaseConfirmationServicesModal';
+import {BANK_VALIDATORS} from '@renderer/constants/actions';
 import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
-import {getActivePrimaryValidatorConfig} from '@renderer/selectors';
+import {getPrimaryValidatorConfig} from '@renderer/selectors';
 import {BaseValidator, ManagedNode} from '@renderer/types';
 
 import './BankValidators.scss';
@@ -48,7 +47,7 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
   const [editTrustValidator, setEditTrustValidator] = useState<BaseValidator | null>(null);
   const [purchaseServicesModalIsOpen, togglePurchaseServicesModal] = useBooleanState(false);
   const [purchaseServicesValidator, setPurchaseServicesValidator] = useState<BaseValidator | null>(null);
-  const activePrimaryValidator = useSelector(getActivePrimaryValidatorConfig);
+  const primaryValidator = useSelector(getPrimaryValidatorConfig);
 
   const handleEditTrustButton = useCallback(
     (validator: BaseValidator) => (): void => {
@@ -70,7 +69,7 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
 
   const renderValidatorDailyRate = useCallback(
     (validator) => {
-      if (activePrimaryValidator?.node_identifier === validator.node_identifier || !validator.daily_confirmation_rate) {
+      if (primaryValidator?.node_identifier === validator.node_identifier || !validator.daily_confirmation_rate) {
         return '-';
       }
       return hasSigningKey ? (
@@ -81,7 +80,7 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
         validator.daily_confirmation_rate
       );
     },
-    [activePrimaryValidator, handlePurchaseServicesClick, hasSigningKey],
+    [handlePurchaseServicesClick, hasSigningKey, primaryValidator],
   );
 
   const bankValidatorsTableData = useMemo<PageTableData[]>(
@@ -153,9 +152,16 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
   );
 
   return (
-    <div className="BankValidators">
-      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
-      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
+    <>
+      <PaginatedTable
+        className="BankValidators"
+        count={count}
+        currentPage={currentPage}
+        items={pageTableItems}
+        loading={loading}
+        setPage={setPage}
+        totalPages={totalPages}
+      />
       {editTrustModalIsOpen && !!editTrustValidator && !!managedBank && (
         <EditTrustModal
           close={toggleEditTrustModal}
@@ -166,9 +172,13 @@ const BankValidators: FC<ComponentProps> = ({managedBank}) => {
         />
       )}
       {purchaseServicesModalIsOpen && !!purchaseServicesValidator && (
-        <PurchaseConfirmationServicesModal close={togglePurchaseServicesModal} validator={purchaseServicesValidator} />
+        <PurchaseConfirmationServicesModal
+          initialBankAddress={address}
+          close={togglePurchaseServicesModal}
+          validator={purchaseServicesValidator}
+        />
       )}
-    </div>
+    </>
   );
 };
 

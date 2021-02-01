@@ -9,7 +9,7 @@ import {
   INVALID_BLOCKS,
   VALIDATOR_CONFIRMATION_SERVICES,
   VALIDATORS,
-} from '@renderer/constants';
+} from '@renderer/constants/actions';
 import {AXIOS_TIMEOUT_MS, defaultPaginatedQueryParam} from '@renderer/config';
 import {
   setBankAccounts,

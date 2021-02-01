@@ -59,7 +59,7 @@ const FormRadioGroup: FC<ComponentProps> = ({
 
   return (
     <div className={clsx('FormRadioGroup FormFieldComponent', className)}>
-      {renderFormLabel(name, className, label, required)}
+      {renderFormLabel({className, label, name, required})}
       {options.map((option, index) => {
         const optionIsFocused = focused && index === focusedIndex;
         const selected = selectedOption?.value === option.value;
@@ -92,7 +92,7 @@ const FormRadioGroup: FC<ComponentProps> = ({
           </div>
         );
       })}
-      {renderFormError(name, className, hideErrorText)}
+      {renderFormError({className, hideErrorText, name})}
     </div>
   );
 };

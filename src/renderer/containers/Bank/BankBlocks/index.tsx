@@ -1,9 +1,8 @@
 import React, {FC, useMemo} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
-import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
-import Pagination from '@renderer/components/Pagination';
-import {BANK_BLOCKS} from '@renderer/constants';
+import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
+import {BANK_BLOCKS} from '@renderer/constants/actions';
 import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BlockResponse} from '@renderer/types';
 import {formatDate} from '@renderer/utils/dates';
@@ -66,10 +65,15 @@ const BankBlocks: FC = () => {
   );
 
   return (
-    <div className="BankBlocks">
-      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
-      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-    </div>
+    <PaginatedTable
+      className="BankBlocks"
+      count={count}
+      currentPage={currentPage}
+      items={pageTableItems}
+      loading={loading}
+      setPage={setPage}
+      totalPages={totalPages}
+    />
   );
 };
 

@@ -1,8 +1,7 @@
 import React, {FC, useMemo} from 'react';
 
-import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
-import Pagination from '@renderer/components/Pagination';
-import {BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants';
+import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
+import {BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants/actions';
 import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {ValidatorConfirmationService} from '@renderer/types';
 import {formatDate} from '@renderer/utils/dates';
@@ -65,10 +64,15 @@ const BankValidatorConfirmationServices: FC = () => {
   );
 
   return (
-    <div className="BankValidatorConfirmationServices">
-      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
-      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-    </div>
+    <PaginatedTable
+      className="BankValidatorConfirmationServices"
+      count={count}
+      currentPage={currentPage}
+      items={pageTableItems}
+      loading={loading}
+      setPage={setPage}
+      totalPages={totalPages}
+    />
   );
 };
 

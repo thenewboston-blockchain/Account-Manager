@@ -1,5 +1,16 @@
 :root {
   --left-menu-width: 258px;
-  --page-padding: 16px 12px 24px;
-  --page-table-padding: 0 12px 24px;
+  --page-padding: 16px 0 24px;
+  --page-table-padding: 0 0 24px;
+}
+
+@mixin main-container {
+  height: 100%;
+  padding: 18px 12px 12px;
+}
+
+@mixin main-container-header {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 6px;
 }

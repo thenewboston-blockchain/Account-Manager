@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-import {NOTIFICATIONS} from '@renderer/constants';
+import {NOTIFICATIONS} from '@renderer/constants/actions';
 import {
   ConfirmationBlockNotificationPayload,
   CrawlStatusNotificationPayload,

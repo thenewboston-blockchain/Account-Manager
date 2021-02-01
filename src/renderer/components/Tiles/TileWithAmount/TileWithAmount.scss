@@ -1,0 +1,16 @@
+.TileWithAmount {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+
+    &__title {
+      color: var(--color-gray-500);
+    }
+  }
+
+  &__amount {
+    color: var(--color-primary);
+    font-size: var(--font-size-large);
+  }
+}

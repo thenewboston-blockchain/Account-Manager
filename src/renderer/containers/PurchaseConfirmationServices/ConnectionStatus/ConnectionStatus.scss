@@ -1,0 +1,66 @@
+@keyframes spin {
+  0% {
+    transform: rotateZ(0);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
+@mixin connection-status {
+  align-items: center;
+  border-radius: 3px;
+  display: flex;
+  font-family: var(--font-family-default);
+}
+
+@mixin title {
+  font-weight: bold;
+}
+
+.ConnectionStatus {
+  @include connection-status;
+  padding: 6px;
+
+  &--checking {
+    background: var(--color-yellow-100);
+    color: var(--color-yellow-500);
+  }
+
+  &--connected {
+    background: var(--color-green-100);
+    color: var(--color-green-500);
+  }
+
+  &--not-connected {
+    background: var(--color-red-100);
+    color: var(--color-red-500);
+  }
+
+  &--subtitled {
+    @include connection-status;
+    margin-bottom: 24px;
+    padding: 10px 18px;
+  }
+
+  &__icon {
+    margin-right: 16px;
+  }
+
+  &__icon--spin {
+    animation: spin 1.5s linear infinite;
+  }
+
+  &__main-title {
+    @include title;
+
+    &--subtitled {
+      @include title;
+      margin-bottom: 3px;
+    }
+  }
+
+  &__sub-title {
+    font-size: var(--font-size-small);
+  }
+}

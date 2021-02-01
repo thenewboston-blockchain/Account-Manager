@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {VALIDATOR_BANKS} from '@renderer/constants';
+import {VALIDATOR_BANKS} from '@renderer/constants/actions';
 import {DictWithPaginatedResultsAndError, ValidatorBank} from '@renderer/types';
 import {setPaginatedResultErrorReducer, setPaginatedResultReducer, unsetDataReducer} from '@renderer/utils/store';
 

@@ -10,4 +10,10 @@
       margin-bottom: 12px;
     }
   }
+
+  &__purchase-confirmation-services {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

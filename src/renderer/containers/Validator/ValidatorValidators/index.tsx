@@ -3,10 +3,9 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 import AccountLink from '@renderer/components/AccountLink';
 import Icon, {IconType} from '@renderer/components/Icon';
 import NodeLink from '@renderer/components/NodeLink';
-import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
-import Pagination from '@renderer/components/Pagination';
+import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
-import {VALIDATOR_VALIDATORS} from '@renderer/constants';
+import {VALIDATOR_VALIDATORS} from '@renderer/constants/actions';
 import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BaseValidator, ManagedNode} from '@renderer/types';
 
@@ -123,9 +122,16 @@ const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
   );
 
   return (
-    <div className="ValidatorValidators">
-      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
-      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
+    <>
+      <PaginatedTable
+        className="ValidatorValidators"
+        count={count}
+        currentPage={currentPage}
+        items={pageTableItems}
+        loading={loading}
+        setPage={setPage}
+        totalPages={totalPages}
+      />
       {editTrustModalIsOpen && !!editTrustValidator && !!managedValidator && (
         <EditTrustModal
           close={toggleEditTrustModal}
@@ -135,7 +141,7 @@ const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
           trust={editTrustValidator.trust}
         />
       )}
-    </div>
+    </>
   );
 };
 

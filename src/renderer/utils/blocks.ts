@@ -1,19 +1,18 @@
 import axios from 'axios';
 
-import {BankConfig, Dict, ManagedAccount, Tx, ValidatorConfig} from '@renderer/types';
+import {BankConfig, Tx, ValidatorConfig} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
+import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 
 const createBlock = async (
   activePrimaryValidator: ValidatorConfig,
-  managedAccounts: Dict<ManagedAccount>,
-  recipientAccountNumber: string,
+  senderSigningKey: string,
   senderAccountNumber: string,
   txs: Tx[],
 ): Promise<string> => {
-  const {signing_key: signingKeyHex} = managedAccounts[senderAccountNumber];
-  const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(signingKeyHex);
+  const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(senderSigningKey);
   const balanceLock = await fetchAccountBalanceLock(senderAccountNumber, activePrimaryValidator);
   return generateBlock(balanceLock, publicKeyHex, signingKey, txs);
 };
@@ -26,59 +25,59 @@ const fetchAccountBalanceLock = async (
   const address = formatAddress(ipAddress, port, protocol);
   const {
     data: {balance_lock: balanceLock},
-  } = await axios.get(`${address}/accounts/${accountNumber}/balance_lock`);
+  } = await axios.get(`${address}/accounts/${accountNumber}/balance_lock`, {timeout: AXIOS_TIMEOUT_MS});
   return balanceLock;
 };
 
 export const sendBlock = async (
-  activeBank: BankConfig,
-  activePrimaryValidator: ValidatorConfig,
-  coins: number,
-  managedAccounts: Dict<ManagedAccount>,
-  recipientAccountNumber: string,
+  activeBankConfig: BankConfig,
+  primaryValidatorConfig: ValidatorConfig,
+  senderSigningKey: string,
   senderAccountNumber: string,
+  recipients: Array<{accountNumber: string; amount: number}>,
 ): Promise<void> => {
-  const recipientIsActiveBank = recipientAccountNumber === activeBank.account_number;
-  const recipientIsActivePrimaryValidator = recipientAccountNumber === activePrimaryValidator.account_number;
+  let recipientWasActiveBank = false;
+  let recipientWasPv = false;
 
-  const bankTxFee = getBankTxFee(activeBank, senderAccountNumber);
-  const primaryValidatorTxFee = getPrimaryValidatorTxFee(activePrimaryValidator, senderAccountNumber);
+  const bankTxFee = getBankTxFee(activeBankConfig, senderAccountNumber);
+  const primaryValidatorTxFee = getPrimaryValidatorTxFee(primaryValidatorConfig, senderAccountNumber);
 
-  let txs: Tx[] = [
-    {
-      amount:
-        coins +
-        (recipientIsActiveBank ? bankTxFee : 0) +
-        (recipientIsActivePrimaryValidator ? primaryValidatorTxFee : 0),
-      recipient: recipientAccountNumber,
-    },
-  ];
+  let txs: Tx[] = [];
 
-  if (!recipientIsActiveBank) {
+  for (const recipient of recipients) {
+    let {amount} = recipient;
+    if (!recipientWasActiveBank && recipient.accountNumber === activeBankConfig.account_number) {
+      amount += bankTxFee;
+      recipientWasActiveBank = true;
+    }
+    if (!recipientWasPv && recipient.accountNumber === primaryValidatorConfig.account_number) {
+      amount += primaryValidatorTxFee;
+      recipientWasPv = true;
+    }
+
+    txs.push({amount, recipient: recipient.accountNumber});
+  }
+
+  if (!recipientWasActiveBank) {
     txs.push({
       amount: bankTxFee,
-      recipient: activeBank.account_number,
+      recipient: activeBankConfig.account_number,
     });
   }
 
-  if (!recipientIsActivePrimaryValidator) {
+  if (!recipientWasPv) {
     txs.push({
       amount: primaryValidatorTxFee,
-      recipient: activePrimaryValidator.account_number,
+      recipient: primaryValidatorConfig.account_number,
     });
   }
 
   txs = txs.filter((tx) => !!tx.amount);
 
-  const {ip_address: ipAddress, port, protocol} = activeBank;
+  const {ip_address: ipAddress, port, protocol} = activeBankConfig;
   const address = formatAddress(ipAddress, port, protocol);
-  const block = await createBlock(
-    activePrimaryValidator,
-    managedAccounts,
-    recipientAccountNumber,
-    senderAccountNumber,
-    txs,
-  );
+
+  const block = await createBlock(primaryValidatorConfig, senderSigningKey, senderAccountNumber, txs);
   await axios.post(`${address}/blocks`, block, {
     headers: {
       'Content-Type': 'application/json',

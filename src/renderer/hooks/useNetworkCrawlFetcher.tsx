@@ -3,9 +3,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
 
+import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 import {getCrawlSockets} from '@renderer/selectors';
 import {toggleCrawlProcess} from '@renderer/store/sockets';
-import {AppDispatch, CrawlStatus, ManagedNode, NodeCrawlStatusWithAddress, ProtocolType} from '@renderer/types';
+import {AddressParams, AppDispatch, CrawlStatus, ManagedNode, NodeCrawlStatusWithAddress} from '@renderer/types';
 import {generateUuid} from '@renderer/utils/local';
 import {displayToast} from '@renderer/utils/toast';
 import {formatAddress} from '@renderer/utils/address';
@@ -22,7 +23,7 @@ const useNetworkCrawlFetcher = (
   loadingCrawl: boolean;
   submittingCrawl: boolean;
 } => {
-  const {ipAddress, port: portStr, protocol} = useParams<{ipAddress: string; port: string; protocol: ProtocolType}>();
+  const {ipAddress, port: portStr, protocol} = useParams<AddressParams>();
   const port = parseInt(portStr, 10);
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
@@ -41,7 +42,7 @@ const useNetworkCrawlFetcher = (
     const fetchData = async (): Promise<void> => {
       try {
         setLoading(true);
-        const {data} = await axios.get<NodeCrawlStatusWithAddress>(`${address}/crawl`);
+        const {data} = await axios.get<NodeCrawlStatusWithAddress>(`${address}/crawl`, {timeout: AXIOS_TIMEOUT_MS});
         setCrawlStatus(data.crawl_status || CrawlStatus.notCrawling);
         setCrawlLastCompleted(data.crawl_last_completed);
       } catch (error) {

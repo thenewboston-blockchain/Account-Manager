@@ -1,2 +1,5 @@
+@use 'src/renderer/styles/layout';
+
 .Account {
+  @include layout.main-container;
 }

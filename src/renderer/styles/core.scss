@@ -12,6 +12,11 @@ body {
   margin: auto;
 }
 
+a {
+  color: var(--color-secondary);
+  text-decoration: none;
+}
+
 b,
 strong {
   font-weight: 800;
@@ -29,6 +34,8 @@ h6 {
 
 h1 {
   font-size: var(--font-size-extra-large);
+  height: 30px;
+  padding-top: 3px;
 }
 
 h2 {

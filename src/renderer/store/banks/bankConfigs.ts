@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {BANK_CONFIGS} from '@renderer/constants';
+import {BANK_CONFIGS} from '@renderer/constants/actions';
 import {BankConfig, DictWithDataAndError} from '@renderer/types';
 import {setDataErrorReducer, setDataReducer} from '@renderer/utils/store';
 

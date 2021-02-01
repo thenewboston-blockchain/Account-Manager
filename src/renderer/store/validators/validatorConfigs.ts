@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {VALIDATOR_CONFIGS} from '@renderer/constants';
+import {VALIDATOR_CONFIGS} from '@renderer/constants/actions';
 import {DictWithDataAndError, ValidatorConfig} from '@renderer/types';
 import {setDataErrorReducer, setDataReducer} from '@renderer/utils/store';
 

@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-import {CLEAN_SOCKETS} from '@renderer/constants';
+import {CLEAN_SOCKETS} from '@renderer/constants/actions';
 import {
   AddressData,
   CleanSocketState,

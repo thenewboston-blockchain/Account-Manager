@@ -1,5 +1,7 @@
+@use 'src/renderer/styles/layout';
+
 .Bank {
-  height: 100%;
+  @include layout.main-container;
 
   &__Badge {
     margin-right: 12px;

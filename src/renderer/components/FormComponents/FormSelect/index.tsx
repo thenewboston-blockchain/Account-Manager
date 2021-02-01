@@ -16,7 +16,7 @@ const FormSelect: FC<ComponentProps> = ({hideErrorText = false, label, required,
 
   return (
     <div className={clsx('FormSelect FormFieldComponent', className)}>
-      {renderFormLabel(name, className, label, required)}
+      {renderFormLabel({className, label, name, required})}
       <Select
         {...baseSelectProps}
         className="FormField"
@@ -25,7 +25,7 @@ const FormSelect: FC<ComponentProps> = ({hideErrorText = false, label, required,
         onChange={handleChange}
         value={selectedOption}
       />
-      {renderFormError(name, className, hideErrorText)}
+      {renderFormError({className, hideErrorText, name})}
     </div>
   );
 };

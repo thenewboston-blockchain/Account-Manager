@@ -1,0 +1,129 @@
+.BulkPurchaseConfirmationServicesModalFields {
+  display: flex;
+
+  &__bank-address {
+    color: var(--color-gray-500);
+    margin-bottom: 12px;
+  }
+
+  &__bank-nickname {
+    font-size: var(--font-size-large);
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+
+  &__close-button {
+    transition: color 0.3s;
+
+    &:hover {
+      color: var(--color-red-500);
+    }
+  }
+
+  &__Input {
+    width: 100%;
+  }
+
+  &__left {
+    flex: 1;
+    margin-left: 12px;
+    max-height: calc(85vh - var(--modal-header-height) - 24px);
+    overflow-y: auto;
+    position: relative;
+  }
+
+  &__purchase-button {
+    width: 100%;
+  }
+
+  &__right {
+    background: var(--color-white);
+    border-left: 1px solid var(--color-gray-100);
+    height: calc(85vh - var(--modal-header-height) - 24px);
+    padding: 12px 18px;
+    width: 334px;
+  }
+
+  &__summary-table {
+    margin-bottom: 42px;
+
+    td {
+      border-bottom: 1px solid var(--color-gray-100);
+      min-width: 140px;
+      overflow-wrap: anywhere;
+      padding: 6px 0;
+      text-align: left;
+      vertical-align: top;
+
+      &:nth-child(1) {
+        color: var(--color-gray-500);
+        font-weight: 400;
+        width: 175px;
+      }
+    }
+
+    tr:first-child td {
+      border-top: 1px solid var(--color-gray-100);
+    }
+
+    tr:nth-last-child(3) td {
+      border-bottom-width: 3px;
+    }
+
+    tr:nth-last-child(1) td,
+    tr:nth-last-child(2) td {
+      border-bottom: 0;
+    }
+
+    .total-tx--error {
+      color: var(--color-red-500);
+    }
+  }
+
+  &__validator-table {
+    &__td {
+      // nodeIdentifier column
+      &--0 {
+        max-width: 285px;
+        width: 285px;
+      }
+
+      // ConnectionStatus column
+      &--1 {
+        padding-right: 12px;
+        max-width: 220px;
+        width: 220px;
+      }
+
+      // dailyRate column
+      &--2 {
+        max-width: 110px;
+        width: 110px;
+      }
+
+      // amount column
+      &--3 {
+        max-width: 130px;
+        width: 130px;
+      }
+
+      // delete row column
+      &--4 {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        max-width: 50px;
+        width: 50px;
+      }
+    }
+
+    &__th {
+      background: var(--color-gray-050);
+      height: 35px;
+      padding: 6px 4px;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+  }
+}

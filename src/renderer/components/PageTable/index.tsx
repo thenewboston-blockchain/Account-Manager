@@ -2,14 +2,14 @@ import React, {FC, ReactNode, useState} from 'react';
 import clsx from 'clsx';
 
 import ArrowToggle from '@renderer/components/ArrowToggle';
-import Loader from '@renderer/components/FormElements/Loader';
-import PaginationSummary from '@renderer/components/PaginationSummary';
+import {Checkbox} from '@renderer/components/FormElements';
+import {GenericVoidFunction} from '@renderer/types';
 import {getCustomClassNames} from '@renderer/utils/components';
 
 import './PageTable.scss';
 
 interface Header {
-  [tableKey: string]: string;
+  [tableKey: string]: ReactNode;
 }
 
 export interface PageTableData {
@@ -23,17 +23,20 @@ export interface PageTableItems {
   data: PageTableData[];
 }
 
-interface ComponentProps {
+export interface PageTableProps {
+  alwaysExpanded?: boolean;
   className?: string;
-  count: number;
-  currentPage: number;
+  expanded?: boolean;
+  handleSelectRow?(i: number): GenericVoidFunction;
   items: PageTableItems;
-  loading: boolean;
+  selectedData?: {[key: string]: any};
 }
 
-const PageTable: FC<ComponentProps> = ({className, count, currentPage, items, loading}) => {
+const PageTable: FC<PageTableProps> = ({alwaysExpanded = false, className, handleSelectRow, items, selectedData}) => {
   const {headers, data, orderedKeys} = items;
   const [expanded, setExpanded] = useState<number[]>([]);
+
+  const hasCheckbox = !!handleSelectRow && !!selectedData;
 
   const toggleExpanded = (indexToToggle: number) => (): void => {
     setExpanded(
@@ -43,7 +46,7 @@ const PageTable: FC<ComponentProps> = ({className, count, currentPage, items, lo
 
   const renderRows = (): ReactNode => {
     return data.map((item, dataIndex) => {
-      const rowIsExpanded = expanded.includes(dataIndex);
+      const rowIsExpanded = alwaysExpanded || expanded.includes(dataIndex);
 
       return (
         <tr
@@ -54,38 +57,69 @@ const PageTable: FC<ComponentProps> = ({className, count, currentPage, items, lo
           })}
           key={item.key}
         >
-          <td>
-            <ArrowToggle
-              className={clsx('PageTable__ArrowToggle', {...getCustomClassNames(className, '__ArrowToggle', true)})}
-              expanded={rowIsExpanded}
-              onClick={toggleExpanded(dataIndex)}
-            />
-          </td>
-          {orderedKeys.map((key) => (
-            <td key={key}>{item[key] || '-'}</td>
+          {hasCheckbox ? (
+            <td
+              className={clsx('PageTable__td', 'PageTable__td--checkbox', {
+                ...getCustomClassNames(className, '__td', true),
+                ...getCustomClassNames(className, '__td--checkbox', true),
+              })}
+            >
+              <Checkbox
+                checked={selectedData![item.key] !== undefined}
+                onClick={handleSelectRow!(dataIndex)}
+                value={item.key}
+              />
+            </td>
+          ) : null}
+          {alwaysExpanded ? null : (
+            <td
+              className={clsx('PageTable__td', 'PageTable__td--toggle', {
+                ...getCustomClassNames(className, '__td', true),
+                ...getCustomClassNames(className, '__td--toggle', true),
+              })}
+            >
+              <ArrowToggle
+                className={clsx('PageTable__ArrowToggle', {...getCustomClassNames(className, '__ArrowToggle', true)})}
+                expanded={rowIsExpanded}
+                onClick={toggleExpanded(dataIndex)}
+              />
+            </td>
+          )}
+          {orderedKeys.map((key, index) => (
+            <td
+              className={clsx('PageTable__td', `PageTable__td--${index}`, {
+                ...getCustomClassNames(className, '__td', true),
+                ...getCustomClassNames(className, `__td--${index}`, true),
+              })}
+              key={key}
+            >
+              {item[key] || '-'}
+            </td>
           ))}
         </tr>
       );
     });
   };
 
-  return loading ? (
-    <Loader />
-  ) : (
-    <>
-      <PaginationSummary className="PageTable__PaginationSummary" count={count} currentPage={currentPage} />
-      <table className={clsx('PageTable', className)}>
-        <thead className={clsx('PageTable__thead', {...getCustomClassNames(className, '__thead', true)})}>
-          <tr>
-            <th />
-            {orderedKeys.map((key) => (
-              <td key={key}>{headers[key]}</td>
-            ))}
-          </tr>
-        </thead>
-        <tbody>{renderRows()}</tbody>
-      </table>
-    </>
+  return (
+    <table className={clsx('PageTable', className)}>
+      <thead className={clsx('PageTable__thead', {...getCustomClassNames(className, '__thead', true)})}>
+        <tr>
+          {hasCheckbox ? (
+            <th className={clsx('PageTable__th', {...getCustomClassNames(className, '__th', true)})} />
+          ) : null}
+          {alwaysExpanded ? null : (
+            <th className={clsx('PageTable__th', {...getCustomClassNames(className, '__th', true)})} />
+          )}
+          {orderedKeys.map((key) => (
+            <th className={clsx('PageTable__th', {...getCustomClassNames(className, '__th', true)})} key={key}>
+              {headers[key]}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>{renderRows()}</tbody>
+    </table>
   );
 };
 

@@ -1,9 +1,8 @@
 import React, {FC, useMemo} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
-import PageTable, {PageTableData, PageTableItems} from '@renderer/components/PageTable';
-import Pagination from '@renderer/components/Pagination';
-import {BANK_BANK_TRANSACTIONS} from '@renderer/constants';
+import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
+import {BANK_BANK_TRANSACTIONS} from '@renderer/constants/actions';
 import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BankTransaction} from '@renderer/types';
 
@@ -55,10 +54,15 @@ const BankTransactions: FC = () => {
   );
 
   return (
-    <div className="BankTransactions">
-      <PageTable count={count} currentPage={currentPage} items={pageTableItems} loading={loading} />
-      <Pagination currentPage={currentPage} setPage={setPage} totalPages={totalPages} />
-    </div>
+    <PaginatedTable
+      className="BankTransactions"
+      count={count}
+      currentPage={currentPage}
+      items={pageTableItems}
+      loading={loading}
+      setPage={setPage}
+      totalPages={totalPages}
+    />
   );
 };
 

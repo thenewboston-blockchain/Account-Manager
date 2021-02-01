@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {MANAGED_FRIENDS} from '@renderer/constants';
+import {MANAGED_FRIENDS} from '@renderer/constants/actions';
 import localStore from '@renderer/store/local';
 import {Dict, ManagedFriend} from '@renderer/types';
 import {

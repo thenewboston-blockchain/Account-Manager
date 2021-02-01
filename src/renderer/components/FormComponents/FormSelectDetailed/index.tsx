@@ -15,8 +15,8 @@ const FormSelectDetailed: FC<ComponentProps> = ({hideErrorText = false, label, r
   const {error, handleBlur, handleChange, selectedOption} = useFormSelect(name, options, baseSelectProps);
 
   return (
-    <div className={clsx('FormSelectDetailed FormFieldComponent', className)}>
-      {renderFormLabel(name, className, label, required)}
+    <div className={clsx('FormSelectDetailed', 'FormFieldComponent', className)}>
+      {renderFormLabel({className, label, name, required})}
       <SelectDetailed
         {...baseSelectProps}
         className="FormField"
@@ -25,7 +25,7 @@ const FormSelectDetailed: FC<ComponentProps> = ({hideErrorText = false, label, r
         onChange={handleChange}
         value={selectedOption}
       />
-      {renderFormError(name, className, hideErrorText)}
+      {renderFormError({className, hideErrorText, name})}
     </div>
   );
 };

@@ -1,8 +1,9 @@
-import React, {FC, useRef} from 'react';
+import React, {FC, ReactNode, useCallback, useRef} from 'react';
+import {Link, useParams} from 'react-router-dom';
 
 import {Loader} from '@renderer/components/FormElements';
-import {TileBankSigningDetails, TileCrawlClean, TileKeyValueList, TilePrimaryAmount} from '@renderer/components/Tiles';
-import {BANK_CONFIGS, BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants';
+import {TileBankSigningDetails, TileCrawlClean, TileKeyValueList, TileWithAmount} from '@renderer/components/Tiles';
+import {BANK_CONFIGS, BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants/actions';
 import {
   useAddress,
   useNetworkConfigFetcher,
@@ -10,7 +11,7 @@ import {
   useNetworkCleanFetcher,
   usePaginatedNetworkDataFetcher,
 } from '@renderer/hooks';
-import {BankConfig, ManagedNode, ValidatorConfirmationService} from '@renderer/types';
+import {AddressParams, BankConfig, ManagedNode, ValidatorConfirmationService} from '@renderer/types';
 
 import './BankOverview.scss';
 
@@ -34,8 +35,22 @@ const BankOverview: FC<ComponentProps> = ({isAuthenticated, managedBank}) => {
     count: confirmationServiceCount,
     loading: confirmationServiceLoading,
   } = usePaginatedNetworkDataFetcher<ValidatorConfirmationService>(BANK_VALIDATOR_CONFIRMATION_SERVICES, address);
+  const {ipAddress, port, protocol} = useParams<AddressParams>();
   const bankAccountNumberRef = useRef<HTMLDivElement>(null);
   const bankNetworkIdRef = useRef<HTMLDivElement>(null);
+
+  const renderConfirmationServiceButton = useCallback((): ReactNode => {
+    if (!isAuthenticated) return null;
+
+    return (
+      <Link
+        className="BankOverview__purchase-confirmation-services"
+        to={`/purchase-confirmation-services/${protocol}/${ipAddress}/${port}`}
+      >
+        Purchase
+      </Link>
+    );
+  }, [ipAddress, isAuthenticated, port, protocol]);
 
   return (
     <div className="BankOverview">
@@ -44,9 +59,10 @@ const BankOverview: FC<ComponentProps> = ({isAuthenticated, managedBank}) => {
       ) : (
         <>
           <div className="BankOverview__left">
-            <TilePrimaryAmount amount={bankConfig.default_transaction_fee} title="Tx Fee (per Tx)" />
-            <TilePrimaryAmount
+            <TileWithAmount amount={bankConfig.default_transaction_fee} title="Tx Fee (per Tx)" />
+            <TileWithAmount
               amount={confirmationServiceCount}
+              headerButton={renderConfirmationServiceButton()}
               loading={confirmationServiceLoading}
               title="Confirmation Services"
             />

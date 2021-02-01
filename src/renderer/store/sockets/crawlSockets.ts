@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-import {CRAWL_SOCKETS} from '@renderer/constants';
+import {CRAWL_SOCKETS} from '@renderer/constants/actions';
 import {
   AddressData,
   CrawlSocketState,

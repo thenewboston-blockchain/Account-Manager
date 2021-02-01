@@ -49,6 +49,7 @@ import {
   PrimaryValidatorUpdatedNotificationPayload,
   ValidatorConfirmationServiceNotificationPayload,
 } from './notifications';
+import {AccountNumberParams, AddressParams} from './params';
 import {
   CrawlCommand,
   CrawlSocketState,
@@ -75,9 +76,11 @@ import {
 export {
   AccountBalance,
   AccountNumber,
+  AccountNumberParams,
   AccountType,
   AddressData,
   AddressDataWithNickname,
+  AddressParams,
   AppDispatch,
   AppElectronStore,
   AppNodeAddressData,

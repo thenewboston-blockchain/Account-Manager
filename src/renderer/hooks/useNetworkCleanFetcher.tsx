@@ -3,9 +3,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
 
+import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 import {getCleanSockets} from '@renderer/selectors';
 import {toggleCleanProcess} from '@renderer/store/sockets';
-import {AppDispatch, CleanStatus, ManagedNode, NodeCleanStatusWithAddress, ProtocolType} from '@renderer/types';
+import {AddressParams, AppDispatch, CleanStatus, ManagedNode, NodeCleanStatusWithAddress} from '@renderer/types';
 import {generateUuid} from '@renderer/utils/local';
 import {displayToast} from '@renderer/utils/toast';
 import {formatAddress} from '@renderer/utils/address';
@@ -22,7 +23,7 @@ const useNetworkCleanFetcher = (
   loadingClean: boolean;
   submittingClean: boolean;
 } => {
-  const {ipAddress, port: portStr, protocol} = useParams<{ipAddress: string; port: string; protocol: ProtocolType}>();
+  const {ipAddress, port: portStr, protocol} = useParams<AddressParams>();
   const port = parseInt(portStr, 10);
   const address = useAddress();
   const dispatch = useDispatch<AppDispatch>();
@@ -41,7 +42,7 @@ const useNetworkCleanFetcher = (
     const fetchData = async (): Promise<void> => {
       try {
         setLoading(true);
-        const {data} = await axios.get<NodeCleanStatusWithAddress>(`${address}/clean`);
+        const {data} = await axios.get<NodeCleanStatusWithAddress>(`${address}/clean`, {timeout: AXIOS_TIMEOUT_MS});
         setCleanStatus(data.clean_status || CleanStatus.notCleaning);
         setCleanLastCompleted(data.clean_last_completed);
       } catch (error) {

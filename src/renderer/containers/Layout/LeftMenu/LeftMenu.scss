@@ -1,0 +1,26 @@
+.LeftMenu {
+  display: flex;
+  flex-direction: column;
+
+  .coins {
+    margin: 12px 12px 12px 36px;
+
+    &__amount {
+      align-items: center;
+      color: var(--color-tertiary);
+      display: flex;
+      font-weight: 700;
+      font-size: var(--font-size-large);
+    }
+
+    &__title {
+      color: var(--color-gray-500);
+      cursor: default;
+      margin-bottom: 4px;
+    }
+  }
+
+  &__purchase-confirmation-services {
+    color: var(--color-secondary);
+  }
+}

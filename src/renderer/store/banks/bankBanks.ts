@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {BANK_BANKS} from '@renderer/constants';
+import {BANK_BANKS} from '@renderer/constants/actions';
 import {DictWithPaginatedResultsAndError, Node} from '@renderer/types';
 import {setPaginatedResultErrorReducer, setPaginatedResultReducer, unsetDataReducer} from '@renderer/utils/store';
 

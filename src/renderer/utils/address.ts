@@ -27,6 +27,10 @@ export const formatSocketAddressFromNode = (node: AddressData): string => {
   return formatAddress(ipAddress, port, 'ws');
 };
 
+export const isSameNode = (nodeA: AddressData, nodeB: AddressData): boolean => {
+  return nodeA.ip_address === nodeB.ip_address && nodeA.port === nodeB.port;
+};
+
 export const parseAddressData = (address: string): {ipAddress: string; port: number; protocol: ProtocolType} => {
   const [protocol, ipAddress, port] = address.replace('//', '').split(':');
 

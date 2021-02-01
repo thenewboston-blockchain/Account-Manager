@@ -12,7 +12,7 @@ export type BaseFormInlineComponentProps<T> = Omit<T, 'name' | 'onBlur' | 'value
 };
 
 export interface GenericFormValues {
-  [fieldName: string]: boolean | number | string;
+  [fieldName: string]: any;
 }
 
 export interface InputOption {
