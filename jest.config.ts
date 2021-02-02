@@ -1,7 +1,9 @@
+import type {Config} from '@jest/types';
+
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
-module.exports = {
+const config: Config.InitialOptions = {
   // An array of directory names to be searched recursively up from the requiring module's location
   moduleDirectories: ['<rootDir>/node_modules', '<rootDir>/src'],
 
@@ -23,3 +25,5 @@ module.exports = {
     '^.+\\.js$': 'babel-jest',
   },
 };
+
+export default config;
