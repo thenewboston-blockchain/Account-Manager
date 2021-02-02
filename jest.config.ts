@@ -1,29 +1,31 @@
 import type {Config} from '@jest/types';
 
-// For a detailed explanation regarding each configuration property, visit:
-// https://jestjs.io/docs/en/configuration.html
-
 const config: Config.InitialOptions = {
-  // An array of directory names to be searched recursively up from the requiring module's location
-  moduleDirectories: ['<rootDir>/node_modules', '<rootDir>/src'],
-
-  // An array of file extensions your modules use
-  moduleFileExtensions: ['js', 'json', 'jsx', 'ts', 'tsx', 'scss'],
-
-  // A map from regular expressions to module names that allow to stub out resources with a single module
+  collectCoverageFrom: ['<rootDir>/src/**/*.{js,jsx,ts,tsx}', '!<rootDir>/src/**/*.d.ts'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'scss'],
   moduleNameMapper: {
     '@main/(.*)': '<rootDir>/src/main/$1',
     '@renderer/(.*)': '<rootDir>/src/renderer/$1',
     '@shared/(.*)': '<rootDir>/src/shared/$1',
-    '^.+\\.(css|less|scss)$': 'identity-obj-proxy',
+    '^.+.module.(css|sass|scss)$': 'identity-obj-proxy',
   },
-
-  modulePaths: ['node_modules', '<rootDir>/src', '<rootDir>'],
-
+  modulePathIgnorePatterns: ['<rootDir>/src/renderer/store/local/migrationFiles/'],
+  resetMocks: true,
+  roots: ['<rootDir>/src'],
+  setupFiles: ['react-app-polyfill/jsdom'],
+  testEnvironment: 'jsdom',
+  testMatch: ['<rootDir>/src/**/*.{spec,test}.{ts,tsx}'],
+  testRunner: '<rootDir>/node_modules/jest-circus/runner.js',
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
-    '^.+\\.js$': 'babel-jest',
+    '^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)': '<rootDir>/config/jest/fileTransform.js',
+    '^.+\\.(js|jsx|mjs|cjs|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
+    '^.+\\.css$': '<rootDir>/config/jest/cssTransform.js',
   },
+  transformIgnorePatterns: [
+    '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$',
+    '^.+\\.module\\.(css|sass|scss)$',
+  ],
+  watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
 };
 
 export default config;
