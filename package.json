@@ -5,7 +5,7 @@
   "description": "thenewboston Account Manager Electron Application",
   "main": "./bundle/main/index.js",
   "scripts": {
-    "build": "npm run package && electron-builder",
+    "build": "NODE_ENV=production npm run package && electron-builder",
     "lint": "tsc --noEmit && eslint \"./src/**/*.{js,ts,tsx}\"",
     "package": "electron-forge package",
     "postinstall": "electron-builder install-app-deps",
