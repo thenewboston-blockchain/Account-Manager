@@ -1,4 +1,4 @@
-@use 'src/renderer/styles/layout';
+@use 'styles/layout';
 
 .Validator {
   @include layout.main-container;

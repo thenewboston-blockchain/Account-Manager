@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const path = require('path');
+const sass = require('sass');
+
 const rules = [
   // Add support for native node modules
   {
@@ -35,7 +39,12 @@ const rules = [
     use: [
       'style-loader',
       'css-loader',
-      {loader: 'sass-loader', options: {sassOptions: {includePaths: ['src/renderer'], indentWidth: 2}}},
+      {
+        loader: 'sass-loader',
+        options: {
+          sassOptions: {implementation: sass, includePaths: [path.join(__dirname, 'src/renderer')], indentWidth: 2},
+        },
+      },
     ],
   },
   {
