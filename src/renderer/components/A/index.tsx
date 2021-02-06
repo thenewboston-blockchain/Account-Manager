@@ -1,8 +1,9 @@
-import React, {FC} from 'react';
+import React, {FC, ReactNode} from 'react';
 import clsx from 'clsx';
 
 interface ComponentProps {
   className?: string;
+  children: ReactNode;
   href: string;
 }
 
