@@ -13,6 +13,8 @@ currency network, create accounts, send and receive funds, manage your nodes, an
 
 ## Project Setup
 
+<b>NOTE: There is an issue with our app when using Node v.15. Please use Node v.14.</b>
+
 Install required packages:
 
 ```
@@ -43,31 +45,35 @@ gyp ERR! configure error
 ```
 
 1. Verify that you have Xcode command line tools installed by running:
+
 ```
 $ xcode-select -p
 /Library/Developer/CommandLineTools
 ```
 
 2. If you receive `xcode-select: command not found`, it means that you do not have it installed and you should install it by running:
+
 ```
 $ xcode-select --install
 ```
 
 3. If you already have it installed you can try checking for any updates by lauching Software Update from System Preferences or by using the `softwareupdate` command in the Terminal.
+
 ```
 $ softwareupdate --list                     # this will find and list all the available software updates
 $ softwareupdate --install <Product Name>   # this will install software updates for the given product
 $ softwareupdate --install -a               # this will install all available software updates
 ```
-*ps: If there is a pending MacOS update, you will probably need to first install it, allowing Xcode to be updated as well.*
+
+_ps: If there is a pending MacOS update, you will probably need to first install it, allowing Xcode to be updated as well._
 
 4. If the problem persists, we'll need to make a fresh install of the Xcode command line tools, for that you'll need to get its current location using the same command from step 1 and remove it from the disk. You will need administrator privileges (`sudo`) for this, so you may need to provide the root password to complete this step.
+
 ```
 sudo rm -r -f /Library/Developer/CommandLineTools
 ```
 
 5. If you already have `git` you'll probably get a prompt like the one below guiding you through the installation of the command line tools. If for some reason, this prompt does not show for you, you'll need to rerun the command from step 2 (`xcode-select --install`).
-
 
 ![command-line-tools-installation-prompt](https://miro.medium.com/max/700/0*s8rdlR3j3xVHcl95)
 
@@ -86,7 +92,7 @@ npm run lint
 
 ## Community
 
-Join the community to stay updated on the most recent developments, project roadmaps, and random discussions about 
+Join the community to stay updated on the most recent developments, project roadmaps, and random discussions about
 completely unrelated topics.
 
 - [thenewboston.com](https://thenewboston.com/)
@@ -101,11 +107,11 @@ completely unrelated topics.
 
 All donations will go to thenewboston to help fund the team to continue to develop the community and create new content.
 
-| Coin | Address |
-|-|-|
+| Coin                                                                                                                        | Address                                                          |
+| --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | ![thenewboston Logo](https://github.com/thenewboston-developers/Website/raw/development/src/assets/images/thenewboston.png) | b6e21072b6ba2eae6f78bc3ade17f6a561fa4582d5494a5120617f2027d38797 |
-| ![Bitcoin Logo](https://github.com/thenewboston-developers/Website/raw/development/src/assets/images/bitcoin.png) | 3GZYi3w3BXQfyb868K2phHjrS4i8LooaHh |
-| ![Ethereum Logo](https://github.com/thenewboston-developers/Website/raw/development/src/assets/images/ethereum.png) | 0x0E38e2a838F0B20872E5Ff55c82c2EE7509e6d4A |
+| ![Bitcoin Logo](https://github.com/thenewboston-developers/Website/raw/development/src/assets/images/bitcoin.png)           | 3GZYi3w3BXQfyb868K2phHjrS4i8LooaHh                               |
+| ![Ethereum Logo](https://github.com/thenewboston-developers/Website/raw/development/src/assets/images/ethereum.png)         | 0x0E38e2a838F0B20872E5Ff55c82c2EE7509e6d4A                       |
 
 ## License
 
