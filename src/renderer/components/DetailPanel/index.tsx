@@ -1,7 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 import clsx from 'clsx';
-
-import {getCustomClassNames} from '@renderer/utils/components';
+import {bemify} from '@thenewboston/utils';
 
 import './DetailPanel.scss';
 
@@ -47,8 +46,8 @@ const DetailPanel: FC<ComponentProps> = ({className, items, tableHeaders, title}
 
   return (
     <div className={clsx('DetailPanel', className)}>
-      <h2 className={clsx('DetailPanel__title', {...getCustomClassNames(className, '__title', true)})}>{title}</h2>
-      <table className={clsx('DetailPanel__table', {...getCustomClassNames(className, '__table', true)})}>
+      <h2 className={clsx('DetailPanel__title', {...bemify(className, '__title')})}>{title}</h2>
+      <table className={clsx('DetailPanel__table', {...bemify(className, '__table')})}>
         {renderTableHeader()}
         {renderTableBody()}
       </table>

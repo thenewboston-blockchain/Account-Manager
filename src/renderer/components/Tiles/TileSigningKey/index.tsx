@@ -1,10 +1,10 @@
 import React, {FC, useCallback, useEffect, useRef} from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
+import {bemify} from '@thenewboston/utils';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState, useWriteIpc} from '@renderer/hooks';
-import {getCustomClassNames} from '@renderer/utils/components';
 import {displayToast} from '@renderer/utils/toast';
 import {IpcChannel} from '@shared/ipc';
 
@@ -66,13 +66,11 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, signingKe
   return (
     <Tile className={clsx('TileSigningKey', className)}>
       <>
-        <div className={clsx('TileAccountNumber__top', {...getCustomClassNames(className, '__top', true)})}>
-          <div className={clsx('TileSigningKey__title', {...getCustomClassNames(className, '__title', true)})}>
-            My Signing Key
-          </div>
+        <div className={clsx('TileAccountNumber__top', {...bemify(className, '__top')})}>
+          <div className={clsx('TileSigningKey__title', {...bemify(className, '__title')})}>My Signing Key</div>
           <div
             className={clsx('TileSigningKey__icons-container', {
-              ...getCustomClassNames(className, '__icons-container', true),
+              ...bemify(className, '__icons-container'),
             })}
           >
             <Icon
@@ -92,9 +90,7 @@ const TileSigningKey: FC<ComponentProps> = ({accountNumber, className, signingKe
             </CopyToClipboard>
           </div>
         </div>
-        <div
-          className={clsx('TileSigningKey__signing-key', {...getCustomClassNames(className, '__signing-key', true)})}
-        >
+        <div className={clsx('TileSigningKey__signing-key', {...bemify(className, '__signing-key')})}>
           {renderSigningKeyDisplay()}
         </div>
       </>

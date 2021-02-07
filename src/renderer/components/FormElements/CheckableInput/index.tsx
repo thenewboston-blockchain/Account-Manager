@@ -1,8 +1,8 @@
 import React, {FC, useEffect, useMemo, useRef} from 'react';
 import clsx from 'clsx';
+import {bemify} from '@thenewboston/utils';
 
 import Icon, {IconType} from '@renderer/components/Icon';
-import {getCustomClassNames} from '@renderer/utils/components';
 
 import './CheckableInput.scss';
 
@@ -74,8 +74,8 @@ const CheckableInput: FC<BaseCheckableInputProps & CheckableInputType> = ({
         className={clsx('CheckableInput', className, {
           'CheckableInput--checked': checked,
           'CheckableInput--error': error,
-          ...getCustomClassNames(className, '--checked', checked),
-          ...getCustomClassNames(className, '--error', error),
+          ...bemify(className, '--checked', checked),
+          ...bemify(className, '--error', error),
         })}
         disabled={disabled}
         icon={checked ? checkedIcon : uncheckedIcon}

@@ -1,9 +1,9 @@
 import React, {FC, ReactNode} from 'react';
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom';
 import clsx from 'clsx';
+import {bemify} from '@thenewboston/utils';
 
 import StatusBadge from '@renderer/components/StatusBadge';
-import {getCustomClassNames} from '@renderer/utils/components';
 import './LeftSubmenuItemStatus.scss';
 
 export interface LeftSubmenuItemStatusProps extends RouteComponentProps {
@@ -35,9 +35,9 @@ const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({
         className={clsx('LeftSubmenuItemStatus__badge', {
           'LeftSubmenuItemStatus__badge--active-bank': badge === 'active-bank',
           'LeftSubmenuItemStatus__badge--primary-validator': badge === 'primary-validator',
-          ...getCustomClassNames(className, '__badge', true),
-          ...getCustomClassNames(className, '__badge--active-bank', badge === 'active-bank'),
-          ...getCustomClassNames(className, '__badge--primary-validator', badge === 'primary-validator'),
+          ...bemify(className, '__badge'),
+          ...bemify(className, '__badge--active-bank', badge === 'active-bank'),
+          ...bemify(className, '__badge--primary-validator', badge === 'primary-validator'),
         })}
       >
         {badge === 'active-bank' ? 'Active' : 'Primary'}
@@ -47,21 +47,21 @@ const LeftSubmenuItemStatus: FC<LeftSubmenuItemStatusProps> = ({
 
   return (
     <NavLink
-      activeClassName={clsx('LeftSubmenuItemStatus--active', {...getCustomClassNames(className, '--active', true)})}
+      activeClassName={clsx('LeftSubmenuItemStatus--active', {...bemify(className, '--active')})}
       className={clsx('LeftSubmenuItemStatus', className)}
       isActive={getIsActive}
       key={key}
       to={to}
     >
       <StatusBadge
-        className={clsx('LeftSubmenuItemStatus__icon', {...getCustomClassNames(className, '__icon', true)})}
+        className={clsx('LeftSubmenuItemStatus__icon', {...bemify(className, '__icon')})}
         status={isOnline ? 'active' : 'inactive'}
       />
       <div
         className={clsx('LeftSubmenuItemStatus__label', {
           'LeftSubmenuItemStatus__label--with-badge': !!badge,
-          ...getCustomClassNames(className, '__label', true),
-          ...getCustomClassNames(className, '__label--with-badge', !!badge),
+          ...bemify(className, '__label'),
+          ...bemify(className, '__label--with-badge', !!badge),
         })}
       >
         {label}

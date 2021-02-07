@@ -1,8 +1,8 @@
 import React, {FC, memo} from 'react';
 import clsx from 'clsx';
+import {bemify} from '@thenewboston/utils';
 
 import Icon, {IconType} from '@renderer/components/Icon';
-import {getCustomClassNames} from '@renderer/utils/components';
 
 import './StatusBadge.scss';
 
@@ -17,7 +17,7 @@ const StatusBadge: FC<ComponentProps> = ({className, status}) => {
   return (
     <Icon
       className={clsx('StatusBadge', `StatusBadge--${status}`, className, {
-        ...getCustomClassNames(className, `--${status}`, true),
+        ...bemify(className, `--${status}`),
       })}
       icon={icon}
       size={8}

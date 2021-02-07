@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
-
-import {getCustomClassNames} from '@renderer/utils/components';
+import {bemify} from '@thenewboston/utils';
 
 import './Badge.scss';
 
@@ -15,7 +14,7 @@ const Badge: FC<ComponentProps> = ({className, color = 'primary', text}) => {
   return (
     <span
       className={clsx('Badge', `Badge--${color}`, className, {
-        ...getCustomClassNames(className, `--${color}`, true),
+        ...bemify(className, `--${color}`),
       })}
     >
       {text}

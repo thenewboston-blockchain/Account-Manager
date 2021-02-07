@@ -1,12 +1,12 @@
 import React, {FC, memo, useMemo, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import clsx from 'clsx';
+import {bemify} from '@thenewboston/utils';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
 import {getAccountBalances} from '@renderer/selectors';
 import {AccountType, AppDispatch} from '@renderer/types';
-import {getCustomClassNames} from '@renderer/utils/components';
 import {displayErrorToast} from '@renderer/utils/toast';
 
 import Tile from '../Tile';
@@ -65,13 +65,11 @@ const TileAccountBalance: FC<ComponentProps> = ({accountNumber, className, type}
   return (
     <Tile className={clsx('TileAccountBalance', className)}>
       <>
-        <div className={clsx('TileAccountBalance__top', {...getCustomClassNames(className, '__top', true)})}>
-          <div className={clsx('TileAccountBalance__title', {...getCustomClassNames(className, '__title', true)})}>
-            {title}
-          </div>
+        <div className={clsx('TileAccountBalance__top', {...bemify(className, '__top')})}>
+          <div className={clsx('TileAccountBalance__title', {...bemify(className, '__title')})}>{title}</div>
           <Icon
             className={clsx('TileAccountBalance__refresh-icon', {
-              ...getCustomClassNames(className, '__refresh-icon', true),
+              ...bemify(className, '__refresh-icon'),
             })}
             disabled={refreshDisabled}
             icon={IconType.refresh}
@@ -82,8 +80,8 @@ const TileAccountBalance: FC<ComponentProps> = ({accountNumber, className, type}
         <div
           className={clsx('TileAccountBalance__amount', {
             'TileAccountBalance__amount--updated': balancedUpdated,
-            ...getCustomClassNames(className, '__amount', true),
-            ...getCustomClassNames(className, '__amount--updated', balancedUpdated),
+            ...bemify(className, '__amount'),
+            ...bemify(className, '__amount--updated', balancedUpdated),
           })}
         >
           {balanceStr}

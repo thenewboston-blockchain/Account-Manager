@@ -1,9 +1,9 @@
 import React, {FC, ReactNode, useCallback, useMemo} from 'react';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
+import {bemify} from '@thenewboston/utils';
 
 import Icon, {IconType} from '@renderer/components/Icon';
-import {getCustomClassNames} from '@renderer/utils/components';
 import './Pagination.scss';
 
 export interface PaginationProps {
@@ -29,8 +29,8 @@ const Pagination: FC<PaginationProps> = ({className, currentPage, setPage, total
       return (
         <div
           className={clsx('Pagination__button Pagination__button--ellipses', {
-            ...getCustomClassNames(className, '__button', true),
-            ...getCustomClassNames(className, '__button--ellipses', true),
+            ...bemify(className, '__button'),
+            ...bemify(className, '__button--ellipses'),
           })}
           key={key}
         >
@@ -47,8 +47,8 @@ const Pagination: FC<PaginationProps> = ({className, currentPage, setPage, total
         <div
           className={clsx('Pagination__button', {
             'Pagination__button--active': page === currentPage,
-            ...getCustomClassNames(className, '__button', true),
-            ...getCustomClassNames(className, '__button--active', page === currentPage),
+            ...bemify(className, '__button'),
+            ...bemify(className, '__button--active', page === currentPage),
           })}
           key={page}
           onClick={setPage(page)}
@@ -89,8 +89,8 @@ const Pagination: FC<PaginationProps> = ({className, currentPage, setPage, total
     <div className={clsx('Pagination', className)}>
       <Icon
         className={clsx('Pagination__button Pagination__button--prev', {
-          ...getCustomClassNames(className, '__button', true),
-          ...getCustomClassNames(className, '__button--prev', true),
+          ...bemify(className, '__button'),
+          ...bemify(className, '__button--prev'),
         })}
         disabled={prevIsDisabled}
         icon={IconType.chevronLeft}
@@ -99,8 +99,8 @@ const Pagination: FC<PaginationProps> = ({className, currentPage, setPage, total
       {renderMiddle()}
       <Icon
         className={clsx('Pagination__button Pagination__button--next', {
-          ...getCustomClassNames(className, '__button', true),
-          ...getCustomClassNames(className, '__button--next', true),
+          ...bemify(className, '__button'),
+          ...bemify(className, '__button--next'),
         })}
         disabled={nextIsDisabled}
         icon={IconType.chevronRight}

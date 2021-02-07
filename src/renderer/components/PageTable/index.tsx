@@ -1,10 +1,10 @@
 import React, {FC, ReactNode, useState} from 'react';
 import clsx from 'clsx';
+import {bemify} from '@thenewboston/utils';
 
 import ArrowToggle from '@renderer/components/ArrowToggle';
 import {Checkbox} from '@renderer/components/FormElements';
 import {GenericVoidFunction} from '@renderer/types';
-import {getCustomClassNames} from '@renderer/utils/components';
 
 import './PageTable.scss';
 
@@ -52,16 +52,16 @@ const PageTable: FC<PageTableProps> = ({alwaysExpanded = false, className, handl
         <tr
           className={clsx('PageTable__row', {
             'PageTable__row--expanded': rowIsExpanded,
-            ...getCustomClassNames(className, '__row', true),
-            ...getCustomClassNames(className, '__row--expanded', rowIsExpanded),
+            ...bemify(className, '__row'),
+            ...bemify(className, '__row--expanded', rowIsExpanded),
           })}
           key={item.key}
         >
           {hasCheckbox ? (
             <td
               className={clsx('PageTable__td', 'PageTable__td--checkbox', {
-                ...getCustomClassNames(className, '__td', true),
-                ...getCustomClassNames(className, '__td--checkbox', true),
+                ...bemify(className, '__td'),
+                ...bemify(className, '__td--checkbox'),
               })}
             >
               <Checkbox
@@ -74,12 +74,12 @@ const PageTable: FC<PageTableProps> = ({alwaysExpanded = false, className, handl
           {alwaysExpanded ? null : (
             <td
               className={clsx('PageTable__td', 'PageTable__td--toggle', {
-                ...getCustomClassNames(className, '__td', true),
-                ...getCustomClassNames(className, '__td--toggle', true),
+                ...bemify(className, '__td'),
+                ...bemify(className, '__td--toggle'),
               })}
             >
               <ArrowToggle
-                className={clsx('PageTable__ArrowToggle', {...getCustomClassNames(className, '__ArrowToggle', true)})}
+                className={clsx('PageTable__ArrowToggle', {...bemify(className, '__ArrowToggle')})}
                 expanded={rowIsExpanded}
                 onClick={toggleExpanded(dataIndex)}
               />
@@ -88,8 +88,8 @@ const PageTable: FC<PageTableProps> = ({alwaysExpanded = false, className, handl
           {orderedKeys.map((key, index) => (
             <td
               className={clsx('PageTable__td', `PageTable__td--${index}`, {
-                ...getCustomClassNames(className, '__td', true),
-                ...getCustomClassNames(className, `__td--${index}`, true),
+                ...bemify(className, '__td'),
+                ...bemify(className, `__td--${index}`),
               })}
               key={key}
             >
@@ -103,16 +103,12 @@ const PageTable: FC<PageTableProps> = ({alwaysExpanded = false, className, handl
 
   return (
     <table className={clsx('PageTable', className)}>
-      <thead className={clsx('PageTable__thead', {...getCustomClassNames(className, '__thead', true)})}>
+      <thead className={clsx('PageTable__thead', {...bemify(className, '__thead')})}>
         <tr>
-          {hasCheckbox ? (
-            <th className={clsx('PageTable__th', {...getCustomClassNames(className, '__th', true)})} />
-          ) : null}
-          {alwaysExpanded ? null : (
-            <th className={clsx('PageTable__th', {...getCustomClassNames(className, '__th', true)})} />
-          )}
+          {hasCheckbox ? <th className={clsx('PageTable__th', {...bemify(className, '__th')})} /> : null}
+          {alwaysExpanded ? null : <th className={clsx('PageTable__th', {...bemify(className, '__th')})} />}
           {orderedKeys.map((key) => (
-            <th className={clsx('PageTable__th', {...getCustomClassNames(className, '__th', true)})} key={key}>
+            <th className={clsx('PageTable__th', {...bemify(className, '__th')})} key={key}>
               {headers[key]}
             </th>
           ))}

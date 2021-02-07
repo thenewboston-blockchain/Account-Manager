@@ -1,8 +1,8 @@
 import React, {FC, useMemo} from 'react';
 import clsx from 'clsx';
+import {bemify} from '@thenewboston/utils';
 
 import Icon, {IconType} from '@renderer/components/Icon';
-import {getCustomClassNames} from '@renderer/utils/components';
 
 import './Toast.scss';
 
@@ -27,18 +27,18 @@ const Toast: FC<ComponentProps> = ({children, className, type = 'warning'}) => {
     <div
       className={clsx('Toast', className, {
         [`Toast--${type}`]: true,
-        ...getCustomClassNames(className, `--${type}`, true),
+        ...bemify(className, `--${type}`),
       })}
     >
       <Icon
         className={clsx('Toast__icon', {
           [`Toast__icon--${type}`]: true,
-          ...getCustomClassNames(className, '__icon', true),
-          ...getCustomClassNames(className, `__icon--${type}`, true),
+          ...bemify(className, '__icon'),
+          ...bemify(className, `__icon--${type}`),
         })}
         icon={iconType}
       />
-      <div className={clsx('Toast__text', {...getCustomClassNames(className, '__text', true)})}>{children}</div>
+      <div className={clsx('Toast__text', {...bemify(className, '__text')})}>{children}</div>
     </div>
   );
 };

@@ -1,9 +1,9 @@
 import React, {FC, ReactNode, useCallback} from 'react';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
+import {bemify} from '@thenewboston/utils';
 
 import {CrawlStatus, CleanStatus} from '@renderer/types';
-import {getCustomClassNames} from '@renderer/utils/components';
 import {getCrawlButtonLabel, getCrawlClassModifier, getCrawlDisplay} from '@renderer/utils/crawl';
 import {getCleanButtonLabel, getCleanClassModifier, getCleanDisplay} from '@renderer/utils/clean';
 
@@ -49,8 +49,8 @@ const TileCrawlClean: FC<ComponentProps> = ({
     return (
       <div
         className={clsx('TileCrawlClean__status', `TileCrawlClean__status${getCrawlClassModifier(crawlStatus)}`, {
-          ...getCustomClassNames(className, '__status', true),
-          ...getCustomClassNames(className, `__status${getCrawlClassModifier(crawlStatus)}`, true),
+          ...bemify(className, '__status'),
+          ...bemify(className, `__status${getCrawlClassModifier(crawlStatus)}`),
         })}
       >
         {getCrawlDisplay(loadingCrawlStatus ? null : crawlStatus)}
@@ -74,8 +74,8 @@ const TileCrawlClean: FC<ComponentProps> = ({
     return (
       <div
         className={clsx('TileCrawlClean__status', `TileCrawlClean__status${getCleanClassModifier(cleanStatus)}`, {
-          ...getCustomClassNames(className, '__status', true),
-          ...getCustomClassNames(className, `__status${getCleanClassModifier(cleanStatus)}`, true),
+          ...bemify(className, '__status'),
+          ...bemify(className, `__status${getCleanClassModifier(cleanStatus)}`),
         })}
       >
         {getCleanDisplay(loadingCleanStatus ? null : cleanStatus)}
@@ -86,17 +86,13 @@ const TileCrawlClean: FC<ComponentProps> = ({
   return (
     <Tile className={clsx('TileCrawlClean', className)}>
       <>
-        <div className={clsx('TileCrawlClean__row', {...getCustomClassNames(className, '__row', true)})}>
-          <div className={clsx('TileCrawlClean__label', {...getCustomClassNames(className, '__label', true)})}>
-            Crawl Status
-          </div>
+        <div className={clsx('TileCrawlClean__row', {...bemify(className, '__row')})}>
+          <div className={clsx('TileCrawlClean__label', {...bemify(className, '__label')})}>Crawl Status</div>
           {renderCrawlStatus()}
           <div className={clsx('TileCrawlClean__button-container')}>{renderCrawlButton()}</div>
         </div>
-        <div className={clsx('TileCrawlClean__row', {...getCustomClassNames(className, '__row', true)})}>
-          <div className={clsx('TileCrawlClean__label', {...getCustomClassNames(className, '__label', true)})}>
-            Clean Status
-          </div>
+        <div className={clsx('TileCrawlClean__row', {...bemify(className, '__row')})}>
+          <div className={clsx('TileCrawlClean__label', {...bemify(className, '__label')})}>Clean Status</div>
           {renderCleanStatus()}
           <div className={clsx('TileCrawlClean__button-container')}>{renderCleanButton()}</div>
         </div>

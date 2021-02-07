@@ -1,9 +1,9 @@
 import React, {FC, ReactNode, useRef} from 'react';
 import {NavLink, RouteComponentProps, useHistory, withRouter} from 'react-router-dom';
 import clsx from 'clsx';
+import {bemify} from '@thenewboston/utils';
 
 import Icon, {IconType} from '@renderer/components/Icon';
-import {getCustomClassNames} from '@renderer/utils/components';
 import './LeftSubmenuItem.scss';
 
 export interface LeftSubmenuItemProps extends RouteComponentProps {
@@ -33,7 +33,7 @@ const LeftSubmenuItem: FC<LeftSubmenuItemProps> = ({baseUrl, className, key, lab
     return (
       <Icon
         className={clsx('LeftSubmenuItem__chain-link-icon', {
-          ...getCustomClassNames(className, '__chain-link-icon', true),
+          ...bemify(className, '__chain-link-icon'),
         })}
         icon={IconType.link}
         onClick={handleLinkIconClick}
@@ -46,19 +46,17 @@ const LeftSubmenuItem: FC<LeftSubmenuItemProps> = ({baseUrl, className, key, lab
 
   return (
     <NavLink
-      activeClassName={clsx('LeftSubmenuItem--active', {...getCustomClassNames(className, '--active', true)})}
+      activeClassName={clsx('LeftSubmenuItem--active', {...bemify(className, '--active')})}
       className={clsx('LeftSubmenuItem', className, {
         'LeftSubmenuItem--has-related-node': !!relatedNodePath,
-        ...getCustomClassNames(className, '--has-related-node', !!relatedNodePath),
+        ...bemify(className, '--has-related-node', !!relatedNodePath),
       })}
       isActive={getIsActive}
       key={key}
       to={to}
     >
       {renderLinkIcon()}
-      <div className={clsx('LeftSubmenuItem__label', {...getCustomClassNames(className, '__label', true)})}>
-        {label}
-      </div>
+      <div className={clsx('LeftSubmenuItem__label', {...bemify(className, '__label')})}>{label}</div>
     </NavLink>
   );
 };

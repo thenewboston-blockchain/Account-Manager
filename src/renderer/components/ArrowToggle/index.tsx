@@ -1,8 +1,8 @@
 import React, {FC, useRef} from 'react';
 import clsx from 'clsx';
+import {bemify} from '@thenewboston/utils';
 
 import Icon, {IconType} from '@renderer/components/Icon';
-import {getCustomClassNames} from '@renderer/utils/components';
 
 import './ArrowToggle.scss';
 
@@ -24,7 +24,7 @@ const ArrowToggle: FC<ComponentProps> = ({className, expanded, onClick}) => {
     <Icon
       className={clsx('ArrowToggle', className, {
         'ArrowToggle--expanded': expanded,
-        ...getCustomClassNames(className, '--expanded', expanded),
+        ...bemify(className, '--expanded', expanded),
       })}
       icon={IconType.play}
       onClick={handleClick}

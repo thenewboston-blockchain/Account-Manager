@@ -2,11 +2,11 @@ import React, {CSSProperties, FC, KeyboardEvent, ReactNode, useEffect, useRef, u
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
+import {bemify} from '@thenewboston/utils';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState, useEventListener} from '@renderer/hooks';
 import {GenericVoidFunction} from '@renderer/types';
-import {getCustomClassNames} from '@renderer/utils/components';
 
 import './DropdownMenuButton.scss';
 
@@ -98,7 +98,7 @@ const DropdownMenuButton: FC<ComponentProps> = ({
       <Icon
         className={clsx('DropdownMenuButton', className, {
           'DropdownMenuButton--active': open,
-          ...getCustomClassNames(className, '--active', open),
+          ...bemify(className, '--active', open),
         })}
         icon={icon}
         onClick={handleOpenDropdown}
@@ -107,7 +107,7 @@ const DropdownMenuButton: FC<ComponentProps> = ({
       {open &&
         createPortal(
           <div
-            className={clsx('DropdownMenuButton__menu', {...getCustomClassNames(className, '__menu', true)})}
+            className={clsx('DropdownMenuButton__menu', {...bemify(className, '__menu')})}
             style={dropdownPositionStyle}
           >
             {options.map(({disabled = false, label, onClick: optionOnClick}, index) => {
@@ -115,7 +115,7 @@ const DropdownMenuButton: FC<ComponentProps> = ({
                 <div
                   className={clsx('DropdownMenuButton__option', {
                     'DropdownMenuButton__option--disabled': disabled,
-                    ...getCustomClassNames(className, '__option--disabled', disabled),
+                    ...bemify(className, '__option--disabled', disabled),
                   })}
                   key={JSON.stringify(label)}
                   onKeyDown={handleOptionKeyDown(optionOnClick, index, disabled)}

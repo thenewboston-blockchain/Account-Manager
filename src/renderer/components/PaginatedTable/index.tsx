@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 import clsx from 'clsx';
+import {bemify} from '@thenewboston/utils';
 
 import PageTable, {PageTableItems, PageTableData, PageTableProps} from '@renderer/components/PageTable';
 import {Loader} from '@renderer/components/FormElements';
-import {getCustomClassNames} from '@renderer/utils/components';
 
 import Pagination, {PaginationProps} from './Pagination';
 import PaginationSummary, {PaginationSummaryProps} from './PaginationSummary';
@@ -33,13 +33,13 @@ const PaginatedTable: FC<ComponentProps> = ({
         <>
           <PaginationSummary
             className={clsx('PaginatedTable__PaginationSummary', {
-              ...getCustomClassNames(className, '__PaginationSummary', true),
+              ...bemify(className, '__PaginationSummary'),
             })}
             count={count}
             currentPage={currentPage}
           />
           <PageTable
-            className={clsx('PaginatedTable__PageTable', {...getCustomClassNames(className, '__PageTable', true)})}
+            className={clsx('PaginatedTable__PageTable', {...bemify(className, '__PageTable')})}
             handleSelectRow={handleSelectRow}
             items={items}
             selectedData={selectedData}
@@ -47,7 +47,7 @@ const PaginatedTable: FC<ComponentProps> = ({
         </>
       )}
       <Pagination
-        className={clsx('PaginatedTable__Pagination', {...getCustomClassNames(className, '__Pagination', true)})}
+        className={clsx('PaginatedTable__Pagination', {...bemify(className, '__Pagination')})}
         currentPage={currentPage}
         setPage={setPage}
         totalPages={totalPages}
