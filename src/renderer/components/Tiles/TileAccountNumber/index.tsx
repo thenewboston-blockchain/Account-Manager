@@ -1,11 +1,11 @@
 import React, {FC, memo, useMemo, useRef} from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
+import {bemify} from '@thenewboston/utils';
 
 import Icon, {IconType} from '@renderer/components/Icon';
 import Qr from '@renderer/components/Qr';
 import {AccountType} from '@renderer/types';
-import {getCustomClassNames} from '@renderer/utils/components';
 import {displayToast} from '@renderer/utils/toast';
 
 import Tile from '../Tile';
@@ -39,13 +39,11 @@ const TileAccountNumber: FC<ComponentProps> = ({accountNumber, className, type})
   return (
     <Tile className={clsx('TileAccountNumber', className)}>
       <>
-        <div className={clsx('TileAccountNumber__top', {...getCustomClassNames(className, '__top', true)})}>
-          <div className={clsx('TileAccountNumber__title', {...getCustomClassNames(className, '__title', true)})}>
-            {title}
-          </div>
+        <div className={clsx('TileAccountNumber__top', {...bemify(className, '__top')})}>
+          <div className={clsx('TileAccountNumber__title', {...bemify(className, '__title')})}>{title}</div>
           <CopyToClipboard onCopy={handleCopy} text={accountNumber}>
             <Icon
-              className={clsx('TileAccountNumber__copy-icon', {...getCustomClassNames(className, '__copy-icon', true)})}
+              className={clsx('TileAccountNumber__copy-icon', {...bemify(className, '__copy-icon')})}
               icon={IconType.contentCopy}
               ref={copyIconRef}
             />

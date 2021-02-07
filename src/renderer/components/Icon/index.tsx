@@ -2,6 +2,7 @@
 
 import React, {forwardRef, ReactNode, useCallback, useMemo} from 'react';
 import clsx from 'clsx';
+import {bemify} from '@thenewboston/utils';
 
 import AlertCircleOutlineIcon from 'mdi-react/AlertCircleOutlineIcon';
 import AlertIcon from 'mdi-react/AlertIcon';
@@ -34,7 +35,6 @@ import RefreshIcon from 'mdi-react/RefreshIcon';
 import SyncIcon from 'mdi-react/SyncIcon';
 import ThumbsUpIcon from 'mdi-react/ThumbsUpIcon';
 
-import {getCustomClassNames} from '@renderer/utils/components';
 import TnbIcon from './TnbIcon';
 import './Icon.scss';
 
@@ -184,7 +184,7 @@ const Icon = forwardRef<HTMLDivElement, ComponentProps>(
         className={clsx('Icon', className, {
           'Icon--button': !!onClick,
           'Icon--disabled': disabled,
-          ...getCustomClassNames(className, '--disabled', disabled),
+          ...bemify(className, '--disabled', disabled),
         })}
         ref={ref}
         onClick={handleClick}

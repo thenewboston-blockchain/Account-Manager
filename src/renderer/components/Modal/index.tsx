@@ -2,13 +2,13 @@ import React, {CSSProperties, FC, ReactNode, useMemo} from 'react';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
+import {bemify} from '@thenewboston/utils';
 
 import {Form, FormButton, FormButtonProps} from '@renderer/components/FormComponents';
 import Icon, {IconType} from '@renderer/components/Icon';
 import Loader from '@renderer/components/FormElements/Loader';
 
 import {GenericFormValues, GenericFunction} from '@renderer/types';
-import {getCustomClassNames} from '@renderer/utils/components';
 
 import './Modal.scss';
 
@@ -114,7 +114,7 @@ const Modal: FC<ComponentProps> = ({
         {displayCancelButton && (
           <FormButton
             className={clsx('Modal__default-cancel', cancelProps.className, {
-              ...getCustomClassNames(className, '__default-cancel', true),
+              ...bemify(className, '__default-cancel'),
             })}
             color={cancelProps.color}
             disabled={cancelProps.disabled}
@@ -130,7 +130,7 @@ const Modal: FC<ComponentProps> = ({
         {displaySubmitButton && (
           <FormButton
             className={clsx('Modal__default-submit', submitProps.className, {
-              ...getCustomClassNames(className, '__default-submit', true),
+              ...bemify(className, '__default-submit'),
             })}
             color={submitProps.color}
             disabled={submitProps.disabled}
@@ -152,27 +152,27 @@ const Modal: FC<ComponentProps> = ({
       <div
         className={clsx('Modal__overlay', {
           'Modal__overlay--submitting': submitting,
-          ...getCustomClassNames(className, '__overlay', true),
-          ...getCustomClassNames(className, '__overlay--submitting', submitting),
+          ...bemify(className, '__overlay'),
+          ...bemify(className, '__overlay--submitting', submitting),
         })}
         onClick={submitting || disableOverlayClick ? noop : close}
       />
       <div
         className={clsx(
           'Modal',
-          {'Modal--default-position': !style, ...getCustomClassNames(className, '--default-position', !style)},
+          {'Modal--default-position': !style, ...bemify(className, '--default-position', !style)},
           className,
         )}
         style={style}
       >
-        <div className={clsx('Modal__header', {...getCustomClassNames(className, '__header', true)})}>
+        <div className={clsx('Modal__header', {...bemify(className, '__header')})}>
           {typeof header === 'string' ? <h2>{header}</h2> : header}
           {displayCloseButton && (
             <Icon
               className={clsx('Modal__close-icon', {
                 'Modal__close-icon--submitting': submitting,
-                ...getCustomClassNames(className, '__close-icon', true),
-                ...getCustomClassNames(className, '__close-icon--submitting', submitting),
+                ...bemify(className, '__close-icon'),
+                ...bemify(className, '__close-icon--submitting', submitting),
               })}
               disabled={submitting}
               icon={IconType.close}
@@ -181,7 +181,7 @@ const Modal: FC<ComponentProps> = ({
           )}
         </div>
         <Form
-          className={clsx('Modal__form', {...getCustomClassNames(className, '__form', true)})}
+          className={clsx('Modal__form', {...bemify(className, '__form')})}
           initialValues={initialValues}
           onSubmit={onSubmit || noop}
           validateOnMount={validateOnMount}
@@ -190,14 +190,14 @@ const Modal: FC<ComponentProps> = ({
           <div
             className={clsx('Modal__content', {
               'Modal__content--no-footer': hideFooter,
-              ...getCustomClassNames(className, '__content', true),
-              ...getCustomClassNames(className, '__content--no-footer', hideFooter),
+              ...bemify(className, '__content'),
+              ...bemify(className, '__content--no-footer', hideFooter),
             })}
           >
             {children}
           </div>
           {!hideFooter && (
-            <div className={clsx('Modal__footer', {...getCustomClassNames(className, '__footer', true)})}>
+            <div className={clsx('Modal__footer', {...bemify(className, '__footer')})}>
               {footer || renderDefaultFooter()}
             </div>
           )}
