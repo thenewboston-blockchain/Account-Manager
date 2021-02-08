@@ -92,7 +92,6 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-testing-library": "^3.9.2",
     "eslint-webpack-plugin": "^2.1.0",
-    "fibers": "^5.0.0",
     "file-loader": "^6.1.1",
     "fork-ts-checker-webpack-plugin": "^3.1.1",
     "html-webpack-plugin": "^4.5.0",
@@ -125,6 +124,7 @@
     "typescript": "^4.1.3"
   },
   "dependencies": {
+    "@thenewboston/ui": "^0.1.1",
     "@thenewboston/utils": "^1.0.0",
     "axios": "^0.21.1",
     "bfj": "^7.0.2",
@@ -139,7 +139,6 @@
     "formik": "^2.2.6",
     "fs-extra": "^9.0.1",
     "lodash-es": "^4.17.20",
-    "mdi-react": "^7.4.0",
     "normalize.css": "^8.0.1",
     "postcss": "^8.2.4",
     "prompts": "^2.4.0",

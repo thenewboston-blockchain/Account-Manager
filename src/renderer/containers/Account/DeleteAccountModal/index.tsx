@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {useDispatch} from 'react-redux';
+import {Icon, IconType} from '@thenewboston/ui';
 
-import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import {unsetManagedAccount} from '@renderer/store/app';
 import {unsetManagedAccountBalance} from '@renderer/store/managedAccountBalances';

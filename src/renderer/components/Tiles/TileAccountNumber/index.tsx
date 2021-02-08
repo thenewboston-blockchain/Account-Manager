@@ -1,9 +1,9 @@
 import React, {FC, memo, useMemo, useRef} from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
+import {Icon, IconType} from '@thenewboston/ui';
 import {bemify} from '@thenewboston/utils';
 
-import Icon, {IconType} from '@renderer/components/Icon';
 import Qr from '@renderer/components/Qr';
 import {AccountType} from '@renderer/types';
 import {displayToast} from '@renderer/utils/toast';

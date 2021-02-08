@@ -1,9 +1,9 @@
 import React, {FC, memo, useMemo, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import clsx from 'clsx';
+import {Icon, IconType} from '@thenewboston/ui';
 import {bemify} from '@thenewboston/utils';
 
-import Icon, {IconType} from '@renderer/components/Icon';
 import {fetchAccountBalance} from '@renderer/dispatchers/balances';
 import {getAccountBalances} from '@renderer/selectors';
 import {AccountType, AppDispatch} from '@renderer/types';

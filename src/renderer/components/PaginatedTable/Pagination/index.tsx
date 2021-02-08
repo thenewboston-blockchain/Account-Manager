@@ -1,9 +1,9 @@
 import React, {FC, ReactNode, useCallback, useMemo} from 'react';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
+import {Icon, IconType} from '@thenewboston/ui';
 import {bemify} from '@thenewboston/utils';
 
-import Icon, {IconType} from '@renderer/components/Icon';
 import './Pagination.scss';
 
 export interface PaginationProps {
