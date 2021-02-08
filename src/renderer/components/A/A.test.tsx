@@ -22,7 +22,7 @@ describe('A component', () => {
     expect(screen.getByText('hello')).toHaveAttribute('href', link);
   });
 
-  test('renders proper default classNames', () => {
+  test('renders proper default className', () => {
     render(<A href="/">hello</A>);
 
     expect(screen.getByText('hello').className).toBe('A');
