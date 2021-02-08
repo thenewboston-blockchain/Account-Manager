@@ -6,8 +6,8 @@ import clsx from 'clsx';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import formatDuration from 'date-fns/formatDuration';
 import intervalToDuration from 'date-fns/intervalToDuration';
+import {Icon, IconType} from '@thenewboston/ui';
 
-import Icon, {IconType} from '@renderer/components/Icon';
 import StatusBadge from '@renderer/components/StatusBadge';
 import {useBooleanState} from '@renderer/hooks';
 import {getManagedAccounts, getManagedFriends, getNotifications} from '@renderer/selectors';

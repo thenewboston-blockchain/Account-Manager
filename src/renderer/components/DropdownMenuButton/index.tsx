@@ -2,9 +2,9 @@ import React, {CSSProperties, FC, KeyboardEvent, ReactNode, useEffect, useRef, u
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
+import {Icon, IconType} from '@thenewboston/ui';
 import {bemify} from '@thenewboston/utils';
 
-import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState, useEventListener} from '@renderer/hooks';
 import {GenericVoidFunction} from '@renderer/types';
 

@@ -1,8 +1,7 @@
 import React, {FC, useEffect, useMemo, useRef} from 'react';
 import clsx from 'clsx';
+import {Icon, IconType} from '@thenewboston/ui';
 import {bemify} from '@thenewboston/utils';
-
-import Icon, {IconType} from '@renderer/components/Icon';
 
 import './CheckableInput.scss';
 

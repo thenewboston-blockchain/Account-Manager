@@ -1,9 +1,9 @@
 import React, {FC, useCallback, useEffect, useRef} from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
+import {Icon, IconType} from '@thenewboston/ui';
 import {bemify} from '@thenewboston/utils';
 
-import Icon, {IconType} from '@renderer/components/Icon';
 import {useBooleanState, useWriteIpc} from '@renderer/hooks';
 import {displayToast} from '@renderer/utils/toast';
 import {IpcChannel} from '@shared/ipc';

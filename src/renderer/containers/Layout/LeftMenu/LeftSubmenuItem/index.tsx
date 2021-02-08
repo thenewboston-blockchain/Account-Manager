@@ -1,9 +1,9 @@
 import React, {FC, ReactNode, useRef} from 'react';
 import {NavLink, RouteComponentProps, useHistory, withRouter} from 'react-router-dom';
 import clsx from 'clsx';
+import {Icon, IconType} from '@thenewboston/ui';
 import {bemify} from '@thenewboston/utils';
 
-import Icon, {IconType} from '@renderer/components/Icon';
 import './LeftSubmenuItem.scss';
 
 export interface LeftSubmenuItemProps extends RouteComponentProps {

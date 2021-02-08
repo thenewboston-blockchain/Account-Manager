@@ -1,9 +1,9 @@
 import React, {FC, ReactNode, useCallback, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {ipcRenderer} from 'electron';
+import {Icon, IconType} from '@thenewboston/ui';
 
 import DropdownMenuButton, {DropdownMenuDirection, DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
-import Icon, {IconType} from '@renderer/components/Icon';
 import Modal from '@renderer/components/Modal';
 import ChangeActiveBankModal from '@renderer/containers/Bank/ChangeActiveBankModal';
 import Notifications from '@renderer/containers/Notifications';

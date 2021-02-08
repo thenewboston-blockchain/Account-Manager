@@ -2,9 +2,9 @@ import React, {FC, ReactNode, RefObject, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
+import {Icon, IconType} from '@thenewboston/ui';
 
 import {Button} from '@renderer/components/FormElements';
-import Icon, {IconType} from '@renderer/components/Icon';
 import AddValidatorSigningKeysModal from '@renderer/containers/Validator/AddValidatorSigningKeysModal';
 import {useAddress, useBooleanState} from '@renderer/hooks';
 import {getIsManagedValidator, getManagedValidators} from '@renderer/selectors';
