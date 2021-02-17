@@ -2,13 +2,12 @@ import React, {FC, ReactNode, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Route, Switch, useHistory, useRouteMatch} from 'react-router-dom';
 import sortBy from 'lodash/sortBy';
-import {Icon, IconType} from '@thenewboston/ui';
+import {Button, Icon, IconType} from '@thenewboston/ui';
 
 import Badge from '@renderer/components/Badge';
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
-import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import {useAddress, useBooleanState} from '@renderer/hooks';
 import {getIsActiveBank, getIsManagedBank, getManagedAccounts, getManagedBanks} from '@renderer/selectors';
