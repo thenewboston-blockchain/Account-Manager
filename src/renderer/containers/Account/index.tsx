@@ -1,11 +1,11 @@
 import React, {FC, ReactNode, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {Route, Switch, useParams, useRouteMatch} from 'react-router-dom';
+import {Button} from '@thenewboston/ui';
 
 import PageHeader from '@renderer/components/PageHeader';
 import PageLayout from '@renderer/components/PageLayout';
 import PageTabs from '@renderer/components/PageTabs';
-import {Button} from '@renderer/components/FormElements';
 import {DropdownMenuOption} from '@renderer/components/DropdownMenuButton';
 import SendCoinsModal from '@renderer/containers/Account/SendCoinsModal';
 import {useBooleanState} from '@renderer/hooks';
