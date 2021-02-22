@@ -2,9 +2,9 @@ import React, {ChangeEvent, Dispatch, FC, useCallback, useEffect, useMemo} from 
 import {useDispatch, useSelector} from 'react-redux';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
-import {Icon, IconType} from '@thenewboston/ui';
+import {Button, Icon, IconType} from '@thenewboston/ui';
 
-import {Button, Input, Loader} from '@renderer/components/FormElements';
+import {Input, Loader} from '@renderer/components/FormElements';
 import PageTable from '@renderer/components/PageTable';
 import {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import RequiredAsterisk from '@renderer/components/RequiredAsterisk';

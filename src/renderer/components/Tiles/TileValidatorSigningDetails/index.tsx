@@ -2,9 +2,8 @@ import React, {FC, ReactNode, RefObject, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import clsx from 'clsx';
-import {Icon, IconType} from '@thenewboston/ui';
+import {Button, ButtonColor, Icon, IconType} from '@thenewboston/ui';
 
-import {Button} from '@renderer/components/FormElements';
 import AddValidatorSigningKeysModal from '@renderer/containers/Validator/AddValidatorSigningKeysModal';
 import {useAddress, useBooleanState} from '@renderer/hooks';
 import {getIsManagedValidator, getManagedValidators} from '@renderer/selectors';
@@ -81,11 +80,11 @@ const TileValidatorSigningDetails: FC<ComponentProps> = ({className, items}) => 
     <Tile className={clsx('TileValidatorSigningDetails', className)}>
       {renderItems()}
       {isManagedValidator ? (
-        <Button color="secondary" onClick={toggleSigningKeyModal}>
+        <Button color={ButtonColor.secondary} onClick={toggleSigningKeyModal}>
           {buttonText}
         </Button>
       ) : (
-        <Button color="secondary" onClick={handleAddManagedValidator}>
+        <Button color={ButtonColor.secondary} onClick={handleAddManagedValidator}>
           Add to Managed Validators
         </Button>
       )}
