@@ -2,7 +2,7 @@ import React, {CSSProperties, FC, ReactNode, useMemo} from 'react';
 import {createPortal} from 'react-dom';
 import clsx from 'clsx';
 import noop from 'lodash/noop';
-import {Icon, IconType} from '@thenewboston/ui';
+import {ButtonType, ButtonVariant, Icon, IconType} from '@thenewboston/ui';
 import {bemify} from '@thenewboston/utils';
 
 import {Form, FormButton, FormButtonProps} from '@renderer/components/FormComponents';
@@ -63,14 +63,14 @@ const Modal: FC<ComponentProps> = ({
     initialValues,
   ]);
 
-  const cancelProps = useMemo<ModalButtonProps>(() => {
+  const cancelProps = useMemo<Omit<ModalButtonProps, 'children'>>(() => {
     if (typeof cancelButton === 'string') {
       return {
         content: cancelButton,
         ignoreDirty,
         onClick: close,
         submitting,
-        variant: 'link',
+        variant: ButtonVariant.link,
       };
     }
     return {
@@ -82,17 +82,17 @@ const Modal: FC<ComponentProps> = ({
       onClick: cancelButton?.onClick ?? close,
       submitting: cancelButton?.submitting ?? submitting,
       type: cancelButton?.type ?? undefined,
-      variant: cancelButton?.variant ?? 'link',
+      variant: cancelButton?.variant ?? ButtonVariant.link,
     };
   }, [cancelButton, close, ignoreDirty, submitting]);
 
-  const submitProps = useMemo<ModalButtonProps>(() => {
+  const submitProps = useMemo<Omit<ModalButtonProps, 'children'>>(() => {
     if (typeof submitButton === 'string') {
       return {
         content: submitButton,
         ignoreDirty,
         submitting,
-        type: 'submit',
+        type: ButtonType.submit,
       };
     }
     return {
@@ -103,7 +103,7 @@ const Modal: FC<ComponentProps> = ({
       ignoreDirty: submitButton?.ignoreDirty ?? ignoreDirty,
       onClick: submitButton?.onClick ?? undefined,
       submitting: submitButton?.submitting ?? submitting,
-      type: submitButton?.type ?? 'submit',
+      type: submitButton?.type ?? ButtonType.submit,
       variant: submitButton?.variant ?? undefined,
     };
   }, [ignoreDirty, submitButton, submitting]);
