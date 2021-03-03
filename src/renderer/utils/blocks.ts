@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import {BankConfig, AcceptedFees, Tx, ValidatorConfig} from '@renderer/types';
+import {AcceptedFees, BankConfig, Tx, ValidatorConfig} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
