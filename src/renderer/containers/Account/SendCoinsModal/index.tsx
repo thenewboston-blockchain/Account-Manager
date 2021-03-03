@@ -1,6 +1,6 @@
 import React, {FC, ReactNode, useCallback, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Icon, IconType} from '@thenewboston/ui';
+import {ButtonType, ButtonVariant, Icon, IconType} from '@thenewboston/ui';
 
 import {FormButton} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
@@ -87,14 +87,14 @@ const SendCoinsModal: FC<ComponentProps> = ({close, initialRecipient, initialSen
           className="Modal__default-cancel SendCoinsModal__default-cancel"
           onClick={close}
           submitting={submitting}
-          variant="link"
+          variant={ButtonVariant.link}
         >
           Cancel
         </FormButton>
         <FormButton
           className="Modal__default-submit SendCoinsModal__default-submit"
           submitting={submitting}
-          type="submit"
+          type={ButtonType.submit}
         >
           Send <Icon className="SendCoinsModal__submit-icon" icon={IconType.tnb} size={16} totalSize={16} />
         </FormButton>
