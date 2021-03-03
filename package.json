@@ -10,7 +10,7 @@
     "package": "electron-forge package",
     "postinstall": "electron-builder install-app-deps",
     "prettier": "prettier --write \"{,!(.webpack|bundle|node_modules|out|release)/**/}*.{ts,tsx,js,json,css,less,scss}\"",
-    "release": "npm run package && electron-builder --publish always",
+    "release": "NODE_ENV=production npm run package && electron-builder --publish always",
     "start": "NODE_ENV=development electron-forge start",
     "test": "jest"
   },
