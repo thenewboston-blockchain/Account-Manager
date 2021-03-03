@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import {BankConfig, Tx, ValidatorConfig} from '@renderer/types';
+import {AcceptedFees, BankConfig, Tx, ValidatorConfig} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
 import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
@@ -61,6 +61,7 @@ export const sendBlock = async (
   if (!recipientWasActiveBank) {
     txs.push({
       amount: bankTxFee,
+      fee: AcceptedFees.bank,
       recipient: activeBankConfig.account_number,
     });
   }
@@ -68,6 +69,7 @@ export const sendBlock = async (
   if (!recipientWasPv) {
     txs.push({
       amount: primaryValidatorTxFee,
+      fee: AcceptedFees.primaryValidator,
       recipient: primaryValidatorConfig.account_number,
     });
   }

@@ -1,3 +1,8 @@
+export enum AcceptedFees {
+  bank = 'BANK',
+  primaryValidator = 'PRIMARY_VALIDATOR',
+}
+
 export interface AccountNumber {
   account_number: string;
 }
@@ -132,6 +137,7 @@ export interface RawPrimaryValidatorConfig extends Omit<PrimaryValidatorConfig, 
 
 export interface Tx {
   amount: number;
+  fee?: AcceptedFees;
   recipient: string;
 }
 

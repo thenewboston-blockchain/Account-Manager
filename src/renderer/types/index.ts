@@ -12,6 +12,7 @@ import {BaseFormComponentProps, BaseFormInlineComponentProps, GenericFormValues,
 import {GenericFunction, GenericVoidFunction} from './generic';
 import {AppElectronStore, LocalStore, MigrationFunction} from './localStore';
 import {
+  AcceptedFees,
   AccountNumber,
   AddressData,
   Balance,
@@ -74,6 +75,7 @@ import {
 } from './store';
 
 export {
+  AcceptedFees,
   AccountBalance,
   AccountNumber,
   AccountNumberParams,
