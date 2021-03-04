@@ -30,17 +30,9 @@
   font-weight: 800;
 }
 
-@font-face {
-  font-family: JetBrainsMono;
-  src: url('./fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf') format('truetype'),
-    url('./fonts/JetBrainsMono/web/woff/JetBrainsMono-Regular.woff') format('woff'),
-    url('./fonts/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2') format('woff2');
-}
-
 :root {
   --font-family-default: Inter, sans-serif;
   --font-family-icon: 'Material Icons';
-  --font-family-mono: JetBrainsMono, monospace;
   --font-size-extra-large: 24px;
   --font-size-large: 20px;
   --font-size-medium: 16px;

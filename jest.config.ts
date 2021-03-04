@@ -2,6 +2,7 @@ import type {Config} from '@jest/types';
 
 const config: Config.InitialOptions = {
   collectCoverageFrom: ['<rootDir>/src/**/*.{js,jsx,ts,tsx}', '!<rootDir>/src/**/*.d.ts'],
+  globalSetup: './global-setup.js',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'scss'],
   moduleNameMapper: {
     '@main/(.*)': '<rootDir>/src/main/$1',
