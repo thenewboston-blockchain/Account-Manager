@@ -3,8 +3,6 @@ import clsx from 'clsx';
 
 import {PAGINATED_RESULTS_LIMIT} from '@renderer/config';
 
-import './PaginationSummary.scss';
-
 export interface PaginationSummaryProps {
   className?: string;
   count: number;
