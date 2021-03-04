@@ -4,6 +4,7 @@ import Loader from './Loader';
 import Radio, {BaseRadioProps} from './Radio';
 import Select, {BaseSelectProps} from './Select';
 import SelectDetailed from './SelectDetailed';
+import Switch from './Switch';
 import TextArea from './TextArea';
 
 export {
@@ -17,5 +18,6 @@ export {
   Radio,
   Select,
   SelectDetailed,
+  Switch,
   TextArea,
 };
