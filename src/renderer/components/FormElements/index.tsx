@@ -4,7 +4,7 @@ import Loader from './Loader';
 import Radio, {BaseRadioProps} from './Radio';
 import Select, {BaseSelectProps} from './Select';
 import SelectDetailed from './SelectDetailed';
-import Switch from './Switch';
+import Switch, {BaseSwitchProps} from './Switch';
 import TextArea from './TextArea';
 
 export {
@@ -12,6 +12,7 @@ export {
   BaseInputProps,
   BaseRadioProps,
   BaseSelectProps,
+  BaseSwitchProps,
   Checkbox,
   Input,
   Loader,

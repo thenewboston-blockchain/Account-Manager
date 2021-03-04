@@ -53,9 +53,9 @@ const PaginatedTable: FC<ComponentProps> = ({
                 <Switch
                   checked={expanded}
                   className={clsx('PaginatedTable__expand-toggle', {...bemify(className, '__expand-toggle')})}
+                  label="Show full info"
                   onChange={toggleExpanded}
                 />
-                Show full info
               </div>
             </div>
           </div>

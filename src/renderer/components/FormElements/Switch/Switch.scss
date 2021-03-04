@@ -1,0 +1,15 @@
+.Switch {
+  &__label {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+
+    &--disabled {
+      cursor: default;
+    }
+  }
+
+  &__span {
+    margin-left: 8px;
+  }
+}
