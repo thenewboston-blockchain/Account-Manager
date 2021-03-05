@@ -1,8 +1,9 @@
 import React, {FC, useMemo} from 'react';
 
+import ExpandableText from '@renderer/components/ExpandableText';
 import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import {BANK_CONFIRMATION_BLOCKS} from '@renderer/constants/actions';
-import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BankConfirmationBlock} from '@renderer/types';
 
 enum TableKeys {
@@ -14,6 +15,7 @@ enum TableKeys {
 
 const BankConfirmationBlocks: FC = () => {
   const address = useAddress();
+  const [expanded, toggleExpanded] = useBooleanState(false);
   const {
     count,
     currentPage,
@@ -27,12 +29,12 @@ const BankConfirmationBlocks: FC = () => {
     () =>
       bankConfirmationBlocks.map((confirmationBlock) => ({
         key: confirmationBlock.id,
-        [TableKeys.blockIdentifier]: confirmationBlock.block_identifier,
-        [TableKeys.block]: confirmationBlock.block,
-        [TableKeys.id]: confirmationBlock.id,
-        [TableKeys.validator]: confirmationBlock.validator,
+        [TableKeys.blockIdentifier]: <ExpandableText expanded={expanded} text={confirmationBlock.block_identifier} />,
+        [TableKeys.block]: <ExpandableText expanded={expanded} text={confirmationBlock.block} />,
+        [TableKeys.id]: <ExpandableText expanded={expanded} text={confirmationBlock.id} />,
+        [TableKeys.validator]: <ExpandableText expanded={expanded} text={confirmationBlock.validator} />,
       })) || [],
-    [bankConfirmationBlocks],
+    [bankConfirmationBlocks, expanded],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -54,9 +56,11 @@ const BankConfirmationBlocks: FC = () => {
       className="BankConfirmationBlocks"
       count={count}
       currentPage={currentPage}
+      expanded={expanded}
       items={pageTableItems}
       loading={loading}
       setPage={setPage}
+      toggleExpanded={toggleExpanded}
       totalPages={totalPages}
     />
   );

@@ -3,39 +3,18 @@
   padding: var(--page-table-padding);
   width: 100%;
 
-  &__ArrowToggle {
-    height: 16px;
-    width: 16px;
-  }
-
-  &__row {
-    &--expanded {
-      #{$self}__td {
-        white-space: normal;
-        word-wrap: break-word;
-      }
-    }
-  }
-
   &__td,
   &__th {
     border-bottom: 1px solid var(--color-gray-100);
   }
 
   &__td {
-    max-width: 120px;
-    overflow: hidden;
     padding: 6px 4px;
-    text-overflow: ellipsis;
     vertical-align: top;
     white-space: nowrap;
 
     &--checkbox {
       padding: 3px 4px;
-    }
-
-    &--toggle {
-      width: 32px;
     }
   }
 

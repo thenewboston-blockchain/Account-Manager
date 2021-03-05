@@ -3,9 +3,10 @@ import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 
 import AccountLink from '@renderer/components/AccountLink';
+import ExpandableText from '@renderer/components/ExpandableText';
 import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import {BANK_BANK_TRANSACTIONS} from '@renderer/constants/actions';
-import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {getActiveBankConfig} from '@renderer/selectors';
 import {AccountNumberParams, BankTransaction} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
@@ -21,6 +22,7 @@ enum TableKeys {
 }
 
 const AccountTransactions: FC = () => {
+  const [expanded, toggleExpanded] = useBooleanState(false);
   const {accountNumber} = useParams<AccountNumberParams>();
   const activeBank = useSelector(getActiveBankConfig)!;
   const activeBankAddress = formatAddressFromNode(activeBank);
@@ -40,13 +42,17 @@ const AccountTransactions: FC = () => {
       bankTransactions.map((bankTransaction) => ({
         key: bankTransaction.id,
         [TableKeys.amount]: bankTransaction.amount,
-        [TableKeys.balanceKey]: bankTransaction.block.balance_key,
+        [TableKeys.balanceKey]: <ExpandableText expanded={expanded} text={bankTransaction.block.balance_key} />,
         [TableKeys.dateCreated]: formatDate(bankTransaction.block.created_date),
-        [TableKeys.recipientAccountNumber]: <AccountLink accountNumber={bankTransaction.recipient} />,
-        [TableKeys.senderAccountNumber]: <AccountLink accountNumber={bankTransaction.block.sender} />,
-        [TableKeys.signature]: bankTransaction.block.signature,
+        [TableKeys.recipientAccountNumber]: (
+          <AccountLink accountNumber={bankTransaction.recipient} expanded={expanded} />
+        ),
+        [TableKeys.senderAccountNumber]: (
+          <AccountLink accountNumber={bankTransaction.block.sender} expanded={expanded} />
+        ),
+        [TableKeys.signature]: <ExpandableText expanded={expanded} text={bankTransaction.block.signature} />,
       })) || [],
-    [bankTransactions],
+    [bankTransactions, expanded],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -77,9 +83,11 @@ const AccountTransactions: FC = () => {
       className="AccountTransactions"
       count={count}
       currentPage={currentPage}
+      expanded={expanded}
       items={pageTableItems}
       loading={loading}
       setPage={setPage}
+      toggleExpanded={toggleExpanded}
       totalPages={totalPages}
     />
   );

@@ -4,7 +4,6 @@ import {bemify} from '@thenewboston/utils';
 
 import PageTable, {PageTableItems, PageTableData, PageTableProps} from '@renderer/components/PageTable';
 import {Loader, Switch} from '@renderer/components/FormElements';
-import {useBooleanState} from '@renderer/hooks';
 
 import Pagination, {PaginationProps} from './Pagination';
 import PaginationSummary, {PaginationSummaryProps} from './PaginationSummary';
@@ -12,22 +11,24 @@ import './PaginatedTable.scss';
 
 interface ComponentProps extends PageTableProps, PaginationProps, PaginationSummaryProps {
   className?: string;
+  expanded?: boolean;
   loading: boolean;
+  toggleExpanded?(): void;
 }
 
 const PaginatedTable: FC<ComponentProps> = ({
   className,
   count,
   currentPage,
+  expanded,
   handleSelectRow,
   items,
   loading,
   selectedData,
   setPage,
+  toggleExpanded,
   totalPages,
 }) => {
-  const [expanded, toggleExpanded] = useBooleanState(false);
-
   return (
     <div className={clsx('PaginatedTable', className)}>
       {loading ? (
@@ -50,12 +51,14 @@ const PaginatedTable: FC<ComponentProps> = ({
                   ...bemify(className, '__expand-toggle-container'),
                 })}
               >
-                <Switch
-                  checked={expanded}
-                  className={clsx('PaginatedTable__expand-toggle', {...bemify(className, '__expand-toggle')})}
-                  label="Show full info"
-                  onChange={toggleExpanded}
-                />
+                {expanded !== undefined && !!toggleExpanded && (
+                  <Switch
+                    checked={expanded}
+                    className={clsx('PaginatedTable__expand-toggle', {...bemify(className, '__expand-toggle')})}
+                    label="Show full info"
+                    onChange={toggleExpanded}
+                  />
+                )}
               </div>
             </div>
           </div>

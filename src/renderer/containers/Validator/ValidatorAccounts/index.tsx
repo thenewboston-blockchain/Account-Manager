@@ -1,9 +1,10 @@
 import React, {FC, useMemo} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
+import ExpandableText from '@renderer/components/ExpandableText';
 import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import {VALIDATOR_ACCOUNTS} from '@renderer/constants/actions';
-import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {ValidatorAccount} from '@renderer/types';
 
 enum TableKeys {
@@ -14,6 +15,7 @@ enum TableKeys {
 
 const ValidatorAccounts: FC = () => {
   const address = useAddress();
+  const [expanded, toggleExpanded] = useBooleanState(false);
   const {
     count,
     currentPage,
@@ -27,11 +29,11 @@ const ValidatorAccounts: FC = () => {
     () =>
       validatorAccounts.map((account) => ({
         key: account.id,
-        [TableKeys.accountNumber]: <AccountLink accountNumber={account.account_number} />,
-        [TableKeys.balanceLock]: account.balance_lock,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={account.account_number} expanded={expanded} />,
+        [TableKeys.balanceLock]: <ExpandableText expanded={expanded} text={account.balance_lock} />,
         [TableKeys.balance]: account.balance,
       })) || [],
-    [validatorAccounts],
+    [expanded, validatorAccounts],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -52,9 +54,11 @@ const ValidatorAccounts: FC = () => {
       className="ValidatorAccounts"
       count={count}
       currentPage={currentPage}
+      expanded={expanded}
       items={pageTableItems}
       loading={loading}
       setPage={setPage}
+      toggleExpanded={toggleExpanded}
       totalPages={totalPages}
     />
   );

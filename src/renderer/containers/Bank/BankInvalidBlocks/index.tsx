@@ -1,8 +1,9 @@
 import React, {FC, useMemo} from 'react';
 
+import ExpandableText from '@renderer/components/ExpandableText';
 import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import {BANK_INVALID_BLOCKS} from '@renderer/constants/actions';
-import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {InvalidBlock} from '@renderer/types';
 
 enum TableKeys {
@@ -14,6 +15,7 @@ enum TableKeys {
 
 const BankInvalidBlocks: FC = () => {
   const address = useAddress();
+  const [expanded, toggleExpanded] = useBooleanState(false);
   const {
     count,
     currentPage,
@@ -27,12 +29,12 @@ const BankInvalidBlocks: FC = () => {
     () =>
       bankInvalidBlocks.map((invalidBlock) => ({
         key: invalidBlock.id,
-        [TableKeys.blockIdentifier]: invalidBlock.block_identifier,
-        [TableKeys.block]: invalidBlock.block,
-        [TableKeys.id]: invalidBlock.id,
-        [TableKeys.validator]: invalidBlock.primary_validator,
+        [TableKeys.blockIdentifier]: <ExpandableText expanded={expanded} text={invalidBlock.block_identifier} />,
+        [TableKeys.block]: <ExpandableText expanded={expanded} text={invalidBlock.block} />,
+        [TableKeys.id]: <ExpandableText expanded={expanded} text={invalidBlock.id} />,
+        [TableKeys.validator]: <ExpandableText expanded={expanded} text={invalidBlock.primary_validator} />,
       })) || [],
-    [bankInvalidBlocks],
+    [bankInvalidBlocks, expanded],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -54,9 +56,11 @@ const BankInvalidBlocks: FC = () => {
       className="BankInvalidBlocks"
       count={count}
       currentPage={currentPage}
+      expanded={expanded}
       items={pageTableItems}
       loading={loading}
       setPage={setPage}
+      toggleExpanded={toggleExpanded}
       totalPages={totalPages}
     />
   );

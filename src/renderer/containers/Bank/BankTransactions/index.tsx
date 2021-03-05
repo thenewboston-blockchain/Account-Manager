@@ -1,9 +1,10 @@
 import React, {FC, useMemo} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
+import ExpandableText from '@renderer/components/ExpandableText';
 import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import {BANK_BANK_TRANSACTIONS} from '@renderer/constants/actions';
-import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BankTransaction} from '@renderer/types';
 
 enum TableKeys {
@@ -16,6 +17,7 @@ enum TableKeys {
 
 const BankTransactions: FC = () => {
   const address = useAddress();
+  const [expanded, toggleExpanded] = useBooleanState(false);
   const {
     count,
     currentPage,
@@ -30,12 +32,12 @@ const BankTransactions: FC = () => {
       bankBankTransactions.map((bankTransaction) => ({
         key: bankTransaction.id,
         [TableKeys.amount]: bankTransaction.amount,
-        [TableKeys.block]: bankTransaction.block.id,
-        [TableKeys.id]: bankTransaction.id,
-        [TableKeys.recipient]: <AccountLink accountNumber={bankTransaction.recipient} />,
-        [TableKeys.sender]: <AccountLink accountNumber={bankTransaction.block.sender} />,
+        [TableKeys.block]: <ExpandableText expanded={expanded} text={bankTransaction.block.id} />,
+        [TableKeys.id]: <ExpandableText expanded={expanded} text={bankTransaction.id} />,
+        [TableKeys.recipient]: <AccountLink accountNumber={bankTransaction.recipient} expanded={expanded} />,
+        [TableKeys.sender]: <AccountLink accountNumber={bankTransaction.block.sender} expanded={expanded} />,
       })) || [],
-    [bankBankTransactions],
+    [bankBankTransactions, expanded],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -58,9 +60,11 @@ const BankTransactions: FC = () => {
       className="BankTransactions"
       count={count}
       currentPage={currentPage}
+      expanded={expanded}
       items={pageTableItems}
       loading={loading}
       setPage={setPage}
+      toggleExpanded={toggleExpanded}
       totalPages={totalPages}
     />
   );

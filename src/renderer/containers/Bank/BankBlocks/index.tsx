@@ -1,9 +1,10 @@
 import React, {FC, useMemo} from 'react';
 
 import AccountLink from '@renderer/components/AccountLink';
+import ExpandableText from '@renderer/components/ExpandableText';
 import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import {BANK_BLOCKS} from '@renderer/constants/actions';
-import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BlockResponse} from '@renderer/types';
 import {formatDate} from '@renderer/utils/dates';
 
@@ -18,6 +19,7 @@ enum TableKeys {
 
 const BankBlocks: FC = () => {
   const address = useAddress();
+  const [expanded, toggleExpanded] = useBooleanState(false);
   const {
     count,
     currentPage,
@@ -31,14 +33,14 @@ const BankBlocks: FC = () => {
     () =>
       bankBlocks.map((block) => ({
         key: block.id,
-        [TableKeys.balanceKey]: block.balance_key,
+        [TableKeys.balanceKey]: <ExpandableText expanded={expanded} text={block.balance_key} />,
         [TableKeys.createdDate]: formatDate(block.created_date),
-        [TableKeys.id]: block.id,
+        [TableKeys.id]: <ExpandableText expanded={expanded} text={block.id} />,
         [TableKeys.modifiedDate]: formatDate(block.modified_date),
-        [TableKeys.sender]: <AccountLink accountNumber={block.sender} />,
-        [TableKeys.signature]: block.signature,
+        [TableKeys.sender]: <AccountLink accountNumber={block.sender} expanded={expanded} />,
+        [TableKeys.signature]: <ExpandableText expanded={expanded} text={block.signature} />,
       })) || [],
-    [bankBlocks],
+    [bankBlocks, expanded],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -69,9 +71,11 @@ const BankBlocks: FC = () => {
       className="BankBlocks"
       count={count}
       currentPage={currentPage}
+      expanded={expanded}
       items={pageTableItems}
       loading={loading}
       setPage={setPage}
+      toggleExpanded={toggleExpanded}
       totalPages={totalPages}
     />
   );

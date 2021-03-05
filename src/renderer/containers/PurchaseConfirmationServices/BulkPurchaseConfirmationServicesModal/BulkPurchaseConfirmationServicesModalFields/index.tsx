@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import noop from 'lodash/noop';
 import {Button, Icon, IconType} from '@thenewboston/ui';
 
+import ExpandableText from '@renderer/components/ExpandableText';
 import {Input, Loader} from '@renderer/components/FormElements';
 import PageTable from '@renderer/components/PageTable';
 import {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
@@ -162,7 +163,7 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
               />
             ),
             [TableKeys.dailyRate]: validatorData.daily_confirmation_rate,
-            [TableKeys.nodeIdentifier]: nodeIdentifier,
+            [TableKeys.nodeIdentifier]: <ExpandableText expanded={false} text={nodeIdentifier} />,
             [TableKeys.removeValidator]: (
               <Icon
                 className="BulkPurchaseConfirmationServicesModalFields__close-button"
@@ -249,11 +250,7 @@ const BulkPurchaseConfirmationServicesModalFields: FC<ComponentProps> = ({
   return (
     <div className="BulkPurchaseConfirmationServicesModalFields">
       <div className="BulkPurchaseConfirmationServicesModalFields__left">
-        <PageTable
-          alwaysExpanded
-          className="BulkPurchaseConfirmationServicesModalFields__validator-table"
-          items={pageTableItems}
-        />
+        <PageTable className="BulkPurchaseConfirmationServicesModalFields__validator-table" items={pageTableItems} />
       </div>
       <div className="BulkPurchaseConfirmationServicesModalFields__right">
         <div className="BulkPurchaseConfirmationServicesModalFields__bank-address">{selectedBankAddress}</div>

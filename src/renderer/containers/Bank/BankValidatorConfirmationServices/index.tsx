@@ -1,8 +1,9 @@
 import React, {FC, useMemo} from 'react';
 
+import ExpandableText from '@renderer/components/ExpandableText';
 import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import {BANK_VALIDATOR_CONFIRMATION_SERVICES} from '@renderer/constants/actions';
-import {useAddress, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useAddress, useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {ValidatorConfirmationService} from '@renderer/types';
 import {formatDate} from '@renderer/utils/dates';
 
@@ -17,6 +18,7 @@ enum TableKeys {
 
 const BankValidatorConfirmationServices: FC = () => {
   const address = useAddress();
+  const [expanded, toggleExpanded] = useBooleanState(false);
   const {
     count,
     currentPage,
@@ -32,12 +34,12 @@ const BankValidatorConfirmationServices: FC = () => {
         key: validatorConfirmationService.id,
         [TableKeys.createdDate]: formatDate(validatorConfirmationService.created_date),
         [TableKeys.end]: formatDate(validatorConfirmationService.end),
-        [TableKeys.id]: validatorConfirmationService.id,
+        [TableKeys.id]: <ExpandableText expanded={expanded} text={validatorConfirmationService.id} />,
         [TableKeys.modifiedDate]: formatDate(validatorConfirmationService.modified_date),
         [TableKeys.start]: formatDate(validatorConfirmationService.start),
-        [TableKeys.validator]: validatorConfirmationService.validator,
+        [TableKeys.validator]: <ExpandableText expanded={expanded} text={validatorConfirmationService.validator} />,
       })) || [],
-    [bankValidatorConfirmationServices],
+    [bankValidatorConfirmationServices, expanded],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -68,9 +70,11 @@ const BankValidatorConfirmationServices: FC = () => {
       className="BankValidatorConfirmationServices"
       count={count}
       currentPage={currentPage}
+      expanded={expanded}
       items={pageTableItems}
       loading={loading}
       setPage={setPage}
+      toggleExpanded={toggleExpanded}
       totalPages={totalPages}
     />
   );

@@ -2,6 +2,7 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 import {Icon, IconType} from '@thenewboston/ui';
 
 import AccountLink from '@renderer/components/AccountLink';
+import ExpandableText from '@renderer/components/ExpandableText';
 import NodeLink from '@renderer/components/NodeLink';
 import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
@@ -28,6 +29,7 @@ interface ComponentProps {
 
 const BankBanks: FC<ComponentProps> = ({managedBank}) => {
   const address = useAddress();
+  const [expanded, toggleExpanded] = useBooleanState(false);
   const {count, currentPage, loading, results: bankBanks, setPage, totalPages} = usePaginatedNetworkDataFetcher<Node>(
     BANK_BANKS,
     address,
@@ -49,10 +51,10 @@ const BankBanks: FC<ComponentProps> = ({managedBank}) => {
     () =>
       bankBanks.map((bank) => ({
         key: bank.node_identifier,
-        [TableKeys.accountNumber]: <AccountLink accountNumber={bank.account_number} />,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={bank.account_number} expanded={expanded} />,
         [TableKeys.defaultTransactionFee]: bank.default_transaction_fee,
         [TableKeys.ipAddress]: <NodeLink node={bank} urlBase="bank" />,
-        [TableKeys.nodeIdentifier]: bank.node_identifier,
+        [TableKeys.nodeIdentifier]: <ExpandableText expanded={expanded} text={bank.node_identifier} />,
         [TableKeys.port]: bank.port,
         [TableKeys.protocol]: bank.protocol,
         [TableKeys.trust]: (
@@ -71,7 +73,7 @@ const BankBanks: FC<ComponentProps> = ({managedBank}) => {
         ),
         [TableKeys.version]: bank.version,
       })) || [],
-    [bankBanks, handleEditTrustButton, hasSigningKey],
+    [bankBanks, expanded, handleEditTrustButton, hasSigningKey],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -107,9 +109,11 @@ const BankBanks: FC<ComponentProps> = ({managedBank}) => {
         className="BankBanks"
         count={count}
         currentPage={currentPage}
+        expanded={expanded}
         items={pageTableItems}
         loading={loading}
         setPage={setPage}
+        toggleExpanded={toggleExpanded}
         totalPages={totalPages}
       />
       {editTrustModalIsOpen && !!editTrustBank && !!managedBank && (
