@@ -2,6 +2,7 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 import {Icon, IconType} from '@thenewboston/ui';
 
 import AccountLink from '@renderer/components/AccountLink';
+import ExpandableText from '@renderer/components/ExpandableText';
 import NodeLink from '@renderer/components/NodeLink';
 import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
@@ -29,6 +30,7 @@ interface ComponentProps {
 
 const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
   const address = useAddress();
+  const [expanded, toggleExpanded] = useBooleanState(false);
   const {
     count,
     currentPage,
@@ -54,11 +56,11 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
     () =>
       validatorBanks.map((bank) => ({
         key: bank.node_identifier,
-        [TableKeys.accountNumber]: <AccountLink accountNumber={bank.account_number} />,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={bank.account_number} expanded={expanded} />,
         [TableKeys.confirmationExpiration]: bank.confirmation_expiration,
         [TableKeys.defaultTransactionFee]: bank.default_transaction_fee,
         [TableKeys.ipAddress]: <NodeLink node={bank} urlBase="bank" />,
-        [TableKeys.nodeIdentifier]: bank.node_identifier,
+        [TableKeys.nodeIdentifier]: <ExpandableText expanded={expanded} text={bank.node_identifier} />,
         [TableKeys.port]: bank.port,
         [TableKeys.protocol]: bank.protocol,
         [TableKeys.trust]: (
@@ -77,7 +79,7 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
         ),
         [TableKeys.version]: bank.version,
       })) || [],
-    [handleEditTrustButton, hasSigningKey, validatorBanks],
+    [expanded, handleEditTrustButton, hasSigningKey, validatorBanks],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -115,9 +117,11 @@ const ValidatorBanks: FC<ComponentProps> = ({managedValidator}) => {
         className="ValidatorBanks"
         count={count}
         currentPage={currentPage}
+        expanded={expanded}
         items={pageTableItems}
         loading={loading}
         setPage={setPage}
+        toggleExpanded={toggleExpanded}
         totalPages={totalPages}
       />
       {editTrustModalIsOpen && !!editTrustBank && !!managedValidator && (

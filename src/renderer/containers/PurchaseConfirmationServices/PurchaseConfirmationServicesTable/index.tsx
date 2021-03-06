@@ -1,10 +1,11 @@
 import React, {Dispatch, FC, useCallback, useMemo} from 'react';
 import clsx from 'clsx';
 
+import ExpandableText from '@renderer/components/ExpandableText';
 import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import {PAGINATED_RESULTS_LIMIT} from '@renderer/config';
 import {BANK_VALIDATORS} from '@renderer/constants/actions';
-import {usePaginatedNetworkDataFetcher} from '@renderer/hooks';
+import {useBooleanState, usePaginatedNetworkDataFetcher} from '@renderer/hooks';
 import {BaseValidator} from '@renderer/types';
 
 import {SelectedValidatorAction, SelectedValidatorState, toggleSelectedValidator} from '../utils';
@@ -35,6 +36,7 @@ const PurchaseConfirmationServicesTable: FC<ComponentProps> = ({
   dispatchSelectedValidators,
   selectedValidators,
 }) => {
+  const [expanded, toggleExpanded] = useBooleanState(false);
   const {
     count,
     currentPage,
@@ -61,13 +63,13 @@ const PurchaseConfirmationServicesTable: FC<ComponentProps> = ({
     () =>
       bankValidators.map((validator, index) => ({
         key: validator.node_identifier,
-        [TableKeys.accountNumber]: validator.account_number,
+        [TableKeys.accountNumber]: <ExpandableText expanded={expanded} text={validator.account_number} />,
         [TableKeys.dailyConfirmationRate]: validator.daily_confirmation_rate,
         [TableKeys.defaultTransactionFee]: validator.default_transaction_fee,
         [TableKeys.ipAddress]: validator.ip_address,
         [TableKeys.nodeIdentifier]: (
           <span className="PurchaseConfirmationServicesTable__node-identifier" onClick={handleCheckboxClick(index)}>
-            {validator.node_identifier}
+            <ExpandableText expanded={expanded} text={validator.node_identifier} />
           </span>
         ),
         [TableKeys.port]: validator.port,
@@ -75,7 +77,7 @@ const PurchaseConfirmationServicesTable: FC<ComponentProps> = ({
         [TableKeys.trust]: validator.trust,
         [TableKeys.version]: validator.version,
       })) || [],
-    [bankValidators, handleCheckboxClick],
+    [bankValidators, expanded, handleCheckboxClick],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -112,11 +114,13 @@ const PurchaseConfirmationServicesTable: FC<ComponentProps> = ({
       className={clsx('PurchaseConfirmationServicesTable', className)}
       count={count}
       currentPage={currentPage}
+      expanded={expanded}
       handleSelectRow={handleCheckboxClick}
       items={pageTableItems}
       loading={loading}
       selectedData={selectedValidators}
       setPage={setPage}
+      toggleExpanded={toggleExpanded}
       totalPages={totalPages}
     />
   );

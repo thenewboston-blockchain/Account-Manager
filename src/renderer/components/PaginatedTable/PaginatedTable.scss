@@ -1,6 +1,20 @@
 .PaginatedTable {
+  &__expand-toggle-container {
+    align-items: center;
+    display: flex;
+  }
+
   &__PaginationSummary {
-    margin: 12px 6px;
     padding: 2px 0;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    margin: 12px 6px;
+
+    &__right {
+      display: flex;
+    }
   }
 }

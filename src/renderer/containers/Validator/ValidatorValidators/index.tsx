@@ -2,6 +2,7 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 import {Icon, IconType} from '@thenewboston/ui';
 
 import AccountLink from '@renderer/components/AccountLink';
+import ExpandableText from '@renderer/components/ExpandableText';
 import NodeLink from '@renderer/components/NodeLink';
 import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
@@ -32,6 +33,7 @@ interface ComponentProps {
 
 const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
   const address = useAddress();
+  const [expanded, toggleExpanded] = useBooleanState(false);
   const {
     count,
     currentPage,
@@ -57,14 +59,14 @@ const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
     () =>
       validatorValidators.map((validator) => ({
         key: validator.node_identifier,
-        [TableKeys.accountNumber]: <AccountLink accountNumber={validator.account_number} />,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={validator.account_number} expanded={expanded} />,
         [TableKeys.dailyConfirmationRate]: validator.daily_confirmation_rate,
         [TableKeys.defaultTransactionFee]: validator.default_transaction_fee,
         [TableKeys.ipAddress]: <NodeLink node={validator} urlBase="validator" />,
-        [TableKeys.nodeIdentifier]: validator.node_identifier,
+        [TableKeys.nodeIdentifier]: <ExpandableText expanded={expanded} text={validator.node_identifier} />,
         [TableKeys.port]: validator.port,
         [TableKeys.protocol]: validator.protocol,
-        [TableKeys.rootAccountFileHash]: validator.root_account_file_hash,
+        [TableKeys.rootAccountFileHash]: <ExpandableText expanded={expanded} text={validator.root_account_file_hash} />,
         [TableKeys.rootAccountFile]: validator.root_account_file,
         [TableKeys.seedBlockIdentifier]: validator.seed_block_identifier,
         [TableKeys.trust]: (
@@ -83,7 +85,7 @@ const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
         ),
         [TableKeys.version]: validator.version,
       })) || [],
-    [handleEditTrustButton, hasSigningKey, validatorValidators],
+    [expanded, handleEditTrustButton, hasSigningKey, validatorValidators],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -127,9 +129,11 @@ const ValidatorValidators: FC<ComponentProps> = ({managedValidator}) => {
         className="ValidatorValidators"
         count={count}
         currentPage={currentPage}
+        expanded={expanded}
         items={pageTableItems}
         loading={loading}
         setPage={setPage}
+        toggleExpanded={toggleExpanded}
         totalPages={totalPages}
       />
       {editTrustModalIsOpen && !!editTrustValidator && !!managedValidator && (

@@ -155,6 +155,7 @@
     "react-refresh": "^0.8.3",
     "react-router-dom": "^5.2.0",
     "react-select": "^3.2.0",
+    "react-switch": "^6.0.0",
     "react-toastify": "^6.2.0",
     "reconnecting-websocket": "^4.4.0",
     "resolve": "^1.18.1",

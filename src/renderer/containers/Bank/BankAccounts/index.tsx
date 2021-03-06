@@ -2,6 +2,7 @@ import React, {FC, useCallback, useMemo, useState} from 'react';
 import {Icon, IconType} from '@thenewboston/ui';
 
 import AccountLink from '@renderer/components/AccountLink';
+import ExpandableText from '@renderer/components/ExpandableText';
 import PaginatedTable, {PageTableData, PageTableItems} from '@renderer/components/PaginatedTable';
 import EditTrustModal from '@renderer/containers/EditTrustModal';
 import {BANK_ACCOUNTS} from '@renderer/constants/actions';
@@ -25,6 +26,7 @@ interface ComponentProps {
 
 const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
   const address = useAddress();
+  const [expanded, toggleExpanded] = useBooleanState(false);
   const {
     count,
     currentPage,
@@ -50,9 +52,9 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
     () =>
       bankAccounts.map((account) => ({
         key: account.account_number,
-        [TableKeys.accountNumber]: <AccountLink accountNumber={account.account_number} />,
+        [TableKeys.accountNumber]: <AccountLink accountNumber={account.account_number} expanded={expanded} />,
         [TableKeys.createdDate]: formatDate(account.created_date),
-        [TableKeys.id]: account.id,
+        [TableKeys.id]: <ExpandableText expanded={expanded} text={account.id} />,
         [TableKeys.modifiedDate]: formatDate(account.modified_date),
         [TableKeys.trust]: (
           <div className="BankAccounts__trust-cell">
@@ -69,7 +71,7 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
           </div>
         ),
       })) || [],
-    [bankAccounts, handleEditTrustButton, hasSigningKey],
+    [bankAccounts, expanded, handleEditTrustButton, hasSigningKey],
   );
 
   const pageTableItems = useMemo<PageTableItems>(
@@ -99,9 +101,11 @@ const BankAccounts: FC<ComponentProps> = ({managedBank}) => {
         className="BankAccounts"
         count={count}
         currentPage={currentPage}
+        expanded={expanded}
         items={pageTableItems}
         loading={loading}
         setPage={setPage}
+        toggleExpanded={toggleExpanded}
         totalPages={totalPages}
       />
       {editTrustModalIsOpen && !!editTrustAccount && !!managedBank && (
