@@ -85,7 +85,7 @@ const PageTable: FC<PageTableProps> = ({className, handleSelectRow, items, selec
           ))}
         </tr>
       </thead>
-      <tbody>{renderRows()}</tbody>
+      <tbody className={clsx('PageTable__tbody', {...bemify(className, '__tbody')})}>{renderRows()}</tbody>
     </table>
   );
 };
