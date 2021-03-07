@@ -16,7 +16,7 @@ const Toast: FC<ComponentProps> = ({children, className, type = 'warning'}) => {
   const iconType = useMemo<IconType>(() => {
     switch (type) {
       case 'success':
-        return IconType.thumbsUp;
+        return IconType.checkCircle;
       default:
         return IconType.alertCircleOutline;
     }
