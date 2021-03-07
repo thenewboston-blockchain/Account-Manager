@@ -2,7 +2,7 @@
   $self: &;
 
   &.SelectDetailed {
-    height: 48px;
+    height: 72px;
 
     #{$self}__single-value,
     #{$self}__placeholder,
@@ -42,13 +42,14 @@
       }
     }
   }
+}
 
-  .SelectDetailed__option-label {
-    color: var(--color-gray-500);
-    font-size: var(--font-size-small);
-  }
+.SelectDetailed__option-label {
+  color: var(--color-gray-500);
+  font-size: var(--font-size-small);
+  margin-bottom: 6px;
+}
 
-  .SelectDetailed__option-value {
-    word-break: break-all;
-  }
+.SelectDetailed__option-value {
+  word-break: break-all;
 }

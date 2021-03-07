@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
 import React, {FC, ReactNode} from 'react';
-import {FormatOptionLabelMeta} from 'react-select';
 import clsx from 'clsx';
 
 import {BaseSelectProps, Select} from '@renderer/components/FormElements';
@@ -17,14 +16,7 @@ const filterOption = ({label, value}: InputOption, rawInput: string): boolean =>
   );
 };
 
-const formatOptionLabel = (
-  {value, label}: InputOption,
-  {context}: FormatOptionLabelMeta<InputOption, any>,
-): ReactNode => {
-  if (context === 'value') {
-    return value;
-  }
-
+const formatOptionLabel = ({value, label}: InputOption): ReactNode => {
   return (
     <>
       {label ? <div className="SelectDetailed__option-label">{label}</div> : null}
