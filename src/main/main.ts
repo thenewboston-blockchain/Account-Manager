@@ -31,10 +31,12 @@ const createWindow = (): void => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 };
 
+// if gotTheLock is false, another instance of application is already running
 if (!gotTheLock) {
   app.quit();
 } else {
   app.on('second-instance', () => {
+    // focus back to the previous instance, if someone tried to create new instance
     if (mainWindow) {
       if (mainWindow.isMinimized() || !mainWindow.isFocused()) {
         mainWindow.restore();
