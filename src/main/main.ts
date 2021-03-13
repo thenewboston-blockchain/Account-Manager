@@ -10,6 +10,7 @@ import menu from './menu';
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
 const isMac = process.platform === 'darwin';
+const gotTheLock = app.requestSingleInstanceLock();
 
 Menu.setApplicationMenu(menu);
 
@@ -30,15 +31,28 @@ const createWindow = (): void => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 };
 
+// if gotTheLock is false, another instance of application is already running
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    // focus back to the previous instance, if someone tried to create new instance
+    if (mainWindow) {
+      if (mainWindow.isMinimized() || !mainWindow.isFocused()) {
+        mainWindow.restore();
+        mainWindow.focus();
+      }
+    }
+  });
+  app.whenReady().then(() => {
+    installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
+      .then((name) => console.log(`Added Extension: ${name}`))
+      .catch((error) => console.log('An error occurred: ', error));
+  });
+  app.on('ready', createWindow);
+}
+
 app.setName('TNB Account Manager');
-
-app.whenReady().then(() => {
-  installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
-    .then((name) => console.log(`Added Extension: ${name}`))
-    .catch((error) => console.log('An error occurred: ', error));
-});
-
-app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
