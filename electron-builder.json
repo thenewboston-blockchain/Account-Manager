@@ -14,7 +14,8 @@
   "files": ["bundle/**/*", "!build", "!node_modules", "package.json", "app-information"],
   "mac": {
     "target": ["dmg", "zip"],
-    "artifactName": "${productName}-${version}-${os}.${ext}"
+    "artifactName": "${productName}-${version}-${os}.${ext}",
+    "icon": "./assets/mac/icons/app_icon.icns"
   },
   "win": {
     "target": [
@@ -33,7 +34,8 @@
     "artifactName": "${productName}-${version}-${os}.${ext}"
   },
   "dmg": {
-    "title": "${productName}-${version}"
+    "title": "${productName}-${version}",
+    "icon": "./assets/mac/icons/dmg_icon.icns"
   },
   "afterSign": "./assets/scripts/notarize.js",
   "extends": null
