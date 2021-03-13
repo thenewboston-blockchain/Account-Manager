@@ -9,10 +9,13 @@
   }
 
   .header {
+    background: var(--color-gray-050);
+    box-shadow: 0 2px var(--color-gray-100);
     display: flex;
     justify-content: space-between;
-    margin: 12px 6px;
-
+    padding: 12px 6px;
+    position: fixed;
+    width: calc(100% - (var(--left-menu-width)) - 38px);
     &__right {
       display: flex;
     }
