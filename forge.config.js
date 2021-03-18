@@ -14,9 +14,7 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
     },
     {
-      config: {
-        icon: path.join(__dirname, 'assets/icon.icns'),
-      },
+      config: {},
       name: '@electron-forge/maker-dmg',
     },
     {
@@ -35,7 +33,6 @@ module.exports = {
   packagerConfig: {
     asar: true,
     'hardened-runtime': true,
-    icon: path.join(__dirname, 'assets/icon.icns'),
     name: 'TNB Account Manager',
   },
   plugins: [
