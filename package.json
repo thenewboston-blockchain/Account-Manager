@@ -15,10 +15,6 @@
     "test": "jest"
   },
   "keywords": [],
-  "author": {
-    "name": "Justin Kim",
-    "email": "justinkim943@gmail.com"
-  },
   "license": "MIT",
   "lint-staged": {
     "{,!(node_modules)/**/}*.{ts,tsx,js}": [
