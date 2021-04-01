@@ -18,7 +18,6 @@ import {setManagedAccountBalance} from '@renderer/store/managedAccountBalances';
 import {AppDispatch} from '@renderer/types';
 import {getNicknameField} from '@renderer/utils/forms/fields';
 import yup from '@renderer/utils/forms/yup';
-import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 import CreateAccountModalFields, {FormValues, initialValues} from './CreateAccountModalFields';

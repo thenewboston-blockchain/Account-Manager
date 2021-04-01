@@ -1,5 +1,6 @@
 import React, {FC, useEffect, useMemo, useReducer, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {Account} from 'thenewboston';
 
 import Modal from '@renderer/components/Modal';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
@@ -7,7 +8,6 @@ import {getActiveBankConfig, getPrimaryValidatorConfig} from '@renderer/selector
 import {AppDispatch, ManagedNode} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 import {sendBlock} from '@renderer/utils/blocks';
-import {getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 import BulkPurchaseConfirmationServicesModalFields from './BulkPurchaseConfirmationServicesModalFields';
@@ -45,7 +45,7 @@ const BulkPurchaseConfirmationServicesModal: FC<ComponentProps> = ({bank, close,
   const handleSubmit = async (): Promise<void> => {
     try {
       setSubmitting(true);
-      const {publicKeyHex: bankAccountNumber} = getKeyPairFromSigningKeyHex(bank.account_signing_key);
+      const {accountNumberHex: bankAccountNumber} = new Account(bank.account_signing_key);
       const recipients = Object.entries(formValues)
         .map(([nodeIdentifier, {amount}]) => {
           const validatorData = selectedValidators[nodeIdentifier];
