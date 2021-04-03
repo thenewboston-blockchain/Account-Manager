@@ -22,9 +22,9 @@ export interface BankAccount extends AccountNumber, CreatedModified, Id {
   trust: string;
 }
 
-export interface BankConfig extends Node {
+export interface BankConfig extends Omit<Node, 'trust'> {
   node_type: NodeType.bank;
-  primary_validator: PrimaryValidatorConfig;
+  primary_validator: Omit<PrimaryValidatorConfig, 'node_type'>;
 }
 
 export interface BankConfirmationBlock extends CreatedModified, Id {
@@ -128,7 +128,7 @@ export type ProtocolType = 'http' | 'https';
 
 export interface RawBankConfig extends Omit<BankConfig, 'port' | 'primary_validator'> {
   port: number | null;
-  primary_validator: RawPrimaryValidatorConfig;
+  primary_validator: Omit<RawPrimaryValidatorConfig, 'node_type'>;
 }
 
 export interface RawPrimaryValidatorConfig extends Omit<PrimaryValidatorConfig, 'port'> {
