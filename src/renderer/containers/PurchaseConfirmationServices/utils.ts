@@ -1,9 +1,10 @@
 import axios from 'axios';
 import omit from 'lodash/omit';
+import {Account} from 'thenewboston';
+
 import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 import {BaseValidator, ManagedNode} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
-import {generateSignedMessage, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 
 export type SelectedValidatorState = {
   [nodeIdentifier: string]: BaseValidator & {
@@ -66,7 +67,7 @@ export const checkConnectionBankToValidator = async (
     await axios.get(`${bankAddress}/validators/${validator.node_identifier}`, {timeout: AXIOS_TIMEOUT_MS});
   } catch (error) {
     if (!managedBank.nid_signing_key) throw new Error('No NID SK');
-    const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(managedBank.nid_signing_key);
+    const bankNetworkKeyPair = new Account(managedBank.nid_signing_key);
     const validatorData = {
       account_number: validator.account_number,
       daily_confirmation_rate: validator.daily_confirmation_rate,
@@ -78,7 +79,7 @@ export const checkConnectionBankToValidator = async (
       trust: 0,
       version: validator.version,
     };
-    const signedMessage = generateSignedMessage(validatorData, publicKeyHex, signingKey);
+    const signedMessage = bankNetworkKeyPair.createSignedMessage(validatorData);
     await axios.post(`${bankAddress}/validators`, signedMessage, {
       headers: {
         'Content-Type': 'application/json',
@@ -98,13 +99,13 @@ export const checkConnectionValidatorToBank = async (
     await axios.get(`${validatorAddress}/banks/${bankNodeIdentifier}`, {timeout: AXIOS_TIMEOUT_MS});
   } catch (error) {
     if (!managedBank.nid_signing_key) throw new Error('No NID SK');
-    const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(managedBank.nid_signing_key);
+    const validatorNetworkKeyPair = new Account(managedBank.nid_signing_key);
     const connectionRequestData = {
       ip_address: managedBank.ip_address,
       port: managedBank.port,
       protocol: managedBank.protocol,
     };
-    const signedMessage = generateSignedMessage(connectionRequestData, publicKeyHex, signingKey);
+    const signedMessage = validatorNetworkKeyPair.createSignedMessage(connectionRequestData);
     await axios.post(`${validatorAddress}/connection_requests`, signedMessage, {
       headers: {
         'Content-Type': 'application/json',

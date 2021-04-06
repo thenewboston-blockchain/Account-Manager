@@ -1,21 +1,10 @@
 import axios from 'axios';
+import {Account} from 'thenewboston';
 
 import {AcceptedFees, BankConfig, Tx, ValidatorConfig} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
-import {generateBlock, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
 import {AXIOS_TIMEOUT_MS} from '@renderer/config';
-
-const createBlock = async (
-  activePrimaryValidator: ValidatorConfig,
-  senderSigningKey: string,
-  senderAccountNumber: string,
-  txs: Tx[],
-): Promise<string> => {
-  const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(senderSigningKey);
-  const balanceLock = await fetchAccountBalanceLock(senderAccountNumber, activePrimaryValidator);
-  return generateBlock(balanceLock, publicKeyHex, signingKey, txs);
-};
 
 const fetchAccountBalanceLock = async (
   accountNumber: string,
@@ -78,8 +67,9 @@ export const sendBlock = async (
 
   const {ip_address: ipAddress, port, protocol} = activeBankConfig;
   const address = formatAddress(ipAddress, port, protocol);
-
-  const block = await createBlock(primaryValidatorConfig, senderSigningKey, senderAccountNumber, txs);
+  const sender = new Account(senderSigningKey);
+  const balanceLock = await fetchAccountBalanceLock(senderAccountNumber, primaryValidatorConfig);
+  const block = sender.createBlockMessage(balanceLock, txs);
   await axios.post(`${address}/blocks`, block, {
     headers: {
       'Content-Type': 'application/json',

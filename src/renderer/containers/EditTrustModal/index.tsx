@@ -1,5 +1,6 @@
 import React, {FC, useMemo, useState} from 'react';
 import axios from 'axios';
+import {Account} from 'thenewboston';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
@@ -7,7 +8,6 @@ import {useNavigationalHistory} from '@renderer/hooks';
 import {ManagedNode} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 import yup from '@renderer/utils/forms/yup';
-import {generateSignature, getKeyPairFromSigningKeyHex} from '@renderer/utils/signing';
 import {displayToast} from '@renderer/utils/toast';
 
 interface ComponentProps {
@@ -35,12 +35,8 @@ const EditTrustModal: FC<ComponentProps> = ({close, requestingNode, targetIdenti
   const handleSubmit = async (values: FormValues): Promise<void> => {
     try {
       setSubmitting(true);
-      const {publicKeyHex, signingKey} = getKeyPairFromSigningKeyHex(requestingNode.nid_signing_key);
-      const requestData = {
-        message: values,
-        node_identifier: publicKeyHex,
-        signature: generateSignature(JSON.stringify(values), signingKey),
-      };
+      const networkIdKeyPair = new Account(requestingNode.nid_signing_key);
+      const requestData = networkIdKeyPair.createSignedMessage(values);
       const address = `${formatAddressFromNode(requestingNode)}/${targetType}/${targetIdentifier}`;
       await axios.patch(address, requestData);
       reload();
