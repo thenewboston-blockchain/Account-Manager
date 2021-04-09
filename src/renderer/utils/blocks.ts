@@ -1,10 +1,9 @@
 import axios from 'axios';
-import {Account} from 'thenewboston';
+import {Account, PrimaryValidator} from 'thenewboston';
 
 import {AcceptedFees, BankConfig, Tx, ValidatorConfig} from '@renderer/types';
 import {formatAddress} from '@renderer/utils/address';
 import {getBankTxFee, getPrimaryValidatorTxFee} from '@renderer/utils/transactions';
-import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 
 const fetchAccountBalanceLock = async (
   accountNumber: string,
@@ -12,10 +11,13 @@ const fetchAccountBalanceLock = async (
 ): Promise<string> => {
   const {ip_address: ipAddress, port, protocol} = activePrimaryValidator;
   const address = formatAddress(ipAddress, port, protocol);
-  const {
-    data: {balance_lock: balanceLock},
-  } = await axios.get(`${address}/accounts/${accountNumber}/balance_lock`, {timeout: AXIOS_TIMEOUT_MS});
-  return balanceLock;
+  const validator = new PrimaryValidator(address);
+
+  const {balance_lock: balanceLock} = await validator.getAccountBalanceLock(accountNumber);
+  if (balanceLock) {
+    return balanceLock;
+  }
+  throw new Error('Error: fetchAccountBalanceLock');
 };
 
 export const sendBlock = async (
