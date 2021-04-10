@@ -34,8 +34,9 @@ export interface BankConfirmationBlock extends CreatedModified, Id {
 }
 
 export interface BankTransaction extends Id {
-  block: BlockResponse;
   amount: number;
+  block: BlockResponse;
+  memo?: string;
   recipient: string;
 }
 
