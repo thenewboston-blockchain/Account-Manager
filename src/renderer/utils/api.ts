@@ -1,7 +1,6 @@
-import axios from 'axios';
-import {Bank} from 'thenewboston';
+import {Bank, ConfirmationValidator} from 'thenewboston';
 
-import {AXIOS_TIMEOUT_MS, defaultPaginatedQueryParam} from '@renderer/config';
+import {defaultPaginatedQueryParam} from '@renderer/config';
 import {
   ACCOUNTS,
   BANK_TRANSACTIONS,
@@ -18,28 +17,13 @@ import {
   BankConfig,
   PaginatedQueryParams,
   PaginatedResults,
-  PrimaryValidatorConfig,
   RawBankConfig,
-  RawPrimaryValidatorConfig,
+  RawValidatorConfig,
+  ValidatorConfig,
 } from '@renderer/types';
 
-import {formatQueryParams} from '@renderer/utils/address';
 import {SetError, SetResults} from '@renderer/utils/store';
-
-const formatPaginatedData = <T extends unknown>(rawData: PaginatedResults<T>) => {
-  return {
-    ...rawData,
-    results: rawData.results.map((result: any) => {
-      if (!result.port) {
-        return {
-          ...result,
-          port: replaceNullPortFieldWithDefaultValue(result.port),
-        };
-      }
-      return result;
-    }),
-  };
-};
+import {PrimaryValidatorInNodeConfig, RawPrimaryValidatorInNodeConfig} from '@renderer/types/network';
 
 export async function fetchBankPaginatedResults<T>(
   address: string,
@@ -49,26 +33,26 @@ export async function fetchBankPaginatedResults<T>(
   setResults: SetResults<T>,
   setError: SetError,
 ) {
-  const bank = new Bank(address, {defaultPagination: {limit: defaultPaginatedQueryParam.limit, offset: 0}});
+  const bank = new Bank(address, {defaultPagination: {...defaultPaginatedQueryParam, offset: 0}});
 
   let rawData;
 
   try {
     switch (action) {
       case ACCOUNTS:
-        rawData = await bank.getAccounts();
+        rawData = await bank.getAccounts(queryParams);
         break;
 
       case BANKS:
-        rawData = await bank.getBanks();
+        rawData = await bank.getBanks(queryParams);
         break;
 
       case BANK_TRANSACTIONS:
-        rawData = await bank.getTransactions();
+        rawData = await bank.getTransactions(queryParams);
         break;
 
       case BLOCKS:
-        rawData = await bank.getBlocks();
+        rawData = await bank.getBlocks(queryParams);
         break;
 
       case CONFIRMATION_BLOCKS:
@@ -103,21 +87,41 @@ export async function fetchBankPaginatedResults<T>(
   }
 }
 
-export async function fetchPaginatedResults<T>(
+export async function fetchValidatorPaginatedResults<T>(
   address: string,
-  urlParam: string,
+  action: string,
   queryParams: PaginatedQueryParams,
   dispatch: AppDispatch,
   setResults: SetResults<T>,
   setError: SetError,
 ) {
-  try {
-    const {data: rawData} = await axios.get<PaginatedResults<T>>(
-      `${address}/${urlParam}${formatQueryParams(queryParams)}`,
-      {timeout: AXIOS_TIMEOUT_MS},
-    );
+  const validator = new ConfirmationValidator(address, {
+    defaultPagination: {limit: defaultPaginatedQueryParam.limit, offset: 0},
+  });
 
-    const data = formatPaginatedData(rawData);
+  let rawData;
+  let data: PaginatedResults<T>;
+
+  try {
+    switch (action) {
+      case ACCOUNTS:
+        rawData = await validator.getAccounts(queryParams);
+        data = formatPaginatedData(rawData);
+        break;
+
+      case BANKS:
+        rawData = await validator.getBanks(queryParams);
+        data = formatPaginatedData(rawData);
+        break;
+
+      case VALIDATORS:
+        rawData = await validator.getValidators(queryParams);
+        data = formatPaginatedData(rawData);
+        break;
+
+      default:
+        throw new Error('Fetch Validator Pagination Action not Set');
+    }
 
     dispatch(setResults({address, ...data}));
     return data.results;
@@ -127,6 +131,21 @@ export async function fetchPaginatedResults<T>(
     }
     dispatch(setError({address, error: error.response.data}));
   }
+}
+
+function formatPaginatedData<T>(rawData: PaginatedResults<T>) {
+  return {
+    ...rawData,
+    results: rawData.results.map((result: any) => {
+      if (!result.port) {
+        return {
+          ...result,
+          port: replaceNullPortFieldWithDefaultValue(result.port),
+        };
+      }
+      return result;
+    }),
+  };
 }
 
 const replaceNullPortFieldWithDefaultValue = (port: number | null): number => {
@@ -144,9 +163,16 @@ export const sanitizePortFieldFromRawBankConfig = (data: RawBankConfig): BankCon
   };
 };
 
+export const sanitizePortFieldFromRawValidatorConfig = (data: RawValidatorConfig): ValidatorConfig => {
+  return {
+    ...data,
+    port: replaceNullPortFieldWithDefaultValue(data.port),
+  };
+};
+
 export const sanitizePortFieldFromRawPrimaryValidatorConfig = (
-  data: RawPrimaryValidatorConfig,
-): PrimaryValidatorConfig => {
+  data: RawPrimaryValidatorInNodeConfig,
+): PrimaryValidatorInNodeConfig => {
   return {
     ...data,
     port: replaceNullPortFieldWithDefaultValue(data.port),

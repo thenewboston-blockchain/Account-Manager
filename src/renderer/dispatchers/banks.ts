@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {Bank} from 'thenewboston';
 
 import {
@@ -47,11 +46,7 @@ import {
   RawBankConfig,
   ValidatorConfirmationService,
 } from '@renderer/types';
-import {
-  fetchPaginatedResults,
-  fetchBankPaginatedResults,
-  sanitizePortFieldFromRawBankConfig,
-} from '@renderer/utils/api';
+import {fetchBankPaginatedResults, sanitizePortFieldFromRawBankConfig} from '@renderer/utils/api';
 
 export const fetchBankAccounts = (address: string, params: PaginatedQueryParams) => async (dispatch: AppDispatch) => {
   return fetchBankPaginatedResults<BankAccount>(
@@ -89,8 +84,8 @@ export const fetchBankConfig = (address: string) => async (
   dispatch: AppDispatch,
 ): Promise<{address: string; data?: BankConfig; error?: any}> => {
   try {
-    const rawData = (await new Bank(address).getConfig()) as RawBankConfig;
-    const data = sanitizePortFieldFromRawBankConfig(rawData);
+    const rawData = await new Bank(address).getConfig();
+    const data = sanitizePortFieldFromRawBankConfig(rawData as RawBankConfig);
 
     if (data.node_type !== NodeType.bank) {
       const errorObject = {address, error: 'Node not a bank'};
