@@ -29,12 +29,15 @@ const fetchAccountBalanceLock = async (
   return balanceLock;
 };
 
+export const sanitizeMemo = (memo: string): string => memo.trim();
+
 export const sendBlock = async (
   activeBankConfig: BankConfig,
   primaryValidatorConfig: ValidatorConfig,
   senderSigningKey: string,
   senderAccountNumber: string,
   recipients: Array<{accountNumber: string; amount: number}>,
+  memo = '',
 ): Promise<void> => {
   let recipientWasActiveBank = false;
   let recipientWasPv = false;
@@ -55,7 +58,12 @@ export const sendBlock = async (
       recipientWasPv = true;
     }
 
-    txs.push({amount, recipient: recipient.accountNumber});
+    const sanitizedMemo = sanitizeMemo(memo);
+    if (sanitizedMemo.length) {
+      txs.push({amount, memo: sanitizedMemo, recipient: recipient.accountNumber});
+    } else {
+      txs.push({amount, recipient: recipient.accountNumber});
+    }
   }
 
   if (!recipientWasActiveBank) {

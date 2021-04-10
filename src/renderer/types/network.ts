@@ -138,6 +138,7 @@ export interface RawPrimaryValidatorConfig extends Omit<PrimaryValidatorConfig, 
 export interface Tx {
   amount: number;
   fee?: AcceptedFees;
+  memo?: string;
   recipient: string;
 }
 

@@ -19,6 +19,7 @@ import './SendCoinsModalFields.scss';
 
 export interface FormValues {
   coins: string;
+  memo?: string;
   recipientAccountNumber: string;
   senderAccountNumber: string;
 }
@@ -98,6 +99,7 @@ const SendCoinsModalFields: FC<ComponentProps> = ({submitting}) => {
         options={getToOptions}
         required
       />
+      <FormInput disabled={submitting} label="Memo" name="memo" placeholder="What is it for?" />
       <table className="SendCoinsModalFields__table">
         <tbody>
           <tr>
