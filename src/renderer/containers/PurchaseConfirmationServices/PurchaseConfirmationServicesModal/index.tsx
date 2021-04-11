@@ -46,9 +46,8 @@ const PurchaseConfirmationServicesModal: FC<ComponentProps> = ({close, initialBa
     try {
       setSubmitting(true);
       const selectedBank = authenticatedBanks[bankAddress];
-      const {accountNumberHex: bankAccountNumber} = new Account(selectedBank.account_signing_key);
-      await sendBlock(activeBankConfig, activePrimaryValidator, selectedBank.account_signing_key, bankAccountNumber, [
-        {accountNumber: validator.account_number, amount: parseInt(amount, 10)},
+      await sendBlock(activeBankConfig, selectedBank.account_signing_key, [
+        {amount: parseInt(amount, 10), recipient: validator.account_number},
       ]);
       displayToast('Your payment has been sent', 'success');
       close();
