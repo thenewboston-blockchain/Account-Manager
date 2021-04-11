@@ -29,8 +29,8 @@ export const sendBlock = async (
 
   const paymentHandler = new AccountPaymentHandler({account: sender, bankUrl});
 
-  // configue the payment handler
-  // Get transacations and set PV
+  // configures the payment handler
+  // Sets the PV and gets each node's tx fee
   await paymentHandler.init();
 
   paymentHandler.sendBulkTransactions(transactions);
