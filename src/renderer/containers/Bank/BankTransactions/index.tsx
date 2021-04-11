@@ -13,6 +13,7 @@ enum TableKeys {
   sender,
   recipient,
   amount,
+  memo,
 }
 
 const BankTransactions: FC = () => {
@@ -34,6 +35,7 @@ const BankTransactions: FC = () => {
         [TableKeys.amount]: bankTransaction.amount,
         [TableKeys.block]: <ExpandableText expanded={expanded} text={bankTransaction.block.id} />,
         [TableKeys.id]: <ExpandableText expanded={expanded} text={bankTransaction.id} />,
+        [TableKeys.memo]: <ExpandableText expanded={expanded} text={bankTransaction.memo || '-'} />,
         [TableKeys.recipient]: <AccountLink accountNumber={bankTransaction.recipient} expanded={expanded} />,
         [TableKeys.sender]: <AccountLink accountNumber={bankTransaction.block.sender} expanded={expanded} />,
       })) || [],
@@ -47,10 +49,18 @@ const BankTransactions: FC = () => {
         [TableKeys.amount]: 'Amount',
         [TableKeys.block]: 'Block',
         [TableKeys.id]: 'ID',
+        [TableKeys.memo]: 'Memo',
         [TableKeys.recipient]: 'Recipient',
         [TableKeys.sender]: 'Sender',
       },
-      orderedKeys: [TableKeys.id, TableKeys.block, TableKeys.sender, TableKeys.recipient, TableKeys.amount],
+      orderedKeys: [
+        TableKeys.id,
+        TableKeys.block,
+        TableKeys.sender,
+        TableKeys.recipient,
+        TableKeys.amount,
+        TableKeys.memo,
+      ],
     }),
     [bankBankTransactionsTableData],
   );
