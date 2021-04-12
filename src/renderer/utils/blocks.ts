@@ -18,6 +18,8 @@ export const fetchAccountBalanceLock = async (
   throw new Error('Error: fetchAccountBalanceLock');
 };
 
+export const sanitizeMemo = (memo: string): string => memo.trim();
+
 export const sendBlock = async (
   activeBankConfig: BankConfig,
   senderSigningKey: string,
