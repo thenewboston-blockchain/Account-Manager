@@ -21,7 +21,7 @@ export const fetchAccountBalanceLock = async (
 export const sendBlock = async (
   activeBankConfig: BankConfig,
   senderSigningKey: string,
-  transactions: Array<{amount: number; recipient: string}>,
+  transactions: Array<{amount: number; memo?: string; recipient: string}>,
 ): Promise<void> => {
   const {ip_address: ipAddress, port, protocol} = activeBankConfig;
   const bankUrl = formatAddress(ipAddress, port, protocol);
