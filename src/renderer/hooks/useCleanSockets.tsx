@@ -1,15 +1,14 @@
 import {useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import axios from 'axios';
-import {Account} from 'thenewboston';
+import {Account, Bank, ConfirmationValidator} from 'thenewboston';
 
 import {getInactiveCleanSockets} from '@renderer/selectors/sockets';
 import {
   AppDispatch,
-  CleanCommand,
   CleanSocketState,
   CleanStatus,
   NodeCleanStatusWithAddress,
+  NodeType,
   SocketConnectionStatus,
 } from '@renderer/types';
 import {formatAddressFromNode, formatSocketAddressFromNode} from '@renderer/utils/address';
@@ -25,20 +24,23 @@ const useCleanSockets = (): void => {
   const fetchCleanData = useCallback(
     async (cleanSocket: CleanSocketState): Promise<void> => {
       try {
-        const inCleaning = cleanSocket.clean_status === CleanStatus.cleaning;
-        const cleanData = {
-          clean: inCleaning ? CleanCommand.stop : CleanCommand.start,
-        };
-
         const address = formatAddressFromNode(cleanSocket);
         const socketAddress = formatSocketAddressFromNode(cleanSocket);
         const socketNetworkId = new Account(cleanSocket.signingKey);
-        const signedMessage = socketNetworkId.createSignedMessage(cleanData);
-        const {data} = await axios.post<NodeCleanStatusWithAddress>(`${address}/clean`, signedMessage, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+
+        let node: Bank | ConfirmationValidator;
+        node = new Bank(address);
+        const nodeConfig = await node.getConfig();
+
+        if (nodeConfig.node_type === NodeType.confirmationValidator) {
+          node = new ConfirmationValidator(address);
+        }
+
+        const inCleaning = cleanSocket.clean_status === CleanStatus.cleaning;
+
+        const data = inCleaning
+          ? ((await node.stopClean(socketNetworkId)) as NodeCleanStatusWithAddress)
+          : ((await node.startClean(socketNetworkId)) as NodeCleanStatusWithAddress);
 
         dispatch(
           updateCleanProcess({

@@ -1,11 +1,10 @@
 import React, {FC, useMemo, useState} from 'react';
-import axios from 'axios';
-import {Account} from 'thenewboston';
+import {Account, Bank, ConfirmationValidator} from 'thenewboston';
 
 import {FormInput} from '@renderer/components/FormComponents';
 import Modal from '@renderer/components/Modal';
 import {useNavigationalHistory} from '@renderer/hooks';
-import {ManagedNode} from '@renderer/types';
+import {ManagedNode, NodeType} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 import yup from '@renderer/utils/forms/yup';
 import {displayToast} from '@renderer/utils/toast';
@@ -35,10 +34,33 @@ const EditTrustModal: FC<ComponentProps> = ({close, requestingNode, targetIdenti
   const handleSubmit = async (values: FormValues): Promise<void> => {
     try {
       setSubmitting(true);
+
       const networkIdKeyPair = new Account(requestingNode.nid_signing_key);
-      const requestData = networkIdKeyPair.createSignedMessage(values);
-      const address = `${formatAddressFromNode(requestingNode)}/${targetType}/${targetIdentifier}`;
-      await axios.patch(address, requestData);
+      const address = formatAddressFromNode(requestingNode);
+
+      let node: Bank | ConfirmationValidator;
+
+      node = new Bank(address);
+      const nodeConfig = await node.getConfig();
+
+      if (nodeConfig.node_type === NodeType.bank) {
+        if (targetType === 'accounts') {
+          node.updateAccountTrust(targetIdentifier, Number(values.trust), networkIdKeyPair);
+        } else if (targetType === 'banks') {
+          node.updateBankTrust(targetIdentifier, Number(values.trust), networkIdKeyPair);
+        } else {
+          node.updateValidatorTrust(targetIdentifier, Number(values.trust), networkIdKeyPair);
+        }
+      } else {
+        node = new ConfirmationValidator(address);
+
+        if (targetType === 'banks') {
+          node.updateBankTrust(targetIdentifier, Number(values.trust), networkIdKeyPair);
+        } else {
+          node.updateValidatorTrust(targetIdentifier, Number(values.trust), networkIdKeyPair);
+        }
+      }
+
       reload();
     } catch (error) {
       displayToast('An error occurred');

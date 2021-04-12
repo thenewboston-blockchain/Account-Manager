@@ -16,6 +16,7 @@ enum TableKeys {
   senderAccountNumber,
   recipientAccountNumber,
   amount,
+  memo,
   balanceKey,
   signature,
   dateCreated,
@@ -44,6 +45,7 @@ const AccountTransactions: FC = () => {
         [TableKeys.amount]: bankTransaction.amount,
         [TableKeys.balanceKey]: <ExpandableText expanded={expanded} text={bankTransaction.block.balance_key} />,
         [TableKeys.dateCreated]: formatDate(bankTransaction.block.created_date),
+        [TableKeys.memo]: <ExpandableText expanded={expanded} text={bankTransaction.memo || '-'} />,
         [TableKeys.recipientAccountNumber]: (
           <AccountLink accountNumber={bankTransaction.recipient} expanded={expanded} />
         ),
@@ -62,6 +64,7 @@ const AccountTransactions: FC = () => {
         [TableKeys.amount]: 'Amount',
         [TableKeys.balanceKey]: 'Balance Key',
         [TableKeys.dateCreated]: 'Date Created',
+        [TableKeys.memo]: 'Memo',
         [TableKeys.recipientAccountNumber]: 'Recipient',
         [TableKeys.senderAccountNumber]: 'Sender',
         [TableKeys.signature]: 'Signature',
@@ -70,6 +73,7 @@ const AccountTransactions: FC = () => {
         TableKeys.senderAccountNumber,
         TableKeys.recipientAccountNumber,
         TableKeys.amount,
+        TableKeys.memo,
         TableKeys.balanceKey,
         TableKeys.signature,
         TableKeys.dateCreated,

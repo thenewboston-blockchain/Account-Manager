@@ -34,8 +34,9 @@ export interface BankConfirmationBlock extends CreatedModified, Id {
 }
 
 export interface BankTransaction extends Id {
-  block: BlockResponse;
   amount: number;
+  block: BlockResponse;
+  memo?: string;
   recipient: string;
 }
 
@@ -148,6 +149,7 @@ export interface RawValidatorConfig extends Omit<ValidatorConfig, 'port'> {
 export interface Tx {
   amount: number;
   fee?: AcceptedFees;
+  memo?: string;
   recipient: string;
 }
 

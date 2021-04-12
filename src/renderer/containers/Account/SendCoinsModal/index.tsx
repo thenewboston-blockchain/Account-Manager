@@ -52,22 +52,24 @@ const SendCoinsModal: FC<ComponentProps> = ({close, initialRecipient, initialSen
   const initialValues = useMemo(
     () => ({
       coins: '',
+      memo: '',
       recipientAccountNumber: initialRecipient,
       senderAccountNumber: initialSender,
     }),
     [initialRecipient, initialSender],
   );
 
-  const handleSubmit = async ({coins, recipientAccountNumber, senderAccountNumber}: FormValues): Promise<void> => {
+  const handleSubmit = async ({
+    coins,
+    memo,
+    recipientAccountNumber,
+    senderAccountNumber,
+  }: FormValues): Promise<void> => {
     try {
       setSubmitting(true);
-      await sendBlock(
-        activeBank,
-        primaryValidator,
-        managedAccounts[senderAccountNumber].signing_key,
-        senderAccountNumber,
-        [{accountNumber: recipientAccountNumber, amount: parseInt(coins, 10)}],
-      );
+      await sendBlock(activeBank, managedAccounts[senderAccountNumber].signing_key, [
+        {amount: parseInt(coins, 10), memo, recipient: recipientAccountNumber},
+      ]);
       await Promise.all([
         dispatch(fetchAccountBalance(senderAccountNumber)),
         dispatch(fetchAccountBalance(recipientAccountNumber)),
@@ -112,6 +114,10 @@ const SendCoinsModal: FC<ComponentProps> = ({close, initialRecipient, initialSen
         .lessThan(COIN_AMOUNT_CEILING, `Coins must be less than ${COIN_AMOUNT_CEILING.toLocaleString()}`)
         .integer('Coins cannot be a decimal')
         .required('Coins is a required field'),
+      memo: yup
+        .string()
+        .matches(/^[a-zA-Z0-9_ ]*$/, 'Memo can only contain alphanumeric characters, spaces, and underscores')
+        .max(64, 'Memo cannot exceed 64 characters'),
       recipientAccountNumber: yup
         .string()
         .notEqualTo(senderAccountNumberRef, MATCH_ERROR)

@@ -1,15 +1,14 @@
 import {useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import axios from 'axios';
-import {Account} from 'thenewboston';
+import {Account, Bank, ConfirmationValidator} from 'thenewboston';
 
 import {getInactiveCrawlSockets} from '@renderer/selectors/sockets';
 import {
   AppDispatch,
-  CrawlCommand,
   CrawlSocketState,
   CrawlStatus,
   NodeCrawlStatusWithAddress,
+  NodeType,
   SocketConnectionStatus,
 } from '@renderer/types';
 import {formatAddressFromNode, formatSocketAddressFromNode} from '@renderer/utils/address';
@@ -25,20 +24,23 @@ const useCrawlSockets = (): void => {
   const fetchCrawlData = useCallback(
     async (crawlSocket: CrawlSocketState): Promise<void> => {
       try {
-        const inCrawling = crawlSocket.crawl_status === CrawlStatus.crawling;
-        const crawlData = {
-          crawl: inCrawling ? CrawlCommand.stop : CrawlCommand.start,
-        };
-
         const address = formatAddressFromNode(crawlSocket);
         const socketAddress = formatSocketAddressFromNode(crawlSocket);
         const socketNetworkKeyPair = new Account(crawlSocket.signingKey);
-        const signedMessage = socketNetworkKeyPair.createSignedMessage(crawlData);
-        const {data} = await axios.post<NodeCrawlStatusWithAddress>(`${address}/crawl`, signedMessage, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+
+        let node: Bank | ConfirmationValidator;
+        node = new Bank(address);
+        const nodeConfig = await node.getConfig();
+
+        if (nodeConfig.node_type === NodeType.confirmationValidator) {
+          node = new ConfirmationValidator(address);
+        }
+
+        const inCrawling = crawlSocket.crawl_status === CrawlStatus.crawling;
+
+        const data = inCrawling
+          ? ((await node.stopCrawl(socketNetworkKeyPair)) as NodeCrawlStatusWithAddress)
+          : ((await node.startCrawl(socketNetworkKeyPair)) as NodeCrawlStatusWithAddress);
 
         dispatch(
           updateCrawlProcess({
