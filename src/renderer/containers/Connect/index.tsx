@@ -16,7 +16,7 @@ import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import './Connect.scss';
 
 const initialValues = {
-  ipAddress: '143.110.137.54',
+  ipAddress: '54.177.121.3',
   nickname: '',
   port: '80',
   protocol: 'http' as ProtocolType,
