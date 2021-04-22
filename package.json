@@ -123,6 +123,7 @@
   "dependencies": {
     "@thenewboston/ui": "^0.1.5",
     "@thenewboston/utils": "^1.0.0",
+    "app-root-path": "3.0.0",
     "axios": "^0.21.1",
     "bfj": "^7.0.2",
     "camelcase": "^6.1.0",
@@ -133,6 +134,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^5.2.0",
     "electron-updater": "^4.3.5",
+    "electron-window-state-manager": "^0.3.2",
     "formik": "^2.2.6",
     "fs-extra": "^9.0.1",
     "lodash-es": "^4.17.20",
