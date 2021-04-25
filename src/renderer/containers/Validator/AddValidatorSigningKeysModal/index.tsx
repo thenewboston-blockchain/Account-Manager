@@ -53,10 +53,8 @@ const AddValidatorSigningKeysModal: FC<ComponentProps> = ({close}) => {
     close();
   };
 
-  const checkPrivateSigningKey = (publicKey: string, privateKey: string): boolean => {
-    const {accountNumberHex} = new Account(privateKey);
-    return Account.isValidPair(accountNumberHex, publicKey);
-  };
+  const checkPrivateSigningKey = (publicKey: string, privateKey: string): boolean =>
+    Account.isValidPair(privateKey, publicKey);
 
   const validationSchema = useMemo(() => {
     return yup.object().shape({
