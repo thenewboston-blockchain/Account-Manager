@@ -54,12 +54,8 @@ const AddValidatorSigningKeysModal: FC<ComponentProps> = ({close}) => {
   };
 
   const checkPrivateSigningKey = (publicKey: string, privateKey: string): boolean => {
-    try {
-      const {accountNumberHex} = new Account(privateKey);
-      return accountNumberHex === publicKey;
-    } catch (error) {
-      return false;
-    }
+    const {accountNumberHex} = new Account(privateKey);
+    return Account.isValidPair(accountNumberHex, publicKey);
   };
 
   const validationSchema = useMemo(() => {
