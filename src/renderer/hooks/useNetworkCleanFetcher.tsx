@@ -53,11 +53,11 @@ const useNetworkCleanFetcher = (
         node = new Bank(address);
         const nodeConfig = await node.getConfig();
 
-        if (nodeConfig.node_type === NodeType.confirmationValidator) {
+        if (nodeConfig.node_type !== NodeType.bank) {
           node = new ConfirmationValidator(address);
         }
 
-        const data = (await node.getCleanStatus()) as NodeCleanStatusWithAddress;
+        const data = await node.getCleanStatus();
 
         setCleanStatus(data.clean_status || CleanStatus.notCleaning);
         setCleanLastCompleted(data.clean_last_completed);

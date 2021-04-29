@@ -85,7 +85,7 @@ export const fetchBankConfig = (address: string) => async (
 ): Promise<{address: string; data?: BankConfig; error?: any}> => {
   try {
     const rawData = await new Bank(address).getConfig();
-    const data = sanitizePortFieldFromRawBankConfig(rawData as RawBankConfig);
+    const data = sanitizePortFieldFromRawBankConfig(rawData);
 
     if (data.node_type !== NodeType.bank) {
       const errorObject = {address, error: 'Node not a bank'};

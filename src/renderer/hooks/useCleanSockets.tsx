@@ -32,15 +32,13 @@ const useCleanSockets = (): void => {
         node = new Bank(address);
         const nodeConfig = await node.getConfig();
 
-        if (nodeConfig.node_type === NodeType.confirmationValidator) {
+        if (nodeConfig.node_type !== NodeType.bank) {
           node = new ConfirmationValidator(address);
         }
 
         const inCleaning = cleanSocket.clean_status === CleanStatus.cleaning;
 
-        const data = inCleaning
-          ? ((await node.stopClean(socketNetworkId)) as NodeCleanStatusWithAddress)
-          : ((await node.startClean(socketNetworkId)) as NodeCleanStatusWithAddress);
+        const data = inCleaning ? await node.stopClean(socketNetworkId) : await node.startClean(socketNetworkId);
 
         dispatch(
           updateCleanProcess({
