@@ -32,15 +32,15 @@ const useCrawlSockets = (): void => {
         node = new Bank(address);
         const nodeConfig = await node.getConfig();
 
-        if (nodeConfig.node_type === NodeType.confirmationValidator) {
+        if (nodeConfig.node_type !== NodeType.bank) {
           node = new ConfirmationValidator(address);
         }
 
         const inCrawling = crawlSocket.crawl_status === CrawlStatus.crawling;
 
         const data = inCrawling
-          ? ((await node.stopCrawl(socketNetworkKeyPair)) as NodeCrawlStatusWithAddress)
-          : ((await node.startCrawl(socketNetworkKeyPair)) as NodeCrawlStatusWithAddress);
+          ? await node.stopCrawl(socketNetworkKeyPair)
+          : await node.startCrawl(socketNetworkKeyPair);
 
         dispatch(
           updateCrawlProcess({

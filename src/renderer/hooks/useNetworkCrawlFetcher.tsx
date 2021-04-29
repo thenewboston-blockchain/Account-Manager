@@ -53,11 +53,11 @@ const useNetworkCrawlFetcher = (
         node = new Bank(address);
         const nodeConfig = await node.getConfig();
 
-        if (nodeConfig.node_type === NodeType.confirmationValidator) {
+        if (nodeConfig.node_type !== NodeType.bank) {
           node = new ConfirmationValidator(address);
         }
 
-        const data = (await node.getCrawlStatus()) as NodeCrawlStatusWithAddress;
+        const data = await node.getCrawlStatus();
 
         setCrawlStatus(data.crawl_status || CrawlStatus.notCrawling);
         setCrawlLastCompleted(data.crawl_last_completed);

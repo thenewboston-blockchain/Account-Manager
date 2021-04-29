@@ -60,7 +60,7 @@ export const fetchValidatorConfig = (address: string) => async (
 
     const rawData = await validator.getConfig();
 
-    const data = sanitizePortFieldFromRawValidatorConfig(rawData as RawValidatorConfig);
+    const data = sanitizePortFieldFromRawValidatorConfig(rawData);
 
     if (data.node_type !== NodeType.primaryValidator && data.node_type !== NodeType.confirmationValidator) {
       const errorObject = {address, error: 'Node not a validator'};
