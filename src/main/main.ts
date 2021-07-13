@@ -1,10 +1,10 @@
 /* eslint-disable no-console  */
 
-import {app, BrowserWindow, ipcMain, Menu} from 'electron';
+import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 import contextMenu from 'electron-context-menu';
-import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from 'electron-devtools-installer';
+import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import fs from 'fs';
-import {getFailChannel, getSuccessChannel, IpcChannel} from '@shared/ipc';
+import { getFailChannel, getSuccessChannel, IpcChannel } from '@shared/ipc';
 import WindowStateManager from 'electron-window-state-manager';
 import menu from './menu';
 
@@ -87,7 +87,7 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on(IpcChannel.downloadSigningKey, (event, {filePath, payload: signingKey}) => {
+ipcMain.on(IpcChannel.downloadSigningKey, (event, { filePath, payload: signingKey }) => {
   try {
     fs.writeFileSync(filePath, signingKey);
     event.reply(getSuccessChannel(IpcChannel.downloadSigningKey));
@@ -97,7 +97,7 @@ ipcMain.on(IpcChannel.downloadSigningKey, (event, {filePath, payload: signingKey
   }
 });
 
-ipcMain.on(IpcChannel.exportStoreData, (event, {filePath, payload: storeData}) => {
+ipcMain.on(IpcChannel.exportStoreData, (event, { filePath, payload: storeData }) => {
   try {
     fs.writeFileSync(filePath, storeData);
     event.reply(getSuccessChannel(IpcChannel.exportStoreData));
@@ -107,7 +107,7 @@ ipcMain.on(IpcChannel.exportStoreData, (event, {filePath, payload: storeData}) =
   }
 });
 
-ipcMain.on(IpcChannel.importStoreData, (event, {filePath}) => {
+ipcMain.on(IpcChannel.importStoreData, (event, { filePath }) => {
   try {
     fs.readFile(filePath, 'utf-8', (err, jsonData) => {
       if (err) {
