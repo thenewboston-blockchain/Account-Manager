@@ -33,8 +33,8 @@ const createWindow = (): void => {
       nodeIntegration: true,
     },
     width: mainWindowState.width,
-    x: mainWindowState.x,
-    y: mainWindowState.y,
+    x: mainWindowState.x < 0 ? 0 : mainWindowState.x,
+    y: mainWindowState.y < 0 ? 0 : mainWindowState.y,
   });
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
