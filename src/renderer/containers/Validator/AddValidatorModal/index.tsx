@@ -10,7 +10,7 @@ import {AppDispatch, ProtocolType} from '@renderer/types';
 import {formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
 import {
   getAddressFormField,
-  getIpAddressField,
+  getDomainAddressField,
   getNicknameField,
   getPortField,
   getProtocolField,
@@ -84,7 +84,7 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
   const validationSchema = useMemo(() => {
     return yup.object().shape({
       form: getAddressFormField(managedValidators, 'This address is already a managed validator'),
-      ipAddress: getIpAddressField(),
+      ipAddress: getDomainAddressField(),
       nickname: getNicknameField(managedValidators),
       port: getPortField(),
       protocol: getProtocolField(),

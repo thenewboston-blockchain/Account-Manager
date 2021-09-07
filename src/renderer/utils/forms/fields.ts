@@ -12,12 +12,12 @@ export const getAddressFormField = (managedNodes: Dict<ManagedNode>, errorMessag
     then: yup.string().required(errorMessage),
   });
 
-const genericIpAddressRegex = /([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(\d{1,3}\.){3}\d{1,3}/;
-export const getIpAddressField = () =>
+const genericDomainAddressRegex = /([a-z0-9|-]+\.)*[a-z0-9|-]+\.[a-z]+/;
+export const getDomainAddressField = () =>
   yup
     .string()
     .required(REQUIRED_FIELD_ERROR)
-    .matches(genericIpAddressRegex, {excludeEmptyString: true, message: 'IPv4 or IPv6 addresses only'});
+    .matches(genericDomainAddressRegex, {excludeEmptyString: true, message: 'IPv4 or IPv6 addresses only'});
 
 export const getNicknameField = (managedNodes?: Dict<Nickname>, ownNickname?: string) => {
   if (managedNodes) {

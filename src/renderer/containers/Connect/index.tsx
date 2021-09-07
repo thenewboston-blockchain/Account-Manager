@@ -9,7 +9,7 @@ import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch, InputOption, ProtocolType} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
-import {getIpAddressField, getNicknameField, getPortField, getProtocolField} from '@renderer/utils/forms/fields';
+import {getDomainAddressField, getNicknameField, getPortField, getProtocolField} from '@renderer/utils/forms/fields';
 import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
@@ -27,7 +27,7 @@ type FormValues = typeof initialValues;
 const protocolOptions: InputOption[] = [{value: 'http'}, {value: 'https'}];
 
 const validationSchema = yup.object().shape({
-  ipAddress: getIpAddressField(),
+  ipAddress: getDomainAddressField(),
   nickname: getNicknameField(),
   port: getPortField(),
   protocol: getProtocolField(),

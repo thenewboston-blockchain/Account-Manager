@@ -10,7 +10,7 @@ import {AppDispatch, ProtocolType} from '@renderer/types';
 import {formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
 import {
   getAddressFormField,
-  getIpAddressField,
+  getDomainAddressField,
   getNicknameField,
   getPortField,
   getProtocolField,
@@ -84,7 +84,7 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
   const validationSchema = useMemo(() => {
     return yup.object().shape({
       form: getAddressFormField(managedBanks, 'This address is already a managed bank'),
-      ipAddress: getIpAddressField(),
+      ipAddress: getDomainAddressField(),
       nickname: getNicknameField(managedBanks),
       port: getPortField(),
       protocol: getProtocolField(),
