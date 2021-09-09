@@ -9,7 +9,7 @@ export interface AccountNumber {
 
 export interface AddressData {
   ip_address: string;
-  port: number;
+  port: number | undefined;
   protocol: ProtocolType;
 }
 

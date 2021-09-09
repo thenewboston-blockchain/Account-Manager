@@ -34,7 +34,7 @@ const useNetworkCrawlFetcher = (
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const socketEntry = Object.entries(crawlSockets).find(
-    (e) => formatAddress(e[1].ip_address, e[1].port, e[1].protocol) === address,
+    (e) => formatAddress(e[1].protocol, e[1].ip_address, e[1].port) === address,
   );
   const crawlSocket = socketEntry ? crawlSockets[socketEntry[0]] : null;
 

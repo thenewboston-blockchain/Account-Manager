@@ -1,12 +1,16 @@
 import {parse, ParsedUrlQuery, stringify} from 'querystring';
 import {AddressData, ProtocolType} from '@renderer/types';
+import { isInsecureHttp } from './api'
 
-export const formatAddress = (ipAddress: string, port: number | string, protocol: string): string => {
-  return `${protocol}://${ipAddress}:${port}`;
+export const formatAddress = (protocol: string, ipAddress: string, port?: number | string): string => {
+  const template = `${protocol}://${ipAddress}`
+  console.log('formatAddress', protocol, ipAddress, port)
+  return isInsecureHttp(protocol) ? `${template}:${port}` : `${template}`
 };
 
 export const formatAddressFromNode = (node: AddressData): string => {
-  return formatAddress(node.ip_address, node.port, node.protocol);
+  console.log('node', node)
+  return formatAddress(node.protocol, node.ip_address, node.port);
 };
 
 export const formatQueryParams = (params: {[key: string]: any}): string => {
@@ -14,29 +18,29 @@ export const formatQueryParams = (params: {[key: string]: any}): string => {
   return queryParams.length ? `?${queryParams}` : '';
 };
 
-export const formatPath = (ipAddress: string, port: number | string, protocol: string): string => {
+export const formatPath = (protocol: string, ipAddress: string, port?: number | string): string => {
   return `${protocol}/${ipAddress}/${port}`;
 };
 
 export const formatPathFromNode = (node: AddressData): string => {
-  return formatPath(node.ip_address, node.port, node.protocol);
+  return formatPath(node.protocol, node.ip_address, node.port);
 };
 
 export const formatSocketAddressFromNode = (node: AddressData): string => {
   const {ip_address: ipAddress, port} = node;
-  return formatAddress(ipAddress, port, 'ws');
+  return formatAddress('ws', ipAddress, port);
 };
 
 export const isSameNode = (nodeA: AddressData, nodeB: AddressData): boolean => {
   return nodeA.ip_address === nodeB.ip_address && nodeA.port === nodeB.port;
 };
 
-export const parseAddressData = (address: string): {ipAddress: string; port: number; protocol: ProtocolType} => {
+export const parseAddressData = (address: string): {ipAddress: string; port: number | undefined; protocol: ProtocolType} => {
   const [protocol, ipAddress, port] = address.replace('//', '').split(':');
 
   return {
     ipAddress,
-    port: parseInt(port, 10),
+    port: isInsecureHttp(protocol) ? parseInt(port, 10) : undefined,
     protocol: protocol as ProtocolType,
   };
 };

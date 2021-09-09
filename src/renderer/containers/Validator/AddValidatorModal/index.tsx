@@ -10,16 +10,18 @@ import {AppDispatch, ProtocolType} from '@renderer/types';
 import {formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
 import {
   getAddressFormField,
-  getIpAddressField,
+  getDomainAddressField,
   getNicknameField,
   getPortField,
   getProtocolField,
+  validateAddressField,
 } from '@renderer/utils/forms/fields';
 import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 import AddValidatorModalFields from './AddValidatorModalFields';
 import './AddValidatorModal.scss';
+import { isInsecureHttp } from '@renderer/utils/api'
 
 const initialValues = {
   form: '',
@@ -47,7 +49,7 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
 
       const validatorAddressData = {
         ip_address: ipAddress,
-        port: parseInt(port, 10),
+        port: isInsecureHttp(protocol) ? 80 : undefined,
         protocol,
       };
 
@@ -84,7 +86,7 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
   const validationSchema = useMemo(() => {
     return yup.object().shape({
       form: getAddressFormField(managedValidators, 'This address is already a managed validator'),
-      ipAddress: getIpAddressField(),
+      ipAddress: validateAddressField(),
       nickname: getNicknameField(managedValidators),
       port: getPortField(),
       protocol: getProtocolField(),

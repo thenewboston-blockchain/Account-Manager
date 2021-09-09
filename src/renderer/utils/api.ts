@@ -41,7 +41,7 @@ export async function fetchPaginatedResults<T>(
 
     dispatch(setResults({address, ...data}));
     return data.results;
-  } catch (error) {
+  } catch (error: any) {
     if (!error.response) {
       throw error;
     }
@@ -64,11 +64,14 @@ export const sanitizePortFieldFromRawBankConfig = (data: RawBankConfig): BankCon
   };
 };
 
+export const isInsecureHttp = (protocol: string) => protocol === 'http'
+
 export const sanitizePortFieldFromRawPrimaryValidatorConfig = (
   data: RawPrimaryValidatorConfig,
 ): PrimaryValidatorConfig => {
+  console.log('santizie', data)
   return {
     ...data,
-    port: replaceNullPortFieldWithDefaultValue(data.port),
+    port: isInsecureHttp(data.protocol) ? replaceNullPortFieldWithDefaultValue(data.port) : undefined,
   };
 };

@@ -10,7 +10,8 @@ import {AppDispatch, ProtocolType} from '@renderer/types';
 import {formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
 import {
   getAddressFormField,
-  getIpAddressField,
+  getDomainAddressField,
+  validateAddressField,
   getNicknameField,
   getPortField,
   getProtocolField,
@@ -20,6 +21,7 @@ import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 import AddBankModalFields from './AddBankModalFields';
 import './AddBankModal.scss';
+import { isInsecureHttp } from '@renderer/utils/api'
 
 const initialValues = {
   form: '',
@@ -47,13 +49,17 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
 
       const bankAddressData = {
         ip_address: ipAddress,
-        port: parseInt(port, 10),
+        port: isInsecureHttp(protocol) ? 80 : undefined,
         protocol,
       };
 
+      console.log(bankAddressData)
       const address = formatAddressFromNode(bankAddressData);
+      
+      console.log('address',address)
       const bankConfig = await dispatch(fetchBankConfig(address));
 
+      console.log('bankConfig', bankConfig)
       if (bankConfig.error) {
         if (bankConfig.error.includes('timeout') || bankConfig.error.includes('Network Error')) {
           displayErrorToast('Could Not Connect to Bank');
@@ -84,9 +90,10 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
   const validationSchema = useMemo(() => {
     return yup.object().shape({
       form: getAddressFormField(managedBanks, 'This address is already a managed bank'),
-      ipAddress: getIpAddressField(),
+      ipAddress: validateAddressField(),
       nickname: getNicknameField(managedBanks),
-      port: getPortField(),
+      // port: getPortField() === 80 ? '' : getPortField(),
+      // port: undefined,
       protocol: getProtocolField(),
     });
   }, [managedBanks]);
