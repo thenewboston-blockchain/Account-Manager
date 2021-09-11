@@ -12,7 +12,6 @@
     "noImplicitAny": true,
     "outDir": "./bundle/main",
     "paths": {
-      "@config/*": ["./src/config/*"],
       "@main/*": ["./src/main/*"],
       "@models/*": ["./src/models/*"],
       "@renderer/*": ["./src/renderer/*"],

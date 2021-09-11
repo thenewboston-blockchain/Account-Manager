@@ -6,7 +6,7 @@ import {Flip, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import electronIsDev from 'electron-is-dev';
 
-import {config} from '@config'
+import { DEFAULT_BANK_IP_ADDRESS } from '@renderer/config'
 import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import Connect from '@renderer/containers/Connect';
 import Layout from '@renderer/containers/Layout';
@@ -17,7 +17,7 @@ import {AppDispatch, ProtocolType} from '@renderer/types';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 const DEFAULT_BANK = {
-  ip_address: config.DEFAULT_BANK,
+  ip_address: DEFAULT_BANK_IP_ADDRESS,
   port: 80,
   protocol: 'http' as ProtocolType,
 };

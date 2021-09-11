@@ -19,7 +19,6 @@ module.exports = {
   },
   resolve: {
     alias: {
-      '@config': srcPaths('src/config'),
       '@main': srcPaths('src/main'),
       '@models': srcPaths('src/models'),
       '@renderer': srcPaths('src/renderer'),
