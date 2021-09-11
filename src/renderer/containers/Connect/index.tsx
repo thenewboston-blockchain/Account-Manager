@@ -3,23 +3,30 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {ButtonType} from '@thenewboston/ui';
 
+import {DEFAULT_BANK} from '@renderer/config';
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {getActiveBankConfig} from '@renderer/selectors';
-import {AppDispatch, InputOption, ProtocolType} from '@renderer/types';
+import {AppDispatch, InputOption} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
-import {getDomainAddressField, getNicknameField, getPortField, getProtocolField, validateAddressField} from '@renderer/utils/forms/fields';
+import {
+  getDomainAddressField,
+  getNicknameField,
+  getPortField,
+  getProtocolField,
+  validateAddressField,
+} from '@renderer/utils/forms/fields';
 import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 import './Connect.scss';
 
 const initialValues = {
-  ipAddress: '54.183.16.194',
+  ipAddress: DEFAULT_BANK.ip_address,
   nickname: '',
-  port: '',
-  protocol: 'https' as ProtocolType,
+  port: DEFAULT_BANK.port.toString(),
+  protocol: DEFAULT_BANK.protocol,
 };
 
 type FormValues = typeof initialValues;
