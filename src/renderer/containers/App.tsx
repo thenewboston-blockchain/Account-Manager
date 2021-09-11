@@ -6,20 +6,15 @@ import {Flip, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import electronIsDev from 'electron-is-dev';
 
+import {DEFAULT_BANK} from '@renderer/config';
 import CreateAccountModal from '@renderer/containers/Account/CreateAccountModal';
 import Connect from '@renderer/containers/Connect';
 import Layout from '@renderer/containers/Layout';
 import {connect, connectAndStoreLocalData, fetchNonDefaultNodeConfigs} from '@renderer/dispatchers/app';
 import {useBooleanState, useCrawlSockets, useCleanSockets, useWebSockets} from '@renderer/hooks';
 import {getActiveBank, getActiveBankConfig} from '@renderer/selectors';
-import {AppDispatch, ProtocolType} from '@renderer/types';
+import {AppDispatch} from '@renderer/types';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
-
-const DEFAULT_BANK = {
-  ip_address: '13.57.215.62',
-  port: 80,
-  protocol: 'http' as ProtocolType,
-};
 
 const App: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
