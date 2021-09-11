@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {ButtonType} from '@thenewboston/ui';
 
+import {config} from '@config/index'
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
@@ -16,7 +17,7 @@ import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 import './Connect.scss';
 
 const initialValues = {
-  ipAddress: '54.183.16.194',
+  ipAddress: config.DEFAULT_BANK,
   nickname: '',
   port: '80',
   protocol: 'http' as ProtocolType,
