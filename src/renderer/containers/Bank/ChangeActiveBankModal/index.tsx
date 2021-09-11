@@ -1,7 +1,6 @@
 import React, {FC, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
-
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import Modal from '@renderer/components/Modal';
 import {AppDispatch, ProtocolType} from '@renderer/types';
@@ -25,8 +24,8 @@ const initialValues = {
   form: '',
   ipAddress: '',
   nickname: '',
-  port: '80',
-  protocol: 'http' as ProtocolType,
+  port: '',
+  protocol: 'https' as ProtocolType,
 };
 
 type FormValues = typeof initialValues;

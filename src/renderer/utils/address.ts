@@ -27,8 +27,10 @@ export const formatPathFromNode = (node: AddressData): string => {
 };
 
 export const formatSocketAddressFromNode = (node: AddressData): string => {
-  const {ip_address: ipAddress, port} = node;
-  return formatAddress('ws', ipAddress, port);
+  const {ip_address: ipAddress, port, protocol} = node;
+
+  const websocketMethod = isInsecureHttp(protocol) ? 'ws' : 'wss'
+  return formatAddress(websocketMethod, ipAddress, port);
 };
 
 export const isSameNode = (nodeA: AddressData, nodeB: AddressData): boolean => {

@@ -27,8 +27,8 @@ const initialValues = {
   form: '',
   ipAddress: '',
   nickname: '',
-  port: '80',
-  protocol: 'http' as ProtocolType,
+  port: '',
+  protocol: 'https' as ProtocolType,
 };
 
 type FormValues = typeof initialValues;
@@ -92,6 +92,7 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       form: getAddressFormField(managedBanks, 'This address is already a managed bank'),
       ipAddress: validateAddressField(),
       nickname: getNicknameField(managedBanks),
+      // port: isInsecureHttp
       // port: getPortField() === 80 ? '' : getPortField(),
       // port: undefined,
       protocol: getProtocolField(),

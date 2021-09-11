@@ -18,12 +18,13 @@ import './Connect.scss';
 const initialValues = {
   ipAddress: '54.183.16.194',
   nickname: '',
-  protocol: 'http' as ProtocolType,
+  port: '',
+  protocol: 'https' as ProtocolType,
 };
 
 type FormValues = typeof initialValues;
 
-const protocolOptions: InputOption[] = [{value: 'https'}, {value: 'http'}];
+const protocolOptions: InputOption[] = [{value: 'http'}, {value: 'https'}];
 
 const validationSchema = yup.object().shape({
   ipAddress: validateAddressField(),
@@ -47,7 +48,6 @@ const Connect: FC = () => {
       setSubmitting(true);
       const bankAddressData = {
         ip_address: ipAddress,
-        // port: parseInt(port, 10),
         port: protocol === 'https' ? undefined : parseInt(port, 10),
         protocol,
       };
