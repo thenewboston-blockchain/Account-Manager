@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {ButtonType} from '@thenewboston/ui';
 
-import { DEFAULT_BANK_IP_ADDRESS } from '@renderer/config'
+import { DEFAULT_BANK_IP_ADDRESS } from '@renderer/config';
 import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/FormComponents';
 import Logo from '@renderer/components/Logo';
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
