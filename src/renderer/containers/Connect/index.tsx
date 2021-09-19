@@ -11,9 +11,7 @@ import {getActiveBankConfig} from '@renderer/selectors';
 import {AppDispatch, InputOption} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
 import {
-  getDomainAddressField,
   getNicknameField,
-  getPortField,
   getProtocolField,
   validateAddressField,
 } from '@renderer/utils/forms/fields';

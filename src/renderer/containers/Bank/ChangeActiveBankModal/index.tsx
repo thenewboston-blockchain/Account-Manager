@@ -5,9 +5,9 @@ import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import Modal from '@renderer/components/Modal';
 import {AppDispatch, ProtocolType} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
+import {formatPort} from '@renderer/utils/api';
 import {
   getAddressFormField,
-  getDomainAddressField,
   validateAddressField,
   getNicknameField,
   getPortField,
@@ -45,7 +45,7 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
       setSubmitting(true);
       const bankAddressData = {
         ip_address: ipAddress,
-        port: parseInt(port, 10),
+        port: formatPort({ port, protocol }),
         protocol,
       };
       const response = await dispatch(connectAndStoreLocalData(bankAddressData, nickname));
@@ -55,7 +55,7 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
         return;
       }
       if (response?.bankConfig) {
-        history.push(`/bank/${formatPathFromNode(response.bankConfig)}/overview`);
+        history.push(`/bank/${formatPathFromNode(response?.bankConfig)}/overview`);
       }
       close();
     } catch (error) {

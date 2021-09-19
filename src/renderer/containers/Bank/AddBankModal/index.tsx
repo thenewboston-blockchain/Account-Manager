@@ -10,13 +10,11 @@ import {AppDispatch, ProtocolType} from '@renderer/types';
 import {formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
 import {
   getAddressFormField,
-  getDomainAddressField,
   validateAddressField,
   getNicknameField,
-  getPortField,
   getProtocolField,
 } from '@renderer/utils/forms/fields';
-import {isInsecureHttp} from '@renderer/utils/api';
+import {formatPort} from '@renderer/utils/api';
 import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
@@ -36,26 +34,6 @@ type FormValues = typeof initialValues;
 interface ComponentProps {
   close(): void;
 }
-
-interface FormatPortArgs {
-  port: string;
-  protocol: ProtocolType;
-}
-
-const formatPort = ({port, protocol}: FormatPortArgs) => {
-  if (isInsecureHttp(protocol) && port) {
-    return Number(port);
-  }
-
-  if (isInsecureHttp(protocol) && port === undefined) {
-    return 80;
-  }
-
-  const isHttps = !isInsecureHttp(protocol);
-  if (isHttps) {
-    return undefined;
-  }
-};
 
 const AddBankModal: FC<ComponentProps> = ({close}) => {
   const dispatch = useDispatch<AppDispatch>();
