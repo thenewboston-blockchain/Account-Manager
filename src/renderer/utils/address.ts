@@ -27,6 +27,19 @@ export const formatPathFromNode = (node: AddressData): string => {
   return formatPath(node.protocol, node.ip_address, node.port);
 };
 
+interface Options {
+  node: AddressData
+  protocol: ProtocolType
+  address: string
+}
+
+export const formatPathWithSecureNode = ({node, protocol, address}: Options): string => {
+  if (protocol?.includes('https')) {
+    return `${protocol}/${address}`
+  }
+  return formatPath(node.protocol, node.ip_address, node.port)
+}
+
 export const formatSocketAddressFromNode = (node: AddressData): string => {
   const {ip_address: ipAddress, port, protocol} = node;
 
