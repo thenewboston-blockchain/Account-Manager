@@ -18,6 +18,7 @@ import {
   setManagedValidator,
 } from '@renderer/store/app';
 import {AddressData, AppDispatch, RootState, ValidatorConfig} from '@renderer/types';
+import {isInsecureHttp} from '@renderer/utils/api';
 import {formatAddressFromNode} from '@renderer/utils/address';
 
 import {fetchBankConfig} from './banks';
@@ -47,7 +48,7 @@ export const connect = (bankAddressData: AddressData) => async (dispatch: AppDis
   }
   const {primary_validator: primaryValidator} = bankConfig.data;
 
-  const primaryValidatorAddress = formatAddressFromNode(primaryValidator);
+  const primaryValidatorAddress = formatAddressFromNode(primaryValidator, bankConfig.address);
 
   const validatorConfigResponse = await dispatch(fetchValidatorConfig(primaryValidatorAddress));
   if (validatorConfigResponse.error) {
@@ -124,7 +125,8 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
     };
   }
 
-  const bankAddress = formatAddressFromNode(bankAddressData);
+  const bankAddress = formatAddressFromNode(bankAddressData, connectResponse.address);
+
   if (getIsManagedBank(state, bankAddress)) {
     const managedBanks = getManagedBanks(state);
     const managedBank = managedBanks[bankAddress];
@@ -144,10 +146,10 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
   } else {
     const activeBankData = {
       account_signing_key: '',
-      ip_address: bankConfig.ip_address,
+      ip_address: isInsecureHttp(bankConfig.protocol) ? bankConfig.ip_address : connectResponse.address,
       nickname: bankNickname,
       nid_signing_key: '',
-      port: bankConfig.port,
+      port: isInsecureHttp(bankConfig.protocol) ? 80 : undefined,
       protocol: bankConfig.protocol,
     };
 

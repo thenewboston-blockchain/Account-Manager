@@ -16,12 +16,12 @@ import {
   getPortField,
   getProtocolField,
 } from '@renderer/utils/forms/fields';
+import {isInsecureHttp} from '@renderer/utils/api';
 import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 import AddBankModalFields from './AddBankModalFields';
 import './AddBankModal.scss';
-import { isInsecureHttp } from '@renderer/utils/api'
 
 const initialValues = {
   form: '',
@@ -37,6 +37,26 @@ interface ComponentProps {
   close(): void;
 }
 
+interface FormatPortArgs {
+  port: string;
+  protocol: ProtocolType;
+}
+
+const formatPort = ({port, protocol}: FormatPortArgs) => {
+  if (isInsecureHttp(protocol) && port) {
+    return Number(port);
+  }
+
+  if (isInsecureHttp(protocol) && port === undefined) {
+    return 80;
+  }
+
+  const isHttps = !isInsecureHttp(protocol);
+  if (isHttps) {
+    return undefined;
+  }
+};
+
 const AddBankModal: FC<ComponentProps> = ({close}) => {
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
@@ -49,17 +69,13 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
 
       const bankAddressData = {
         ip_address: ipAddress,
-        port: isInsecureHttp(protocol) ? 80 : undefined,
+        port: formatPort({port, protocol}),
         protocol,
       };
 
-      console.log(bankAddressData)
       const address = formatAddressFromNode(bankAddressData);
-      
-      console.log('address',address)
-      const bankConfig = await dispatch(fetchBankConfig(address));
 
-      console.log('bankConfig', bankConfig)
+      const bankConfig = await dispatch(fetchBankConfig(address));
       if (bankConfig.error) {
         if (bankConfig.error.includes('timeout') || bankConfig.error.includes('Network Error')) {
           displayErrorToast('Could Not Connect to Bank');
@@ -92,7 +108,7 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       form: getAddressFormField(managedBanks, 'This address is already a managed bank'),
       ipAddress: validateAddressField(),
       nickname: getNicknameField(managedBanks),
-      // port: isInsecureHttp
+      // port: isInsecureHttp(getProtocolField()) ? getPortField() : undefined,
       // port: getPortField() === 80 ? '' : getPortField(),
       // port: undefined,
       protocol: getProtocolField(),

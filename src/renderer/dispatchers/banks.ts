@@ -83,24 +83,18 @@ export const fetchBankBlocks = (address: string, params: PaginatedQueryParams = 
 export const fetchBankConfig = (address: string) => async (
   dispatch: AppDispatch,
 ): Promise<{address: string; data?: BankConfig; error?: any}> => {
-  console.log('fetch')
   try {
     const {data: rawData} = await axios.get<RawBankConfig>(`${address}/config`, {timeout: 30000});
-    console.log('rawdata', rawData)
     const data = sanitizePortFieldFromRawBankConfig(rawData);
-    console.log('sanitized:', data)
     if (data.node_type !== NodeType.bank) {
       const errorObject = {address, error: 'Node not a bank'};
       dispatch(setBankConfigError(errorObject));
       return errorObject;
     }
 
-    console.log('ere?')
-
     dispatch(setBankConfig({address, data}));
     return {address, data};
-  } catch (error) {
-    console.log('error?', error)
+  } catch (error: any) {
     if (error.message) {
       const errorObject = {address, error: error.message};
       dispatch(setBankConfigError(errorObject));

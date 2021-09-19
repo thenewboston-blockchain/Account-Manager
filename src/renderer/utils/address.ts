@@ -1,15 +1,16 @@
 import {parse, ParsedUrlQuery, stringify} from 'querystring';
 import {AddressData, ProtocolType} from '@renderer/types';
-import { isInsecureHttp } from './api'
+import {isInsecureHttp} from './api';
 
 export const formatAddress = (protocol: string, ipAddress: string, port?: number | string): string => {
-  const template = `${protocol}://${ipAddress}`
-  console.log('formatAddress', protocol, ipAddress, port)
-  return isInsecureHttp(protocol) ? `${template}:${port}` : `${template}`
+  const template = `${protocol}://${ipAddress}`;
+  return isInsecureHttp(protocol) ? `${template}:${port}` : `${template}`;
 };
 
-export const formatAddressFromNode = (node: AddressData): string => {
-  console.log('node', node)
+export const formatAddressFromNode = (node: AddressData, address?: string): string => {
+  if (address?.includes('https')) {
+    return formatAddress('https', address?.replace('https://', ''), undefined);
+  }
   return formatAddress(node.protocol, node.ip_address, node.port);
 };
 
@@ -29,7 +30,7 @@ export const formatPathFromNode = (node: AddressData): string => {
 export const formatSocketAddressFromNode = (node: AddressData): string => {
   const {ip_address: ipAddress, port, protocol} = node;
 
-  const websocketMethod = isInsecureHttp(protocol) ? 'ws' : 'wss'
+  const websocketMethod = isInsecureHttp(protocol) ? 'ws' : 'wss';
   return formatAddress(websocketMethod, ipAddress, port);
 };
 
@@ -37,7 +38,9 @@ export const isSameNode = (nodeA: AddressData, nodeB: AddressData): boolean => {
   return nodeA.ip_address === nodeB.ip_address && nodeA.port === nodeB.port;
 };
 
-export const parseAddressData = (address: string): {ipAddress: string; port: number | undefined; protocol: ProtocolType} => {
+export const parseAddressData = (
+  address: string,
+): {ipAddress: string; port: number | undefined; protocol: ProtocolType} => {
   const [protocol, ipAddress, port] = address.replace('//', '').split(':');
 
   return {

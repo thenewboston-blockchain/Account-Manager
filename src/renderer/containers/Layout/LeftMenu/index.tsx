@@ -61,7 +61,6 @@ const LeftMenu: FC = () => {
     const fetchData = async () => {
       try {
         setLoadingBalance(true);
-        console.log('managed', managedAccounts)
         const managedAccountNumbers = Object.keys(managedAccounts);
         await Promise.all(managedAccountNumbers.map((accountNumber) => dispatch(fetchAccountBalance(accountNumber))));
         setLoadingBalance(false);

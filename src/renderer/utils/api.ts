@@ -64,12 +64,15 @@ export const sanitizePortFieldFromRawBankConfig = (data: RawBankConfig): BankCon
   };
 };
 
-export const isInsecureHttp = (protocol: string) => protocol === 'http'
+export const isInsecureHttp = (protocol: string) => protocol === 'http';
 
 export const sanitizePortFieldFromRawPrimaryValidatorConfig = (
   data: RawPrimaryValidatorConfig,
+  address?: string,
 ): PrimaryValidatorConfig => {
-  console.log('santizie', data)
+  // if (address?.includes('https')) {
+  //   return formatAddress('https', address?.replace('https://', ''), undefined);
+  // }
   return {
     ...data,
     port: isInsecureHttp(data.protocol) ? replaceNullPortFieldWithDefaultValue(data.port) : undefined,
