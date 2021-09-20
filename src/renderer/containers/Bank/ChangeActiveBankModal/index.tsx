@@ -4,8 +4,8 @@ import {useHistory} from 'react-router-dom';
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import Modal from '@renderer/components/Modal';
 import {AppDispatch, ProtocolType} from '@renderer/types';
-import {formatPathFromNode} from '@renderer/utils/address';
-import {formatPort} from '@renderer/utils/address';
+import {formatPathWithSecureNode, formatPort} from '@renderer/utils/address';
+
 import {
   getAddressFormField,
   validateAddressField,
@@ -45,7 +45,7 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
       setSubmitting(true);
       const bankAddressData = {
         ip_address: ipAddress,
-        port: formatPort({ port, protocol }),
+        port: formatPort({port, protocol}),
         protocol,
       };
       const response = await dispatch(connectAndStoreLocalData(bankAddressData, nickname));
@@ -55,7 +55,9 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
         return;
       }
       if (response?.bankConfig) {
-        history.push(`/bank/${formatPathFromNode(response?.bankConfig)}/overview`);
+        history.push(
+          `/bank/${formatPathWithSecureNode({address: response.address, node: response?.bankConfig})}/overview`,
+        );
       }
       close();
     } catch (error) {

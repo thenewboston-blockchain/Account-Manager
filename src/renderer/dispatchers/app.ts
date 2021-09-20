@@ -48,10 +48,8 @@ export const connect = (bankAddressData: AddressData) => async (dispatch: AppDis
   const {primary_validator: primaryValidator} = bankConfig.data;
 
   const primaryValidatorAddress = formatAddressFromNode(primaryValidator);
-  console.log(`primary validator address, ${primaryValidatorAddress}`);
   const validatorConfigResponse = await dispatch(fetchValidatorConfig(primaryValidatorAddress));
 
-  console.log('valdidator config response', validatorConfigResponse);
   if (validatorConfigResponse.error) {
     return {
       address: primaryValidatorAddress,
@@ -134,25 +132,26 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
 
     const getAddress = (): AddressData => {
       if (bankConfig.protocol.includes('https')) {
-        return bankConfig
-      } else if (managedBank.protocol.includes('https')) {
+        return bankConfig;
+      }
+      if (managedBank.protocol.includes('https')) {
         return {
           ip_address: managedBank.ip_address,
           port: undefined,
           protocol: managedBank.protocol,
-        }
+        };
       }
 
-      return bankConfig
-    }
+      return bankConfig;
+    };
 
     const activeBankData = {
       ...managedBank,
       ip_address: getAddress().ip_address,
+      nickname: bankNickname,
       port: getAddress().port,
       protocol: getAddress().protocol,
-      nickname: bankNickname,
-    }
+    };
 
     dispatch(setManagedBank(activeBankData));
 
@@ -160,21 +159,20 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
       dispatch(changeActiveBank(activeBankData));
     }
   } else {
-    console.log('connectResponse', connectResponse, bankConfig)
-
     const getAddress = (): AddressData => {
       if (bankConfig.protocol.includes('https')) {
-        return bankConfig
-      } else if (connectResponse.address.includes('https')) {
+        return bankConfig;
+      }
+      if (connectResponse.address.includes('https')) {
         return {
           ip_address: connectResponse.address.replace('https://', ''),
           port: undefined,
-          protocol: 'https'
-        }
+          protocol: 'https',
+        };
       }
 
-      return bankConfig
-    }
+      return bankConfig;
+    };
 
     const activeBankData = {
       account_signing_key: '',
@@ -183,7 +181,7 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
       nid_signing_key: '',
       port: getAddress()?.port,
       protocol: getAddress()?.protocol,
-    }
+    };
 
     dispatch(setManagedBank(activeBankData));
 
@@ -237,7 +235,7 @@ export const fetchNonDefaultNodeConfigs = () => async (dispatch: AppDispatch) =>
 export const fetchAndDispatchPrimaryValidator = (primaryValidatorAddress: string) => async (
   dispatch: AppDispatch,
   getState: () => RootState,
-): Promise<{error: any; validatorConfig: ValidatorConfig | null;}> => {
+): Promise<{error: any; validatorConfig: ValidatorConfig | null}> => {
   const state = getState();
 
   const validatorConfigResponse = await dispatch(fetchValidatorConfig(primaryValidatorAddress));

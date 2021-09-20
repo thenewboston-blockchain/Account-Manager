@@ -7,14 +7,14 @@ import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
 import {AppDispatch, ProtocolType} from '@renderer/types';
-import {formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
+import {formatAddressFromNode, formatPathFromNode, formatPort} from '@renderer/utils/address';
 import {
   getAddressFormField,
   validateAddressField,
   getNicknameField,
   getProtocolField,
 } from '@renderer/utils/forms/fields';
-import {formatPort} from '@renderer/utils/address';
+
 import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
@@ -54,7 +54,6 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       const address = formatAddressFromNode(bankAddressData);
 
       const bankConfig = await dispatch(fetchBankConfig(address));
-      console.log('add bank modal', bankConfig, bankAddressData, address)
       if (bankConfig.error) {
         if (bankConfig.error.includes('timeout') || bankConfig.error.includes('Network Error')) {
           displayErrorToast('Could Not Connect to Bank');

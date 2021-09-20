@@ -49,17 +49,18 @@ export const formatPathFromNode = (node: AddressData): string => {
 };
 
 interface Options {
-  node: AddressData
-  protocol: ProtocolType
-  address: string
+  node: AddressData;
+  address: string;
 }
 
-export const formatPathWithSecureNode = ({node, protocol, address}: Options): string => {
-  if (protocol?.includes('https')) {
-    return `${protocol}/${address}`
+export const formatPathWithSecureNode = ({node, address}: Options): string => {
+  if (address.includes('https')) {
+    // note: this is a hack
+    // TODO: (wakawaka) fix hardcoding of https port
+    return `https/${address.replace('https://', '')}/443`;
   }
-  return formatPath(node.protocol, node.ip_address, node.port)
-}
+  return formatPath(node.protocol, node.ip_address, node.port);
+};
 
 export const formatSocketAddressFromNode = (node: AddressData): string => {
   const {ip_address: ipAddress, port, protocol} = node;
