@@ -18,7 +18,6 @@ import {
   setManagedValidator,
 } from '@renderer/store/app';
 import {AddressData, AppDispatch, RootState, ValidatorConfig} from '@renderer/types';
-import {isInsecureHttp} from '@renderer/utils/address';
 import {formatAddressFromNode} from '@renderer/utils/address';
 
 import {fetchBankConfig} from './banks';
@@ -48,7 +47,6 @@ export const connect = (bankAddressData: AddressData) => async (dispatch: AppDis
   }
   const {primary_validator: primaryValidator} = bankConfig.data;
 
-  console.log('primaryValidator', primaryValidator);
   const primaryValidatorAddress = formatAddressFromNode(primaryValidator);
   console.log(`primary validator address, ${primaryValidatorAddress}`);
   const validatorConfigResponse = await dispatch(fetchValidatorConfig(primaryValidatorAddress));
@@ -108,7 +106,6 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
   dispatch: AppDispatch,
   getState: () => RootState,
 ) => {
-  console.log('connect and store local data')
   const state = getState();
 
   const connectResponse = await dispatch(connect(bankAddressData));
@@ -131,31 +128,9 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
 
   const bankAddress = formatAddressFromNode(bankAddressData, connectResponse.address);
 
-  console.log('connect and store local data')
-
-  console.log('is managed bank', getIsManagedBank(state, bankAddress), connectResponse);
   if (getIsManagedBank(state, bankAddress)) {
     const managedBanks = getManagedBanks(state);
     const managedBank = managedBanks[bankAddress];
-
-    console.log('managed bank', managedBank, bankConfig)
-
-    // const isBankSecure = managedBank?.protocol === 'https';
-    // const activeBankData = {
-    //   ...managedBank,
-    //   ip_address: isBankSecure ? managedBank.ip_address : bankConfig.ip_address,
-    //   nickname: bankNickname,
-    //   port: isBankSecure ? managedBank?.port : bankConfig.port,
-    //   protocol: isBankSecure ? managedBank?.protocol : bankConfig.protocol,
-    // };
-
-    // const activeBankData = {
-    //   ...managedBank,
-    //   ip_address: bankConfig.ip_address,
-    //   nickname: bankNickname,
-    //   port: bankConfig.port,
-    //   protocol: bankConfig.protocol,
-    // };
 
     const getAddress = (): AddressData => {
       if (bankConfig.protocol.includes('https')) {
@@ -201,15 +176,6 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
       return bankConfig
     }
 
-    // const activeBankData = {
-    //   account_signing_key: '',
-    //   ip_address: isInsecureHttp(bankConfig.protocol) ? bankConfig.ip_address : connectResponse.address,
-    //   nickname: bankNickname,
-    //   nid_signing_key: '',
-    //   port: isInsecureHttp(bankConfig.protocol) ? 80 : undefined,
-    //   protocol: bankConfig.protocol,
-    // };
-
     const activeBankData = {
       account_signing_key: '',
       ip_address: getAddress()?.ip_address,
@@ -218,32 +184,6 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
       port: getAddress()?.port,
       protocol: getAddress()?.protocol,
     }
-
-    // const getAddress = () => {
-    //   // address is https
-    //   //
-    //   const isHttps = !isInsecureHttp(connectResponse.address)
-    //   if (isHttps) {
-    //     return {
-    //       ip_address: connectResponse.address.replace('https://', ''),
-    //       port: undefined,
-    //       protocol: 'https' as ProtocolType,
-    //     }
-    //   }
-    // }
-
-    // const activeBankData = {
-    //   account_signing_key: '',
-    //   ip_address: getAddress()?.ip_address || bankConfig.ip_address,
-    //   nickname: bankNickname,
-    //   nid_signing_key: '',
-    //   port: isInsecureHttp(connectResponse?.address) ? 80 : undefined,
-    //   protocol: getAddress()?.protocol || bankConfig.protocol,
-    // };
-
-
-
-    console.log('activebank data', activeBankData)
 
     dispatch(setManagedBank(activeBankData));
 
@@ -254,7 +194,6 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
 
   const primaryValidatorAddress = formatAddressFromNode(validatorConfig);
 
-  console.log('is managed validator', getIsManagedValidator(state, primaryValidatorAddress))
   if (getIsManagedValidator(state, primaryValidatorAddress)) {
     const managedValidators = getManagedValidators(state);
     const managedValidator = managedValidators[primaryValidatorAddress];

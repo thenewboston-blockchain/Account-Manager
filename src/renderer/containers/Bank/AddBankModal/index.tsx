@@ -54,6 +54,7 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       const address = formatAddressFromNode(bankAddressData);
 
       const bankConfig = await dispatch(fetchBankConfig(address));
+      console.log('add bank modal', bankConfig, bankAddressData, address)
       if (bankConfig.error) {
         if (bankConfig.error.includes('timeout') || bankConfig.error.includes('Network Error')) {
           displayErrorToast('Could Not Connect to Bank');
