@@ -21,7 +21,7 @@ import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 import AddValidatorModalFields from './AddValidatorModalFields';
 import './AddValidatorModal.scss';
-import { isInsecureHttp } from '@renderer/utils/api'
+import {isInsecureHttp} from '@renderer/utils/address';
 
 const initialValues = {
   form: '',

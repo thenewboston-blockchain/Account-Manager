@@ -5,11 +5,10 @@ import {
   PaginatedQueryParams,
   PaginatedResults,
   PrimaryValidatorConfig,
-  ProtocolType,
   RawBankConfig,
   RawPrimaryValidatorConfig,
 } from '@renderer/types';
-import {formatQueryParams} from '@renderer/utils/address';
+import {formatQueryParams, isInsecureHttp} from '@renderer/utils/address';
 import {SetError, SetResults} from '@renderer/utils/store';
 import {AXIOS_TIMEOUT_MS} from '@renderer/config';
 export async function fetchPaginatedResults<T>(
@@ -64,8 +63,6 @@ export const sanitizePortFieldFromRawBankConfig = (data: RawBankConfig): BankCon
   };
 };
 
-export const isInsecureHttp = (protocol: string) => protocol === 'http';
-
 export const sanitizePortFieldFromRawPrimaryValidatorConfig = (
   data: RawPrimaryValidatorConfig,
   address?: string,
@@ -74,25 +71,4 @@ export const sanitizePortFieldFromRawPrimaryValidatorConfig = (
     ...data,
     port: isInsecureHttp(data.protocol) ? replaceNullPortFieldWithDefaultValue(data.port) : undefined,
   };
-};
-
-
-interface FormatPortArgs {
-  port: string;
-  protocol: ProtocolType;
-}
-
-export const formatPort = ({port, protocol}: FormatPortArgs) => {
-  if (isInsecureHttp(protocol) && port) {
-    return Number(port);
-  }
-
-  if (isInsecureHttp(protocol) && port === undefined) {
-    return 80;
-  }
-
-  const isHttps = !isInsecureHttp(protocol);
-  if (isHttps) {
-    return undefined;
-  }
 };

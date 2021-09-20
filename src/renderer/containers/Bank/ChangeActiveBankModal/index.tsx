@@ -5,7 +5,7 @@ import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import Modal from '@renderer/components/Modal';
 import {AppDispatch, ProtocolType} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
-import {formatPort} from '@renderer/utils/api';
+import {formatPort} from '@renderer/utils/address';
 import {
   getAddressFormField,
   validateAddressField,

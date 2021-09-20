@@ -17,8 +17,8 @@ import {
   setManagedBank,
   setManagedValidator,
 } from '@renderer/store/app';
-import {AddressData, AppDispatch, ProtocolType, RootState, ValidatorConfig} from '@renderer/types';
-import {isInsecureHttp} from '@renderer/utils/api';
+import {AddressData, AppDispatch, RootState, ValidatorConfig} from '@renderer/types';
+import {isInsecureHttp} from '@renderer/utils/address';
 import {formatAddressFromNode} from '@renderer/utils/address';
 
 import {fetchBankConfig} from './banks';
@@ -138,6 +138,8 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
     const managedBanks = getManagedBanks(state);
     const managedBank = managedBanks[bankAddress];
 
+    console.log('managed bank', managedBank, bankConfig)
+
     // const isBankSecure = managedBank?.protocol === 'https';
     // const activeBankData = {
     //   ...managedBank,
@@ -147,15 +149,35 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
     //   protocol: isBankSecure ? managedBank?.protocol : bankConfig.protocol,
     // };
 
+    // const activeBankData = {
+    //   ...managedBank,
+    //   ip_address: bankConfig.ip_address,
+    //   nickname: bankNickname,
+    //   port: bankConfig.port,
+    //   protocol: bankConfig.protocol,
+    // };
+
+    const getAddress = (): AddressData => {
+      if (bankConfig.protocol.includes('https')) {
+        return bankConfig
+      } else if (managedBank.protocol.includes('https')) {
+        return {
+          ip_address: managedBank.ip_address,
+          port: undefined,
+          protocol: managedBank.protocol,
+        }
+      }
+
+      return bankConfig
+    }
+
     const activeBankData = {
       ...managedBank,
-      ip_address: bankConfig.ip_address,
+      ip_address: getAddress().ip_address,
+      port: getAddress().port,
+      protocol: getAddress().protocol,
       nickname: bankNickname,
-      port: bankConfig.port,
-      protocol: bankConfig.protocol,
-    };
-
-    // console.log(managedBank, activeBankData)
+    }
 
     dispatch(setManagedBank(activeBankData));
 
@@ -163,16 +185,39 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
       dispatch(changeActiveBank(activeBankData));
     }
   } else {
-    // console.log('connectResponse', connectResponse)
+    console.log('connectResponse', connectResponse, bankConfig)
+
+    const getAddress = (): AddressData => {
+      if (bankConfig.protocol.includes('https')) {
+        return bankConfig
+      } else if (connectResponse.address.includes('https')) {
+        return {
+          ip_address: connectResponse.address.replace('https://', ''),
+          port: undefined,
+          protocol: 'https'
+        }
+      }
+
+      return bankConfig
+    }
+
+    // const activeBankData = {
+    //   account_signing_key: '',
+    //   ip_address: isInsecureHttp(bankConfig.protocol) ? bankConfig.ip_address : connectResponse.address,
+    //   nickname: bankNickname,
+    //   nid_signing_key: '',
+    //   port: isInsecureHttp(bankConfig.protocol) ? 80 : undefined,
+    //   protocol: bankConfig.protocol,
+    // };
 
     const activeBankData = {
       account_signing_key: '',
-      ip_address: isInsecureHttp(bankConfig.protocol) ? bankConfig.ip_address : connectResponse.address,
+      ip_address: getAddress()?.ip_address,
       nickname: bankNickname,
       nid_signing_key: '',
-      port: isInsecureHttp(bankConfig.protocol) ? 80 : undefined,
-      protocol: bankConfig.protocol,
-    };
+      port: getAddress()?.port,
+      protocol: getAddress()?.protocol,
+    }
 
     // const getAddress = () => {
     //   // address is https

@@ -1,6 +1,27 @@
 import {parse, ParsedUrlQuery, stringify} from 'querystring';
 import {AddressData, ProtocolType} from '@renderer/types';
-import {isInsecureHttp} from './api';
+
+interface FormatPortArgs {
+  port: string;
+  protocol: ProtocolType;
+}
+
+export const formatPort = ({port, protocol}: FormatPortArgs) => {
+  if (isInsecureHttp(protocol) && port) {
+    return Number(port);
+  }
+
+  if (isInsecureHttp(protocol) && port === undefined) {
+    return 80;
+  }
+
+  const isHttps = !isInsecureHttp(protocol);
+  if (isHttps) {
+    return undefined;
+  }
+};
+
+export const isInsecureHttp = (protocol: string) => protocol === 'http';
 
 export const formatAddress = (protocol: string, ipAddress: string, port?: number | string): string => {
   const template = `${protocol}://${ipAddress}`;

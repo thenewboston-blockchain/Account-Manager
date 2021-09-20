@@ -14,7 +14,7 @@ import {
   getNicknameField,
   getProtocolField,
 } from '@renderer/utils/forms/fields';
-import {formatPort} from '@renderer/utils/api';
+import {formatPort} from '@renderer/utils/address';
 import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
