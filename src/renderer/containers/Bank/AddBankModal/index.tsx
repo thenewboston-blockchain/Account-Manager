@@ -13,6 +13,7 @@ import {
   validateAddressField,
   getNicknameField,
   getProtocolField,
+  getPortField,
 } from '@renderer/utils/forms/fields';
 
 import yup from '@renderer/utils/forms/yup';
@@ -86,9 +87,7 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
       form: getAddressFormField(managedBanks, 'This address is already a managed bank'),
       ipAddress: validateAddressField(),
       nickname: getNicknameField(managedBanks),
-      // port: isInsecureHttp(getProtocolField()) ? getPortField() : undefined,
-      // port: getPortField() === 80 ? '' : getPortField(),
-      // port: undefined,
+      port: getPortField(),
       protocol: getProtocolField(),
     });
   }, [managedBanks]);

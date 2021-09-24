@@ -3,7 +3,12 @@ import {AddressData, ProtocolType} from '@renderer/types';
 
 interface FormatPortArgs {
   port: string;
-  protocol: ProtocolType;
+  protocol: ProtocolType | string;
+}
+
+enum Port {
+  HTTP = 80,
+  HTTPS = 443,
 }
 
 export const formatPort = ({port, protocol}: FormatPortArgs) => {
@@ -12,12 +17,12 @@ export const formatPort = ({port, protocol}: FormatPortArgs) => {
   }
 
   if (isInsecureHttp(protocol) && port === undefined) {
-    return 80;
+    return Port.HTTP;
   }
 
   const isHttps = !isInsecureHttp(protocol);
   if (isHttps) {
-    return undefined;
+    return Port.HTTPS;
   }
 };
 
@@ -48,16 +53,22 @@ export const formatPathFromNode = (node: AddressData): string => {
   return formatPath(node.protocol, node.ip_address, node.port);
 };
 
-interface Options {
-  node: AddressData;
-  address: string;
+export enum Protocol {
+  HTTPS = 'https',
+  HTTP = 'http',
 }
 
-export const formatPathWithSecureNode = ({node, address}: Options): string => {
-  if (address.includes('https')) {
+interface Options {
+  node: AddressData;
+  address?: string;
+  protocol?: Protocol;
+}
+
+export const formatPathWithSecureNode = ({node, address, protocol}: Options): string => {
+  if (address?.includes(Protocol.HTTPS) || protocol === Protocol.HTTPS) {
     // note: this is a hack
     // TODO: (wakawaka) fix hardcoding of https port
-    return `https/${address.replace('https://', '')}/443`;
+    return `https/${address?.replace('https://', '')}/${Port.HTTPS}`;
   }
   return formatPath(node.protocol, node.ip_address, node.port);
 };
@@ -80,7 +91,7 @@ export const parseAddressData = (
 
   return {
     ipAddress,
-    port: isInsecureHttp(protocol) ? parseInt(port, 10) : undefined,
+    port: formatPort({port, protocol}),
     protocol: protocol as ProtocolType,
   };
 };

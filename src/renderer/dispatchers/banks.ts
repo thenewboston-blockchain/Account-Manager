@@ -84,7 +84,7 @@ export const fetchBankConfig = (address: string) => async (
   dispatch: AppDispatch,
 ): Promise<{address: string; data?: BankConfig; error?: any}> => {
   try {
-    const {data: rawData} = await axios.get<RawBankConfig>(`${address}/config`, {timeout: 30000});
+    const {data: rawData} = await axios.get<RawBankConfig>(`${address}/config`, {timeout: AXIOS_TIMEOUT_MS});
     const data = sanitizePortFieldFromRawBankConfig(rawData);
     if (data.node_type !== NodeType.bank) {
       const errorObject = {address, error: 'Node not a bank'};
