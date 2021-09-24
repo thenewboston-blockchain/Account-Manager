@@ -17,11 +17,65 @@ import {
   setManagedBank,
   setManagedValidator,
 } from '@renderer/store/app';
-import {AddressData, AppDispatch, RootState, ValidatorConfig} from '@renderer/types';
+import {AddressData, AppDispatch, BankConfig, ManagedNode, Protocol, RootState, ValidatorConfig} from '@renderer/types';
 import {formatAddressFromNode} from '@renderer/utils/address';
 
 import {fetchBankConfig} from './banks';
 import {fetchValidatorConfig} from './validators';
+
+interface ManagedBankProps {
+  bankConfig: BankConfig;
+  managedBank: ManagedNode;
+}
+
+const getManagedBankAddress = ({bankConfig, managedBank}: ManagedBankProps): AddressData => {
+  if (bankConfig.protocol.includes(Protocol.HTTPS)) {
+    return bankConfig;
+  }
+  if (managedBank.protocol.includes(Protocol.HTTPS)) {
+    return {
+      ip_address: managedBank.ip_address,
+      port: undefined,
+      protocol: managedBank.protocol,
+    };
+  }
+
+  return bankConfig;
+};
+
+interface DefaultResponse {
+  address: string;
+  error: any;
+  bankConfig?: undefined;
+  validatorConfig?: undefined;
+}
+
+interface ResponseWithError {
+  address: string;
+  bankConfig: BankConfig;
+  validatorConfig: ValidatorConfig;
+  error?: undefined;
+}
+
+interface UnmanagedBankProps {
+  bankConfig: BankConfig;
+  connectResponse: DefaultResponse | ResponseWithError;
+}
+
+const getUnmanagedBankAddress = ({bankConfig, connectResponse}: UnmanagedBankProps): AddressData => {
+  if (bankConfig.protocol.includes(Protocol.HTTPS)) {
+    return bankConfig;
+  }
+  if (connectResponse.address.includes(Protocol.HTTPS)) {
+    return {
+      ip_address: connectResponse.address.replace(`${Protocol.HTTPS}://`, ''),
+      port: undefined,
+      protocol: Protocol.HTTPS,
+    };
+  }
+
+  return bankConfig;
+};
 
 export const clearLocalState = () => (dispatch: AppDispatch) => {
   dispatch(clearManagedAccounts());
@@ -113,13 +167,13 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
   const {bankConfig, validatorConfig} = connectResponse;
   if (!bankConfig) {
     return {
-      address: connectResponse.address,
+      address: connectResponse?.address,
       error: 'No BankConfig Data',
     };
   }
   if (!validatorConfig) {
     return {
-      address: connectResponse.address,
+      address: connectResponse?.address,
       error: 'No ValidatorConfig Data',
     };
   }
@@ -130,27 +184,14 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
     const managedBanks = getManagedBanks(state);
     const managedBank = managedBanks[bankAddress];
 
-    const getAddress = (): AddressData => {
-      if (bankConfig.protocol.includes('https')) {
-        return bankConfig;
-      }
-      if (managedBank.protocol.includes('https')) {
-        return {
-          ip_address: managedBank.ip_address,
-          port: undefined,
-          protocol: managedBank.protocol,
-        };
-      }
-
-      return bankConfig;
-    };
+    const getAddress = getManagedBankAddress({bankConfig, managedBank});
 
     const activeBankData = {
       ...managedBank,
-      ip_address: getAddress().ip_address,
+      ip_address: getAddress.ip_address,
       nickname: bankNickname,
-      port: getAddress().port,
-      protocol: getAddress().protocol,
+      port: getAddress.port,
+      protocol: getAddress.protocol,
     };
 
     dispatch(setManagedBank(activeBankData));
@@ -159,28 +200,15 @@ export const connectAndStoreLocalData = (bankAddressData: AddressData, bankNickn
       dispatch(changeActiveBank(activeBankData));
     }
   } else {
-    const getAddress = (): AddressData => {
-      if (bankConfig.protocol.includes('https')) {
-        return bankConfig;
-      }
-      if (connectResponse.address.includes('https')) {
-        return {
-          ip_address: connectResponse.address.replace('https://', ''),
-          port: undefined,
-          protocol: 'https',
-        };
-      }
-
-      return bankConfig;
-    };
+    const getAddress = getUnmanagedBankAddress({bankConfig, connectResponse});
 
     const activeBankData = {
       account_signing_key: '',
-      ip_address: getAddress()?.ip_address,
+      ip_address: getAddress?.ip_address,
       nickname: bankNickname,
       nid_signing_key: '',
-      port: getAddress()?.port,
-      protocol: getAddress()?.protocol,
+      port: getAddress?.port,
+      protocol: getAddress?.protocol,
     };
 
     dispatch(setManagedBank(activeBankData));

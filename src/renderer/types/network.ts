@@ -125,6 +125,16 @@ export interface PrimaryValidatorConfig extends BaseValidator {
   node_type: NodeType.primaryValidator;
 }
 
+export enum Port {
+  HTTP = 80,
+  HTTPS = 443,
+}
+
+export enum Protocol {
+  HTTPS = 'https',
+  HTTP = 'http',
+}
+
 export type ProtocolType = 'http' | 'https';
 
 export interface RawBankConfig extends Omit<BankConfig, 'port' | 'primary_validator'> {

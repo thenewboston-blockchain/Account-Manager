@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import Modal from '@renderer/components/Modal';
-import {AppDispatch, ProtocolType} from '@renderer/types';
+import {AppDispatch, Protocol} from '@renderer/types';
 import {formatPathWithSecureNode, formatPort} from '@renderer/utils/address';
 
 import {
@@ -25,7 +25,7 @@ const initialValues = {
   ipAddress: '',
   nickname: '',
   port: '',
-  protocol: 'https' as ProtocolType,
+  protocol: Protocol.HTTPS,
 };
 
 type FormValues = typeof initialValues;

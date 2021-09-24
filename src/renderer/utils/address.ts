@@ -1,14 +1,9 @@
 import {parse, ParsedUrlQuery, stringify} from 'querystring';
-import {AddressData, ProtocolType} from '@renderer/types';
+import {AddressData, Protocol, ProtocolType, Port} from '@renderer/types';
 
 interface FormatPortArgs {
   port: string;
   protocol: ProtocolType | string;
-}
-
-enum Port {
-  HTTP = 80,
-  HTTPS = 443,
 }
 
 export const formatPort = ({port, protocol}: FormatPortArgs) => {
@@ -52,11 +47,6 @@ export const formatPath = (protocol: string, ipAddress: string, port?: number | 
 export const formatPathFromNode = (node: AddressData): string => {
   return formatPath(node.protocol, node.ip_address, node.port);
 };
-
-export enum Protocol {
-  HTTPS = 'https',
-  HTTP = 'http',
-}
 
 interface Options {
   node: AddressData;
