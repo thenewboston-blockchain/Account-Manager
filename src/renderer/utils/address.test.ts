@@ -11,7 +11,7 @@ import {
 
 describe('formatAddress to return the following:', () => {
   test('correct IP without port when port as string is passed', () => {
-    expect(formatAddress('http', '127.0.0.1', '80')).toBe('http://127.0.0.1');
+    expect(formatAddress('http', '127.0.0.1', '80')).toBe('http://127.0.0.1:80');
   });
 
   test('correct IP without port when port as number is passed', () => {
@@ -26,7 +26,7 @@ describe('formatAddressFromNode to return the following:', () => {
       port: 80,
       protocol: 'https' as ProtocolType,
     };
-    expect(formatAddressFromNode(nodeAddress)).toBe('https://127.0.0.1:80');
+    expect(formatAddressFromNode(nodeAddress)).toBe('https://127.0.0.1');
   });
 });
 
