@@ -6,7 +6,7 @@ import Modal from '@renderer/components/Modal';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
-import {AppDispatch, ProtocolType} from '@renderer/types';
+import {AppDispatch, ProtocolType, Protocol} from '@renderer/types';
 import {formatAddressFromNode, formatPathFromNode, formatPort} from '@renderer/utils/address';
 import {
   getAddressFormField,
@@ -27,7 +27,7 @@ const initialValues = {
   ipAddress: '',
   nickname: '',
   port: '',
-  protocol: 'https' as ProtocolType,
+  protocol: Protocol.HTTPS as ProtocolType,
 };
 
 type FormValues = typeof initialValues;

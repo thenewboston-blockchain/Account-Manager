@@ -3,7 +3,7 @@ import {useFormContext} from '@renderer/hooks';
 import {FormInput, FormSelect} from '@renderer/components/FormComponents';
 import {InputOption, Protocol} from '@renderer/types';
 
-const protocolOptions: InputOption[] = [{value: 'http'}, {value: 'https'}];
+const protocolOptions: InputOption[] = [{value: Protocol.HTTP}, {value: Protocol.HTTPS}];
 
 const AddBankModalFields: FC = () => {
   const {values, errors} = useFormContext();

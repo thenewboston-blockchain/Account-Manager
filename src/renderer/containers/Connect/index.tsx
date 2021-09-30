@@ -8,13 +8,9 @@ import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/Form
 import Logo from '@renderer/components/Logo';
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {getActiveBankConfig} from '@renderer/selectors';
-import {AppDispatch, InputOption} from '@renderer/types';
+import {AppDispatch, InputOption, Protocol} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
-import {
-  getNicknameField,
-  getProtocolField,
-  validateAddressField,
-} from '@renderer/utils/forms/fields';
+import {getNicknameField, getProtocolField, validateAddressField} from '@renderer/utils/forms/fields';
 import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
@@ -53,7 +49,7 @@ const Connect: FC = () => {
       setSubmitting(true);
       const bankAddressData = {
         ip_address: ipAddress,
-        port: protocol === 'https' ? undefined : parseInt(port, 10),
+        port: protocol === Protocol.HTTPS ? undefined : parseInt(port, 10),
         protocol,
       };
       const response = await dispatch(connectAndStoreLocalData(bankAddressData, nickname));
