@@ -1,6 +1,7 @@
 import React, {FC, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
+import dns from 'dns';
 
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import Modal from '@renderer/components/Modal';
@@ -19,6 +20,13 @@ import {getManagedBanks} from '@renderer/selectors';
 
 import ChangeActiveBankModalFields from './ChangeActiveBankModalFields';
 import './ChangeActiveBankModal.scss';
+
+const dnsLookup = (domain: any) => {
+  const ip = dns.lookup(domain, (err: any, address: any, family: any) => {
+    return address;
+  });
+  return ip;
+};
 
 const initialValues = {
   form: '',
@@ -44,7 +52,7 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
     try {
       setSubmitting(true);
       const bankAddressData = {
-        ip_address: ipAddress,
+        ip_address: dnsLookup(ipAddress),
         port: parseInt(port, 10),
         protocol,
       };

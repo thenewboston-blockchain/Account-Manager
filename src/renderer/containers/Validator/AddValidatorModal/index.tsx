@@ -1,6 +1,7 @@
 import React, {FC, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
+import dns from 'dns';
 
 import Modal from '@renderer/components/Modal';
 import {fetchValidatorConfig} from '@renderer/dispatchers/validators';
@@ -20,6 +21,13 @@ import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 import AddValidatorModalFields from './AddValidatorModalFields';
 import './AddValidatorModal.scss';
+
+const dnsLookup = (domain: any) => {
+  const ip = dns.lookup(domain, (err: any, address: any, family: any) => {
+    return address;
+  });
+  return ip;
+};
 
 const initialValues = {
   form: '',
@@ -46,7 +54,7 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
       setSubmitting(true);
 
       const validatorAddressData = {
-        ip_address: ipAddress,
+        ip_address: dnsLookup(ipAddress),
         port: parseInt(port, 10),
         protocol,
       };

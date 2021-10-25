@@ -13,7 +13,7 @@ const ChangeActiveBankModalFields: FC = () => {
     <>
       {addressError ? <span className="ChangeActiveBankModal__form-error">{addressError}</span> : null}
       <FormSelect focused label="Protocol" name="protocol" options={protocolOptions} required searchable={false} />
-      <FormInput label="IP Address" name="ipAddress" required />
+      <FormInput label="IP Address/Domain" name="ipAddress" required />
       <FormInput label="Port" name="port" type="number" required />
       <FormInput label="Nickname" name="nickname" />
     </>
