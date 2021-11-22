@@ -30,6 +30,7 @@ const createWindow = (): void => {
   mainWindow = new BrowserWindow({
     height: mainWindowState.height,
     webPreferences: {
+      enableRemoteModule: true, // Consider moving away from this! https://nornagon.medium.com/electrons-remote-module-considered-harmful-70d69500f31
       nodeIntegration: true,
     },
     width: mainWindowState.width,
