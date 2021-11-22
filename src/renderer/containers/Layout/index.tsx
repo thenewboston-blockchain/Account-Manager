@@ -7,7 +7,10 @@ import Bank from '@renderer/containers/Bank';
 import PurchaseConfirmationServices from '@renderer/containers/PurchaseConfirmationServices';
 import Validator from '@renderer/containers/Validator';
 import {getActiveBank, getActiveBankConfig} from '@renderer/selectors';
-import {formatPathFromNode, formatPathWithSecureNode, Protocol} from '@renderer/utils/address';
+
+import {Protocol} from '@renderer/types';
+
+import {formatPathWithSecureNode} from '@renderer/utils/address';
 
 import LeftMenu from './LeftMenu';
 import TopNav from './TopNav';
@@ -30,12 +33,24 @@ export const Layout: FC = () => {
         <Switch>
           <Route path="/" exact>
             {activeBankConfig ? (
-              <Redirect to={`/bank/${formatPathWithSecureNode({node: activeBankConfig, protocol})}/overview`} />
+              <Redirect
+                to={`/bank/${formatPathWithSecureNode({
+                  address: activeBank?.ip_address,
+                  node: activeBankConfig,
+                  protocol,
+                })}/overview`}
+              />
             ) : null}
           </Route>
           <Route path="/main_window" exact>
             {activeBankConfig ? (
-              <Redirect to={`/bank/${formatPathWithSecureNode({node: activeBankConfig, protocol})}/overview`} />
+              <Redirect
+                to={`/bank/${formatPathWithSecureNode({
+                  address: activeBank?.ip_address,
+                  node: activeBankConfig,
+                  protocol,
+                })}/overview`}
+              />
             ) : null}
           </Route>
           <Route path="/account/:accountNumber">

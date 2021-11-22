@@ -30,7 +30,7 @@ export const formatAddress = (protocol: string, ipAddress: string, port?: number
 
 export const formatAddressFromNode = (node: AddressData, address?: string): string => {
   if (address?.includes('https')) {
-    return formatAddress('https', address?.replace('https://', ''), undefined);
+    return formatAddress('https', address?.replace('https://', ''), Port.HTTPS);
   }
   return formatAddress(node.protocol, node.ip_address, node.port);
 };

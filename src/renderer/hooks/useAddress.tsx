@@ -5,11 +5,12 @@ import {formatAddress} from '@renderer/utils/address';
 
 const useAddress = (): string => {
   const {ipAddress, port, protocol} = useParams<AddressParams>();
-  return useMemo(() => (ipAddress && protocol && protocol ? formatAddress(protocol, ipAddress, port) : ''), [
-    ipAddress,
-    port,
-    protocol,
-  ]);
+  return useMemo(() => {
+    if (ipAddress && protocol) {
+      return formatAddress(protocol, ipAddress, port);
+    }
+    return '';
+  }, [ipAddress, port, protocol]);
 };
 
 export default useAddress;
