@@ -124,7 +124,7 @@
     "@thenewboston/ui": "^0.1.5",
     "@thenewboston/utils": "^1.0.0",
     "app-root-path": "3.0.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "bfj": "^7.0.2",
     "camelcase": "^6.1.0",
     "clsx": "^1.1.1",
