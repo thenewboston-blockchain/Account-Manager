@@ -1,14 +1,14 @@
 import React, {FC, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
-
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import Modal from '@renderer/components/Modal';
-import {AppDispatch, ProtocolType} from '@renderer/types';
-import {formatPathFromNode} from '@renderer/utils/address';
+import {AppDispatch, Protocol} from '@renderer/types';
+import {formatPathWithSecureNode, formatPort} from '@renderer/utils/address';
+
 import {
   getAddressFormField,
-  getIpAddressField,
+  validateAddressField,
   getNicknameField,
   getPortField,
   getProtocolField,
@@ -24,8 +24,8 @@ const initialValues = {
   form: '',
   ipAddress: '',
   nickname: '',
-  port: '80',
-  protocol: 'http' as ProtocolType,
+  port: '',
+  protocol: Protocol.HTTPS,
 };
 
 type FormValues = typeof initialValues;
@@ -45,7 +45,7 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
       setSubmitting(true);
       const bankAddressData = {
         ip_address: ipAddress,
-        port: parseInt(port, 10),
+        port: formatPort({port, protocol}),
         protocol,
       };
       const response = await dispatch(connectAndStoreLocalData(bankAddressData, nickname));
@@ -55,7 +55,9 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
         return;
       }
       if (response?.bankConfig) {
-        history.push(`/bank/${formatPathFromNode(response.bankConfig)}/overview`);
+        history.push(
+          `/bank/${formatPathWithSecureNode({address: response.address, node: response?.bankConfig})}/overview`,
+        );
       }
       close();
     } catch (error) {
@@ -68,7 +70,7 @@ const ChangeActiveBankModal: FC<ComponentProps> = ({close}) => {
     () =>
       yup.object().shape({
         form: getAddressFormField(managedBanks, 'This address is already a managed bank'),
-        ipAddress: getIpAddressField(),
+        ipAddress: validateAddressField(),
         nickname: getNicknameField(managedBanks),
         port: getPortField(),
         protocol: getProtocolField(),

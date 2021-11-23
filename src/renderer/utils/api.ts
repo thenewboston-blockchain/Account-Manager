@@ -8,10 +8,9 @@ import {
   RawBankConfig,
   RawPrimaryValidatorConfig,
 } from '@renderer/types';
-import {formatQueryParams} from '@renderer/utils/address';
+import {formatQueryParams, isInsecureHttp} from '@renderer/utils/address';
 import {SetError, SetResults} from '@renderer/utils/store';
 import {AXIOS_TIMEOUT_MS} from '@renderer/config';
-
 export async function fetchPaginatedResults<T>(
   address: string,
   urlParam: string,
@@ -41,7 +40,7 @@ export async function fetchPaginatedResults<T>(
 
     dispatch(setResults({address, ...data}));
     return data.results;
-  } catch (error) {
+  } catch (error: any) {
     if (!error.response) {
       throw error;
     }
@@ -66,9 +65,10 @@ export const sanitizePortFieldFromRawBankConfig = (data: RawBankConfig): BankCon
 
 export const sanitizePortFieldFromRawPrimaryValidatorConfig = (
   data: RawPrimaryValidatorConfig,
+  address?: string,
 ): PrimaryValidatorConfig => {
   return {
     ...data,
-    port: replaceNullPortFieldWithDefaultValue(data.port),
+    port: isInsecureHttp(data.protocol) ? replaceNullPortFieldWithDefaultValue(data.port) : undefined,
   };
 };

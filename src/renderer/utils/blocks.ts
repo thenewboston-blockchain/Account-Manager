@@ -22,7 +22,7 @@ const fetchAccountBalanceLock = async (
   activePrimaryValidator: ValidatorConfig,
 ): Promise<string> => {
   const {ip_address: ipAddress, port, protocol} = activePrimaryValidator;
-  const address = formatAddress(ipAddress, port, protocol);
+  const address = formatAddress(protocol, ipAddress, port);
   const {
     data: {balance_lock: balanceLock},
   } = await axios.get(`${address}/accounts/${accountNumber}/balance_lock`, {timeout: AXIOS_TIMEOUT_MS});
@@ -85,7 +85,7 @@ export const sendBlock = async (
   txs = txs.filter((tx) => !!tx.amount);
 
   const {ip_address: ipAddress, port, protocol} = activeBankConfig;
-  const address = formatAddress(ipAddress, port, protocol);
+  const address = formatAddress( protocol, ipAddress, port);
 
   const block = await createBlock(primaryValidatorConfig, senderSigningKey, senderAccountNumber, txs);
   await axios.post(`${address}/blocks`, block, {

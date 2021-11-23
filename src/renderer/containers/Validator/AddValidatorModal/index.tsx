@@ -7,13 +7,14 @@ import {fetchValidatorConfig} from '@renderer/dispatchers/validators';
 import {getManagedValidators} from '@renderer/selectors';
 import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch, ProtocolType} from '@renderer/types';
-import {formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
+import {formatAddressFromNode, formatPathFromNode, formatPort, isInsecureHttp} from '@renderer/utils/address';
 import {
   getAddressFormField,
-  getIpAddressField,
+  getDomainAddressField,
   getNicknameField,
   getPortField,
   getProtocolField,
+  validateAddressField,
 } from '@renderer/utils/forms/fields';
 import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
@@ -47,7 +48,7 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
 
       const validatorAddressData = {
         ip_address: ipAddress,
-        port: parseInt(port, 10),
+        port: formatPort({port, protocol}),
         protocol,
       };
 
@@ -84,7 +85,7 @@ const AddValidatorModal: FC<ComponentProps> = ({close}) => {
   const validationSchema = useMemo(() => {
     return yup.object().shape({
       form: getAddressFormField(managedValidators, 'This address is already a managed validator'),
-      ipAddress: getIpAddressField(),
+      ipAddress: validateAddressField(),
       nickname: getNicknameField(managedValidators),
       port: getPortField(),
       protocol: getProtocolField(),

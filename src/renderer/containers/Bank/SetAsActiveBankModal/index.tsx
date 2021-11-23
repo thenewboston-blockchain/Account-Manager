@@ -5,7 +5,7 @@ import {useHistory} from 'react-router-dom';
 import Modal from '@renderer/components/Modal';
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {AppDispatch, ManagedNode} from '@renderer/types';
-import {formatPathFromNode} from '@renderer/utils/address';
+import {formatPathWithSecureNode} from '@renderer/utils/address';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
 interface ComponentProps {
@@ -28,7 +28,9 @@ const SetAsActiveBankModal: FC<ComponentProps> = ({bank, close}) => {
         return;
       }
       if (response?.bankConfig) {
-        history.push(`/bank/${formatPathFromNode(response.bankConfig)}/overview`);
+        history.push(
+          `/bank/${formatPathWithSecureNode({address: response.address, node: response.bankConfig})}/overview`,
+        );
       }
       close();
     } catch (error) {

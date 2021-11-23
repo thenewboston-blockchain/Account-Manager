@@ -34,7 +34,7 @@ const useNetworkCleanFetcher = (
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const socketEntry = Object.entries(cleanSockets).find(
-    (e) => formatAddress(e[1].ip_address, e[1].port, e[1].protocol) === address,
+    (e) => formatAddress(e[1].protocol, e[1].ip_address, e[1].port) === address,
   );
   const cleanSocket = socketEntry ? cleanSockets[socketEntry[0]] : null;
 

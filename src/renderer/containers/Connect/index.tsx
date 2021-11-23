@@ -8,9 +8,9 @@ import {Form, FormButton, FormInput, FormSelect} from '@renderer/components/Form
 import Logo from '@renderer/components/Logo';
 import {connectAndStoreLocalData} from '@renderer/dispatchers/app';
 import {getActiveBankConfig} from '@renderer/selectors';
-import {AppDispatch, InputOption} from '@renderer/types';
+import {AppDispatch, InputOption, Protocol} from '@renderer/types';
 import {formatPathFromNode} from '@renderer/utils/address';
-import {getIpAddressField, getNicknameField, getPortField, getProtocolField} from '@renderer/utils/forms/fields';
+import {getNicknameField, getProtocolField, validateAddressField} from '@renderer/utils/forms/fields';
 import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
@@ -28,9 +28,9 @@ type FormValues = typeof initialValues;
 const protocolOptions: InputOption[] = [{value: 'http'}, {value: 'https'}];
 
 const validationSchema = yup.object().shape({
-  ipAddress: getIpAddressField(),
+  ipAddress: validateAddressField(),
   nickname: getNicknameField(),
-  port: getPortField(),
+  port: yup.mixed(),
   protocol: getProtocolField(),
 });
 
@@ -49,7 +49,7 @@ const Connect: FC = () => {
       setSubmitting(true);
       const bankAddressData = {
         ip_address: ipAddress,
-        port: parseInt(port, 10),
+        port: protocol === Protocol.HTTPS ? undefined : parseInt(port, 10),
         protocol,
       };
       const response = await dispatch(connectAndStoreLocalData(bankAddressData, nickname));
@@ -86,7 +86,7 @@ const Connect: FC = () => {
           searchable={false}
         />
         <FormInput className="Connect__field" label="IP Address" name="ipAddress" required />
-        <FormInput className="Connect__field" label="Port" name="port" type="number" required />
+        <FormInput className="Connect__field" label="Port" name="port" type="number" />
         <FormInput className="Connect__field" label="Nickname" name="nickname" />
 
         <FormButton ignoreDirty submitting={submitting} type={ButtonType.submit}>

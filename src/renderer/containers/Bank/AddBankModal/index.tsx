@@ -6,15 +6,16 @@ import Modal from '@renderer/components/Modal';
 import {fetchBankConfig} from '@renderer/dispatchers/banks';
 import {getManagedBanks} from '@renderer/selectors';
 import {setManagedBank} from '@renderer/store/app';
-import {AppDispatch, ProtocolType} from '@renderer/types';
-import {formatAddressFromNode, formatPathFromNode} from '@renderer/utils/address';
+import {AppDispatch, ProtocolType, Protocol} from '@renderer/types';
+import {formatAddressFromNode, formatPathFromNode, formatPort} from '@renderer/utils/address';
 import {
   getAddressFormField,
-  getIpAddressField,
+  validateAddressField,
   getNicknameField,
-  getPortField,
   getProtocolField,
+  getPortField,
 } from '@renderer/utils/forms/fields';
+
 import yup from '@renderer/utils/forms/yup';
 import {displayErrorToast, displayToast} from '@renderer/utils/toast';
 
@@ -25,8 +26,8 @@ const initialValues = {
   form: '',
   ipAddress: '',
   nickname: '',
-  port: '80',
-  protocol: 'http' as ProtocolType,
+  port: '',
+  protocol: Protocol.HTTPS as ProtocolType,
 };
 
 type FormValues = typeof initialValues;
@@ -47,13 +48,13 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
 
       const bankAddressData = {
         ip_address: ipAddress,
-        port: parseInt(port, 10),
+        port: formatPort({port, protocol}),
         protocol,
       };
 
       const address = formatAddressFromNode(bankAddressData);
-      const bankConfig = await dispatch(fetchBankConfig(address));
 
+      const bankConfig = await dispatch(fetchBankConfig(address));
       if (bankConfig.error) {
         if (bankConfig.error.includes('timeout') || bankConfig.error.includes('Network Error')) {
           displayErrorToast('Could Not Connect to Bank');
@@ -84,7 +85,7 @@ const AddBankModal: FC<ComponentProps> = ({close}) => {
   const validationSchema = useMemo(() => {
     return yup.object().shape({
       form: getAddressFormField(managedBanks, 'This address is already a managed bank'),
-      ipAddress: getIpAddressField(),
+      ipAddress: validateAddressField(),
       nickname: getNicknameField(managedBanks),
       port: getPortField(),
       protocol: getProtocolField(),

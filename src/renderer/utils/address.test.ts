@@ -11,11 +11,11 @@ import {
 
 describe('formatAddress to return the following:', () => {
   test('correct IP without port when port as string is passed', () => {
-    expect(formatAddress('127.0.0.1', '80', 'http')).toBe('http://127.0.0.1:80');
+    expect(formatAddress('http', '127.0.0.1', '80')).toBe('http://127.0.0.1:80');
   });
 
   test('correct IP without port when port as number is passed', () => {
-    expect(formatAddress('127.0.0.1', 80, 'https')).toBe('https://127.0.0.1:80');
+    expect(formatAddress('https', '127.0.0.1', undefined)).toBe('https://127.0.0.1');
   });
 });
 
@@ -26,7 +26,7 @@ describe('formatAddressFromNode to return the following:', () => {
       port: 80,
       protocol: 'https' as ProtocolType,
     };
-    expect(formatAddressFromNode(nodeAddress)).toBe('https://127.0.0.1:80');
+    expect(formatAddressFromNode(nodeAddress)).toBe('https://127.0.0.1');
   });
 });
 
@@ -55,11 +55,11 @@ describe('formatQueryParams to return the following:', () => {
 
 describe('formatPath to return the following:', () => {
   test('correct Path when port as number is passed', () => {
-    expect(formatPath('127.0.0.1', 80, 'https')).toBe('https/127.0.0.1/80');
+    expect(formatPath('https', '127.0.0.1', 80)).toBe('https/127.0.0.1/80');
   });
 
   test('correct Path when port as string is passed', () => {
-    expect(formatPath('127.0.0.1', '80', 'https')).toBe('https/127.0.0.1/80');
+    expect(formatPath('https', '127.0.0.1', '80')).toBe('https/127.0.0.1/80');
   });
 });
 

@@ -19,6 +19,22 @@ export const getIpAddressField = () =>
     .required(REQUIRED_FIELD_ERROR)
     .matches(genericIpAddressRegex, {excludeEmptyString: true, message: 'IPv4 or IPv6 addresses only'});
 
+const genericDomainRegex = /([a-z0-9|-]+\.)*[a-z0-9|-]+\.[a-z]+/;
+export const getDomainAddressField = () =>
+  yup
+    .string()
+    .required(REQUIRED_FIELD_ERROR)
+    .matches(genericDomainRegex, {excludeEmptyString: true, message: 'https domains only'});
+
+export const validateAddressField = () =>
+  yup
+    .string()
+    .required(REQUIRED_FIELD_ERROR)
+    .matches(/([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(\d{1,3}\.){3}\d{1,3}|([a-z0-9|-]+\.)*[a-z0-9|-]+\.[a-z]+/, {
+      excludeEmptyString: true,
+      message: 'address isnt ip or https',
+    });
+
 export const getNicknameField = (managedNodes?: Dict<Nickname>, ownNickname?: string) => {
   if (managedNodes) {
     const usedNicknames = Object.values(managedNodes)
@@ -38,6 +54,6 @@ export const getNicknameField = (managedNodes?: Dict<Nickname>, ownNickname?: st
     .max(64, 'Nickname must not be more than 64 characters');
 };
 
-export const getPortField = () => yup.number().integer().required(REQUIRED_FIELD_ERROR);
+export const getPortField = () => yup.number();
 
 export const getProtocolField = () => yup.string().required(REQUIRED_FIELD_ERROR);
