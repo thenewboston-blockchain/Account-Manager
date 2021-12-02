@@ -38,11 +38,11 @@ export const addPortToManagedNodes = (managedNodes: Dict<OldManagedNode>): Dict<
 
 export const addPortPropertyToStore: MigrationFunction = (localStore) => {
   const managedBanks = localStore.get('managed_banks');
-  const updatedManagedBanks = addPortToManagedNodes(managedBanks);
+  const updatedManagedBanks = addPortToManagedNodes(managedBanks as any);
   localStore.set('managed_banks', updatedManagedBanks);
 
   const managedValidators = localStore.get('managed_validators');
-  const updatedManagedValidators = addPortToManagedNodes(managedValidators);
+  const updatedManagedValidators = addPortToManagedNodes(managedValidators as any);
   localStore.set('managed_validators', updatedManagedValidators);
 };
 
