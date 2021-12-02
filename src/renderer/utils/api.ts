@@ -11,6 +11,7 @@ import {
 import {formatQueryParams, isInsecureHttp} from '@renderer/utils/address';
 import {SetError, SetResults} from '@renderer/utils/store';
 import {AXIOS_TIMEOUT_MS} from '@renderer/config';
+
 export async function fetchPaginatedResults<T>(
   address: string,
   urlParam: string,
@@ -65,7 +66,6 @@ export const sanitizePortFieldFromRawBankConfig = (data: RawBankConfig): BankCon
 
 export const sanitizePortFieldFromRawPrimaryValidatorConfig = (
   data: RawPrimaryValidatorConfig,
-  address?: string,
 ): PrimaryValidatorConfig => {
   return {
     ...data,

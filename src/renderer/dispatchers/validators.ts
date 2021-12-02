@@ -59,7 +59,7 @@ export const fetchValidatorConfig = (address: string) => async (
     const {data: rawData} = await axios.get<RawPrimaryValidatorConfig>(`${address}/config`, {
       timeout: AXIOS_TIMEOUT_MS,
     });
-    const data = sanitizePortFieldFromRawPrimaryValidatorConfig(rawData, address);
+    const data = sanitizePortFieldFromRawPrimaryValidatorConfig(rawData);
 
     if (data.node_type !== NodeType.primaryValidator && data.node_type !== NodeType.confirmationValidator) {
       const errorObject = {address, error: 'Node not a validator'};

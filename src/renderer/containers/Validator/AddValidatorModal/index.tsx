@@ -7,10 +7,9 @@ import {fetchValidatorConfig} from '@renderer/dispatchers/validators';
 import {getManagedValidators} from '@renderer/selectors';
 import {setManagedValidator} from '@renderer/store/app';
 import {AppDispatch, ProtocolType} from '@renderer/types';
-import {formatAddressFromNode, formatPathFromNode, formatPort, isInsecureHttp} from '@renderer/utils/address';
+import {formatAddressFromNode, formatPathFromNode, formatPort} from '@renderer/utils/address';
 import {
   getAddressFormField,
-  getDomainAddressField,
   getNicknameField,
   getPortField,
   getProtocolField,

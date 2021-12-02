@@ -85,7 +85,7 @@ export const sendBlock = async (
   txs = txs.filter((tx) => !!tx.amount);
 
   const {ip_address: ipAddress, port, protocol} = activeBankConfig;
-  const address = formatAddress( protocol, ipAddress, port);
+  const address = formatAddress(protocol, ipAddress, port);
 
   const block = await createBlock(primaryValidatorConfig, senderSigningKey, senderAccountNumber, txs);
   await axios.post(`${address}/blocks`, block, {
